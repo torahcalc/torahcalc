@@ -1,0 +1,43 @@
+{
+	"name": "torahcalc",
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"static": "cross-env PUBLIC_ADAPTER='static' npm run build",
+		"static:dev": "cross-env PUBLIC_ADAPTER='static' npm run dev",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
+		"test": "vitest",
+		"lint": "prettier --plugin-search-dir . --check src/**/*.{svelte,js,css,html} *.{js,ts,json,md} && eslint src/**/*.{svelte,js}",
+		"format": "prettier --plugin-search-dir . --write src/**/*.{svelte,js,css,html} *.{js,ts,json,md}"
+	},
+	"dependencies": {
+		"@capacitor/android": "^5.3.0",
+		"@capacitor/cli": "^5.3.0",
+		"@capacitor/core": "^5.3.0",
+		"@capacitor/ios": "^5.3.0",
+		"@fortawesome/free-solid-svg-icons": "^6.4.2",
+		"cross-env": "^7.0.3",
+		"dotenv": "^16.3.1",
+		"svelte-fa": "^3.0.4"
+	},
+	"devDependencies": {
+		"@fontsource/fira-mono": "^4.5.10",
+		"@sveltejs/adapter-static": "^2.0.3",
+		"@sveltejs/adapter-vercel": "^3.0.3",
+		"@sveltejs/kit": "^1.20.4",
+		"@types/cookie": "^0.5.1",
+		"eslint": "^8.28.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-svelte": "^2.30.0",
+		"prettier": "^2.8.0",
+		"prettier-plugin-svelte": "^2.10.1",
+		"svelte": "^4.0.5",
+		"svelte-check": "^3.4.3",
+		"vite": "^4.4.2",
+		"vitest": "^0.34.4"
+	}
+}
