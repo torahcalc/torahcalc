@@ -1,4 +1,4 @@
-import { createResponse, createErrorResponse } from '$lib/middleware/json.js';
+import { createResponse, createErrorResponse } from '$lib/js/api/response.js';
 import { isGregorianLeapYear } from '$lib/js/leapyears.js';
 
 /**

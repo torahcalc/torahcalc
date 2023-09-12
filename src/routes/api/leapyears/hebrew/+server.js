@@ -1,5 +1,5 @@
+import { createResponse, createErrorResponse } from '$lib/js/api/response.js';
 import { isHebrewLeapYear } from '$lib/js/leapyears.js';
-import { createResponse, createErrorResponse } from '$lib/middleware/json';
 
 /**
  * @type {import('@sveltejs/kit').RequestHandler}
