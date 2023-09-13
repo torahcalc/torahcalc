@@ -61,13 +61,14 @@ export const gregorianToHebrew = ({ year, month, day, afterSunset = false }) => 
 /**
  * Format a date as Mon, January 11, 2023.
  *
- * @param {Date} date - The date to format.
+ * @param {number} year - The year to format.
+ * @param {number} month - The month to format (1-12).
+ * @param {number} day - The day to format (1-31).
  * @returns {string} The formatted date.
  */
-export const formatDate = (date) => {
-	const dateToFormat = new Date(date);
-	let year = date.getFullYear();
-	dateToFormat.setFullYear(9999);
+export const formatDate = (year, month, day) => {
+	// temporarily set year to 9999 to avoid issues with years fewer than 4 digits or before year 1
+	const dateToFormat = new Date(9999, month - 1, day);
 	let formatted = dateToFormat.toLocaleDateString('en-US', {
 		weekday: 'short',
 		year: 'numeric',
@@ -81,6 +82,7 @@ export const formatDate = (date) => {
 	if (isNaN(Math.abs(year))) {
 		throw new Error('Invalid Gregorian date.');
 	}
+	// pad year with zeros to 4 digits and replace 9999 with the actual year
 	const formattedYear = (year < 0 ? '-' : '') + Math.abs(year).toString().padStart(4, '0');
 	formatted = formatted.replace('9999', formattedYear);
 	return formatted;
@@ -107,7 +109,7 @@ export const hebrewToGregorian = ({ year, month, day, afterSunset = false }) => 
 		year: date.getFullYear() > 0 ? date.getFullYear() : date.getFullYear() - 1, // fix for years before year 1
 		month: date.getMonth() + 1,
 		day: date.getDate(),
-		display: formatDate(date),
+		display: formatDate(date.getFullYear(), date.getMonth() + 1, date.getDate()),
 	};
 	if (date < GREGORIAN_REFORMATION) {
 		// @ts-ignore

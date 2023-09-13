@@ -7,7 +7,7 @@
 	let gregorianYear = gDate.getFullYear();
 	let gregorianMonth = gDate.getMonth() + 1;
 	let gregorianDay = gDate.getDate();
-	let formattedGregorianDate = formatDate(gDate);
+	let formattedGregorianDate = formatDate(gregorianYear, gregorianMonth, gregorianDay);
 
 	const hDate = new HDate(gDate);
 	let hebrewYear = hDate.getFullYear();
@@ -28,7 +28,7 @@
 			hebrewMonth = result.month;
 			hebrewDay = result.day;
 			formattedHebrewDate = result.displayEn;
-			formattedGregorianDate = formatDate(new Date(gregorianYear, gregorianMonth - 1, gregorianDay));
+			formattedGregorianDate = formatDate(gregorianYear, gregorianMonth, gregorianDay);
 			if (result.warning) {
 				warning = { class: 'warning', html: result.warning };
 			}
