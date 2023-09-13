@@ -1,5 +1,5 @@
 <svelte:head>
-	<title>Terms and Conditions</title>
+	<title>TorahCalc | Terms and Conditions</title>
 	<meta name="description" content="TorahCalc Terms and Conditions" />
 </svelte:head>
 

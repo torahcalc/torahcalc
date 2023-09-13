@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>Leap Years</title>
+	<title>TorahCalc | Leap Years</title>
 	<meta name="description" content="Calculate leap years in the Hebrew and Gregorian calendars." />
 </svelte:head>
 

@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	<title>TorahCalc | Home</title>
 	<meta name="description" content="TorahCalc - Calculators for Torah Study" />
 </svelte:head>
 

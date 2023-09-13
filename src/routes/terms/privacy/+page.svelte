@@ -1,5 +1,5 @@
 <svelte:head>
-	<title>Privacy Policy</title>
+	<title>TorahCalc | Privacy Policy</title>
 	<meta name="description" content="TorahCalc Privacy Policy" />
 </svelte:head>
 

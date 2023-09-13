@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-	<title>API</title>
+	<title>TorahCalc | API</title>
 	<meta name="description" content="TorahCalc API" />
 </svelte:head>
 
