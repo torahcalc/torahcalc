@@ -15,7 +15,11 @@ import { HDate } from '@hebcal/core';
  * @returns {{ year: number, month: number, day: number, monthName: string, displayEn: string, displayHe: string, displayGematriya: string }} The Hebrew date.
  */
 export const gregorianToHebrew = ({ year, month, day, afterSunset = false }) => {
+	if (year === 0) {
+		throw new Error('Year 0 does not exist.');
+	}
 	const date = new Date(year, month - 1, day + (afterSunset ? 1 : 0));
+	date.setFullYear(year > 0 ? year : year + 1);  // fix for 2-digit years and years before year 1
 	const hDate = new HDate(date);
 	return {
 		year: hDate.getFullYear(),
@@ -48,7 +52,7 @@ export const hebrewToGregorian = ({ year, month, day, afterSunset = false }) => 
 	date.setDate(date.getDate() - (afterSunset ? 1 : 0));
 	return {
 		date,
-		year: date.getFullYear(),
+		year: date.getFullYear() > 0 ? date.getFullYear() : date.getFullYear() - 1, // fix for years before year 1
 		month: date.getMonth() + 1,
 		day: date.getDate(),
 	};
