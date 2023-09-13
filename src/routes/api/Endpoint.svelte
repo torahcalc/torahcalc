@@ -28,13 +28,13 @@
 </script>
 
 <div class="card flex-card endpoint-card">
-	<h3>
-		<span class="method mono {method}">{method}</span> <span class="endpoint mono">{endpoint}</span>
-	</h3>
+	<h4 class="endpoint-header">
+		<span class="method mono {method}">{method}</span><span>&nbsp;&nbsp;</span><span class="endpoint mono">{endpoint}</span>
+	</h4>
 
-	<span>{description}</span>
+	<p class="mt-2 mb-4">{description}</p>
 
-	<h4>Query Parameters</h4>
+	<h4 class="subsection-header">Query Parameters</h4>
 
 	<table>
 		<thead>
@@ -58,7 +58,7 @@
 		</tbody>
 	</table>
 
-	<h4>Example</h4>
+	<h4 class="subsection-header my-3">Example</h4>
 
 	<span class="mono"><a href={example}>{example}</a></span>
 </div>
@@ -75,8 +75,14 @@
 		border-radius: 0.25em;
 	}
 
-	h3 {
+	.endpoint-header {
 		margin-top: 0;
+		margin-bottom: 1em;
+		font-size: 1.25em;
+	}
+
+	.subsection-header {
+		margin-bottom: 0.5em;
 	}
 
 	table {
