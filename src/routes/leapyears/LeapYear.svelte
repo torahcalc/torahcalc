@@ -1,9 +1,10 @@
 <script>
 	import { isHebrewLeapYear, isGregorianLeapYear } from '$lib/js/leapyears.js';
+	import { HDate } from '@hebcal/core';
 	import Reason from './Reason.svelte';
 
 	const currentGregorianYear = new Date().getFullYear();
-	const currentHebrewYear = currentGregorianYear + 3760; // TODO: calculate with a date converter
+	const currentHebrewYear = new HDate().getFullYear();
 	const currentGregorianYearResult = isGregorianLeapYear({ year: currentGregorianYear });
 	const currentHebrewYearResult = isHebrewLeapYear({ year: currentHebrewYear });
 

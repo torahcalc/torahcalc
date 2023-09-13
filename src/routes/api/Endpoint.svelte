@@ -49,7 +49,7 @@
 		<tbody>
 			{#each parameters as parameter}
 				<tr>
-					<td>{parameter.name}</td>
+					<td><code>{parameter.name}</code></td>
 					<td>{parameter.type}</td>
 					<td>{parameter.required ? 'Yes' : 'No'}</td>
 					<td>{parameter.description}</td>
@@ -67,6 +67,12 @@
 	.endpoint-card {
 		margin: 1em 0;
 		padding: 1.5em;
+	}
+
+	code {
+		background: #eee;
+		padding: 0.25em 0.5em;
+		border-radius: 0.25em;
 	}
 
 	h3 {
