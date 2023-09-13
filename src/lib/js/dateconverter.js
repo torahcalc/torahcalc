@@ -75,10 +75,6 @@ export const formatDate = (year, month, day) => {
 		month: 'long',
 		day: 'numeric',
 	});
-	// fix for years before year 1
-	if (year <= 0) {
-		year -= 1;
-	}
 	if (isNaN(Math.abs(year))) {
 		throw new Error('Invalid Gregorian date.');
 	}
@@ -104,12 +100,13 @@ export const hebrewToGregorian = ({ year, month, day, afterSunset = false }) => 
 	const date = new HDate(day, month, year).greg();
 	// subtract 1 day if after sunset
 	date.setDate(date.getDate() - (afterSunset ? 1 : 0));
+	const fixedYear = date.getFullYear() > 0 ? date.getFullYear() : date.getFullYear() - 1; // fix for years before year 1
 	const result = {
 		date,
-		year: date.getFullYear() > 0 ? date.getFullYear() : date.getFullYear() - 1, // fix for years before year 1
+		year: fixedYear,
 		month: date.getMonth() + 1,
 		day: date.getDate(),
-		display: formatDate(date.getFullYear(), date.getMonth() + 1, date.getDate()),
+		display: formatDate(fixedYear, date.getMonth() + 1, date.getDate()),
 	};
 	if (date < GREGORIAN_REFORMATION) {
 		// @ts-ignore
