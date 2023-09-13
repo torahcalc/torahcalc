@@ -7,6 +7,7 @@
 		"build": "vite build",
 		"static": "cross-env PUBLIC_ADAPTER='static' npm run build",
 		"static:dev": "cross-env PUBLIC_ADAPTER='static' npm run dev",
+		"deploy": "npm run build && vercel --prod",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
