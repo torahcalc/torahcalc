@@ -15,30 +15,30 @@
 	$: hebrewLeapYearResult = isHebrewLeapYear({ year: hebrewYear });
 </script>
 
-<div class="card center hebrew">
+<div class="card flex-card center hebrew">
 	<h2>Hebrew Calendar Leap Years</h2>
 
 	<label>
 		<span>Hebrew Year:</span>
-		<input type="number" bind:value={hebrewYear} min="1" max="9999" />
+		<input type="number" bind:value={hebrewYear} min="1" max="9999" class="form-control" />
 	</label>
 
 	<Reason success={hebrewLeapYearResult.isLeapYear} reason={hebrewLeapYearResult.reason} />
 </div>
 
-<div class="card center gregorian">
+<div class="card flex-card center gregorian">
 	<h2>Gregorian Calendar Leap Years</h2>
 
 	<label>
 		<span>Gregorian Year:</span>
-		<input type="number" bind:value={gregorianYear} min="1" max="9999" />
+		<input type="number" bind:value={gregorianYear} min="1" max="9999" class="form-control" />
 	</label>
 
 	<Reason success={gregorianLeapYearResult.isLeapYear} reason={gregorianLeapYearResult.reason} />
 </div>
 
-<div class="card info">
-	<h3>Hebrew Calendar Leap Years:</h3>
+<div class="card flex-card info">
+	<h2>Hebrew Calendar Leap Years</h2>
 	<ul>
 		<li>During a Hebrew calendar leap year, an additional month of Adar is added.</li>
 		<li>There are seven leap years in every 19 years.</li>
@@ -58,7 +58,7 @@
 			((7*year)+1) mod 19) is less than 7.
 		</li>
 	</ul>
-	<h3>Gregorian Calendar Leap Years:</h3>
+	<h2>Gregorian Calendar Leap Years</h2>
 	<ul>
 		<li>During a Gregorian calendar leap year, an additional day is added to February.</li>
 		<li>
@@ -73,7 +73,19 @@
 </div>
 
 <style>
+	h2 {
+		margin-top: 0.2em;
+		margin-bottom: 1em;
+		font-size: 1.7em;
+	}
+
+	label {
+		margin-bottom: 0.5em;
+	}
+
 	input {
-		width: 4rem;
+		display: inline-flex;
+		margin-left: 0.5em;
+		width: 5.5em;
 	}
 </style>

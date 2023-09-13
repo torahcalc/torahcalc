@@ -4,7 +4,7 @@
 </svelte:head>
 
 <section>
-	<h1>Terms and Conditions</h1>
+	<h1 class="center my-3">Terms and Conditions</h1>
 	<p>
 		By downloading or using the app, these terms will automatically apply to you – you should make
 		sure therefore that you read them carefully before using the app. You’re not allowed to copy or

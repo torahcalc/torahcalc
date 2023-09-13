@@ -10,6 +10,10 @@
 			url: '/',
 		},
 		{
+			name: 'Date Converter',
+			url: '/dateconverter',
+		},
+		{
 			name: 'Leap Years',
 			url: '/leapyears',
 		},

@@ -11,7 +11,7 @@
 	<span class="logo">
 		<img src={logo} alt="TorahCalc" />
 	</span>
-	<h1>Welcome to TorahCalc</h1>
+	<h1 class="heading">Welcome to TorahCalc</h1>
 
 	<p>TorahCalc is a collection of tools for the study of the Torah.</p>
 

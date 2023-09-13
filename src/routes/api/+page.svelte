@@ -9,7 +9,7 @@
 </svelte:head>
 
 <section>
-	<h1>TorahCalc API</h1>
+	<h1 class="heading">TorahCalc API</h1>
 
 	<p>Welcome to the TorahCalc API. This API is currently in beta, and is subject to change.</p>
 

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { gregorianToHebrew, hebrewToGregorian } from './dateconverter';
+import { formatDate, gregorianToHebrew, hebrewToGregorian } from './dateconverter';
 
 describe('test gregorian to hebrew date conversion', () => {
 	it('converts 2023-09-12', () => {
@@ -68,9 +68,9 @@ describe('test hebrew to gregorian date conversion', () => {
 	it('convert year when gregorian year is -1', () => {
 		const { date, year, month, day } = hebrewToGregorian({ year: 3760, month: 11, day: 8 });
 		const expectedDate = new Date(2023, 0, 1);
-		expectedDate.setFullYear(0);  // JavaScript Date object uses 0 for year 1 BCE
-		expect(date).toEqual(expectedDate);  // 0000-01-01
-		expect(year).toBe(-1);  // The actual year is 1 BCE even though in JavaScript it is 0
+		expectedDate.setFullYear(0); // JavaScript Date object uses 0 for year 1 BCE
+		expect(date).toEqual(expectedDate); // 0000-01-01
+		expect(year).toBe(-1); // The actual year is 1 BCE even though in JavaScript it is 0
 		expect(month).toBe(1);
 		expect(day).toBe(1);
 	});
@@ -78,10 +78,28 @@ describe('test hebrew to gregorian date conversion', () => {
 	it('convert year when gregorian year is -2', () => {
 		const { date, year, month, day } = hebrewToGregorian({ year: 3759, month: 11, day: 8 });
 		const expectedDate = new Date(2023, 0, 11);
-		expectedDate.setFullYear(-1);  // JavaScript Date object uses -1 for year 2 BCE
-		expect(date).toEqual(expectedDate);  // January 11, -0001
-		expect(year).toBe(-2);  // The actual year is 2 BCE even though in JavaScript it is -1
+		expectedDate.setFullYear(-1); // JavaScript Date object uses -1 for year 2 BCE
+		expect(date).toEqual(expectedDate); // January 11, -0001
+		expect(year).toBe(-2); // The actual year is 2 BCE even though in JavaScript it is -1
 		expect(month).toBe(1);
 		expect(day).toBe(11);
+	});
+});
+
+describe('test format Gregorian date', () => {
+	it('formats 2023-09-12', () => {
+		const date = new Date(2023, 8, 12);
+		expect(formatDate(date)).toBe('Sun, September 12, 2023');
+	});
+
+	it('formats 2024-03-11', () => {
+		const date = new Date(2024, 2, 11);
+		expect(formatDate(date)).toBe('Thu, March 11, 2024');
+	});
+
+	it('formats -0001-01-01', () => {
+		const date = new Date(0, 0, 1);
+		date.setFullYear(0); // JavaScript Date object uses 0 for year 1 BCE
+		expect(formatDate(date)).toBe('Fri, January 1, -0001');
 	});
 });

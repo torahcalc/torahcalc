@@ -4,7 +4,7 @@
 </svelte:head>
 
 <section>
-	<h1>Privacy Policy</h1>
+	<h1 class="center my-3">Privacy Policy</h1>
 	<p>
 		Fresh Idea Inc built the TorahCalc app as a Free app. This SERVICE is provided by Fresh Idea Inc
 		at no cost and is intended for use as is.

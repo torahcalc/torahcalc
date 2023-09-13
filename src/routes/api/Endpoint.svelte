@@ -27,7 +27,7 @@
 	example += queryParameters.join('&');
 </script>
 
-<div class="card endpoint-card">
+<div class="card flex-card endpoint-card">
 	<h3>
 		<span class="method mono {method}">{method}</span> <span class="endpoint mono">{endpoint}</span>
 	</h3>

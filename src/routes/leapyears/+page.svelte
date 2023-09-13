@@ -8,7 +8,7 @@
 </svelte:head>
 
 <section>
-	<h1>Calculate Leap Years</h1>
+	<h1 class="heading">Calculate Leap Years</h1>
 
 	<LeapYear />
 </section>
