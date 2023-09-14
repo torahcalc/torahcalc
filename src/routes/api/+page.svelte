@@ -97,8 +97,7 @@
 				name: 'month',
 				type: 'Number',
 				required: false,
-				description:
-					'The Hebrew month - 1=NISSAN, 2=IYAR, 3=SIVAN, 4=TAMMUZ, 5=AV, 6=ELUL, 7=TISHREI, 8=CHESHVAN, 9=KISLEV, 10=TEVET, 11=SHEVAT, 12=ADAR, 13=ADAR II (defaults to current month)',
+				description: 'The Hebrew month - 1=NISSAN, 2=IYAR, 3=SIVAN, 4=TAMMUZ, 5=AV, 6=ELUL, 7=TISHREI, 8=CHESHVAN, 9=KISLEV, 10=TEVET, 11=SHEVAT, 12=ADAR, 13=ADAR II (defaults to current month)',
 				example: new HDate().getMonth(),
 			},
 			{

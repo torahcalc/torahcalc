@@ -1,0 +1,55 @@
+name: Lint
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - '**.svelte'
+      - '**.js'
+      - '**.json'
+      - '.eslintignore'
+      - '.eslintrc.cjs'
+      - '.prettierignore'
+      - '.prettierrc'
+      - '.github/workflows/lint.yml'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Checkout Pull Request
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr checkout ${{ github.event.pull_request.number }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint
+        continue-on-error: true
+        run: npm run lint
+
+      - name: Prettify code
+        run: |
+          npm run format
+          git diff
+
+      - name: Add and commit changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .
+          git commit -m "style: Formatted code with Prettier"
+          git push
