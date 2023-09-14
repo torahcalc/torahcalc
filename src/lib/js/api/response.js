@@ -10,10 +10,10 @@ export function createResponse(data, status = 200) {
 	return json(
 		{
 			success: status >= 200 && status < 300,
-			data
+			data,
 		},
 		{
-			status
+			status,
 		}
 	);
 }
@@ -27,7 +27,7 @@ export function createResponse(data, status = 200) {
 export function createErrorResponse(error, status = 400) {
 	return createResponse(
 		{
-			error: error instanceof Error ? error.message : String(error)
+			error: error instanceof Error ? error.message : String(error),
 		},
 		status
 	);

@@ -38,9 +38,7 @@ describe('test gregorian leap years', () => {
 		expect(result.isLeapYear).toBe(true);
 		expect(result.reason).toBe('2000 is divisible by 400, and is therefore a leap year.');
 		expect(result.nextLeapYear).toBe(2004);
-		expect(result.nextLeapYearReason).toBe(
-			'After 2000, the next leap year is 2004. 2004 is divisible by 4 and not by 100, and is therefore a leap year.'
-		);
+		expect(result.nextLeapYearReason).toBe('After 2000, the next leap year is 2004. 2004 is divisible by 4 and not by 100, and is therefore a leap year.');
 	});
 
 	it('test divisible by 100 but not by 400', () => {
@@ -48,9 +46,7 @@ describe('test gregorian leap years', () => {
 		expect(result.isLeapYear).toBe(false);
 		expect(result.reason).toBe('1900 is divisible by 100, but not by 400, and is therefore not a leap year.');
 		expect(result.nextLeapYear).toBe(1904);
-		expect(result.nextLeapYearReason).toBe(
-			'After 1900, the next leap year is 1904. 1904 is divisible by 4 and not by 100, and is therefore a leap year.'
-		);
+		expect(result.nextLeapYearReason).toBe('After 1900, the next leap year is 1904. 1904 is divisible by 4 and not by 100, and is therefore a leap year.');
 	});
 
 	it('test divisible by 4 but not by 100', () => {
@@ -58,9 +54,7 @@ describe('test gregorian leap years', () => {
 		expect(result.isLeapYear).toBe(true);
 		expect(result.reason).toBe('2004 is divisible by 4 and not by 100, and is therefore a leap year.');
 		expect(result.nextLeapYear).toBe(2008);
-		expect(result.nextLeapYearReason).toBe(
-			'After 2004, the next leap year is 2008. 2008 is divisible by 4 and not by 100, and is therefore a leap year.'
-		);
+		expect(result.nextLeapYearReason).toBe('After 2004, the next leap year is 2008. 2008 is divisible by 4 and not by 100, and is therefore a leap year.');
 	});
 
 	it('test not divisible by 4', () => {
@@ -68,9 +62,7 @@ describe('test gregorian leap years', () => {
 		expect(result.isLeapYear).toBe(false);
 		expect(result.reason).toBe('2005 is not divisible by 4, and is therefore not a leap year.');
 		expect(result.nextLeapYear).toBe(2008);
-		expect(result.nextLeapYearReason).toBe(
-			'After 2005, the next leap year is 2008. 2008 is divisible by 4 and not by 100, and is therefore a leap year.'
-		);
+		expect(result.nextLeapYearReason).toBe('After 2005, the next leap year is 2008. 2008 is divisible by 4 and not by 100, and is therefore a leap year.');
 	});
 
 	it('test year 0', () => {

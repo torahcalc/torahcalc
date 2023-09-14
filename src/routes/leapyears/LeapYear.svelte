@@ -42,21 +42,14 @@
 	<ul>
 		<li>During a Hebrew calendar leap year, an additional month of Adar is added.</li>
 		<li>There are seven leap years in every 19 years.</li>
-		<li>
-			The 3rd, 6th, 8th, 11th, 14th, 17th, and 19th years of the 19-year Metonic cycle are leap
-			years.
-		</li>
+		<li>The 3rd, 6th, 8th, 11th, 14th, 17th, and 19th years of the 19-year Metonic cycle are leap years.</li>
 		<li>{currentHebrewYearResult.reason}</li>
 		<li>{currentHebrewYearResult.nextLeapYearReason}</li>
 		<li>
-			A mnemonic for remembering the years corresponding to leap years is: "גוחאדז"ט". The Hebrew
-			letters Gimmel, Vav, Chet, Aleph, Dalet, Zayin, and Tet are used to represent the Hebrew
-			numerals, 3, 6, 8, 1, 4, 7, 9.
+			A mnemonic for remembering the years corresponding to leap years is: "גוחאדז"ט". The Hebrew letters Gimmel, Vav, Chet, Aleph, Dalet, Zayin, and Tet are used to represent the Hebrew numerals, 3,
+			6, 8, 1, 4, 7, 9.
 		</li>
-		<li>
-			Mathematically, it can be determined if a year is a leap year by determining whether
-			((7*year)+1) mod 19) is less than 7.
-		</li>
+		<li>Mathematically, it can be determined if a year is a leap year by determining whether ((7*year)+1) mod 19) is less than 7.</li>
 	</ul>
 	<h2>Gregorian Calendar Leap Years</h2>
 	<ul>

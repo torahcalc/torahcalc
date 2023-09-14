@@ -21,24 +21,24 @@ export const isGregorianLeapYear = ({ year }) => {
 				if (year % 400 === 0) {
 					return {
 						isLeapYear: true,
-						reason: `${year} is divisible by 400, and is therefore a leap year.`
+						reason: `${year} is divisible by 400, and is therefore a leap year.`,
 					};
 				} else {
 					return {
 						isLeapYear: false,
-						reason: `${year} is divisible by 100, but not by 400, and is therefore not a leap year.`
+						reason: `${year} is divisible by 100, but not by 400, and is therefore not a leap year.`,
 					};
 				}
 			} else {
 				return {
 					isLeapYear: true,
-					reason: `${year} is divisible by 4 and not by 100, and is therefore a leap year.`
+					reason: `${year} is divisible by 4 and not by 100, and is therefore a leap year.`,
 				};
 			}
 		} else {
 			return {
 				isLeapYear: false,
-				reason: `${year} is not divisible by 4, and is therefore not a leap year.`
+				reason: `${year} is not divisible by 4, and is therefore not a leap year.`,
 			};
 		}
 	};
@@ -66,7 +66,7 @@ export const isGregorianLeapYear = ({ year }) => {
 		isLeapYear,
 		reason,
 		nextLeapYear,
-		nextLeapYearReason
+		nextLeapYearReason,
 	};
 };
 
@@ -142,6 +142,6 @@ export const isHebrewLeapYear = ({ year }) => {
 		isLeapYear,
 		reason,
 		nextLeapYear,
-		nextLeapYearReason
+		nextLeapYearReason,
 	};
 };
