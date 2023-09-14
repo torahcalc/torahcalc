@@ -4,6 +4,7 @@
 	import Fa from 'svelte-fa/src/fa.svelte';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import { PUBLIC_ADAPTER } from '$env/static/public';
+	import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 	const pages = [
 		{
@@ -94,6 +95,10 @@
 					{/each}
 				</ul>
 				<span class="navbar-text">
+					<a class="nav-link" href="https://torahcalc.com" target="_blank" rel="noopener noreferrer">
+						<Fa icon={faExternalLinkAlt} size="1x" />
+						<span>Visit Old Site</span>
+					</a>
 					<a class="github" href="https://github.com/torahcalc/torahcalc" target="_blank" rel="noopener noreferrer">
 						<Fa icon={faGithub} size="1.5x" />
 						<span>View on GitHub</span>
@@ -118,7 +123,13 @@
 		height: 2.5em;
 	}
 
-	.github {
+	.navbar-text {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.navbar-text > a {
 		display: flex;
 		align-items: center;
 		gap: 0.4rem;
@@ -126,7 +137,7 @@
 		text-decoration: none;
 	}
 
-	.github:hover {
+	.navbar-text > a:hover {
 		color: var(--bs-navbar-active-color);
 	}
 </style>
