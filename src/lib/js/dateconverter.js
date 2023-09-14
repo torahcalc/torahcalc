@@ -75,6 +75,9 @@ export const formatDate = (year, month, day) => {
 		month: 'long',
 		day: 'numeric',
 	});
+	if (year === 0) {
+		throw new Error('Gregorian year 0 does not exist.');
+	}
 	if (isNaN(Math.abs(year))) {
 		throw new Error('Invalid Gregorian date.');
 	}

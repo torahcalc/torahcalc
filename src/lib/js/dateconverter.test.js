@@ -16,18 +16,18 @@ describe('test gregorian to hebrew date conversion', () => {
 		expect(day).toBe(1);
 	});
 
-	it('test afterSunset', () => {
+	it('converts with afterSunset', () => {
 		const { year, month, day } = gregorianToHebrew({ year: 2023, month: 9, day: 11, afterSunset: true });
 		expect(year).toBe(5783);
 		expect(month).toBe(6);
 		expect(day).toBe(26);
 	});
 
-	it('convert year 0', () => {
+	it('does not convert year 0', () => {
 		expect(() => gregorianToHebrew({ year: 0, month: 1, day: 1 })).toThrow();
 	});
 
-	it('convert year before epoch', () => {
+	it('converts year before epoch', () => {
 		const { year, month, day } = gregorianToHebrew({ year: -1, month: 1, day: 1 });
 		expect(year).toBe(3760);
 		expect(month).toBe(11);
@@ -52,7 +52,7 @@ describe('test hebrew to gregorian date conversion', () => {
 		expect(day).toBe(11);
 	});
 
-	it('test afterSunset', () => {
+	it('converts with afterSunset', () => {
 		const { date, year, month, day } = hebrewToGregorian({ year: 5783, month: 6, day: 26, afterSunset: true });
 		expect(date).toEqual(new Date(2023, 8, 11)); // 2023-09-11
 		expect(year).toBe(2023);
@@ -60,12 +60,12 @@ describe('test hebrew to gregorian date conversion', () => {
 		expect(day).toBe(11);
 	});
 
-	it('convert year before epoch', () => {
+	it('convert years before epoch', () => {
 		expect(() => hebrewToGregorian({ year: 0, month: 1, day: 1 })).toThrow();
 		expect(() => hebrewToGregorian({ year: -1, month: 1, day: 1 })).toThrow();
 	});
 
-	it('convert year when gregorian year is -1', () => {
+	it('convert when gregorian year is -1', () => {
 		const { date, year, month, day } = hebrewToGregorian({ year: 3760, month: 11, day: 8 });
 		const expectedDate = new Date(2023, 0, 1);
 		expectedDate.setFullYear(0); // JavaScript Date object uses 0 for year 1 BCE
@@ -75,7 +75,7 @@ describe('test hebrew to gregorian date conversion', () => {
 		expect(day).toBe(1);
 	});
 
-	it('convert year when gregorian year is -2', () => {
+	it('convert when gregorian year is -2', () => {
 		const { date, year, month, day } = hebrewToGregorian({ year: 3759, month: 11, day: 8 });
 		const expectedDate = new Date(2023, 0, 11);
 		expectedDate.setFullYear(-1); // JavaScript Date object uses -1 for year 2 BCE
@@ -88,18 +88,18 @@ describe('test hebrew to gregorian date conversion', () => {
 
 describe('test format Gregorian date', () => {
 	it('formats 2023-09-12', () => {
-		const date = new Date(2023, 8, 12);
-		expect(formatDate(date)).toBe('Sun, September 12, 2023');
+		expect(formatDate(2023, 9, 12)).toBe('Sun, September 12, 2023');
 	});
 
 	it('formats 2024-03-11', () => {
-		const date = new Date(2024, 2, 11);
-		expect(formatDate(date)).toBe('Thu, March 11, 2024');
+		expect(formatDate(2024, 3, 11)).toBe('Thu, March 11, 2024');
 	});
 
 	it('formats -0001-01-01', () => {
-		const date = new Date(0, 0, 1);
-		date.setFullYear(0); // JavaScript Date object uses 0 for year 1 BCE
-		expect(formatDate(date)).toBe('Fri, January 1, -0001');
+		expect(formatDate(-1, 1, 1)).toBe('Fri, January 1, -0001');
+	});
+
+	it('does not format year 0', () => {
+		expect(() => formatDate(0, 1, 1)).toThrow();
 	});
 });
