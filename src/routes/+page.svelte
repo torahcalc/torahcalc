@@ -1,5 +1,5 @@
 <script>
-	import logo from '$lib/images/torahcalc.png';
+	import logo from '$lib/images/torahcalc.svg';
 </script>
 
 <svelte:head>
