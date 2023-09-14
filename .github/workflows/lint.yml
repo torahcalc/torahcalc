@@ -51,3 +51,4 @@ jobs:
         with:
           message: 'style: Formatted code with Prettier'
           default_author: github_actions
+          github_token: ${{ secrets.GH_TOKEN }}
