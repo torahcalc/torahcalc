@@ -1,7 +1,8 @@
 <script>
 	import { page } from '$app/stores';
 	import logo from '$lib/images/torahcalc.png';
-	import github from '$lib/images/github.svg';
+	import Fa from 'svelte-fa/src/fa.svelte';
+	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import { PUBLIC_ADAPTER } from '$env/static/public';
 
 	const pages = [
@@ -10,12 +11,17 @@
 			url: '/',
 		},
 		{
-			name: 'Date Converter',
-			url: '/dateconverter',
-		},
-		{
-			name: 'Leap Years',
-			url: '/leapyears',
+			name: 'Calendar and Zmanim',
+			children: [
+				{
+					name: 'Date Converter',
+					url: '/dateconverter',
+				},
+				{
+					name: 'Leap Years',
+					url: '/leapyears',
+				},
+			],
 		},
 	];
 
@@ -26,124 +32,97 @@
 			url: '/api',
 		});
 	}
+
+	// current page
+	$: current = $page.url.pathname;
+
+	/**
+	 * Hide all dropdown menus in the navbar
+	 */
+	function hideDropdowns() {
+		const dropdowns = document.querySelectorAll('.navbar .dropdown-menu.show');
+		for (const dropdown of dropdowns) {
+			dropdown.classList.remove('show');
+		}
+	}
+
+	/**
+	 * Hide dropdowns when clicking outside of them
+	 * @param {any} event - the click event
+	 */
+	function handleWindowClick(event) {
+		if (event.target.closest('.dropdown-item, .nav-link:not(.dropdown-toggle)')) {
+			return hideDropdowns();
+		}
+		if (event.target.closest('.navbar')) {
+			return;
+		}
+		hideDropdowns();
+	}
 </script>
 
+<svelte:window on:click={handleWindowClick} />
+
 <header>
-	<div class="corner">
-		<a href="/">
-			<img src={logo} alt="TorahCalc" />
-		</a>
-	</div>
-
-	<nav>
-		<svg viewBox="0 0 2 3" aria-hidden="true">
-			<path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
-		</svg>
-		<ul>
-			{#each pages as { name, url }}
-				<li aria-current={$page.url.pathname === url ? 'page' : undefined}>
-					<a href={url}>{name}</a>
-				</li>
-			{/each}
-		</ul>
-		<svg viewBox="0 0 2 3" aria-hidden="true">
-			<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
-		</svg>
+	<nav class="navbar navbar-expand-lg bg-body-tertiary">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/">
+				<img src={logo} alt="TorahCalc" class="logo" />
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon" />
+			</button>
+			<div class="collapse navbar-collapse" id="navbarMain">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					{#each pages as page (page)}
+						{#if page.url}
+							<li class="nav-item">
+								<a class="nav-link {current == page.url ? 'active' : ''}" aria-current={current == page.url && 'page'} href={page.url}>{page.name}</a>
+							</li>
+						{:else if page.children}
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle {page.children.find((subpage) => subpage.url == current) ? 'active' : ''}" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									{page.name}
+								</a>
+								<ul class="dropdown-menu">
+									{#each page.children as subpage (subpage)}
+										<li><a class="dropdown-item {current == subpage.url ? 'active' : ''}" aria-current={current == subpage.url && 'page'} href={subpage.url}>{subpage.name}</a></li>
+									{/each}
+								</ul>
+							</li>
+						{/if}
+					{/each}
+				</ul>
+				<span class="navbar-text">
+					<a class="github" href="https://github.com/torahcalc/torahcalc" target="_blank" rel="noopener noreferrer">
+						<Fa icon={faGithub} size="1.5x" />
+						<span>View on GitHub</span>
+					</a>
+				</span>
+			</div>
+		</div>
 	</nav>
-
-	<div class="corner">
-		<a href="https://github.com/torahcalc/torahcalc">
-			<img src={github} alt="GitHub" />
-		</a>
-	</div>
 </header>
 
 <style>
-	header {
-		display: flex;
-		justify-content: space-between;
-	}
-
-	.corner {
-		width: 4em;
-		height: 4em;
-	}
-
-	.corner a {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		height: 100%;
-	}
-
-	.corner img {
-		width: 4em;
-		height: 4em;
-		object-fit: contain;
-	}
-
 	nav {
+		width: 100%;
+	}
+
+	.logo {
+		width: 2.5em;
+		height: 2.5em;
+	}
+
+	.github {
 		display: flex;
-		justify-content: center;
-		--background: rgba(255, 255, 255, 0.7);
-	}
-
-	svg {
-		width: 2em;
-		height: 3em;
-		display: block;
-	}
-
-	path {
-		fill: var(--background);
-	}
-
-	ul {
-		position: relative;
-		padding: 0;
-		margin: 0;
-		height: 3em;
-		display: flex;
-		justify-content: center;
 		align-items: center;
-		list-style: none;
-		background: var(--background);
-		background-size: contain;
-	}
-
-	li {
-		position: relative;
-		height: 100%;
-	}
-
-	li[aria-current='page']::before {
-		--size: 6px;
-		content: '';
-		width: 0;
-		height: 0;
-		position: absolute;
-		top: 0;
-		left: calc(50% - var(--size));
-		border: var(--size) solid transparent;
-		border-top: var(--size) solid var(--color-theme-1);
-	}
-
-	nav a {
-		display: flex;
-		height: 100%;
-		align-items: center;
-		padding: 0 0.5rem;
-		color: var(--color-text);
-		font-weight: 700;
-		font-size: 0.8rem;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		gap: 0.4rem;
+		color: var(--bs-nav-link-color);
 		text-decoration: none;
-		transition: color 0.2s linear;
 	}
 
-	a:hover {
-		color: var(--color-theme-1);
+	.github:hover {
+		color: var(--bs-navbar-active-color);
 	}
 </style>

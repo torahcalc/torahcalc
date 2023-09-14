@@ -6,8 +6,7 @@
 <footer>
 	<p style="display:inline;" id="footerText">
 		© {year}
-		<a href="http://torahcalc.com" style="text-decoration:none;color:#343434;">TorahCalc.com</a>, Fresh Idea Inc., all
-		rights reserved.
+		<a href="http://torahcalc.com" style="text-decoration:none;color:#343434;">TorahCalc.com</a>, Fresh Idea Inc., all rights reserved.
 		<span> | </span>
 		<a href="/terms/privacy">Privacy&nbsp;Policy</a>
 		<span> | </span>
