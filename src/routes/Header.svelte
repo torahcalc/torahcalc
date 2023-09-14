@@ -109,6 +109,10 @@
 		width: 100%;
 	}
 
+	.dropdown-menu {
+		--bs-dropdown-link-active-bg: var(--color-theme-1);
+	}
+
 	.logo {
 		width: 2.5em;
 		height: 2.5em;
