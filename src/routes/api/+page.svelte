@@ -66,6 +66,7 @@
 				required: false,
 				description: 'The Gregorian month 1-12 (defaults to current month)',
 				example: new Date().getMonth() + 1,
+				allowedValues: { January: [1], February: [2], March: [3], April: [4], May: [5], June: [6], July: [7], August: [8], September: [9], October: [10], November: [11], December: [12] },
 			},
 			{
 				name: 'day',
@@ -100,8 +101,9 @@
 				name: 'month',
 				type: 'Number',
 				required: false,
-				description: 'The Hebrew month - 1=NISSAN, 2=IYAR, 3=SIVAN, 4=TAMMUZ, 5=AV, 6=ELUL, 7=TISHREI, 8=CHESHVAN, 9=KISLEV, 10=TEVET, 11=SHEVAT, 12=ADAR, 13=ADAR II (defaults to current month)',
+				description: 'The Hebrew month 1-13 where 1=Nissan (defaults to current month)',
 				example: new HDate().getMonth(),
+				allowedValues: { Nissan: [1], Iyar: [2], Sivan: [3], Tammuz: [4], Av: [5], Elul: [6], Tishrei: [7], Cheshvan: [8], Kislev: [9], Tevet: [10], Shevat: [11], Adar: [12], 'Adar II': [13] },
 			},
 			{
 				name: 'day',

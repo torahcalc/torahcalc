@@ -1,5 +1,5 @@
 <script>
-	import { formatDate, gregorianToHebrew, hebrewToGregorian } from '$lib/js/dateconverter';
+	import { formatDate, gregorianToHebrew, hebrewToGregorian, hebrewMonths, formatHebrewDateEn } from '$lib/js/dateconverter';
 	import { HDate, greg } from '@hebcal/core';
 
 	const gDate = new Date();
@@ -13,7 +13,7 @@
 	let hebrewYear = hDate.getFullYear();
 	let hebrewMonth = hDate.getMonth();
 	let hebrewDay = hDate.getDate();
-	let formattedHebrewDate = hDate.render('en');
+	let formattedHebrewDate = formatHebrewDateEn(hDate);
 
 	/**
 	 * @type {{ class?: string, html?: string }}
@@ -46,7 +46,7 @@
 			gregorianMonth = result.month;
 			gregorianDay = result.day;
 			formattedGregorianDate = result.display;
-			formattedHebrewDate = new HDate(hebrewDay, hebrewMonth, hebrewYear).render('en');
+			formattedHebrewDate = formatHebrewDateEn(new HDate(hebrewDay, hebrewMonth, hebrewYear));
 			if (result.warning) {
 				warning = { class: 'warning', html: result.warning };
 			}
@@ -54,22 +54,6 @@
 			warning = { class: 'danger', html: error instanceof Error ? error.message : String(error) };
 		}
 	}
-
-	const hebrewMonths = [
-		'Nisan', // 1
-		'Iyyar', // 2
-		'Sivan', // 3
-		'Tamuz', // 4
-		'Av', // 5
-		'Elul', // 6
-		'Tishrei', // 7
-		'Cheshvan', // 8
-		'Kislev', // 9
-		'Tevet', // 10
-		"Sh'vat", // 11
-		'Adar', // 12
-		'Adar II', // 13
-	];
 
 	$: disableAdarII = !new HDate(hebrewDay, hebrewMonth, hebrewYear).isLeapYear();
 </script>

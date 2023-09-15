@@ -15,7 +15,7 @@
 	export let description;
 
 	/**
-	 * @type {Array<{name: String, type: String, required: Boolean, description: String, example: any, allowedValues?: string[]|{[key: string]: string[]}}>} Parameters
+	 * @type {Array<{name: String, type: String, required: Boolean, description: String, example: any, allowedValues?: any[]|{[key: string]: any[]}}>} Parameters
 	 */
 	export let parameters;
 

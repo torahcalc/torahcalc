@@ -7,16 +7,66 @@ const MAX_HEBREW_YEAR = 279516;
 const GREGORIAN_REFORMATION_WARNING =
 	'Warning: Dates before the adoption of the Gregorian Calendar in 1752 may be inaccurate. <a href="https://en.wikipedia.org/wiki/Calendar_(New_Style)_Act_1750#England_and_Wales">More info.</a>';
 
+/** Map HebCal month names to the names used in this app. */
+const hebrewMonthMap = {
+	Nisan: 'Nissan', // 1
+	Iyyar: 'Iyar', // 2
+	Sivan: 'Sivan', // 3
+	Tamuz: 'Tammuz', // 4
+	Av: 'Av', // 5
+	Elul: 'Elul', // 6
+	Tishrei: 'Tishrei', // 7
+	Cheshvan: 'Cheshvan', // 8
+	Kislev: 'Kislev', // 9
+	Tevet: 'Tevet', // 10
+	"Sh'vat": 'Shevat', // 11
+	Adar: 'Adar', // 12
+	'Adar II': 'Adar II', // 13
+};
+
+export const hebrewMonths = Object.values(hebrewMonthMap);
+
 /**
+ * Format a Hebrew date in English with month names replaced using the map.
+ * @param {HDate} hDate - The Hebrew date to format.
+ * @returns {string} The formatted date.
+ */
+export const formatHebrewDateEn = (hDate) => {
+	const formatted = hDate.render('en');
+	for (const [hebcalMonthName, replacementMonthName] of Object.entries(hebrewMonthMap)) {
+		if (formatted.includes(hebcalMonthName)) {
+			return formatted.replace(hebcalMonthName, replacementMonthName);
+		}
+	}
+	return formatted;
+};
+
+/**
+ * Format a Hebrew date with month names in Hebrew.
+ * @param {HDate} hDate - The Hebrew date to format.
+ * @returns {string} The formatted date.
+ */
+export const formatHebrewDateHe = (hDate) => {
+	return hDate.render('he');
+};
+
+/**
+ * Format a Hebrew date in Hebrew with gematriya for the day and year.
+ * @param {HDate} hDate - The Hebrew date to format.
+ * @returns {string} The formatted date.
+ */
+export const formatHebrewDateGematriya = (hDate) => {
+	return hDate.renderGematriya();
+};
+
+/**
+ * Converts a Gregorian date to a Hebrew date.
+ *
  * @typedef {Object} GregorianToHebrewOptions
  * @property {number} year - The Gregorian year to convert.
  * @property {number} month - The Gregorian month to convert (1-12).
  * @property {number} day - The Gregorian day to convert (1-31).
  * @property {boolean} [afterSunset=false] - Whether the Gregorian date is after sunset.
- */
-
-/**
- * Converts a Gregorian date to a Hebrew date.
  *
  * @param {GregorianToHebrewOptions} options - The options for the conversion.
  * @returns {{ year: number, month: number, day: number, monthName: string, displayEn: string, displayHe: string, displayGematriya: string, warning?: string }} The Hebrew date.
@@ -39,9 +89,9 @@ export const gregorianToHebrew = ({ year, month, day, afterSunset = false }) => 
 		month: hDate.getMonth(), // 1=NISAN, 7=TISHREI
 		day: hDate.getDate(),
 		monthName: hDate.getMonthName(),
-		displayEn: hDate.render('en'),
-		displayHe: hDate.render('he'),
-		displayGematriya: hDate.renderGematriya(),
+		displayEn: formatHebrewDateEn(hDate),
+		displayHe: formatHebrewDateHe(hDate),
+		displayGematriya: formatHebrewDateGematriya(hDate),
 	};
 	if (date < GREGORIAN_REFORMATION) {
 		// @ts-ignore
@@ -49,14 +99,6 @@ export const gregorianToHebrew = ({ year, month, day, afterSunset = false }) => 
 	}
 	return result;
 };
-
-/**
- * @typedef {Object} HebrewToGregorianOptions
- * @property {number} year - The Hebrew year to convert.
- * @property {number} month - The Hebrew month to convert (1=NISAN, 7=TISHREI).
- * @property {number} day - The Hebrew day to convert (1-30).
- * @property {boolean} [afterSunset=false] - Whether the Hebrew date is after sunset.
- */
 
 /**
  * Format a date as Mon, January 11, 2023.
@@ -89,6 +131,12 @@ export const formatDate = (year, month, day) => {
 
 /**
  * Converts a Hebrew date to a Gregorian date.
+ *
+ * @typedef {Object} HebrewToGregorianOptions
+ * @property {number} year - The Hebrew year to convert.
+ * @property {number} month - The Hebrew month to convert (1=NISAN, 7=TISHREI).
+ * @property {number} day - The Hebrew day to convert (1-30).
+ * @property {boolean} [afterSunset=false] - Whether the Hebrew date is after sunset.
  *
  * @param {HebrewToGregorianOptions} options - The options for the conversion.
  * @returns {{ date: Date, year: number, month: number, day: number, display: string, warning?: string }} The Gregorian date.
