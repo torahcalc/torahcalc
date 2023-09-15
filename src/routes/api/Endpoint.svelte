@@ -57,7 +57,8 @@
 						{:else}
 							<span class="badge bg-danger">No</span>
 						{/if}
-					</td><td>
+					</td>
+					<td>
 						{parameter.description}
 						{#if parameter.allowedValues}
 							<br />
