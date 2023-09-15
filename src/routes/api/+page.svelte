@@ -1,6 +1,9 @@
 <script>
 	import { HDate } from '@hebcal/core';
+	import { getConverters, getUnits, getOpinions } from '$lib/js/unitconverter.js';
 	import Endpoint from './Endpoint.svelte';
+
+	const converters = getConverters(false);
 </script>
 
 <svelte:head>
@@ -116,6 +119,59 @@
 			},
 		]}
 	/>
+
+	{#await converters}
+		<Endpoint method="GET" endpoint="/api/unitconverter" description="Loading..." parameters={[]} />
+	{:then converters}
+		<Endpoint
+			method="GET"
+			endpoint="/api/unitconverter"
+			description="Convert between biblical and standard units of measurement"
+			parameters={[
+				{
+					name: 'type',
+					type: 'String',
+					required: true,
+					description: 'The type of unit to convert',
+					example: 'length',
+					allowedValues: Object.keys(converters),
+				},
+				{
+					name: 'from',
+					type: 'String',
+					required: true,
+					description: 'The unit to convert from',
+					example: 'amah',
+					allowedValues: getUnits(converters),
+				},
+				{
+					name: 'to',
+					type: 'String',
+					required: true,
+					description: 'The unit to convert to',
+					example: 'meter',
+					allowedValues: getUnits(converters),
+				},
+				{
+					name: 'amount',
+					type: 'Number',
+					required: false,
+					description: 'The amount to convert (defaults to 1)',
+					example: 3,
+				},
+				{
+					name: 'opinion',
+					type: 'String',
+					required: false,
+					description: 'The opinion to use for the conversion when converting between biblical and standard units',
+					example: 'rabbi_avraham_chaim_naeh',
+					allowedValues: getOpinions(converters),
+				},
+			]}
+		/>
+	{:catch}
+		<Endpoint method="GET" endpoint="/api/unitconverter" description="Error loading parameters" parameters={[]} />
+	{/await}
 </section>
 
 <style>
