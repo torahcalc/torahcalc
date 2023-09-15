@@ -34,7 +34,7 @@
 
 	<p class="mt-2 mb-4">{description}</p>
 
-	<h4 class="subsection-header">Query Parameters</h4>
+	<h4 class="subsection-header toc-exclude">Query Parameters</h4>
 
 	<table>
 		<thead>
@@ -90,7 +90,7 @@
 		</tbody>
 	</table>
 
-	<h4 class="subsection-header my-3">Example</h4>
+	<h4 class="subsection-header toc-exclude my-3">Example</h4>
 
 	<span class="mono"><a href={example}>{example}</a></span>
 </div>

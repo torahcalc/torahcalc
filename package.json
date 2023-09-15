@@ -25,7 +25,8 @@
 		"@hebcal/core": "^4.3.3",
 		"cross-env": "^7.0.3",
 		"dotenv": "^16.3.1",
-		"svelte-fa": "^3.0.4"
+		"svelte-fa": "^3.0.4",
+		"svelte-toc": "^0.5.6"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^4.5.10",

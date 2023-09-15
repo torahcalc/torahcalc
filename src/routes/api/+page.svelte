@@ -2,6 +2,7 @@
 	import { HDate } from '@hebcal/core';
 	import { getConverters, getUnits, getOpinions } from '$lib/js/unitconverter.js';
 	import Endpoint from './Endpoint.svelte';
+	import Toc from 'svelte-toc';
 
 	const converters = getConverters(false);
 </script>
@@ -16,7 +17,7 @@
 
 	<p>Welcome to the TorahCalc API. This API is currently in beta, and is subject to change.</p>
 
-	<h2>Endpoints</h2>
+	<h3>Leap Years</h3>
 
 	<Endpoint
 		method="GET"
@@ -47,6 +48,8 @@
 			},
 		]}
 	/>
+
+	<h3>Date Converter</h3>
 
 	<Endpoint
 		method="GET"
@@ -84,6 +87,8 @@
 			},
 		]}
 	/>
+
+	<h3>Unit Converter</h3>
 
 	<Endpoint
 		method="GET"
@@ -176,11 +181,38 @@
 	{/await}
 </section>
 
+<Toc activeHeadingScrollOffset={200} blurParams={{ duration: 400 }} breakpoint={1200} title="" />
+
 <style>
 	section {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		flex: 0.6;
+	}
+
+	@media screen and (min-width: 1200px) {
+		section {
+			max-width: calc(100vw - 30em);
+		}
+	}
+
+	:global(aside.toc) {
+		background-color: white;
+		border-radius: var(--bs-border-radius);
+		border: 1px solid var(--bs-border-color);
+	}
+
+	:global(aside.toc > nav) {
+		min-width: 20em;
+		padding-bottom: 1em;
+	}
+
+	:global(aside.toc.desktop) {
+		position: fixed;
+		top: 6em;
+		right: 1em;
+		min-width: 20em;
+		padding-bottom: 1em;
 	}
 </style>
