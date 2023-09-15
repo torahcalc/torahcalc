@@ -30,11 +30,17 @@ async function getExchangeRates() {
 }
 
 /**
- * Return the converters for all unit types.
- *
- * @returns {Promise<{[key: string]: { name: string, units: { [key: string]: { name: string, value: number, type: "BIBLICAL"|"STANDARD" } }, opinions?: { [key: string]: { name: string, factor: number } } }}>} - The converters for all unit types.
+ * @typedef {{ name: string, value: number, type: "BIBLICAL"|"STANDARD" }} Unit
+ * @typedef {{ name: string, factor: number }} Opinion
+ * @typedef {{ name: string, units: { [key: string]: Unit }, opinions?: { [key: string]: Opinion } }} Converter
+ * @typedef {{[key: string]: Converter}} Converters
  */
-async function getConverters() {
+
+/**
+ * Return the converters for all unit types.
+ * @returns {Promise<Converters>} - The converters for all unit types.
+ */
+export async function getConverters() {
 	// Get the value of 1 kikar shel kodesh (3555.61536 troy ounces) of silver in USD, NIS, EUR, CAD, and GBP.
 	const exchangeRates = await getExchangeRates();
 	const kikarKodeshUSD = (1 / exchangeRates.XAG) * 3555.61536;
@@ -43,7 +49,7 @@ async function getConverters() {
 	const kikarKodeshCAD = kikarKodeshUSD * exchangeRates.CAD;
 	const kikarKodeshGBP = kikarKodeshUSD * exchangeRates.GBP;
 	return {
-		LENGTH: {
+		length: {
 			name: 'Length',
 			units: {
 				derech_yom: { name: 'Derech Yom / Mahalach Yom - דרך יום / מהלך יום', value: 1, type: 'BIBLICAL' },
@@ -75,7 +81,7 @@ async function getConverters() {
 				chazon_ish_stringent: { name: 'Chazon Ish - חזון איש (Stringent)', factor: 23.6220472 / 18.9 },
 			},
 		},
-		AREA: {
+		area: {
 			name: 'Area',
 			units: {
 				beit_kor: { name: 'Beit kor - בית כור', value: 1, type: 'BIBLICAL' },
@@ -108,7 +114,7 @@ async function getConverters() {
 				chazon_ish_stringent: { name: 'Chazon Ish - חזון איש (Stringent)', factor: (23.6220472 * 23.6220472) / 357.21 },
 			},
 		},
-		VOLUME: {
+		volume: {
 			name: 'Volume',
 			units: {
 				kor: { name: 'Kor / Chomer - כור / חומר', value: 1, type: 'BIBLICAL' },
@@ -156,7 +162,7 @@ async function getConverters() {
 				tzipori_chazon_ish: { name: 'Tzipori (Chazon Ish) - ציפוריות (חזון איש', factor: 67 / 27 },
 			},
 		},
-		WEIGHT: {
+		weight: {
 			name: 'Mass / Weight',
 			units: {
 				kikar: { name: 'Kikar - כיכר', value: 1, type: 'BIBLICAL' },
@@ -174,7 +180,7 @@ async function getConverters() {
 				ounce: { name: 'Ounce', value: 952.39697, type: 'STANDARD' },
 			},
 		},
-		COINS: {
+		coins: {
 			name: 'Coins',
 			units: {
 				kikar_shel_kodesh: { name: 'Kikar shel kodesh - כיכר של קודש', value: 1, type: 'BIBLICAL' },
@@ -206,7 +212,7 @@ async function getConverters() {
 				other: { name: 'Other authorities - פוסקים אחרים', factor: 1.13 },
 			},
 		},
-		TIME: {
+		time: {
 			name: 'Time',
 			units: {
 				yovel: { name: 'Yovel - יובל', value: 1, type: 'BIBLICAL' },
@@ -238,16 +244,96 @@ async function getConverters() {
 }
 
 /**
+ * Return a mapping of unit types to lists of units.
+ * @param {Converters} converters
+ * @returns {{[key: string]: string[]}} The units in a mapping of type to list of units
+ */
+export function getUnits(converters) {
+	/** @type {{[key: string]: string[]}} */
+	const units = {};
+	for (const [type, converter] of Object.entries(converters)) {
+		units[type] = Object.keys(converter.units);
+	}
+	return units;
+}
+
+/**
+ * Return a mapping of unit types to lists of opinions.
+ * @param {Converters} converters
+ * @returns {{[key: string]: string[]}} The opinions in a mapping of type to list of opinions
+ */
+export function getOpinions(converters) {
+	/** @type {{[key: string]: string[]}} */
+	const opinions = {};
+	for (const [type, converter] of Object.entries(converters)) {
+		if (converter.opinions) {
+			opinions[type] = Object.keys(converter.opinions);
+		}
+	}
+	return opinions;
+}
+
+/**
  * Get the converter for a unit type.
  * @param {string} type - The type of unit to convert.
- * @returns {Promise<{ name: string, units: { [key: string]: { name: string, value: number, type: "BIBLICAL"|"STANDARD" } } }>} - The converter for the unit type.
+ * @returns {Promise<Converter>} - The converter for the unit type.
  */
 async function getConverter(type) {
+	type = type.trim().toLowerCase();
 	const converters = await getConverters();
 	if (!(type in converters)) {
-		throw new Error("Unit type doesn't exist");
+		throw new Error(`Unit type '${type}' was not found`);
 	}
 	return converters[type];
+}
+
+/**
+ * Get the unit details for a unit.
+ * @param {string} type - The type of unit to convert.
+ * @param {string} unitId - The unit to get the details for.
+ * @returns {Promise<Unit>} - The details of the unit.
+ */
+export async function getUnit(type, unitId) {
+	const converter = await getConverter(type);
+	unitId = unitId.trim().toLowerCase();
+	if (!(unitId in converter.units)) {
+		throw new Error(`Unit '${unitId}' was not found`);
+	}
+	return converter.units[unitId];
+}
+
+/**
+ * Get the opinion details for an opinion.
+ * @param {string} type - The type of unit to convert.
+ * @param {string} opinionId - The opinion to get the details for.
+ * @returns {Promise<Opinion>} - The details of the opinion.
+ */
+export async function getOpinion(type, opinionId) {
+	const converter = await getConverter(type);
+	opinionId = opinionId.trim().toLowerCase();
+	if (!('opinions' in converter)) {
+		throw new Error(`Opinions are not supported for this conversion type`);
+	}
+	// @ts-ignore - The existence of the opinions property is checked above
+	if (!(opinionId in converter.opinions)) {
+		throw new Error(`Opinion '${opinionId}' was not found`);
+	}
+	// @ts-ignore - The existence of the opinions property is checked above
+	return converter.opinions[opinionId];
+}
+
+/**
+ * Get the default opinion for a unit type (where the factor is 1)
+ * @param {string} type - The type of unit to convert.
+ * @returns {Promise<Opinion|null>} - The default opinion for the unit type.
+ */
+export async function getDefaultOpinion(type) {
+	const converter = await getConverter(type);
+	if (!('opinions' in converter)) {
+		return null;
+	}
+	// @ts-ignore - The existence of the opinions property is checked above
+	return Object.values(converter.opinions).find((opinion) => opinion.factor === 1) || null;
 }
 
 /**
@@ -255,7 +341,7 @@ async function getConverter(type) {
  * @property {string} type - The type of unit to convert.
  * @property {string} unitFromId - The unit to convert from.
  * @property {string} unitToId - The unit to convert to.
- * @property {number} amount - The amount to convert.
+ * @property {number} [amount] - The amount to convert.
  * @property {string} [opinionId] - The opinion to use for the conversion (only when converting between standard and biblical units)
  */
 
@@ -265,41 +351,30 @@ async function getConverter(type) {
  * @returns {Promise<{ from: string, to: string, result: number, opinion?: string }>} - The result of the conversion.
  */
 export async function convertUnits({ type, unitFromId, unitToId, amount, opinionId }) {
-	// get the converter
-	const converter = await getConverter(type);
-	// check that the units exist
-	if (!(unitFromId in converter.units)) throw new Error(`Unit to convert from (${unitFromId}) was not found`);
-	if (!(unitToId in converter.units)) throw new Error(`Unit to convert to (${unitToId}) was not found`);
+	// set the default amount to 1
+	if (amount === undefined) amount = 1;
 	// get the units
-	const unitFrom = converter.units[unitFromId];
-	const unitTo = converter.units[unitToId];
+	const unitFrom = await getUnit(type, unitFromId);
+	const unitTo = await getUnit(type, unitToId);
 	/** @type {{ from: string, to: string, result: number, opinion?: string }} */
 	const outputs = {
 		from: unitFrom.name,
 		to: unitTo.name,
 		result: (amount * unitTo.value) / unitFrom.value,
 	};
-	// if an opinion is specified, use it
-	if (opinionId) {
-		if (!('opinions' in converter)) throw new Error('Opinions are not supported for this conversion type');
-		// @ts-ignore - The existence of the opinions property is checked above
-		if (!(opinionId in converter.opinions)) throw new Error(`The opinion '${opinionId}' was not found`);
-		// @ts-ignore - The existence of the opinions property is checked above
-		const opinion = converter.opinions[opinionId];
-		// calculate the result
-		outputs.result *= opinion.factor;
-		// add the opinion to the inputs
-		outputs.opinion = opinion.name;
-	}
-	// if converting between standard and biblical units, add the opinion to the outputs
-	else if ('opinions' in converter && unitFrom.type !== unitTo.type) {
-		// select the opinion with factor of 1 for the output
-		// @ts-ignore - The existence of the opinions property is checked above
-		const opinion = Object.values(converter.opinions).find((opinion) => opinion.factor === 1);
+	// if converting between standard and biblical units, apply the opinion
+	if (unitFrom.type !== unitTo.type) {
+		// if an opinion is specified, use it
+		// otherwise, use the default opinion (where the factor is 1)
+		const opinion = opinionId ? await getOpinion(type, opinionId) : await getDefaultOpinion(type);
+		// if an opinion was found, apply it and add it to the outputs
 		if (opinion) {
+			outputs.result *= opinion.factor;
 			outputs.opinion = opinion.name;
 		}
 	}
+	// set the precision of the result to 6 decimal places
+	outputs.result = Math.round(outputs.result * 1e6) / 1e6;
 	// return the result
 	return outputs;
 }
