@@ -3,7 +3,7 @@
 	import { getConverters, getUnits, getOpinions } from '$lib/js/unitconverter.js';
 	import Endpoint from './Endpoint.svelte';
 
-	const converters = getConverters();
+	const converters = getConverters(false);
 </script>
 
 <svelte:head>

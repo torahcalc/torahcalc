@@ -3,6 +3,16 @@
  */
 let exchangeRates = null;
 
+// Fallback exchange rates from 2023-09-14
+const fallbackExchangeRates = {
+	CAD: 1.351149,
+	EUR: 0.940176,
+	GBP: 0.806046,
+	ILS: 3.821849,
+	USD: 1,
+	XAG: 0.044896,
+};
+
 /**
  * Return the price of currencies and commodities.
  * @returns {Promise<{ [key: string]: number }>}} - The price of currencies and commodities as currency codes and prices compared to 1 USD.
@@ -15,17 +25,11 @@ async function getExchangeRates() {
 		const response = await fetch('https://api.exchangerate.host/latest?base=USD');
 		const data = await response.json();
 		exchangeRates = data.rates;
+		console.log('Exchange rates updated');
 		return data.rates;
 	} catch (error) {
-		// fallback to local data from 2023-09-14
-		return {
-			CAD: 1.351149,
-			EUR: 0.940176,
-			GBP: 0.806046,
-			ILS: 3.821849,
-			USD: 1,
-			XAG: 0.044896,
-		};
+		console.error(error);
+		return fallbackExchangeRates;
 	}
 }
 
@@ -38,11 +42,12 @@ async function getExchangeRates() {
 
 /**
  * Return the converters for all unit types.
+ * @param {boolean} [fetchExchangeRates=true] - Whether to fetch exchange rates for currencies and commodities.
  * @returns {Promise<Converters>} - The converters for all unit types.
  */
-export async function getConverters() {
+export async function getConverters(fetchExchangeRates = true) {
 	// Get the value of 1 kikar shel kodesh (3555.61536 troy ounces) of silver in USD, NIS, EUR, CAD, and GBP.
-	const exchangeRates = await getExchangeRates();
+	const exchangeRates = fetchExchangeRates ? await getExchangeRates() : fallbackExchangeRates;
 	const kikarKodeshUSD = (1 / exchangeRates.XAG) * 3555.61536;
 	const kikarKodeshNIS = kikarKodeshUSD * exchangeRates.ILS;
 	const kikarKodeshEUR = kikarKodeshUSD * exchangeRates.EUR;
