@@ -46,9 +46,10 @@ async function getExchangeRates() {
  * @returns {Promise<Converters>} - The converters for all unit types.
  */
 export async function getConverters(fetchExchangeRates = true) {
-	// Get the value of 1 kikar shel kodesh (3555.61536 troy ounces) of silver in USD, NIS, EUR, CAD, and GBP.
+	// Get the value of 1 kikar shel kodesh (1777.7664 troy ounces) of silver in USD, NIS, EUR, CAD, and GBP.
 	const exchangeRates = fetchExchangeRates ? await getExchangeRates() : fallbackExchangeRates;
-	const kikarKodeshUSD = (1 / exchangeRates.XAG) * 3555.61536;
+	const kikarKodeshTroyOz = 1777.7664;
+	const kikarKodeshUSD = (1 / exchangeRates.XAG) * kikarKodeshTroyOz;
 	const kikarKodeshNIS = kikarKodeshUSD * exchangeRates.ILS;
 	const kikarKodeshEUR = kikarKodeshUSD * exchangeRates.EUR;
 	const kikarKodeshCAD = kikarKodeshUSD * exchangeRates.CAD;
@@ -208,8 +209,8 @@ export async function getConverters(fetchExchangeRates = true) {
 				eur: { name: 'European Euro (EUR)', value: kikarKodeshEUR, type: 'STANDARD' },
 				cad: { name: 'Canadian Dollars (CAD)', value: kikarKodeshCAD, type: 'STANDARD' },
 				gbp: { name: 'Pound sterling (GBP)', value: kikarKodeshGBP, type: 'STANDARD' },
-				grams_of_silver: { name: 'Grams of silver', value: 110592, type: 'STANDARD' },
-				ounces_of_silver: { name: 'Ounces of silver', value: 3555.61536, type: 'STANDARD' },
+				grams_of_silver: { name: 'Grams of silver', value: 55296, type: 'STANDARD' },
+				ounces_of_silver: { name: 'Ounces of silver', value: kikarKodeshTroyOz, type: 'STANDARD' },
 			},
 			opinions: {
 				shulchan_aruch_rambam: { name: 'Shulchan Aruch / Rambam - שולחן ערוך / רמב״ם', factor: 1 },
