@@ -64,3 +64,12 @@ a:hover {
 	margin-top: 1rem;
 	margin-bottom: 2rem;
 }
+
+.scroll-outer {
+	position: relative;
+}
+
+.scroll-inner {
+	overflow-x: auto;
+	max-width: 100%;
+}

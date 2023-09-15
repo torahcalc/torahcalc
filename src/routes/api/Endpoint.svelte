@@ -36,59 +36,63 @@
 
 	<h4 class="subsection-header toc-exclude">Query Parameters</h4>
 
-	<table>
-		<thead>
-			<tr>
-				<th>Parameter</th>
-				<th>Type</th>
-				<th>Required</th>
-				<th>Description</th>
-			</tr>
-		</thead>
+	<div class="scroll-outer">
+		<div class="scroll-inner">
+			<table>
+				<thead>
+					<tr>
+						<th>Parameter</th>
+						<th>Type</th>
+						<th>Required</th>
+						<th>Description</th>
+					</tr>
+				</thead>
 
-		<tbody>
-			{#each parameters as parameter}
-				<tr>
-					<td><code>{parameter.name}</code></td>
-					<td>{parameter.type}</td>
-					<td>
-						{#if parameter.required}
-							<span class="badge bg-success">Yes</span>
-						{:else}
-							<span class="badge bg-danger">No</span>
-						{/if}
-					</td>
-					<td>
-						{parameter.description}
-						{#if parameter.allowedValues}
-							<br />
-							<details>
-								<summary>Allowed values</summary>
-								<ul>
-									{#if Array.isArray(parameter.allowedValues)}
-										{#each parameter.allowedValues as value}
-											<li><code>{value}</code></li>
-										{/each}
-									{:else}
-										{#each Object.keys(parameter.allowedValues) as key}
-											<li>
-												<h6>{key}</h6>
-												<div class="d-flex flex-wrap gap-1 mb-2">
-													{#each parameter.allowedValues[key] as value}
-														<code>{value}</code>
-													{/each}
-												</div>
-											</li>
-										{/each}
-									{/if}
-								</ul>
-							</details>
-						{/if}
-					</td>
-				</tr>
-			{/each}
-		</tbody>
-	</table>
+				<tbody>
+					{#each parameters as parameter}
+						<tr>
+							<td><code>{parameter.name}</code></td>
+							<td>{parameter.type}</td>
+							<td>
+								{#if parameter.required}
+									<span class="badge bg-success">Yes</span>
+								{:else}
+									<span class="badge bg-danger">No</span>
+								{/if}
+							</td>
+							<td>
+								{parameter.description}
+								{#if parameter.allowedValues}
+									<br />
+									<details>
+										<summary>Allowed values</summary>
+										<ul>
+											{#if Array.isArray(parameter.allowedValues)}
+												{#each parameter.allowedValues as value}
+													<li><code>{value}</code></li>
+												{/each}
+											{:else}
+												{#each Object.keys(parameter.allowedValues) as key}
+													<li>
+														<h6>{key}</h6>
+														<div class="d-flex flex-wrap gap-1 mb-2">
+															{#each parameter.allowedValues[key] as value}
+																<code>{value}</code>
+															{/each}
+														</div>
+													</li>
+												{/each}
+											{/if}
+										</ul>
+									</details>
+								{/if}
+							</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
+	</div>
 
 	<h4 class="subsection-header toc-exclude my-3">Example</h4>
 
