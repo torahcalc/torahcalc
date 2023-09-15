@@ -88,8 +88,6 @@
 		]}
 	/>
 
-	<h3>Unit Converter</h3>
-
 	<Endpoint
 		method="GET"
 		endpoint="/api/dateconverter/hebtogreg"
@@ -126,6 +124,8 @@
 			},
 		]}
 	/>
+
+	<h3>Unit Converter</h3>
 
 	{#await converters}
 		<Endpoint method="GET" endpoint="/api/unitconverter" description="Loading..." parameters={[]} />
