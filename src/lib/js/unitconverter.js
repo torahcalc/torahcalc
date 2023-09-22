@@ -8,7 +8,7 @@ let EXCHANGE_RATES = null;
 // Fallback exchange rates for 1 USD from 2023-09-14
 const FALLBACK_EXCHANGE_RATES_DATE = '2023-09-14';
 const FALLBACK_EXCHANGE_RATES = {
-	updateTimestamp: new Date(FALLBACK_EXCHANGE_RATES_DATE).getTime() / 1000,
+	updateTimestamp: new Date(FALLBACK_EXCHANGE_RATES_DATE).getTime(),
 	CAD: 1.351149,
 	EUR: 0.940176,
 	GBP: 0.806046,
@@ -34,7 +34,7 @@ async function getExchangeRates() {
 		}
 		EXCHANGE_RATES = data.rates;
 		// @ts-ignore - data.rates is not null
-		EXCHANGE_RATES.updateTimestamp = new Date().getTime() / 1000;
+		EXCHANGE_RATES.updateTimestamp = new Date().getTime();
 		console.log('Exchange rates updated');
 		return data.rates;
 	} catch (error) {

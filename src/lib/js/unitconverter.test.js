@@ -12,14 +12,14 @@ describe('test getConverters', () => {
 		expect(converters.coins.units.usd.value).toBeGreaterThan(30000);
 		expect(converters.coins.units.usd.value).toBeLessThan(50000);
 		// updated should be before current time
-		expect(converters.coins.units.usd.updated).toBeLessThanOrEqual(new Date().getTime() / 1000);
+		expect(converters.coins.units.usd.updated).toBeLessThanOrEqual(new Date().getTime());
 
 		const converters2 = await getConverters(true);
 		expect(converters2.coins.units.usd.value).toBeGreaterThan(30000);
 		expect(converters2.coins.units.usd.value).toBeLessThan(50000);
 		// updated should be within the last 5 minutes
-		expect(converters2.coins.units.usd.updated).toBeGreaterThan(new Date().getTime() / 1000 - 300);
-		expect(converters2.coins.units.usd.updated).toBeLessThanOrEqual(new Date().getTime() / 1000);
+		expect(converters2.coins.units.usd.updated).toBeGreaterThan(new Date().getTime() - 300000);
+		expect(converters2.coins.units.usd.updated).toBeLessThanOrEqual(new Date().getTime());
 	});
 });
 
@@ -60,7 +60,7 @@ describe('test getUnit', () => {
 		expect(unit2.value).toBeGreaterThan(30000);
 		expect(unit2.value).toBeLessThan(50000);
 		// updated should be before current time
-		expect(unit2.updated).toBeLessThanOrEqual(new Date().getTime() / 1000);
+		expect(unit2.updated).toBeLessThanOrEqual(new Date().getTime());
 
 		const unit3 = await getUnit('length', 'amah');
 		expect(unit3.name).toBe('Amah - אמה');
