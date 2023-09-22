@@ -14,7 +14,7 @@ describe('test getConverters', () => {
 		// updated should be before current time
 		expect(converters.coins.units.usd.updated).toBeLessThanOrEqual(new Date().getTime());
 
-        // ! NOTE: getConverters(true) is not yet tested because "fetch" is not available globally in tests
+		// ! NOTE: getConverters(true) is not yet tested because "fetch" is not available globally in tests
 	});
 });
 
