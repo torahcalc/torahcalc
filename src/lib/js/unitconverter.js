@@ -1,15 +1,18 @@
+import fetch from 'node-fetch';
+
 /**
  * @type {{ [key: string]: number }|null} - Cached exchange rates for currencies and commodities.
  */
-let exchangeRates = null;
+let EXCHANGE_RATES = null;
 
-// Fallback exchange rates from 2023-09-14
-const fallbackExchangeRates = {
+// Fallback exchange rates for 1 USD from 2023-09-14
+const FALLBACK_EXCHANGE_RATES_DATE = '2023-09-14';
+const FALLBACK_EXCHANGE_RATES = {
+	updateTimestamp: new Date(FALLBACK_EXCHANGE_RATES_DATE).getTime(),
 	CAD: 1.351149,
 	EUR: 0.940176,
 	GBP: 0.806046,
 	ILS: 3.821849,
-	USD: 1,
 	XAG: 0.044896,
 };
 
@@ -18,23 +21,30 @@ const fallbackExchangeRates = {
  * @returns {Promise<{ [key: string]: number }>}} - The price of currencies and commodities as currency codes and prices compared to 1 USD.
  */
 async function getExchangeRates() {
-	if (exchangeRates !== null) {
-		return exchangeRates;
+	if (EXCHANGE_RATES !== null) {
+		return EXCHANGE_RATES;
 	}
 	try {
 		const response = await fetch('https://api.exchangerate.host/latest?base=USD');
+		/** @type {{ rates: { [key: string]: number } }} - The price of currencies and commodities as currency codes and prices compared to 1 USD. */
+		// @ts-ignore - ignore response.json() being 'unknown' type
 		const data = await response.json();
-		exchangeRates = data.rates;
+		if (!data.rates) {
+			throw new Error('Exchange rates not found');
+		}
+		EXCHANGE_RATES = data.rates;
+		// @ts-ignore - data.rates is not null
+		EXCHANGE_RATES.updateTimestamp = new Date().getTime();
 		console.log('Exchange rates updated');
 		return data.rates;
 	} catch (error) {
 		console.error(error);
-		return fallbackExchangeRates;
+		return FALLBACK_EXCHANGE_RATES;
 	}
 }
 
 /**
- * @typedef {{ name: string, value: number, type: "BIBLICAL"|"STANDARD" }} Unit
+ * @typedef {{ name: string, value: number, type: "BIBLICAL"|"STANDARD", updated?: number }} Unit
  * @typedef {{ name: string, factor: number }} Opinion
  * @typedef {{ name: string, units: { [key: string]: Unit }, opinions?: { [key: string]: Opinion } }} Converter
  * @typedef {{[key: string]: Converter}} Converters
@@ -47,13 +57,14 @@ async function getExchangeRates() {
  */
 export async function getConverters(fetchExchangeRates = true) {
 	// Get the value of 1 kikar shel kodesh (1777.7664 troy ounces) of silver in USD, NIS, EUR, CAD, and GBP.
-	const exchangeRates = fetchExchangeRates ? await getExchangeRates() : fallbackExchangeRates;
+	const exchangeRates = fetchExchangeRates ? await getExchangeRates() : FALLBACK_EXCHANGE_RATES;
 	const kikarKodeshTroyOz = 1777.7664;
 	const kikarKodeshUSD = (1 / exchangeRates.XAG) * kikarKodeshTroyOz;
 	const kikarKodeshNIS = kikarKodeshUSD * exchangeRates.ILS;
 	const kikarKodeshEUR = kikarKodeshUSD * exchangeRates.EUR;
 	const kikarKodeshCAD = kikarKodeshUSD * exchangeRates.CAD;
 	const kikarKodeshGBP = kikarKodeshUSD * exchangeRates.GBP;
+	const updateTimestamp = exchangeRates.updateTimestamp;
 	return {
 		length: {
 			name: 'Length',
@@ -204,13 +215,13 @@ export async function getConverters(fetchExchangeRates = true) {
 				mesimas: { name: 'Mesimas - מסימס', value: 576e3, type: 'BIBLICAL' },
 				kontrank: { name: 'Kontrank - קונטרק', value: 1152e3, type: 'BIBLICAL' },
 				perutah: { name: 'Perutah - פרוטה', value: 2304e3, type: 'BIBLICAL' },
-				usd: { name: 'US Dollars (USD)', value: kikarKodeshUSD, type: 'STANDARD' },
-				nis: { name: 'Israeli New Sheqels (NIS)', value: kikarKodeshNIS, type: 'STANDARD' },
-				eur: { name: 'European Euro (EUR)', value: kikarKodeshEUR, type: 'STANDARD' },
-				cad: { name: 'Canadian Dollars (CAD)', value: kikarKodeshCAD, type: 'STANDARD' },
-				gbp: { name: 'Pound sterling (GBP)', value: kikarKodeshGBP, type: 'STANDARD' },
+				usd: { name: 'US Dollars (USD)', value: kikarKodeshUSD, type: 'STANDARD', updated: updateTimestamp },
+				nis: { name: 'Israeli New Sheqels (NIS)', value: kikarKodeshNIS, type: 'STANDARD', updated: updateTimestamp },
+				eur: { name: 'European Euro (EUR)', value: kikarKodeshEUR, type: 'STANDARD', updated: updateTimestamp },
+				cad: { name: 'Canadian Dollars (CAD)', value: kikarKodeshCAD, type: 'STANDARD', updated: updateTimestamp },
+				gbp: { name: 'Pound sterling (GBP)', value: kikarKodeshGBP, type: 'STANDARD', updated: updateTimestamp },
 				grams_of_silver: { name: 'Grams of silver', value: 55296, type: 'STANDARD' },
-				ounces_of_silver: { name: 'Ounces of silver', value: kikarKodeshTroyOz, type: 'STANDARD' },
+				ounces_of_silver: { name: 'Ounces of silver', value: kikarKodeshTroyOz, type: 'STANDARD', updated: updateTimestamp },
 			},
 			opinions: {
 				shulchan_aruch_rambam: { name: 'Shulchan Aruch / Rambam - שולחן ערוך / רמב״ם', factor: 1 },
