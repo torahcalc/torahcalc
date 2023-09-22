@@ -23,19 +23,8 @@ async function getExchangeRates() {
 		return EXCHANGE_RATES;
 	}
 	const API_URL = 'https://api.exchangerate.host/latest?base=USD';
-	let response = null;
 	try {
-		response = await fetch(API_URL);
-	} catch (error) {
-		// if the global fetch function is not defined (e.g. in testing, use node-fetch)
-		if (error instanceof ReferenceError) {
-			response = await (await import('node-fetch')).default(API_URL);
-		}
-	}
-	try {
-		if (response === null) {
-			throw new Error('Failed to fetch exchange rates');
-		}
+		const response = await fetch(API_URL);
 		/** @type {{ rates: { [key: string]: number } }} - The price of currencies and commodities as currency codes and prices compared to 1 USD. */
 		// @ts-ignore - ignore response.json() being 'unknown' type
 		const data = await response.json();
