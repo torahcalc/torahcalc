@@ -3,7 +3,7 @@
  */
 let EXCHANGE_RATES = null;
 
-// Fallback exchange rates for 1 USD from 2023-09-14
+// Fallback exchange rates for 1 USD
 const FALLBACK_EXCHANGE_RATES_DATE = '2023-09-14';
 const FALLBACK_EXCHANGE_RATES = {
 	updateTimestamp: new Date(FALLBACK_EXCHANGE_RATES_DATE).getTime(),
