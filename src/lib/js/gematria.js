@@ -25,6 +25,133 @@ export const METHODS = {
 };
 
 /**
+ * Mapping of possible English spellings of Hebrew letter names to their index in the METHODS arrays
+ */
+export const LETTER_KEYS = {
+	alef: [0],
+	beis: [1],
+	veis: [1],
+	bet: [1],
+	vet: [1],
+	gimmel: [2],
+	gimel: [2],
+	dalet: [3],
+	daled: [3],
+	hey: [4],
+	hei: [4],
+	heh: [4],
+	he: [4],
+	vav: [5],
+	zayin: [6],
+	zain: [6],
+	ches: [7],
+	chet: [7],
+	tes: [8],
+	tet: [8],
+	yud: [9],
+	yood: [9],
+	kaf: [10, 11],
+	kof: [10, 11],
+	chaf: [10, 11],
+	chaf_sofit: [11],
+	lamed: [12],
+	mem: [13, 14],
+	mem_sofit: [14],
+	nun: [15, 16],
+	nun_sofit: [16],
+	samech: [17],
+	ayin: [18],
+	pey: [19, 20],
+	peh: [19, 20],
+	fey: [19, 20],
+	fay: [19, 20],
+	pey_sofit: [20],
+	peh_sofit: [20],
+	fey_sofit: [20],
+	fay_sofit: [20],
+	tzadi: [21, 22],
+	tzadik: [21, 22],
+	tzadi_sofit: [22],
+	tzadik_sofit: [22],
+	kuf: [23],
+	qof: [23],
+	qoph: [23],
+	resh: [24],
+	shin: [25],
+	sin: [25],
+	taf: [26],
+	tav: [26],
+};
+
+/**
+ * Suggested gematrias of each letter's spelling with the default first
+ */
+export const LETTER_SPELLING_VALUES = {
+	alef: [{ value: 111, name: 'אלף' }],
+	beis: [
+		{ value: 412, name: 'בית' },
+		{ value: 402, name: 'בת' },
+	],
+	gimmel: [
+		{ value: 83, name: 'גימל' },
+		{ value: 73, name: 'גמל' },
+	],
+	dalet: [
+		{ value: 434, name: 'דלת' },
+		{ value: 444, name: 'דלית' },
+	],
+	hey: [
+		{ value: 6, name: 'הא' },
+		{ value: 15, name: 'הי' },
+		{ value: 10, name: 'הה' },
+	],
+	vav: [
+		{ value: 12, name: 'וו' },
+		{ value: 22, name: 'ויו' },
+		{ value: 13, name: 'ואו' },
+	],
+	zayin: [{ value: 67, name: 'זין' }],
+	ches: [
+		{ value: 418, name: 'חית' },
+		{ value: 408, name: 'חת' },
+	],
+	tes: [
+		{ value: 419, name: 'טית' },
+		{ value: 409, name: 'טת' },
+	],
+	yud: [{ value: 20, name: 'יוד' }],
+	kaf: [{ value: 100, name: 'כף' }],
+	lamed: [{ value: 74, name: 'למד' }],
+	mem: [{ value: 80, name: 'מם' }],
+	nun: [{ value: 106, name: 'נון' }],
+	samech: [{ value: 120, name: 'סמך' }],
+	ayin: [{ value: 130, name: 'עין' }],
+	pey: [
+		{ value: 81, name: 'פא' },
+		{ value: 90, name: 'פי' },
+		{ value: 85, name: 'פה' },
+	],
+	tzadi: [
+		{ value: 104, name: 'צדי' },
+		{ value: 204, name: 'צדיק' },
+	],
+	kuf: [{ value: 186, name: 'קוף' }],
+	resh: [
+		{ value: 510, name: 'ריש' },
+		{ value: 500, name: 'רש' },
+	],
+	shin: [
+		{ value: 350, name: 'שן' },
+		{ value: 360, name: 'שין' },
+	],
+	tav: [
+		{ value: 406, name: 'תו' },
+		{ value: 416, name: 'תיו' },
+		{ value: 407, name: 'תאו' },
+	],
+};
+
+/**
  * Calculate the number of words in a hebrew phrase
  *
  * @param {string} text - The phrase to calculate the number of words in
@@ -50,13 +177,29 @@ export function getNumberOfWords(text) {
  *
  * @typedef {Object} GematriaOptions
  * @property {string} text - The word or phrase to calculate the gematria value of
- * @property {number[]} [miluiInput] - The milui values to use for calculating the gematria value
+ * @property {{ [key: string]: number }} [miluiInput] - The milui values to use for each letter
  *
  * @param {GematriaOptions} options - The options for calculating the gematria value
  * @returns {{ [key: string]: number }} The gematria values of the word or phrase for each method
  */
-export function calculateGematria({ text, miluiInput }) {
+export function calculateGematria({ text, miluiInput = {} }) {
+	// create milui values from input
+	const miluiValues = METHODS.shemi;
+	for (const [letter, value] of Object.entries(miluiInput)) {
+		if (!(letter.toLowerCase() in LETTER_KEYS)) {
+			throw new Error(`Unexpected letter name '${letter}' in miluiInput. Valid names are: ${Object.keys(LETTER_KEYS).join(', ')}`);
+		}
+		// @ts-ignore - letterIndices will always be an array of numbers
+		const letterIndices = LETTER_KEYS[letter.toLowerCase()];
+		for (const letterIndex of letterIndices) {
+			miluiValues[letterIndex] = value;
+		}
+	}
+
+	// determine number of words in phrase before modifying text
 	const numberOfWords = getNumberOfWords(text);
+
+	// replace non-standard hebrew characters with standard ones and remove non-hebrew characters
 	text = text.replace(/\u05F0/g, 'יב'); // \u05F0 = װ
 	text = text.replace(/\u05F1/g, 'טז'); // \u05F1 = ױ
 	text = text.replace(/[\u05F2\uFB1F]/g, 'כ'); // \u05F2 = ײ, \uFB1F = ײַ
@@ -85,22 +228,24 @@ export function calculateGematria({ text, miluiInput }) {
 	text = text.replace(/[\uFB49\uFB2A-\uFB2D]/g, 'ש'); // \uFB49 = שּ, \uFB2A = שׁ, \uFB2B = שׂ, \uFB2C = שּׁ, \uFB2D = שּׂ
 	text = text.replace(/[\uFB4A\uFB28]/g, 'ת'); // \uFB4A = תּ, \uFB28 = ﬨ
 	text = text.replace(/[\u0020-\u05CF]|[\u05EB-\uFFFF]/g, ''); // remove any remaining non-hebrew characters
+
+	// calculate gematria values
 	const results = {
-		hechrachi: 0,
+		standard: 0,
 		gadol: 0,
 		siduri: 0,
 		katan: 0,
 		perati: 0,
 		shemi: 0,
+		neelam: 0,
 		musafi: 0,
 		atbash: 0,
 		albam: 0,
 		boneeh: 0,
 		kidmi: 0,
-		neelam: 0,
 		hamerubah_haklali: 0,
 		meshulash: 0,
-		haakhor: 0,
+		haachor: 0,
 		mispari: 0,
 		katan_mispari: 0,
 		kolel: 0,
@@ -112,37 +257,36 @@ export function calculateGematria({ text, miluiInput }) {
 		avgad: 0,
 		reverse_avgad: 0,
 	};
-	const miluiValues = miluiInput && miluiInput.length === METHODS.shemi.length ? miluiInput : METHODS.shemi;
 	text.split('').forEach((letter, i) => {
-		const code = letter.charCodeAt(0) - 1488;
-		if (code < 0 || code >= METHODS.hechrachi.length) {
-			return;
+		const letterIndex = letter.charCodeAt(0) - 1488;
+		if (letterIndex < 0 || letterIndex >= METHODS.hechrachi.length) {
+			throw new Error(`Unexpected letter \\u${letter.charCodeAt(0).toString(16)} at position ${i} in word ${text}`);
 		}
-		results.hechrachi += METHODS.hechrachi[code];
-		results.gadol += METHODS.gadol[code];
-		results.siduri += METHODS.siduri[code];
-		results.katan += METHODS.katan[code];
-		results.perati += METHODS.perati[code];
-		results.shemi += miluiValues[code];
-		results.musafi += METHODS.hechrachi[code] + 1;
-		results.atbash += METHODS.atbash[code];
-		results.albam += METHODS.albam[code];
-		results.boneeh += METHODS.hechrachi[code] * (text.length - i);
-		results.kidmi += METHODS.kidmi[code];
-		results.neelam += miluiValues[code] - METHODS.hechrachi[code];
-		results.hamerubah_haklali += METHODS.hechrachi[code] * METHODS.hechrachi[code];
-		results.meshulash += METHODS.meshulash[code];
-		results.haakhor += METHODS.hechrachi[code] * (i + 1);
-		results.mispari += METHODS.mispari[code];
-		results.katan_mispari += 1 + ((METHODS.hechrachi[code] - 1) % 9);
-		results.kolel += METHODS.hechrachi[code] + numberOfWords;
-		results.achbi += METHODS.achbi[code];
-		results.atbach += METHODS.atbach[code];
-		results.ayakbakar += METHODS.ayakbakar[code];
-		results.ofanim += METHODS.ofanim[code];
-		results.achasbeta += METHODS.achasbeta[code];
-		results.avgad += METHODS.avgad[code];
-		results.reverse_avgad += METHODS.reverse_avgad[code];
+		results.standard += METHODS.hechrachi[letterIndex];
+		results.gadol += METHODS.gadol[letterIndex];
+		results.siduri += METHODS.siduri[letterIndex];
+		results.katan += METHODS.katan[letterIndex];
+		results.perati += METHODS.perati[letterIndex];
+		results.shemi += miluiValues[letterIndex];
+		results.musafi += METHODS.hechrachi[letterIndex] + 1; // gematria + number of letters
+		results.atbash += METHODS.atbash[letterIndex];
+		results.albam += METHODS.albam[letterIndex];
+		results.boneeh += METHODS.hechrachi[letterIndex] * (text.length - i); // gematria plus value of all previous letters for each letter
+		results.kidmi += METHODS.kidmi[letterIndex];
+		results.neelam += miluiValues[letterIndex] - METHODS.hechrachi[letterIndex]; // milui without the first letter (the letter itself)
+		results.meshulash += METHODS.meshulash[letterIndex];
+		results.haachor += METHODS.hechrachi[letterIndex] * (i + 1); // gematria * position in word for each letter
+		results.mispari += METHODS.mispari[letterIndex];
+		results.achbi += METHODS.achbi[letterIndex];
+		results.atbach += METHODS.atbach[letterIndex];
+		results.ayakbakar += METHODS.ayakbakar[letterIndex];
+		results.ofanim += METHODS.ofanim[letterIndex];
+		results.achasbeta += METHODS.achasbeta[letterIndex];
+		results.avgad += METHODS.avgad[letterIndex];
+		results.reverse_avgad += METHODS.reverse_avgad[letterIndex];
 	});
+	results.hamerubah_haklali = results.standard * results.standard; // gematria squared
+	results.katan_mispari = 1 + ((results.standard - 1) % 9); // digital root of gematria
+	results.kolel = results.standard + numberOfWords; // gematria + number of words in phrase
 	return results;
 }
