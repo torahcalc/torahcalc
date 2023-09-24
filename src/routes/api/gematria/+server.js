@@ -12,10 +12,11 @@ export async function GET({ url }) {
 
 	/** @type {{ [key: string]: number }} */
 	const miluiInput = {};
-	for (const key in Object.keys(LETTER_KEYS)) {
-		const value = url.searchParams.get(key);
-		if (value && !isNaN(Number(value))) {
-			miluiInput[key] = Number(value);
+	for (const [key, value] of url.searchParams.entries()) {
+		if (Object.keys(LETTER_KEYS).includes(key)) {
+			if (value && !isNaN(Number(value))) {
+				miluiInput[key] = Number(value);
+			}
 		}
 	}
 
