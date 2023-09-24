@@ -15,16 +15,42 @@
 	export let description;
 
 	/**
-	 * @type {Array<{name: String, type: String, required: Boolean, description: String, example: any, allowedValues?: any[]|{[key: string]: any[]}}>} Parameters
+	 * @typedef Parameter
+	 * @property {String} name The name of the parameter
+	 * @property {String} type The type of the parameter
+	 * @property {Boolean} required Whether the parameter is required
+	 * @property {String} description The description of the parameter
+	 * @property {any} example An example value for the parameter
+	 * @property {{[key: string]: any[]}|any[]} [allowedValues] Allowed values for the parameter
+	 */
+
+	/**
+	 * @type {Array<Parameter>} Parameters
 	 */
 	export let parameters;
 
+	/**
+	 * Build an example API endpoint URL from the parameters
+	 *
+	 * @param {String} endpoint The endpoint URL
+	 * @param {Array<Parameter>} parameters The parameters
+	 */
+	const buildExample = (endpoint, parameters) => {
+		let example = endpoint;
+		if (parameters.length === 0) {
+			return example;
+		}
+		example += '?';
+		example += parameters.map((parameter) => `${parameter.name}=${parameter.example}`).join('&');
+		return example;
+	};
+
 	// build the example query string
-	let example = endpoint + '?';
-	let queryParameters = parameters.map((parameter) => {
-		return parameter.name + '=' + encodeURIComponent(parameter.example);
-	});
-	example += queryParameters.join('&');
+	const example = buildExample(endpoint, parameters);
+
+	// build an example with only required parameters
+	let requiredParameters = parameters.filter((parameter) => parameter.required);
+	const requiredExample = buildExample(endpoint, requiredParameters);
 </script>
 
 <div class="card flex-card endpoint-card">
@@ -61,7 +87,7 @@
 								{/if}
 							</td>
 							<td>
-								{parameter.description}
+								{@html parameter.description}
 								{#if parameter.allowedValues}
 									<br />
 									<details>
@@ -94,9 +120,13 @@
 		</div>
 	</div>
 
-	<h4 class="subsection-header toc-exclude my-3">Example</h4>
+	<h4 class="subsection-header toc-exclude my-3">Examples</h4>
 
-	<span class="mono"><a href={example}>{example}</a></span>
+	{#if requiredParameters.length < parameters.length}
+		<p class="mono"><a href={requiredExample}>{requiredExample}</a></p>
+	{/if}
+
+	<p class="mono"><a href={example}>{example}</a></p>
 </div>
 
 <style>

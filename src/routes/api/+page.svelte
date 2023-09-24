@@ -1,10 +1,32 @@
 <script>
 	import { HDate } from '@hebcal/core';
 	import { getConverters, getUnits, getOpinions } from '$lib/js/unitconverter.js';
+	import { LETTER_SPELLING_VALUES } from '$lib/js/gematria.js';
 	import Endpoint from './Endpoint.svelte';
 	import Toc from 'svelte-toc';
 
 	const converters = getConverters(false);
+
+	const miluiParameters = Object.keys(LETTER_SPELLING_VALUES).map((letter) => {
+		const titleCaseLetter = letter.charAt(0).toUpperCase() + letter.slice(1);
+		let description = `The gematria of the spelling of ${titleCaseLetter} for Milui and Ne'elam calculations.`;
+		/** @type {{ name: string, value: Number }[]} */
+		// @ts-ignore - The index will always be an array of letter name/value pairs
+		const spellings = LETTER_SPELLING_VALUES[letter];
+		// @ts-ignore - The index will always be an array of letter name/value pairs
+		if (spellings.length > 1) {
+			const spellingText = spellings.map((spelling) => `<code>${spelling.value}</code> for "${spelling.name}"`).join(' or ');
+			description += ` Use ${spellingText}.`;
+		}
+		description += ` Defaults to <code>${spellings[0].value}</code>, the value of "${spellings[0].name}".`;
+		return {
+			name: letter,
+			type: 'Number',
+			required: false,
+			description: description,
+			example: spellings[0].value,
+		};
+	});
 </script>
 
 <svelte:head>
@@ -179,6 +201,24 @@
 	{:catch}
 		<Endpoint method="GET" endpoint="/api/unitconverter" description="Error loading parameters" parameters={[]} />
 	{/await}
+
+	<h3>Gematria</h3>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/gematria"
+		description="Calculate the gematria of a word or phrase according to 25+ different methods"
+		parameters={[
+			{
+				name: 'text',
+				type: 'String',
+				required: true,
+				description: 'The Hebrew word or phrase to calculate the gematria of',
+				example: 'תורה',
+			},
+			...miluiParameters,
+		]}
+	/>
 </section>
 
 <Toc activeHeadingScrollOffset={200} blurParams={{ duration: 400 }} breakpoint={1200} title="" />
