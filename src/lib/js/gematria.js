@@ -162,6 +162,43 @@ export const LETTER_SPELLING_VALUES = {
 };
 
 /**
+ * All gematria method keys with their names and hebrew names
+ *
+ * @typedef {Object} GematriaMethodName
+ * @property {string} name - The name of the gematria method in English
+ * @property {string} hebrewName - The name of the gematria method in Hebrew
+ *
+ * @type {{ [key: string]: GematriaMethodName }}
+ */
+export const METHOD_NAMES = {
+	standard: { name: 'Mispar Hechrachi (Standard)', hebrewName: 'מספר החרכי' },
+	gadol: { name: 'Mispar Gadol (Large Sofit)', hebrewName: 'מספר גדול' },
+	siduri: { name: 'Mispar Siduri (Ordinal)', hebrewName: 'מספר סידורי' },
+	katan: { name: 'Mispar Katan (Reduced)', hebrewName: 'מספר קטן' },
+	perati: { name: 'Mispar Perati (Squared Values)', hebrewName: 'מספר פרטי' },
+	shemi: { name: 'Mispar Shemi / Milui (Full Name)', hebrewName: 'מספר שמי / מילוי' },
+	neelam: { name: "Mispar Ne'elam", hebrewName: 'מספר נעלם' },
+	musafi: { name: 'Mispar Musafi', hebrewName: 'מספר מוספי' },
+	atbash: { name: 'AtBash', hebrewName: 'אתב"ש' },
+	albam: { name: 'AlBam', hebrewName: 'אלב"ם' },
+	boneeh: { name: "Mispar Bone'eh", hebrewName: 'מספר בונה' },
+	kidmi: { name: 'Mispar Kidmi', hebrewName: 'מספר קדמי' },
+	hamerubah_haklali: { name: 'Mispar HaMerubah HaKlali', hebrewName: 'מספר המרובע הכללי' },
+	meshulash: { name: 'Mispar Meshulash', hebrewName: 'מספר משולש' },
+	haachor: { name: "Mispar Ha'achor", hebrewName: 'מספר האחור' },
+	mispari: { name: 'Mispar Mispari', hebrewName: 'מספר מספרי' },
+	katan_mispari: { name: 'Mispar Katan Mispari', hebrewName: 'מספר קטן מספרי' },
+	kolel: { name: 'Mispar Kolel', hebrewName: 'מספר כלל' },
+	achbi: { name: 'AchBi', hebrewName: 'אכב"י' },
+	atbach: { name: 'AtBach', hebrewName: 'אטב"ח' },
+	ayakbakar: { name: 'Ayak Bakar', hebrewName: 'אי"ק בכ"ר' },
+	ofanim: { name: 'Ofanim', hebrewName: 'אופנים' },
+	achasbeta: { name: 'Achas Beta', hebrewName: 'אח"ס בט"ע' },
+	avgad: { name: 'Avgad', hebrewName: 'אבג"ד' },
+	reverse_avgad: { name: 'Reverse Avgad', hebrewName: 'אבג"ד הפוך' },
+};
+
+/**
  * Calculate the number of words in a hebrew phrase
  *
  * @param {string} text - The phrase to calculate the number of words in
@@ -243,31 +280,7 @@ export function calculateGematria({ text, miluiInput = {} }) {
 
 	// calculate gematria values
 	const results = {
-		standard: 0,
-		gadol: 0,
-		siduri: 0,
-		katan: 0,
-		perati: 0,
-		shemi: 0,
-		neelam: 0,
-		musafi: 0,
-		atbash: 0,
-		albam: 0,
-		boneeh: 0,
-		kidmi: 0,
-		hamerubah_haklali: 0,
-		meshulash: 0,
-		haachor: 0,
-		mispari: 0,
-		katan_mispari: 0,
-		kolel: 0,
-		achbi: 0,
-		atbach: 0,
-		ayakbakar: 0,
-		ofanim: 0,
-		achasbeta: 0,
-		avgad: 0,
-		reverse_avgad: 0,
+		...Object.fromEntries(Object.keys(METHOD_NAMES).map((method) => [method, 0])),
 	};
 	text.split('').forEach((letter, i) => {
 		const letterIndex = letter.charCodeAt(0) - 1488;
@@ -320,8 +333,7 @@ export function searchGematria({ text, value }) {
 		if (value !== undefined) {
 			throw new Error("Unexpected 'text' and 'value' parameters. Only one of these parameters should be provided.");
 		}
-		const gematria = calculateGematria({ text });
-		value = gematria.standard;
+		value = calculateGematria({ text }).standard;
 	}
 	if (value === undefined) {
 		throw new Error("Missing 'text' or 'value' parameter");
@@ -335,4 +347,46 @@ export function searchGematria({ text, value }) {
 		BAMIDBAR_PESUKIM: BAMIDBAR_PESUKIM[value] || [],
 		DEVARIM_PESUKIM: DEVARIM_PESUKIM[value] || [],
 	};
+}
+
+/**
+ * Find pairs of gematria methods where the given words have the same gematria value
+ *
+ * For example, 53 = Mispar Siduri of "תורה" = AtBach of "עבודה"
+ *
+ * Javascript adaptation by TorahCalc.com, original code in Kotlin by ssternbach@torahdownloads.com
+ *
+ * @param {string} word1 - The first word to compare
+ * @param {string} word2 - The second word to compare
+ * @returns {Array<{ method1: GematriaMethodName, method2: GematriaMethodName, value: number }>} The pairs of gematria methods where the given words have the same gematria value
+ */
+export function getListOfGematriasInCommon(word1, word2) {
+	// calculate all gematrias for both words
+	const listOfGematrias1 = calculateGematria({ text: word1 });
+	const listOfGematrias2 = calculateGematria({ text: word2 });
+	// check for empty or zero values
+	if (listOfGematrias1.standard == 0 || listOfGematrias2.standard == 0) {
+		return [];
+	}
+	// create list of common gematrias
+	/** @type {Array<{ method1: GematriaMethodName, method2: GematriaMethodName, value: number }>} */
+	const commonGematrias = [];
+	// loop through pairs of gematria methods
+	for (const gematria1 in listOfGematrias1) {
+		for (const gematria2 in listOfGematrias2) {
+			// if two gematrias match
+			if (listOfGematrias1[gematria1] === listOfGematrias2[gematria2]) {
+				// add the gematria types and the value to the list
+				commonGematrias.push({
+					// @ts-ignore - gematria1 will always be a key of METHOD_NAMES
+					method1: METHOD_NAMES[gematria1],
+					// @ts-ignore - gematria2 will always be a key of METHOD_NAMES
+					method2: METHOD_NAMES[gematria2],
+					value: listOfGematrias1[gematria1],
+				});
+			}
+		}
+	}
+	// return string
+	return commonGematrias;
 }

@@ -283,6 +283,28 @@
 		examples={['/api/gematriasearch?text=תורה', '/api/gematriasearch?value=611']}
 	/>
 
+	<Endpoint
+		method="GET"
+		endpoint="/api/gematriamatch"
+		description="Find pairs of gematria methods where the given words have the same gematria value\n\nFor example, 53 = Mispar Siduri of &quot;תורה&quot; = AtBach of &quot;עבודה&quot;"
+		parameters={[
+			{
+				name: 'word1',
+				type: 'String',
+				required: true,
+				description: 'The first word to compare',
+				example: 'תורה',
+			},
+			{
+				name: 'word2',
+				type: 'String',
+				required: true,
+				description: 'The second word to compare',
+				example: 'משנה',
+			},
+		]}
+	/>
+
 	<h3>Zmanim</h3>
 
 	<Endpoint
