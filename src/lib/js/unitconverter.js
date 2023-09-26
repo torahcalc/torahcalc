@@ -394,3 +394,47 @@ export async function convertUnits({ type, unitFromId, unitToId, amount, opinion
 	// return the result
 	return outputs;
 }
+
+/**
+ * @typedef {object} MultiConversionOptions
+ * @property {string} type - The type of unit to convert.
+ * @property {string} unitFromId - The unit to convert from.
+ * @property {number} [amount] - The amount to convert.
+ * @property {string} [opinionId] - The opinion to use for the converting between standard and biblical units.
+ *
+ * @typedef {{ [key: string]: { name: string, result: number, opinion?: string } }} MultiConversionResult
+ *
+ */
+
+/**
+ * Convert a value from one unit to all compatible units.
+ * @param {MultiConversionOptions} options - The options for the conversion.
+ * @returns {Promise<MultiConversionResult>} - The result of the conversion.
+ */
+export async function convertUnitsMulti({ type, unitFromId, amount, opinionId }) {
+	// set the default amount to 1
+	if (amount === undefined) amount = 1;
+	// get the units
+	const unitFrom = await getUnit(type, unitFromId);
+	/** @type {MultiConversionResult} */
+	const outputs = {};
+	// convert the amount to each compatible unit
+	for (const [unitToId, unitTo] of Object.entries((await getConverter(type)).units)) {
+		outputs[unitToId] = {
+			name: unitTo.name,
+			result: (amount * unitTo.value) / unitFrom.value,
+		};
+		if (unitFrom.type !== unitTo.type) {
+			// if an opinion is specified, use it
+			// otherwise, use the default opinion (where the factor is 1)
+			const opinion = opinionId ? await getOpinion(type, opinionId) : await getDefaultOpinion(type);
+			// if an opinion was found, apply it and add it to the outputs
+			if (opinion) {
+				outputs[unitToId].result *= opinion.factor;
+				outputs[unitToId].opinion = opinion.name;
+			}
+		}
+	}
+	// return the results
+	return outputs;
+}
