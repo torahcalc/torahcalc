@@ -1,4 +1,5 @@
 import { HDate } from '@hebcal/core';
+import dayjs from 'dayjs';
 
 const GREGORIAN_REFORMATION = new Date('September 14, 1752');
 const DAY_OF_CREATION = new Date('-003760-09-07T00:00:00.000Z');
@@ -101,7 +102,7 @@ export const gregorianToHebrew = ({ year, month, day, afterSunset = false }) => 
 };
 
 /**
- * Format a date as Mon, January 11, 2023.
+ * Format a date as Mon, January 11, 2023. This method is modified to work with 2-digit years and years before year 1.
  *
  * @param {number} year - The year to format.
  * @param {number} month - The month to format (1-12).
@@ -109,23 +110,18 @@ export const gregorianToHebrew = ({ year, month, day, afterSunset = false }) => 
  * @returns {string} The formatted date.
  */
 export const formatDate = (year, month, day) => {
-	// temporarily set year to 9999 to avoid issues with years fewer than 4 digits or before year 1
-	const dateToFormat = new Date(9999, month - 1, day);
-	let formatted = dateToFormat.toLocaleDateString('en-US', {
-		weekday: 'short',
-		year: 'numeric',
-		month: 'long',
-		day: 'numeric',
-	});
+	const dateToFormat = new Date(year, month - 1, day);
+	dateToFormat.setFullYear(year > 0 ? year : year + 1); // fix for 2-digit years and years before year 1
+	let formatted = dayjs(dateToFormat).format('ddd, MMMM D, YYYY');
 	if (year === 0) {
 		throw new Error('Gregorian year 0 does not exist.');
 	}
 	if (isNaN(Math.abs(year))) {
 		throw new Error('Invalid Gregorian date.');
 	}
-	// pad year with zeros to 4 digits and replace 9999 with the actual year
+	// pad year with zeros to 4 digits and replace year with the actual year
 	const formattedYear = (year < 0 ? '-' : '') + Math.abs(year).toString().padStart(4, '0');
-	formatted = formatted.replace('9999', formattedYear);
+	formatted = formatted.replace(/[\d-]+$/, formattedYear);
 	return formatted;
 };
 
