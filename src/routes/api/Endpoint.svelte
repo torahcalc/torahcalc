@@ -46,11 +46,19 @@
 	};
 
 	// build the example query string
-	const example = buildExample(endpoint, parameters);
+	const allParameterExample = buildExample(endpoint, parameters);
 
 	// build an example with only required parameters
 	let requiredParameters = parameters.filter((parameter) => parameter.required);
-	const requiredExample = buildExample(endpoint, requiredParameters);
+	const requiredParameterExample = buildExample(endpoint, requiredParameters);
+
+	// if there are no optional parameters, only show the example with all parameters
+	const defaultExamples = requiredParameters.length < parameters.length ? [requiredParameterExample, allParameterExample] : [allParameterExample];
+
+	/**
+	 * @type {Array<string>} Example endpoint URLs
+	 */
+	export let examples = defaultExamples;
 </script>
 
 <div class="card flex-card endpoint-card">
@@ -122,11 +130,9 @@
 
 	<h4 class="subsection-header toc-exclude my-3">Examples</h4>
 
-	{#if requiredParameters.length < parameters.length}
-		<p class="mono"><a href={requiredExample}>{requiredExample}</a></p>
-	{/if}
-
-	<p class="mono"><a href={example}>{example}</a></p>
+	{#each examples as example}
+		<p class="mono"><a href={example}>{example}</a></p>
+	{/each}
 </div>
 
 <style>

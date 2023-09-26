@@ -260,6 +260,29 @@
 		]}
 	/>
 
+	<Endpoint
+		method="GET"
+		endpoint="/api/gematriasearch"
+		description="Search for words or verses with the same gematria as a given word or phrase"
+		parameters={[
+			{
+				name: 'text',
+				type: 'String',
+				required: false,
+				description: 'The Hebrew word or phrase to find matching words or verses for',
+				example: 'תורה',
+			},
+			{
+				name: 'value',
+				type: 'Number',
+				required: false,
+				description: 'The gematria value to search for',
+				example: 611,
+			},
+		]}
+		examples={['/api/gematriasearch?text=תורה', '/api/gematriasearch?value=611']}
+	/>
+
 	<h3>Zmanim</h3>
 
 	<Endpoint

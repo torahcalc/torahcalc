@@ -21,7 +21,7 @@ export async function GET({ url }) {
 	}
 
 	try {
-		return createResponse(await calculateGematria({ text, miluiInput }));
+		return createResponse(calculateGematria({ text, miluiInput }));
 	} catch (error) {
 		return createErrorResponse(error);
 	}
