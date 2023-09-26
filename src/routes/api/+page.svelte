@@ -255,7 +255,7 @@
 				required: false,
 				description: 'The timezone name of the location to calculate zmanim for (defaults to the timezone of the location)',
 				example: 'America/New_York',
-			}
+			},
 		]}
 	/>
 </section>
