@@ -143,7 +143,7 @@ export function calculateMolad(year, month) {
 		timeFormat,
 		dayOfWeekFormat,
 		hebrewDateFormat,
-        monthName: `${hebrewMonthMap[month]} ${year}`,
+		monthName: `${hebrewMonthMap[month]} ${year}`,
 	};
 
 	// Shabbos Mevorchim and Rosh Chodesh

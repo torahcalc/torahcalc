@@ -168,7 +168,7 @@
 				required: false,
 				description: 'The Hebrew month 1-13 where 1=Nissan (defaults to current month)',
 				example: new HDate().getMonth(),
-			}
+			},
 		]}
 	/>
 
