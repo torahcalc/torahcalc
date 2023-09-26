@@ -1,4 +1,6 @@
 import dayjs from 'dayjs';
+import { gregorianToHebrew } from './dateconverter';
+import { HDate } from '@hebcal/core';
 
 /**
  * Format a date as Mon, January 11, 2023. This method is modified to work with 2-digit years and years before year 1.
@@ -34,6 +36,17 @@ export const formatDateObject = (date) => {
 };
 
 /**
+ * Convert a JavaScript Date object to an HDate object.
+ * @param {Date} date - The date to convert.
+ * @returns {HDate} The Hebrew date.
+ */
+export const dateToHDate = (date) => {
+	const hebrewDate = gregorianToHebrew({ year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() });
+	const hDate = new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year);
+	return hDate;
+};
+
+/**
  * Returns true if daylight saving time is in effect for a given date
  * @param {Date} date - The date to check
  * @returns {boolean} True if daylight saving time is in effect for the given date
@@ -42,4 +55,24 @@ export function isDST(date) {
 	const jan = new Date(date.getFullYear(), 0, 1);
 	const jul = new Date(date.getFullYear(), 6, 1);
 	return Math.min(jan.getTimezoneOffset(), jul.getTimezoneOffset()) == date.getTimezoneOffset();
+}
+
+/**
+ * Try to call a given function with the given arguments, and return the result. If the function throws an error, return the default value.
+ *
+ * @template ReturnType, DefaultType
+ * @param {() => ReturnType} func - The function to call.
+ * @param {DefaultType} defaultValue - The default value to return if the function throws an error.
+ * @returns {ReturnType|DefaultType} The result of the function call or the default value.
+ *
+ * @example
+ * const result = tryOrDefault(() => JSON.parse('invalid json'), {});
+ * // result = {}
+ */
+export function tryOrDefault(func, defaultValue) {
+	try {
+		return func();
+	} catch (error) {
+		return defaultValue;
+	}
 }

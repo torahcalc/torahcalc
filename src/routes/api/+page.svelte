@@ -367,6 +367,23 @@
 			},
 		]}
 	/>
+
+	<h3>Daily Learning</h3>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/dailylearning"
+		description="Calculate the Daf Yomi, Nach Yomi, Yerushalmi Yomi, Daily Chofetz Chaim, Daily Rambam Chapter, Daily Shemirat HaLashon, Daily Psalms, and Weekly Daf for a given date"
+		parameters={[
+			{
+				name: 'date',
+				type: 'String',
+				required: false,
+				description: 'The date to calculate the daily learning for in YYYY-MM-DD format (defaults to current date)',
+				example: dayjs().format('YYYY-MM-DD'),
+			},
+		]}
+	/>
 </section>
 
 <Toc activeHeadingScrollOffset={200} blurParams={{ duration: 400 }} breakpoint={1200} title="" />
