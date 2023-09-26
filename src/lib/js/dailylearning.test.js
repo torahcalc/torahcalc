@@ -45,9 +45,9 @@ describe('test calculateDailyLearning', () => {
 			url: 'https://www.sefaria.org/Ketubot.56a?lang=bi',
 		});
 		expect(result.dailyPsalms).toStrictEqual({
-			name: 'Psalms 113-118',
-			hebrewName: 'תְּהִלִּים קי״ג-קי״ח',
-			url: 'https://www.sefaria.org/Psalms.113-118?lang=bi',
+			name: 'Psalms 79-82',
+			hebrewName: 'תְּהִלִּים ע״ט-פ״ב',
+			url: 'https://www.sefaria.org/Psalms.79-82?lang=bi',
 		});
 	});
 
