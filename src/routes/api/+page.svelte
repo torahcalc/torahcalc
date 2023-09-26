@@ -168,6 +168,7 @@
 				required: false,
 				description: 'The Hebrew month 1-13 where 1=Nissan (defaults to current month)',
 				example: new HDate().getMonth(),
+				allowedValues: { Nissan: [1], Iyar: [2], Sivan: [3], Tammuz: [4], Av: [5], Elul: [6], Tishrei: [7], Cheshvan: [8], Kislev: [9], Tevet: [10], Shevat: [11], Adar: [12], 'Adar II': [13] },
 			},
 		]}
 	/>
