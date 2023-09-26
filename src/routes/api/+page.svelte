@@ -4,6 +4,7 @@
 	import { LETTER_SPELLING_VALUES } from '$lib/js/gematria.js';
 	import Endpoint from './Endpoint.svelte';
 	import Toc from 'svelte-toc';
+	import dayjs from 'dayjs';
 
 	const converters = getConverters(false);
 
@@ -217,6 +218,44 @@
 				example: 'תורה',
 			},
 			...miluiParameters,
+		]}
+	/>
+
+	<h3>Zmanim</h3>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/zmanim"
+		description="Calculate zmanim (halachic times) for a given date and location"
+		parameters={[
+			{
+				name: 'date',
+				type: 'String',
+				required: false,
+				description: 'The date to calculate zmanim for in YYYY-MM-DD format (defaults to current date)',
+				example: dayjs().format('YYYY-MM-DD'),
+			},
+			{
+				name: 'latitude',
+				type: 'Number',
+				required: true,
+				description: 'The latitude of the location to calculate zmanim for',
+				example: 42.74521,
+			},
+			{
+				name: 'longitude',
+				type: 'Number',
+				required: true,
+				description: 'The longitude of the location to calculate zmanim for',
+				example: -73.810345,
+			},
+			{
+				name: 'timezone',
+				type: 'Number',
+				required: false,
+				description: 'The timezone name of the location to calculate zmanim for (defaults to the timezone of the location)',
+				example: 'America/New_York',
+			},
 		]}
 	/>
 </section>
