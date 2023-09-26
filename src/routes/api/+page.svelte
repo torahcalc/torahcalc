@@ -148,6 +148,30 @@
 		]}
 	/>
 
+	<h3>Molad</h3>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/molad"
+		description="Calculate the molad for a given Hebrew month"
+		parameters={[
+			{
+				name: 'year',
+				type: 'Number',
+				required: false,
+				description: 'The Hebrew year (defaults to current year)',
+				example: new HDate().getFullYear(),
+			},
+			{
+				name: 'month',
+				type: 'Number',
+				required: false,
+				description: 'The Hebrew month 1-13 where 1=Nissan (defaults to current month)',
+				example: new HDate().getMonth(),
+			}
+		]}
+	/>
+
 	<h3>Unit Converter</h3>
 
 	{#await converters}

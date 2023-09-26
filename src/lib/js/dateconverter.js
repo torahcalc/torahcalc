@@ -1,5 +1,5 @@
 import { HDate } from '@hebcal/core';
-import dayjs from 'dayjs';
+import { formatDate } from './utils';
 
 const GREGORIAN_REFORMATION = new Date('September 14, 1752');
 const DAY_OF_CREATION = new Date('-003760-09-07T00:00:00.000Z');
@@ -8,21 +8,24 @@ const MAX_HEBREW_YEAR = 279516;
 const GREGORIAN_REFORMATION_WARNING =
 	'Warning: Dates before the adoption of the Gregorian Calendar in 1752 may be inaccurate. <a href="https://en.wikipedia.org/wiki/Calendar_(New_Style)_Act_1750#England_and_Wales">More info.</a>';
 
-/** Map HebCal month names to the names used in this app. */
-const hebrewMonthMap = {
-	Nisan: 'Nissan', // 1
-	Iyyar: 'Iyar', // 2
-	Sivan: 'Sivan', // 3
-	Tamuz: 'Tammuz', // 4
-	Av: 'Av', // 5
-	Elul: 'Elul', // 6
-	Tishrei: 'Tishrei', // 7
-	Cheshvan: 'Cheshvan', // 8
-	Kislev: 'Kislev', // 9
-	Tevet: 'Tevet', // 10
-	"Sh'vat": 'Shevat', // 11
-	Adar: 'Adar', // 12
-	'Adar II': 'Adar II', // 13
+/**
+ * Map HebCal month numbers to the names used in this app.
+ * @type {{ [key: number]: string }}
+ */
+export const hebrewMonthMap = {
+	1: 'Nissan', // 'Nisan' in HebCal
+	2: 'Iyar', // 'Iyyar' in HebCal
+	3: 'Sivan',
+	4: 'Tammuz', // 'Tamuz' in HebCal
+	5: 'Av',
+	6: 'Elul',
+	7: 'Tishrei',
+	8: 'Cheshvan',
+	9: 'Kislev',
+	10: 'Teves', // 'Tevet' in HebCal
+	11: 'Shevat', // "Sh'vat" in HebCal
+	12: 'Adar',
+	13: 'Adar II',
 };
 
 export const hebrewMonths = Object.values(hebrewMonthMap);
@@ -34,10 +37,11 @@ export const hebrewMonths = Object.values(hebrewMonthMap);
  */
 export const formatHebrewDateEn = (hDate) => {
 	const formatted = hDate.render('en');
-	for (const [hebcalMonthName, replacementMonthName] of Object.entries(hebrewMonthMap)) {
-		if (formatted.includes(hebcalMonthName)) {
-			return formatted.replace(hebcalMonthName, replacementMonthName);
-		}
+	const monthNumber = hDate.getMonth();
+	const hebcalMonthName = hDate.getMonthName();
+	if (formatted.includes(hebcalMonthName) && monthNumber in hebrewMonthMap) {
+		const replacementMonthName = hebrewMonthMap[monthNumber];
+		return formatted.replace(hebcalMonthName, replacementMonthName);
 	}
 	return formatted;
 };
@@ -89,7 +93,7 @@ export const gregorianToHebrew = ({ year, month, day, afterSunset = false }) => 
 		year: hDate.getFullYear(),
 		month: hDate.getMonth(), // 1=NISAN, 7=TISHREI
 		day: hDate.getDate(),
-		monthName: hDate.getMonthName(),
+		monthName: hebrewMonthMap[hDate.getMonth()] || hDate.getMonthName(),
 		displayEn: formatHebrewDateEn(hDate),
 		displayHe: formatHebrewDateHe(hDate),
 		displayGematriya: formatHebrewDateGematriya(hDate),
@@ -99,30 +103,6 @@ export const gregorianToHebrew = ({ year, month, day, afterSunset = false }) => 
 		result.warning = GREGORIAN_REFORMATION_WARNING;
 	}
 	return result;
-};
-
-/**
- * Format a date as Mon, January 11, 2023. This method is modified to work with 2-digit years and years before year 1.
- *
- * @param {number} year - The year to format.
- * @param {number} month - The month to format (1-12).
- * @param {number} day - The day to format (1-31).
- * @returns {string} The formatted date.
- */
-export const formatDate = (year, month, day) => {
-	const dateToFormat = new Date(year, month - 1, day);
-	dateToFormat.setFullYear(year > 0 ? year : year + 1); // fix for 2-digit years and years before year 1
-	let formatted = dayjs(dateToFormat).format('ddd, MMMM D, YYYY');
-	if (year === 0) {
-		throw new Error('Gregorian year 0 does not exist.');
-	}
-	if (isNaN(Math.abs(year))) {
-		throw new Error('Invalid Gregorian date.');
-	}
-	// pad year with zeros to 4 digits and replace year with the actual year
-	const formattedYear = (year < 0 ? '-' : '') + Math.abs(year).toString().padStart(4, '0');
-	formatted = formatted.replace(/[\d-]+$/, formattedYear);
-	return formatted;
 };
 
 /**

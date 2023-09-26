@@ -1,5 +1,6 @@
 <script>
-	import { formatDate, gregorianToHebrew, hebrewToGregorian, hebrewMonths, formatHebrewDateEn } from '$lib/js/dateconverter';
+	import { gregorianToHebrew, hebrewToGregorian, hebrewMonths, formatHebrewDateEn } from '$lib/js/dateconverter';
+	import { formatDate } from '$lib/js/utils';
 	import { HDate, greg } from '@hebcal/core';
 
 	const gDate = new Date();
