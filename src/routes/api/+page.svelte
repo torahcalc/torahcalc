@@ -384,6 +384,23 @@
 			},
 		]}
 	/>
+
+	<h3>Zodiac</h3>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/zodiac"
+		description="Calculate the Hebrew zodiac sign for a given date"
+		parameters={[
+			{
+				name: 'date',
+				type: 'String',
+				required: false,
+				description: 'The date to calculate the zodiac sign for in YYYY-MM-DD format (defaults to current date)',
+				example: dayjs().format('YYYY-MM-DD'),
+			},
+		]}
+	/>
 </section>
 
 <Toc activeHeadingScrollOffset={200} blurParams={{ duration: 400 }} breakpoint={1200} title="" />
