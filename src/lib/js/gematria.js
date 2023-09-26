@@ -1,7 +1,17 @@
+import { COMMON_WORDS } from './words/commonwords';
+import { TORAH_WORDS } from './words/torahwords';
+import { BEREISHIS_PESUKIM } from './words/pesukim1';
+import { SHEMOS_PESUKIM } from './words/pesukim2';
+import { VAYIKRA_PESUKIM } from './words/pesukim3';
+import { BAMIDBAR_PESUKIM } from './words/pesukim4';
+import { DEVARIM_PESUKIM } from './words/pesukim5';
+
 /**
  * Gematria methods
  *
  * Each method is an array of 27 numbers, one for each letter of the hebrew alphabet (including final forms) in the order of alef to tav.
+ *
+ * Note: Some methods that are calculated from other methods (e.g. musafi, neelam, haachor, hamerubah_haklali, katan_mispari, kolel) are not included in this list.
  */
 export const METHODS = {
 	hechrachi: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 20, 30, 40, 40, 50, 50, 60, 70, 80, 80, 90, 90, 100, 200, 300, 400],
@@ -173,11 +183,13 @@ export function getNumberOfWords(text) {
 }
 
 /**
- * Calculate the gematria value of a word
- *
  * @typedef {Object} GematriaOptions
  * @property {string} text - The word or phrase to calculate the gematria value of
  * @property {{ [key: string]: number }} [miluiInput] - The milui values to use for each letter
+ */
+
+/**
+ * Calculate the gematria value of a word
  *
  * @param {GematriaOptions} options - The options for calculating the gematria value
  * @returns {{ [key: string]: number }} The gematria values of the word or phrase for each method
@@ -289,4 +301,38 @@ export function calculateGematria({ text, miluiInput = {} }) {
 	results.katan_mispari = 1 + ((results.standard - 1) % 9); // digital root of gematria
 	results.kolel = results.standard + numberOfWords; // gematria + number of words in phrase
 	return results;
+}
+
+/**
+ * @typedef {Object} GematriaSearchOptions
+ * @property {string} [text] - The word or phrase to calculate the gematria value of
+ * @property {number} [value] - The gematria value to search for
+ */
+
+/**
+ * Find words and verses in the Torah with the same gematria value as the given word or phrase
+ *
+ * @param {GematriaSearchOptions} options - The options for calculating the gematria value
+ * @returns {{ [key: string]: string[] }} The words and verses in the Torah with the same gematria value as the given word or phrase
+ */
+export function searchGematria({ text, value }) {
+	if (text !== undefined) {
+		if (value !== undefined) {
+			throw new Error("Unexpected 'text' and 'value' parameters. Only one of these parameters should be provided.");
+		}
+		const gematria = calculateGematria({ text });
+		value = gematria.standard;
+	}
+	if (value === undefined) {
+		throw new Error("Missing 'text' or 'value' parameter");
+	}
+	return {
+		COMMON_WORDS: COMMON_WORDS[value] || [],
+		TORAH_WORDS: TORAH_WORDS[value] || [],
+		BEREISHIS_PESUKIM: BEREISHIS_PESUKIM[value] || [],
+		SHEMOS_PESUKIM: SHEMOS_PESUKIM[value] || [],
+		VAYIKRA_PESUKIM: VAYIKRA_PESUKIM[value] || [],
+		BAMIDBAR_PESUKIM: BAMIDBAR_PESUKIM[value] || [],
+		DEVARIM_PESUKIM: DEVARIM_PESUKIM[value] || [],
+	};
 }
