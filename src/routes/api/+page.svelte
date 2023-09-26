@@ -199,6 +199,45 @@
 				},
 			]}
 		/>
+
+		<Endpoint
+			method="GET"
+			endpoint="/api/unitcharts"
+			description="Convert between a biblical or standard unit of measurement to all compatible units"
+			parameters={[
+				{
+					name: 'type',
+					type: 'String',
+					required: true,
+					description: 'The type of unit to convert',
+					example: 'length',
+					allowedValues: Object.keys(converters),
+				},
+				{
+					name: 'from',
+					type: 'String',
+					required: true,
+					description: 'The unit to convert from',
+					example: 'derech_yom',
+					allowedValues: getUnits(converters),
+				},
+				{
+					name: 'amount',
+					type: 'Number',
+					required: false,
+					description: 'The amount to convert (defaults to 1)',
+					example: 1,
+				},
+				{
+					name: 'opinion',
+					type: 'String',
+					required: false,
+					description: 'The opinion to use for converting between biblical and standard units when applicable',
+					example: 'rabbi_avraham_chaim_naeh',
+					allowedValues: getOpinions(converters),
+				},
+			]}
+		/>
 	{:catch}
 		<Endpoint method="GET" endpoint="/api/unitconverter" description="Error loading parameters" parameters={[]} />
 	{/await}
