@@ -26,6 +26,6 @@ Thank you to all who have provided feedback over the years and everyone who uses
 
 ## License
 
-(c) 2023 [Jonah Lawrence](https://github.com/DenverCoder1).
+(c) 2015-2023 [Jonah Lawrence](https://github.com/DenverCoder1).
 
 Licensed under the [GNU GPL v3.0 License](https://choosealicense.com/licenses/gpl-3.0/).
