@@ -406,7 +406,7 @@
 				name: 'hebrewYear',
 				type: 'Number',
 				required: false,
-				description: 'The Hebrew year to calculate holidays for (defaults to current year)',
+				description: 'The Hebrew year to start calculating holidays from (defaults to current year)',
 				example: new HDate().getFullYear(),
 			},
 			{
