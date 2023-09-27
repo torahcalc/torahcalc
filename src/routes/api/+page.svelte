@@ -1,11 +1,12 @@
 <script>
-	import { HDate } from '@hebcal/core';
-	import { getConverters, getUnits, getOpinions } from '$lib/js/unitconverter.js';
 	import { LETTER_SPELLING_VALUES } from '$lib/js/gematria.js';
+	import { calculateOmerHebrew, calculateOmerYear } from '$lib/js/omer';
+	import { getConverters, getUnits, getOpinions } from '$lib/js/unitconverter.js';
+	import { HDate } from '@hebcal/core';
+	import dayjs from 'dayjs';
 	import Endpoint from './Endpoint.svelte';
 	import Toc from 'svelte-toc';
-	import dayjs from 'dayjs';
-	import { calculateOmerHebrew, calculateOmerYear } from '$lib/js/omer';
+	import Fa from 'svelte-fa/src/fa.svelte';
 
 	const converters = getConverters(false);
 
@@ -68,6 +69,72 @@
 	const hebrewOmer = calculateOmerHebrew(new HDate().getFullYear(), new HDate().getMonth(), new HDate().getDate());
 	const exampleHebrewOmerMonth = hebrewOmer.count ? new HDate().getMonth() : 1;
 	const exampleHebrewOmerDay = hebrewOmer.count ? new HDate().getDate() : 16;
+
+	const holidayTypeParameters = [
+		{
+			name: 'diaspora',
+			type: 'Boolean',
+			required: false,
+			description: 'Whether to calculate holidays for the diaspora holiday schedule. Set to <code>false</code> for Israel. (defaults to <code>true</code>)',
+			example: true,
+		},
+		{
+			name: 'major',
+			type: 'Boolean',
+			required: false,
+			description: 'Whether to include major holidays (defaults to <code>true</code>)',
+			example: true,
+		},
+		{
+			name: 'minor',
+			type: 'Boolean',
+			required: false,
+			description: 'Whether to include minor holidays (defaults to <code>true</code>)',
+			example: true,
+		},
+		{
+			name: 'fasts',
+			type: 'Boolean',
+			required: false,
+			description: 'Whether to include fast days (defaults to <code>true</code>)',
+			example: true,
+		},
+		{
+			name: 'roshChodesh',
+			type: 'Boolean',
+			required: false,
+			description: 'Whether to include Rosh Chodesh (defaults to <code>true</code>)',
+			example: true,
+		},
+		{
+			name: 'shabbosMevorchim',
+			type: 'Boolean',
+			required: false,
+			description: 'Whether to include Shabbos Mevorchim (defaults to <code>false</code>)',
+			example: false,
+		},
+		{
+			name: 'specialShabbos',
+			type: 'Boolean',
+			required: false,
+			description: 'Whether to include special Shabbos days (defaults to <code>false</code>)',
+			example: false,
+		},
+		{
+			name: 'modern',
+			type: 'Boolean',
+			required: false,
+			description: 'Whether to include modern / Israel national holidays (defaults to <code>false</code>)',
+			example: false,
+		},
+		{
+			name: 'chabad',
+			type: 'Boolean',
+			required: false,
+			description: 'Whether to include Chabad events (defaults to <code>false</code>)',
+			example: false,
+		},
+	];
 </script>
 
 <svelte:head>
@@ -80,34 +147,142 @@
 
 	<p>Welcome to the TorahCalc API. This API is currently in beta, and is subject to change.</p>
 
-	<h3>Leap Years</h3>
+	<h2 class="category">Biblical and Talmudic Units</h2>
+
+	{#await converters}
+		<h3>Unit Converter</h3>
+
+		<Endpoint method="GET" endpoint="/api/unitconverter" description="Loading..." parameters={[]} />
+
+		<h3>Multi Unit Converter</h3>
+
+		<Endpoint method="GET" endpoint="/api/unitcharts" description="Loading..." parameters={[]} />
+	{:then converters}
+		<h3>Unit Converter</h3>
+
+		<Endpoint
+			method="GET"
+			endpoint="/api/unitconverter"
+			description="Convert between biblical and standard units of measurement"
+			parameters={[
+				{
+					name: 'type',
+					type: 'String',
+					required: true,
+					description: 'The type of unit to convert',
+					example: 'length',
+					allowedValues: Object.keys(converters),
+				},
+				{
+					name: 'from',
+					type: 'String',
+					required: true,
+					description: 'The unit to convert from',
+					example: 'amah',
+					allowedValues: getUnits(converters),
+				},
+				{
+					name: 'to',
+					type: 'String',
+					required: true,
+					description: 'The unit to convert to',
+					example: 'meter',
+					allowedValues: getUnits(converters),
+				},
+				{
+					name: 'amount',
+					type: 'Number',
+					required: false,
+					description: 'The amount to convert (defaults to 1)',
+					example: 3,
+				},
+				{
+					name: 'opinion',
+					type: 'String',
+					required: false,
+					description: 'The opinion to use for the conversion when converting between biblical and standard units',
+					example: 'rabbi_avraham_chaim_naeh',
+					allowedValues: getOpinions(converters),
+				},
+			]}
+		/>
+
+		<h3>Multi Unit Converter</h3>
+
+		<Endpoint
+			method="GET"
+			endpoint="/api/unitcharts"
+			description="Convert between a biblical or standard unit of measurement to all compatible units"
+			parameters={[
+				{
+					name: 'type',
+					type: 'String',
+					required: true,
+					description: 'The type of unit to convert',
+					example: 'length',
+					allowedValues: Object.keys(converters),
+				},
+				{
+					name: 'from',
+					type: 'String',
+					required: true,
+					description: 'The unit to convert from',
+					example: 'derech_yom',
+					allowedValues: getUnits(converters),
+				},
+				{
+					name: 'amount',
+					type: 'Number',
+					required: false,
+					description: 'The amount to convert (defaults to 1)',
+					example: 1,
+				},
+				{
+					name: 'opinion',
+					type: 'String',
+					required: false,
+					description: 'The opinion to use for converting between biblical and standard units when applicable',
+					example: 'rabbi_avraham_chaim_naeh',
+					allowedValues: getOpinions(converters),
+				},
+			]}
+		/>
+	{:catch}
+		<Endpoint method="GET" endpoint="/api/unitconverter" description="Error loading parameters" parameters={[]} />
+	{/await}
+
+	<h2 class="category">Calendar and Zmanim</h2>
+
+	<h3>Birkas Hachama</h3>
 
 	<Endpoint
 		method="GET"
-		endpoint="/api/leapyears/hebrew"
-		description="Check if a year is a leap year in the Hebrew calendar"
+		endpoint="/api/hachama"
+		description="Calculate the next Birkas Hachama date"
 		parameters={[
 			{
 				name: 'year',
 				type: 'Number',
 				required: false,
-				description: 'The year to check (defaults to current year)',
-				example: new HDate().getFullYear(),
+				description: 'The Gregorian year. The Birkas Hachama date returned will be the occurrence on or after this year. Defaults to current year.',
+				example: new Date().getFullYear(),
 			},
 		]}
 	/>
 
+	<h3>Daily Learning</h3>
+
 	<Endpoint
 		method="GET"
-		endpoint="/api/leapyears/gregorian"
-		description="Check if a year is a leap year in the Gregorian calendar"
+		endpoint="/api/dailylearning"
+		description="Calculate the Daf Yomi, Nach Yomi, Yerushalmi Yomi, Daily Chofetz Chaim, Daily Rambam Chapter, Daily Shemirat HaLashon, Daily Psalms, and Weekly Daf for a given date"
 		parameters={[
 			{
-				name: 'year',
-				type: 'Number',
+				name: 'date',
+				type: 'String',
 				required: false,
-				description: 'The year to check (defaults to current year)',
-				example: new Date().getFullYear(),
+				description: 'The date to calculate the daily learning for in YYYY-MM-DD format (defaults to current date)',
+				example: dayjs().format('YYYY-MM-DD'),
 			},
 		]}
 	/>
@@ -192,28 +367,53 @@
 
 	<Endpoint
 		method="GET"
-		endpoint="/api/holidays"
-		description="Calculate the holidays for a given year. You must either specify (1) a Gregorian year, or (2) a Hebrew year, or (3) a Hebrew year, month, and day to start from."
+		endpoint="/api/holidays/gregorianyear"
+		description="Calculate the holidays for a given Gregorian year."
 		parameters={[
 			{
 				name: 'gregorianYear',
 				type: 'Number',
 				required: false,
-				description: 'The Gregorian year to calculate holidays for. If provided, you must not provide a Hebrew year, month, or day.',
+				description: 'The Gregorian year to calculate holidays for (defaults to current year)',
 				example: new Date().getFullYear(),
 			},
+			...holidayTypeParameters,
+		]}
+	/>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/holidays/hebrewyear"
+		description="Calculate the holidays for a given Hebrew calendar year."
+		parameters={[
 			{
 				name: 'hebrewYear',
 				type: 'Number',
 				required: false,
-				description: 'The Hebrew year to calculate holidays for. If provided, you must not provide a Gregorian year. You may provide a hebrew month and day to use as a start date.',
+				description: 'The Hebrew year to calculate holidays for (defaults to current year)',
+				example: new HDate().getFullYear(),
+			},
+			...holidayTypeParameters,
+		]}
+	/>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/holidays/startdate"
+		description="Calculate the holidays for a given year from a given start date in the Hebrew calendar."
+		parameters={[
+			{
+				name: 'hebrewYear',
+				type: 'Number',
+				required: false,
+				description: 'The Hebrew year to calculate holidays for (defaults to current year)',
 				example: new HDate().getFullYear(),
 			},
 			{
 				name: 'hebrewMonth',
 				type: 'Number',
 				required: false,
-				description: 'The Hebrew month (1-13 where 1=Nissan) to start calculating holidays from. If provided, you must also provide a Hebrew year and day.',
+				description: 'The Hebrew month (1-13 where 1=Nissan) to start calculating holidays from (defaults to current month)',
 				example: new HDate().getMonth(),
 				allowedValues: hebrewMonthAllowedValues,
 			},
@@ -221,78 +421,67 @@
 				name: 'hebrewDay',
 				type: 'Number',
 				required: false,
-				description: 'The Hebrew day 1-30 to start calculating holidays from. If provided, you must also provide a Hebrew year and month.',
+				description: 'The Hebrew day 1-30 to start calculating holidays from (defaults to current day)',
 				example: new HDate().getDate(),
 			},
+			...holidayTypeParameters,
+		]}
+	/>
+
+	<h3>Leap Years</h3>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/leapyears/hebrew"
+		description="Check if a year is a leap year in the Hebrew calendar"
+		parameters={[
 			{
-				name: 'diaspora',
-				type: 'Boolean',
+				name: 'year',
+				type: 'Number',
 				required: false,
-				description: 'Whether to calculate holidays for the diaspora holiday schedule. Set to <code>false</code> for Israel. (defaults to <code>true</code>)',
-				example: true,
-			},
-			{
-				name: 'major',
-				type: 'Boolean',
-				required: false,
-				description: 'Whether to include major holidays (defaults to <code>true</code>)',
-				example: true,
-			},
-			{
-				name: 'minor',
-				type: 'Boolean',
-				required: false,
-				description: 'Whether to include minor holidays (defaults to <code>true</code>)',
-				example: true,
-			},
-			{
-				name: 'fasts',
-				type: 'Boolean',
-				required: false,
-				description: 'Whether to include fast days (defaults to <code>true</code>)',
-				example: true,
-			},
-			{
-				name: 'roshChodesh',
-				type: 'Boolean',
-				required: false,
-				description: 'Whether to include Rosh Chodesh (defaults to <code>true</code>)',
-				example: true,
-			},
-			{
-				name: 'shabbosMevorchim',
-				type: 'Boolean',
-				required: false,
-				description: 'Whether to include Shabbos Mevorchim (defaults to <code>false</code>)',
-				example: false,
-			},
-			{
-				name: 'specialShabbos',
-				type: 'Boolean',
-				required: false,
-				description: 'Whether to include special Shabbos days (defaults to <code>false</code>)',
-				example: false,
-			},
-			{
-				name: 'modern',
-				type: 'Boolean',
-				required: false,
-				description: 'Whether to include modern / Israel national holidays (defaults to <code>false</code>)',
-				example: false,
-			},
-			{
-				name: 'chabad',
-				type: 'Boolean',
-				required: false,
-				description: 'Whether to include Chabad events (defaults to <code>false</code>)',
-				example: false,
+				description: 'The year to check (defaults to current year)',
+				example: new HDate().getFullYear(),
 			},
 		]}
-		examples={[
-			`/api/holidays?gregorianYear=${new Date().getFullYear()}`,
-			`/api/holidays?hebrewYear=${new HDate().getFullYear()}`,
-			`/api/holidays?hebrewYear=${new HDate().getFullYear()}&hebrewMonth=${new HDate().getMonth()}&hebrewDay=${new HDate().getDate()}`,
-			`/api/holidays?gregorianYear=${new Date().getFullYear()}&diaspora=true&major=true&minor=true&fasts=true&roshChodesh=true&shabbosMevorchim=true&specialShabbos=true&modern=true&chabad=true`,
+	/>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/leapyears/gregorian"
+		description="Check if a year is a leap year in the Gregorian calendar"
+		parameters={[
+			{
+				name: 'year',
+				type: 'Number',
+				required: false,
+				description: 'The year to check (defaults to current year)',
+				example: new Date().getFullYear(),
+			},
+		]}
+	/>
+
+	<h3>Molad</h3>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/molad"
+		description="Calculate the molad for a given Hebrew month"
+		parameters={[
+			{
+				name: 'year',
+				type: 'Number',
+				required: false,
+				description: 'The Hebrew year (defaults to current year)',
+				example: new HDate().getFullYear(),
+			},
+			{
+				name: 'month',
+				type: 'Number',
+				required: false,
+				description: 'The Hebrew month 1-13 where 1=Nissan (defaults to current month)',
+				example: new HDate().getMonth(),
+				allowedValues: hebrewMonthAllowedValues,
+			},
 		]}
 	/>
 
@@ -358,205 +547,6 @@
 		]}
 	/>
 
-	<h3>Birkas Hachama</h3>
-
-	<Endpoint
-		method="GET"
-		endpoint="/api/hachama"
-		description="Calculate the next Birkas Hachama date"
-		parameters={[
-			{
-				name: 'year',
-				type: 'Number',
-				required: false,
-				description: 'The Gregorian year. The Birkas Hachama date returned will be the occurrence on or after this year. Defaults to current year.',
-				example: new Date().getFullYear(),
-			},
-		]}
-	/>
-
-	<h3>Molad</h3>
-
-	<Endpoint
-		method="GET"
-		endpoint="/api/molad"
-		description="Calculate the molad for a given Hebrew month"
-		parameters={[
-			{
-				name: 'year',
-				type: 'Number',
-				required: false,
-				description: 'The Hebrew year (defaults to current year)',
-				example: new HDate().getFullYear(),
-			},
-			{
-				name: 'month',
-				type: 'Number',
-				required: false,
-				description: 'The Hebrew month 1-13 where 1=Nissan (defaults to current month)',
-				example: new HDate().getMonth(),
-				allowedValues: hebrewMonthAllowedValues,
-			},
-		]}
-	/>
-
-	<h3>Unit Converter</h3>
-
-	{#await converters}
-		<Endpoint method="GET" endpoint="/api/unitconverter" description="Loading..." parameters={[]} />
-	{:then converters}
-		<Endpoint
-			method="GET"
-			endpoint="/api/unitconverter"
-			description="Convert between biblical and standard units of measurement"
-			parameters={[
-				{
-					name: 'type',
-					type: 'String',
-					required: true,
-					description: 'The type of unit to convert',
-					example: 'length',
-					allowedValues: Object.keys(converters),
-				},
-				{
-					name: 'from',
-					type: 'String',
-					required: true,
-					description: 'The unit to convert from',
-					example: 'amah',
-					allowedValues: getUnits(converters),
-				},
-				{
-					name: 'to',
-					type: 'String',
-					required: true,
-					description: 'The unit to convert to',
-					example: 'meter',
-					allowedValues: getUnits(converters),
-				},
-				{
-					name: 'amount',
-					type: 'Number',
-					required: false,
-					description: 'The amount to convert (defaults to 1)',
-					example: 3,
-				},
-				{
-					name: 'opinion',
-					type: 'String',
-					required: false,
-					description: 'The opinion to use for the conversion when converting between biblical and standard units',
-					example: 'rabbi_avraham_chaim_naeh',
-					allowedValues: getOpinions(converters),
-				},
-			]}
-		/>
-
-		<Endpoint
-			method="GET"
-			endpoint="/api/unitcharts"
-			description="Convert between a biblical or standard unit of measurement to all compatible units"
-			parameters={[
-				{
-					name: 'type',
-					type: 'String',
-					required: true,
-					description: 'The type of unit to convert',
-					example: 'length',
-					allowedValues: Object.keys(converters),
-				},
-				{
-					name: 'from',
-					type: 'String',
-					required: true,
-					description: 'The unit to convert from',
-					example: 'derech_yom',
-					allowedValues: getUnits(converters),
-				},
-				{
-					name: 'amount',
-					type: 'Number',
-					required: false,
-					description: 'The amount to convert (defaults to 1)',
-					example: 1,
-				},
-				{
-					name: 'opinion',
-					type: 'String',
-					required: false,
-					description: 'The opinion to use for converting between biblical and standard units when applicable',
-					example: 'rabbi_avraham_chaim_naeh',
-					allowedValues: getOpinions(converters),
-				},
-			]}
-		/>
-	{:catch}
-		<Endpoint method="GET" endpoint="/api/unitconverter" description="Error loading parameters" parameters={[]} />
-	{/await}
-
-	<h3>Gematria</h3>
-
-	<Endpoint
-		method="GET"
-		endpoint="/api/gematria"
-		description="Calculate the gematria of a word or phrase according to 25+ different methods"
-		parameters={[
-			{
-				name: 'text',
-				type: 'String',
-				required: true,
-				description: 'The Hebrew word or phrase to calculate the gematria of',
-				example: 'תורה',
-			},
-			...miluiParameters,
-		]}
-	/>
-
-	<Endpoint
-		method="GET"
-		endpoint="/api/gematriasearch"
-		description="Search for words or verses with the same gematria as a given word or phrase"
-		parameters={[
-			{
-				name: 'text',
-				type: 'String',
-				required: false,
-				description: 'The Hebrew word or phrase to find matching words or verses for',
-				example: 'תורה',
-			},
-			{
-				name: 'value',
-				type: 'Number',
-				required: false,
-				description: 'The gematria value to search for',
-				example: 611,
-			},
-		]}
-		examples={['/api/gematriasearch?text=תורה', '/api/gematriasearch?value=611']}
-	/>
-
-	<Endpoint
-		method="GET"
-		endpoint="/api/gematriamatch"
-		description="Find pairs of gematria methods where the given words have the same gematria value\n\nFor example, 53 = Mispar Siduri of &quot;תורה&quot; = AtBach of &quot;עבודה&quot;"
-		parameters={[
-			{
-				name: 'word1',
-				type: 'String',
-				required: true,
-				description: 'The first word to compare',
-				example: 'תורה',
-			},
-			{
-				name: 'word2',
-				type: 'String',
-				required: true,
-				description: 'The second word to compare',
-				example: 'משנה',
-			},
-		]}
-	/>
-
 	<h3>Zmanim</h3>
 
 	<Endpoint
@@ -595,23 +585,6 @@
 		]}
 	/>
 
-	<h3>Daily Learning</h3>
-
-	<Endpoint
-		method="GET"
-		endpoint="/api/dailylearning"
-		description="Calculate the Daf Yomi, Nach Yomi, Yerushalmi Yomi, Daily Chofetz Chaim, Daily Rambam Chapter, Daily Shemirat HaLashon, Daily Psalms, and Weekly Daf for a given date"
-		parameters={[
-			{
-				name: 'date',
-				type: 'String',
-				required: false,
-				description: 'The date to calculate the daily learning for in YYYY-MM-DD format (defaults to current date)',
-				example: dayjs().format('YYYY-MM-DD'),
-			},
-		]}
-	/>
-
 	<h3>Zodiac</h3>
 
 	<Endpoint
@@ -625,6 +598,75 @@
 				required: false,
 				description: 'The date to calculate the zodiac sign for in YYYY-MM-DD format (defaults to current date)',
 				example: dayjs().format('YYYY-MM-DD'),
+			},
+		]}
+	/>
+
+	<h2 class="category">Gematria</h2>
+
+	<h3>Gematria Calculator</h3>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/gematria"
+		description="Calculate the gematria of a word or phrase according to 25+ different methods"
+		parameters={[
+			{
+				name: 'text',
+				type: 'String',
+				required: true,
+				description: 'The Hebrew word or phrase to calculate the gematria of',
+				example: 'תורה',
+			},
+			...miluiParameters,
+		]}
+	/>
+
+	<h3>Gematria Lookup</h3>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/gematriasearch"
+		description="Search for words or verses with the same gematria as a given word or phrase"
+		parameters={[
+			{
+				name: 'text',
+				type: 'String',
+				required: false,
+				description: 'The Hebrew word or phrase to find matching words or verses for',
+				example: 'תורה',
+			},
+			{
+				name: 'value',
+				type: 'Number',
+				required: false,
+				description: 'The gematria value to search for',
+				example: 611,
+			},
+		]}
+		examples={['/api/gematriasearch?text=תורה', '/api/gematriasearch?value=611']}
+	/>
+
+	<h3>Gematria Match Finder</h3>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/gematriamatch"
+		description="Find pairs of gematria methods where the given words have the same gematria value\n\nFor example, 53 = Mispar Siduri of &quot;תורה&quot; = AtBach of &quot;עבודה&quot;"
+		parameters={[
+			{
+				name: 'word1',
+				type: 'String',
+				required: true,
+				description: 'The first word to compare',
+				example: 'תורה',
+			},
+			{
+				name: 'word2',
+				type: 'String',
+				required: true,
+				description: 'The second word to compare',
+				example: 'משנה',
 			},
 		]}
 	/>
@@ -644,6 +686,11 @@
 		section {
 			max-width: calc(100vw - 30em);
 		}
+	}
+
+	h2.category {
+		padding: 0.5em 1em;
+		text-align: center;
 	}
 
 	:global(aside.toc) {
