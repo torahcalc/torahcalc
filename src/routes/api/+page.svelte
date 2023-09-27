@@ -5,6 +5,7 @@
 	import Endpoint from './Endpoint.svelte';
 	import Toc from 'svelte-toc';
 	import dayjs from 'dayjs';
+	import { calculateOmerHebrew, calculateOmerYear } from '$lib/js/omer';
 
 	const converters = getConverters(false);
 
@@ -59,6 +60,14 @@
 		November: [11],
 		December: [12],
 	};
+
+	const todayYMD = dayjs().format('YYYY-MM-DD');
+	const omerYear = calculateOmerYear(new Date().getFullYear());
+	const exampleOmerDate = todayYMD in omerYear ? todayYMD : Object.keys(omerYear)[0];
+
+	const hebrewOmer = calculateOmerHebrew(new HDate().getFullYear(), new HDate().getMonth(), new HDate().getDate());
+	const exampleHebrewOmerMonth = hebrewOmer.count ? new HDate().getMonth() : 1;
+	const exampleHebrewOmerDay = hebrewOmer.count ? new HDate().getDate() : 16;
 </script>
 
 <svelte:head>
@@ -284,6 +293,68 @@
 			`/api/holidays?hebrewYear=${new HDate().getFullYear()}`,
 			`/api/holidays?hebrewYear=${new HDate().getFullYear()}&hebrewMonth=${new HDate().getMonth()}&hebrewDay=${new HDate().getDate()}`,
 			`/api/holidays?gregorianYear=${new Date().getFullYear()}&diaspora=true&major=true&minor=true&fasts=true&roshChodesh=true&shabbosMevorchim=true&specialShabbos=true&modern=true&chabad=true`,
+		]}
+	/>
+
+	<h3>Sefiras HaOmer</h3>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/omer/gregorian"
+		description="Calculate the Sefiras HaOmer count for a given Gregorian date"
+		parameters={[
+			{
+				name: 'date',
+				type: 'String',
+				required: false,
+				description: 'The date to calculate the Sefiras HaOmer count for in YYYY-MM-DD format (defaults to current date)',
+				example: exampleOmerDate,
+			},
+		]}
+	/>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/omer/hebrew"
+		description="Calculate the Sefiras HaOmer count for a given Hebrew date"
+		parameters={[
+			{
+				name: 'year',
+				type: 'Number',
+				required: false,
+				description: 'The Hebrew year (defaults to current year)',
+				example: new HDate().getFullYear(),
+			},
+			{
+				name: 'month',
+				type: 'Number',
+				required: false,
+				description: 'The Hebrew month - 1 for Nissan, 2 for Iyar, 3 for Sivan (defaults to current month)',
+				example: exampleHebrewOmerMonth,
+				allowedValues: { Nissan: [1], Iyar: [2], Sivan: [3] },
+			},
+			{
+				name: 'day',
+				type: 'Number',
+				required: false,
+				description: 'The Hebrew day 1-30 (defaults to current day)',
+				example: exampleHebrewOmerDay,
+			},
+		]}
+	/>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/omer/year"
+		description="Calculate the Sefiras HaOmer count for a given Gregorian year"
+		parameters={[
+			{
+				name: 'year',
+				type: 'Number',
+				required: false,
+				description: 'The Gregorian year (defaults to current year)',
+				example: new Date().getFullYear(),
+			},
 		]}
 	/>
 
