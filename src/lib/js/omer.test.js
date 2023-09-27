@@ -6,9 +6,9 @@ describe('test calculateOmer', () => {
 		const result = calculateOmer(2023);
 		expect(result.length).toBe(49);
 
-        expect(result[0].night).toBe('Evening of Thu, April 6, 2023');
+		expect(result[0].night).toBe('Evening of Thu, April 6, 2023');
 		expect(result[0].day).toBe('Fri, April 7, 2023');
-        expect(result[0].dayOfOmer).toBe(1);
+		expect(result[0].dayOfOmer).toBe(1);
 		expect(result[0].dayOfOmer).toBe(1);
 		expect(result[0].hebrewDate).toBe('16th of Nissan, 5783');
 		expect(result[0].sefiraEn).toBe('Chesed ShebiChesed');
@@ -16,7 +16,7 @@ describe('test calculateOmer', () => {
 		expect(result[0].formulaEn).toBe('Today is one day of the Omer.');
 		expect(result[0].formulaHe).toBe('הַיוֹם יוֹם אֶחַד לָעוֹמֶר.');
 
-        expect(result[48].night).toBe('Evening of Wed, May 24, 2023');
+		expect(result[48].night).toBe('Evening of Wed, May 24, 2023');
 		expect(result[48].day).toBe('Thu, May 25, 2023');
 		expect(result[48].dayOfOmer).toBe(49);
 		expect(result[48].hebrewDate).toBe('5th of Sivan, 5783');

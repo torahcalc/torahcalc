@@ -31,7 +31,7 @@ export function calculateOmer(year) {
 		const night = day.subtract(1, 'day');
 		const dayHeb = gregorianToHebrew({ year: day.year(), month: day.month() + 1, day: day.date() });
 		omer.push({
-            night: `Evening of ${formatDate(night.year(), night.month() + 1, night.date())}`,
+			night: `Evening of ${formatDate(night.year(), night.month() + 1, night.date())}`,
 			day: formatDate(day.year(), day.month() + 1, day.date()),
 			dayOfOmer: dayNum,
 			hebrewDate: dayHeb.displayEn,
