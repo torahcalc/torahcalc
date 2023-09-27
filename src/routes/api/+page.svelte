@@ -148,6 +148,23 @@
 		]}
 	/>
 
+	<h3>Birkas Hachama</h3>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/hachama"
+		description="Calculate the next Birkas Hachama date"
+		parameters={[
+			{
+				name: 'year',
+				type: 'Number',
+				required: false,
+				description: 'The Gregorian year. The Birkas Hachama date returned will be the occurrence on or after this year. Defaults to current year.',
+				example: new Date().getFullYear(),
+			},
+		]}
+	/>
+
 	<h3>Molad</h3>
 
 	<Endpoint
