@@ -1,6 +1,6 @@
 import { Zmanim } from '@hebcal/core';
 import { gregorianToHebrew, hebrewMonthMap, hebrewToGregorian } from './dateconverter';
-import { formatDateObject } from './utils';
+import { formatDateObject, getLastSaturday } from './utils';
 import { isHebrewLeapYear } from './leapyears';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -173,15 +173,4 @@ export function calculateMolad(year, month) {
 	};
 
 	return result;
-}
-
-/**
- * Get the last Saturday before the given date.
- * @param {Date} date - The date to get the last Saturday before.
- * @returns {Date} The last Saturday before the given date.
- */
-function getLastSaturday(date) {
-	const resultDate = new Date(date);
-	resultDate.setDate(date.getDate() - date.getDay() - 1);
-	return resultDate;
 }

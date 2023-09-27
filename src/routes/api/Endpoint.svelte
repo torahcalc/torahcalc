@@ -131,7 +131,7 @@
 	<h4 class="subsection-header toc-exclude my-3">Examples</h4>
 
 	{#each examples as example}
-		<p class="mono"><a href={example}>{example}</a></p>
+		<p class="mono"><a href={example} target="_blank">{example}</a></p>
 	{/each}
 </div>
 

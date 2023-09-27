@@ -76,3 +76,14 @@ export function tryOrDefault(func, defaultValue) {
 		return defaultValue;
 	}
 }
+
+/**
+ * Get the last Saturday before the given date.
+ * @param {Date} date - The date to get the last Saturday before.
+ * @returns {Date} The last Saturday before the given date.
+ */
+export function getLastSaturday(date) {
+	const resultDate = new Date(date);
+	resultDate.setDate(date.getDate() - date.getDay() - 1);
+	return resultDate;
+}

@@ -28,6 +28,37 @@
 			example: spellings[0].value,
 		};
 	});
+
+	const hebrewMonthAllowedValues = {
+		Nissan: [1],
+		Iyar: [2],
+		Sivan: [3],
+		Tammuz: [4],
+		Av: [5],
+		Elul: [6],
+		Tishrei: [7],
+		Cheshvan: [8],
+		Kislev: [9],
+		Tevet: [10],
+		Shevat: [11],
+		Adar: [12],
+		'Adar II': [13],
+	};
+
+	const gregorianMonthAllowedValues = {
+		January: [1],
+		February: [2],
+		March: [3],
+		April: [4],
+		May: [5],
+		June: [6],
+		July: [7],
+		August: [8],
+		September: [9],
+		October: [10],
+		November: [11],
+		December: [12],
+	};
 </script>
 
 <svelte:head>
@@ -92,7 +123,7 @@
 				required: false,
 				description: 'The Gregorian month 1-12 (defaults to current month)',
 				example: new Date().getMonth() + 1,
-				allowedValues: { January: [1], February: [2], March: [3], April: [4], May: [5], June: [6], July: [7], August: [8], September: [9], October: [10], November: [11], December: [12] },
+				allowedValues: gregorianMonthAllowedValues,
 			},
 			{
 				name: 'day',
@@ -129,7 +160,7 @@
 				required: false,
 				description: 'The Hebrew month 1-13 where 1=Nissan (defaults to current month)',
 				example: new HDate().getMonth(),
-				allowedValues: { Nissan: [1], Iyar: [2], Sivan: [3], Tammuz: [4], Av: [5], Elul: [6], Tishrei: [7], Cheshvan: [8], Kislev: [9], Tevet: [10], Shevat: [11], Adar: [12], 'Adar II': [13] },
+				allowedValues: hebrewMonthAllowedValues,
 			},
 			{
 				name: 'day',
@@ -145,6 +176,114 @@
 				description: 'Whether the date is after sunset of the previous day (defaults to false)',
 				example: false,
 			},
+		]}
+	/>
+
+	<h3>Holidays</h3>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/holidays"
+		description="Calculate the holidays for a given year. You must either specify (1) a Gregorian year, or (2) a Hebrew year, or (3) a Hebrew year, month, and day to start from."
+		parameters={[
+			{
+				name: 'gregorianYear',
+				type: 'Number',
+				required: false,
+				description: 'The Gregorian year to calculate holidays for. If provided, you must not provide a Hebrew year, month, or day.',
+				example: new Date().getFullYear(),
+			},
+			{
+				name: 'hebrewYear',
+				type: 'Number',
+				required: false,
+				description: 'The Hebrew year to calculate holidays for. If provided, you must not provide a Gregorian year. You may provide a hebrew month and day to use as a start date.',
+				example: new HDate().getFullYear(),
+			},
+			{
+				name: 'hebrewMonth',
+				type: 'Number',
+				required: false,
+				description: 'The Hebrew month (1-13 where 1=Nissan) to start calculating holidays from. If provided, you must also provide a Hebrew year and day.',
+				example: new HDate().getMonth(),
+				allowedValues: hebrewMonthAllowedValues,
+			},
+			{
+				name: 'hebrewDay',
+				type: 'Number',
+				required: false,
+				description: 'The Hebrew day 1-30 to start calculating holidays from. If provided, you must also provide a Hebrew year and month.',
+				example: new HDate().getDate(),
+			},
+			{
+				name: 'diaspora',
+				type: 'Boolean',
+				required: false,
+				description: 'Whether to calculate holidays for the diaspora holiday schedule. Set to <code>false</code> for Israel. (defaults to <code>true</code>)',
+				example: true,
+			},
+			{
+				name: 'major',
+				type: 'Boolean',
+				required: false,
+				description: 'Whether to include major holidays (defaults to <code>true</code>)',
+				example: true,
+			},
+			{
+				name: 'minor',
+				type: 'Boolean',
+				required: false,
+				description: 'Whether to include minor holidays (defaults to <code>true</code>)',
+				example: true,
+			},
+			{
+				name: 'fasts',
+				type: 'Boolean',
+				required: false,
+				description: 'Whether to include fast days (defaults to <code>true</code>)',
+				example: true,
+			},
+			{
+				name: 'roshChodesh',
+				type: 'Boolean',
+				required: false,
+				description: 'Whether to include Rosh Chodesh (defaults to <code>true</code>)',
+				example: true,
+			},
+			{
+				name: 'shabbosMevorchim',
+				type: 'Boolean',
+				required: false,
+				description: 'Whether to include Shabbos Mevorchim (defaults to <code>false</code>)',
+				example: false,
+			},
+			{
+				name: 'specialShabbos',
+				type: 'Boolean',
+				required: false,
+				description: 'Whether to include special Shabbos days (defaults to <code>false</code>)',
+				example: false,
+			},
+			{
+				name: 'modern',
+				type: 'Boolean',
+				required: false,
+				description: 'Whether to include modern / Israel national holidays (defaults to <code>false</code>)',
+				example: false,
+			},
+			{
+				name: 'chabad',
+				type: 'Boolean',
+				required: false,
+				description: 'Whether to include Chabad events (defaults to <code>false</code>)',
+				example: false,
+			},
+		]}
+		examples={[
+			`/api/holidays?gregorianYear=${new Date().getFullYear()}`,
+			`/api/holidays?hebrewYear=${new HDate().getFullYear()}`,
+			`/api/holidays?hebrewYear=${new HDate().getFullYear()}&hebrewMonth=${new HDate().getMonth()}&hebrewDay=${new HDate().getDate()}`,
+			`/api/holidays?gregorianYear=${new Date().getFullYear()}&diaspora=true&major=true&minor=true&fasts=true&roshChodesh=true&shabbosMevorchim=true&specialShabbos=true&modern=true&chabad=true`,
 		]}
 	/>
 
@@ -185,7 +324,7 @@
 				required: false,
 				description: 'The Hebrew month 1-13 where 1=Nissan (defaults to current month)',
 				example: new HDate().getMonth(),
-				allowedValues: { Nissan: [1], Iyar: [2], Sivan: [3], Tammuz: [4], Av: [5], Elul: [6], Tishrei: [7], Cheshvan: [8], Kislev: [9], Tevet: [10], Shevat: [11], Adar: [12], 'Adar II': [13] },
+				allowedValues: hebrewMonthAllowedValues,
 			},
 		]}
 	/>
