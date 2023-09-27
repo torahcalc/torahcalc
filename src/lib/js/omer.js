@@ -1,6 +1,6 @@
 import { HDate } from '@hebcal/core';
 import dayjs from 'dayjs';
-import { gregorianToHebrew } from './dateconverter';
+import { gregorianToHebrew, hebrewToGregorian } from './dateconverter';
 import { formatDate } from './utils';
 
 /**
@@ -18,19 +18,20 @@ import { formatDate } from './utils';
 /**
  * Calculate the Omer count for a given Gregorian year
  * @param {number} year - The Gregorian year
- * @returns {Array<Omer>} - The Omer count
+ * @returns {Record<string, Omer>} - The Omer count
  */
-export function calculateOmer(year) {
+export function calculateOmerYear(year) {
 	const hebrewYear = gregorianToHebrew({ year, month: 4, day: 1 }).year;
 	const firstDayOfOmer = new HDate(15, 1, hebrewYear);
 	const firstDayOfOmerGreg = dayjs(firstDayOfOmer.greg());
-	/** @type {Array<Omer>} */
-	const omer = [];
+	/** @type {Record<string, Omer>} */
+	const omer = {};
 	for (let dayNum = 1; dayNum < 50; dayNum++) {
 		const day = firstDayOfOmerGreg.add(dayNum, 'day');
 		const night = day.subtract(1, 'day');
 		const dayHeb = gregorianToHebrew({ year: day.year(), month: day.month() + 1, day: day.date() });
-		omer.push({
+		const ymd = day.format('YYYY-MM-DD');
+		omer[ymd] = {
 			night: `Evening of ${formatDate(night.year(), night.month() + 1, night.date())}`,
 			day: formatDate(day.year(), day.month() + 1, day.date()),
 			dayOfOmer: dayNum,
@@ -39,9 +40,38 @@ export function calculateOmer(year) {
 			sefiraHe: getSefirah(dayNum, 'he'),
 			formulaEn: getFullFormula(dayNum, 'en'),
 			formulaHe: getFullFormula(dayNum, 'he'),
-		});
+		};
 	}
 	return omer;
+}
+
+/**
+ * Calculate the Omer count for a given Gregorian date in the format `YYYY-MM-DD`
+ * @param {string} date - The Gregorian date
+ * @returns {{ dayCount: Omer|null, nightCount: Omer|null }} - The Omer count for the day (counted from the previous evening) and the night (counted from the current evening)
+ */
+export function calculateOmerDate(date) {
+	const day = dayjs(date);
+	const year = day.year();
+	const omerYear = calculateOmerYear(year);
+	const dayCount = omerYear[date] || null;
+	const nightCount = omerYear[day.add(1, 'day').format('YYYY-MM-DD')] || null;
+	return { dayCount, nightCount };
+}
+
+/**
+ * Calculates the Omer count for a given Hebrew year, month, and day
+ * @param {number} year - The Hebrew year
+ * @param {number} month - The Hebrew month
+ * @param {number} day - The Hebrew day
+ * @returns {{ count: Omer|null }} - The Omer count for the day (counted from the previous evening) and the night (counted from the current evening)
+ */
+export function calculateOmerHebrew(year, month, day) {
+	const gregorianDate = dayjs(hebrewToGregorian({ year, month, day }).date);
+	const omer = calculateOmerDate(gregorianDate.format('YYYY-MM-DD'));
+	return {
+		count: omer.dayCount,
+	};
 }
 
 /**
