@@ -137,13 +137,13 @@ export function calculateMolad(year, month) {
 		'24Hr': dayOfWeekStr + newMolad.format('HH:00'),
 	};
 
-	/** @type {{ [key: string]: any } }} */
 	const result = {
 		timeString: newMolad.toISOString().replace('T', ' ').replace('Z', ''),
 		timeFormat,
 		dayOfWeekFormat,
 		hebrewDateFormat,
 		monthName: `${hebrewMonthMap[month]} ${year}`,
+		shabbosMevarchim: {},
 	};
 
 	// Shabbos Mevorchim and Rosh Chodesh
