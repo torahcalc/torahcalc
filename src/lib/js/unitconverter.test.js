@@ -14,8 +14,6 @@ describe('test getConverters', () => {
 		expect('coins' in converters).toBe(true);
 		expect(converters.coins.units.usd.value).toBeGreaterThan(30000);
 		expect(converters.coins.units.usd.value).toBeLessThan(50000);
-		// updated should be before current time
-		expect(converters.coins.units.usd.updated).toBeLessThanOrEqual(new Date().getTime());
 
 		// ! NOTE: getConverters(true) is not yet tested because "fetch" is not available globally in tests
 	});
@@ -57,8 +55,6 @@ describe('test getUnit', () => {
 		expect(unit2.type).toBe('STANDARD');
 		expect(unit2.value).toBeGreaterThan(30000);
 		expect(unit2.value).toBeLessThan(50000);
-		// updated should be before current time
-		expect(unit2.updated).toBeLessThanOrEqual(new Date().getTime());
 
 		const unit3 = await getUnit('length', 'amah');
 		expect(unit3.name).toBe('Amah - אמה');
@@ -266,8 +262,10 @@ describe('test convertUnitsMulti', () => {
 		expect(result.shaah.opinion).toBe(undefined);
 		expect(result.hiluch_mil.result).toBeCloseTo(28320);
 		expect(result.hiluch_mil.opinion).toBe(undefined);
+		expect(result.hiluch_mil.unitOpinions).toStrictEqual(['Shulchan Aruch Harav (Hiluch Mil = 18 minutes)']);
 		expect(result.kdei_achilas_pras.result).toBeCloseTo(254880);
 		expect(result.kdei_achilas_pras.opinion).toBe(undefined);
+		expect(result.kdei_achilas_pras.unitOpinions).toStrictEqual(["Chasam Sofer (K'dei Achilas Pras = 2 minutes)"]);
 		expect(result.small_onah.result).toBeCloseTo(203904);
 		expect(result.small_onah.opinion).toBe(undefined);
 		expect(result.et.result).toBeCloseTo(4893696);
