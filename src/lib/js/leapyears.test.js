@@ -3,7 +3,7 @@ import { isHebrewLeapYear, isGregorianLeapYear } from './leapyears.js';
 
 describe('test hebrew leap years', () => {
 	it('test non-leap year', () => {
-		const result = isHebrewLeapYear({ year: 5781 });
+		const result = isHebrewLeapYear(5781);
 		expect(result.isLeapYear).toBe(false);
 		expect(result.reason).toBe('5781 is the 5th year of the 19-year Metonic cycle and is therefore not a leap year.');
 		expect(result.nextLeapYear).toBe(5782);
@@ -11,7 +11,7 @@ describe('test hebrew leap years', () => {
 	});
 
 	it('test leap year', () => {
-		const result = isHebrewLeapYear({ year: 5782 });
+		const result = isHebrewLeapYear(5782);
 		expect(result.isLeapYear).toBe(true);
 		expect(result.reason).toBe('5782 is the 6th year of the 19-year Metonic cycle and is therefore a leap year.');
 		expect(result.nextLeapYear).toBe(5784);
@@ -19,7 +19,7 @@ describe('test hebrew leap years', () => {
 	});
 
 	it('test year 19 of the cycle', () => {
-		const result = isHebrewLeapYear({ year: 5795 });
+		const result = isHebrewLeapYear(5795);
 		expect(result.isLeapYear).toBe(true);
 		expect(result.reason).toBe('5795 is the 19th year of the 19-year Metonic cycle and is therefore a leap year.');
 		expect(result.nextLeapYear).toBe(5798);
@@ -27,14 +27,14 @@ describe('test hebrew leap years', () => {
 	});
 
 	it('test non-positive year', () => {
-		expect(() => isHebrewLeapYear({ year: 0 })).toThrow();
-		expect(() => isHebrewLeapYear({ year: -1 })).toThrow();
+		expect(() => isHebrewLeapYear(0)).toThrow();
+		expect(() => isHebrewLeapYear(-1)).toThrow();
 	});
 });
 
 describe('test gregorian leap years', () => {
 	it('test divisible by 400', () => {
-		const result = isGregorianLeapYear({ year: 2000 });
+		const result = isGregorianLeapYear(2000);
 		expect(result.isLeapYear).toBe(true);
 		expect(result.reason).toBe('2000 is divisible by 400, and is therefore a leap year.');
 		expect(result.nextLeapYear).toBe(2004);
@@ -42,7 +42,7 @@ describe('test gregorian leap years', () => {
 	});
 
 	it('test divisible by 100 but not by 400', () => {
-		const result = isGregorianLeapYear({ year: 1900 });
+		const result = isGregorianLeapYear(1900);
 		expect(result.isLeapYear).toBe(false);
 		expect(result.reason).toBe('1900 is divisible by 100, but not by 400, and is therefore not a leap year.');
 		expect(result.nextLeapYear).toBe(1904);
@@ -50,7 +50,7 @@ describe('test gregorian leap years', () => {
 	});
 
 	it('test divisible by 4 but not by 100', () => {
-		const result = isGregorianLeapYear({ year: 2004 });
+		const result = isGregorianLeapYear(2004);
 		expect(result.isLeapYear).toBe(true);
 		expect(result.reason).toBe('2004 is divisible by 4 and not by 100, and is therefore a leap year.');
 		expect(result.nextLeapYear).toBe(2008);
@@ -58,7 +58,7 @@ describe('test gregorian leap years', () => {
 	});
 
 	it('test not divisible by 4', () => {
-		const result = isGregorianLeapYear({ year: 2005 });
+		const result = isGregorianLeapYear(2005);
 		expect(result.isLeapYear).toBe(false);
 		expect(result.reason).toBe('2005 is not divisible by 4, and is therefore not a leap year.');
 		expect(result.nextLeapYear).toBe(2008);
@@ -66,6 +66,6 @@ describe('test gregorian leap years', () => {
 	});
 
 	it('test year 0', () => {
-		expect(() => isGregorianLeapYear({ year: 0 })).toThrow();
+		expect(() => isGregorianLeapYear(0)).toThrow();
 	});
 });
