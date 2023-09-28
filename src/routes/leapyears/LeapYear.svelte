@@ -5,14 +5,14 @@
 
 	const currentGregorianYear = new Date().getFullYear();
 	const currentHebrewYear = new HDate().getFullYear();
-	const currentGregorianYearResult = isGregorianLeapYear({ year: currentGregorianYear });
-	const currentHebrewYearResult = isHebrewLeapYear({ year: currentHebrewYear });
+	const currentGregorianYearResult = isGregorianLeapYear(currentGregorianYear);
+	const currentHebrewYearResult = isHebrewLeapYear(currentHebrewYear);
 
 	let gregorianYear = currentGregorianYear;
 	let hebrewYear = currentHebrewYear;
 
-	$: gregorianLeapYearResult = isGregorianLeapYear({ year: gregorianYear });
-	$: hebrewLeapYearResult = isHebrewLeapYear({ year: hebrewYear });
+	$: gregorianLeapYearResult = isGregorianLeapYear(gregorianYear);
+	$: hebrewLeapYearResult = isHebrewLeapYear(hebrewYear);
 </script>
 
 <div class="card flex-card center hebrew">

@@ -9,7 +9,7 @@ export function GET({ url }) {
 	const year = Number(url.searchParams.get('year') || new HDate().getFullYear());
 
 	try {
-		return createResponse(isHebrewLeapYear({ year }));
+		return createResponse(isHebrewLeapYear(year));
 	} catch (error) {
 		return createErrorResponse(error);
 	}

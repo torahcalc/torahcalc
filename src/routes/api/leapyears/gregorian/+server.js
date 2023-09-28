@@ -8,7 +8,7 @@ export function GET({ url }) {
 	const year = Number(url.searchParams.get('year') || new Date().getFullYear());
 
 	try {
-		return createResponse(isGregorianLeapYear({ year }));
+		return createResponse(isGregorianLeapYear(year));
 	} catch (error) {
 		return createErrorResponse(error);
 	}

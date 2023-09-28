@@ -1,15 +1,10 @@
 /**
- * @typedef {Object} LeapYearOptions
- * @property {number} year - The year to check.
- */
-
-/**
  * Checks whether the given year is a leap year on the Gregorian calendar.
  *
- * @param {LeapYearOptions} options - The options for the leap year check.
+ * @param {number} year - The year to check.
  * @returns {{ isLeapYear: boolean, reason: string, nextLeapYear: number, nextLeapYearReason: string }} - The leap year check result.
  */
-export const isGregorianLeapYear = ({ year }) => {
+export const isGregorianLeapYear = (year) => {
 	/**
 	 * Checks whether the given year is a leap year.
 	 * @param {number} year - The year to check.
@@ -93,10 +88,10 @@ const ordinalSuffixOf = (number) => {
 /**
  * Checks whether the given year is a leap year on the Hebrew calendar.
  *
- * @param {LeapYearOptions} options - The options for the leap year check.
+ * @param {number} year - The year to check.
  * @returns {{ isLeapYear: boolean, reason: string, nextLeapYear: number, nextLeapYearReason: string }} - The leap year check result.
  */
-export const isHebrewLeapYear = ({ year }) => {
+export const isHebrewLeapYear = (year) => {
 	/**
 	 * Checks whether the given year of the Metonic cycle is a leap year.
 	 * @param {number} yearOfCycle - The year of the Metonic cycle to check.

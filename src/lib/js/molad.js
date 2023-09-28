@@ -70,7 +70,7 @@ export function calculateMolad(year, month) {
 	// Add or subtract months for full years between 5774 and the given year
 	if (year > 5774) {
 		for (let i = 5774; i < year; i++) {
-			if (isHebrewLeapYear({ year: i + 1 }).isLeapYear) {
+			if (isHebrewLeapYear(i + 1).isLeapYear) {
 				timestampNewMolad += 13 * moladInterval;
 			} else {
 				timestampNewMolad += 12 * moladInterval;
@@ -79,7 +79,7 @@ export function calculateMolad(year, month) {
 	} else if (year < 5774) {
 		// remove 12 or 13 months for each year before 5774
 		for (let i = 5774 - 1; year <= i; i--) {
-			if (isHebrewLeapYear({ year: i + 1 }).isLeapYear) {
+			if (isHebrewLeapYear(i + 1).isLeapYear) {
 				timestampNewMolad -= 13 * moladInterval;
 			} else {
 				timestampNewMolad -= 12 * moladInterval;
@@ -92,7 +92,7 @@ export function calculateMolad(year, month) {
 		timestampNewMolad += (month - 1) * moladInterval;
 	} else if (month >= 7 && month <= 13) {
 		// Tishrei - Adar II
-		const monthsInYear = isHebrewLeapYear({ year }).isLeapYear ? 13 : 12;
+		const monthsInYear = isHebrewLeapYear(year).isLeapYear ? 13 : 12;
 		timestampNewMolad += (month - monthsInYear - 1) * moladInterval;
 	} else {
 		throw new Error('Invalid Hebrew month.');
