@@ -236,6 +236,7 @@ export async function getConverters(fetchExchangeRates = true) {
 				shanah: { name: 'Shanah - שנה', value: 50, type: 'BIBLICAL' },
 				tekufah: { name: 'Tekufah - תקופה', value: 200, type: 'BIBLICAL' },
 				chodesh: { name: 'Chodesh - חודש', value: 600, type: 'BIBLICAL' },
+				molad: { name: "Molad Emtza'i - מולד אמצעי", value: 458784e3 / 765433, type: 'BIBLICAL' },
 				shavuah: { name: 'Shavuah - שבוע', value: 2528.57142857, type: 'BIBLICAL' },
 				yom: { name: 'Yom - יום', value: 17700, type: 'BIBLICAL' },
 				onah: { name: 'Onah - עונה', value: 35400, type: 'BIBLICAL' },
