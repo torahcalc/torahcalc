@@ -436,7 +436,7 @@ export async function getDefaultUnitOpinion(type, unitId) {
  * @property {number} [amount] - The amount to convert.
  * @property {string} [opinionId] - The opinion to use for the conversion (only when converting between standard and biblical units)
  * @property {string[]} [unitOpinionIds] - The unit opinions to use for the conversion (unitId.opinionId)
- * 
+ *
  * @typedef {{ from: string, to: string, result: number, opinion?: string, unitOpinions?: string[] }} ConversionResult
  */
 
