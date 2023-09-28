@@ -390,8 +390,6 @@ export async function convertUnits({ type, unitFromId, unitToId, amount, opinion
 			outputs.opinion = opinion.name;
 		}
 	}
-	// set the precision of the result to 6 decimal places
-	outputs.result = Math.round(outputs.result * 1e6) / 1e6;
 	// return the result
 	return outputs;
 }
