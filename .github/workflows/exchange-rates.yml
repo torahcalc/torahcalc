@@ -1,0 +1,46 @@
+name: Fetch Exchange Rates
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/exchange-rates.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/exchange-rates.yml'
+  schedule:
+    # every week on Monday at 00:00 UTC
+    - cron: '0 0 * * 1'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Checkout Pull Request
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr checkout ${{ github.event.pull_request.number }}
+
+      - name: Fetch Exchange Rates
+        run: |
+          mkdir -p src/lib/data
+          curl --request GET 'https://api.apilayer.com/exchangerates_data/latest?base=USD&symbols=CAD,EUR,GBP,ILS,XAG' \
+            --header 'apikey: ${{ secrets.APILAYER_EXCHANGE_RATE_API_KEY }}' \
+            --output src/lib/data/exchange-rates.json
+
+      - name: Add and commit changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "chore: Updated exchange rates" && git push
