@@ -1,28 +1,26 @@
+import dayjs from 'dayjs';
+import FALLBACK_EXCHANGE_RATES from './../data/exchange-rates.json';
+
 /**
  * @type {{ [key: string]: number }|null} - Cached exchange rates for currencies and commodities.
  */
 let EXCHANGE_RATES = null;
-
-// Fallback exchange rates for 1 USD
-const FALLBACK_EXCHANGE_RATES_DATE = '2023-09-14';
-const FALLBACK_EXCHANGE_RATES = {
-	updateTimestamp: new Date(FALLBACK_EXCHANGE_RATES_DATE).getTime(),
-	CAD: 1.351149,
-	EUR: 0.940176,
-	GBP: 0.806046,
-	ILS: 3.821849,
-	XAG: 0.044896,
-};
 
 /**
  * Return the price of currencies and commodities.
  * @returns {Promise<{ [key: string]: number }>}} - The price of currencies and commodities as currency codes and prices compared to 1 USD.
  */
 async function getExchangeRates() {
+	// if FALLBACK_EXCHANGE_RATES has been updated in the last 7 days, use it
+	if (FALLBACK_EXCHANGE_RATES.date > dayjs().subtract(7, 'day').format('YYYY-MM-DD')) {
+		EXCHANGE_RATES = FALLBACK_EXCHANGE_RATES.rates;
+	}
+	// if we have cached exchange rates, return them
 	if (EXCHANGE_RATES !== null) {
 		return EXCHANGE_RATES;
 	}
-	const API_URL = 'https://api.exchangerate.host/latest?base=USD';
+	// try to fetch exchange rates from CDN and use fallback if it fails
+	const API_URL = 'https://cdn.jsdelivr.net/gh/torahcalc/torahcalc@main/src/lib/data/exchange-rates.json';
 	try {
 		const response = await fetch(API_URL);
 		/** @type {{ rates: { [key: string]: number } }} - The price of currencies and commodities as currency codes and prices compared to 1 USD. */
@@ -38,7 +36,8 @@ async function getExchangeRates() {
 		return data.rates;
 	} catch (error) {
 		console.error(error);
-		return FALLBACK_EXCHANGE_RATES;
+		EXCHANGE_RATES = FALLBACK_EXCHANGE_RATES.rates;
+		return EXCHANGE_RATES;
 	}
 }
 
