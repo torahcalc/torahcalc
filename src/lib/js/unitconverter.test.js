@@ -92,7 +92,7 @@ describe('test convertUnits', () => {
 		expect(result).toStrictEqual({
 			from: 'Meter',
 			opinion: RABBI_AVRAHAM_CHAIM_NAEH,
-			result: 2.083073,
+			result: 2.0830729492146816,
 			to: 'Amah - אמה',
 		});
 
@@ -100,7 +100,7 @@ describe('test convertUnits', () => {
 		expect(result2).toStrictEqual({
 			from: 'Amah - אמה',
 			opinion: RABBI_YAAKOV_KAMENETSKY,
-			result: 0.5334,
+			result: 0.5334000000000001,
 			to: 'Meter',
 		});
 
@@ -110,6 +110,14 @@ describe('test convertUnits', () => {
 			result: 3.5 * 6,
 			to: 'Tefach - טפח',
 		});
+
+		const result4 = await convertUnits({ type: 'length', unitFromId: 'foot', unitToId: 'amah', amount: 1, opinionId: 'rabbi_yaakov_kamenetsky' });
+		expect(result4).toStrictEqual({
+			from: 'Foot',
+			opinion: RABBI_YAAKOV_KAMENETSKY,
+			result: 0.5714285714285713,
+			to: 'Amah - אמה',
+		});
 	});
 
 	it('converts volume units', async () => {
@@ -117,7 +125,7 @@ describe('test convertUnits', () => {
 		expect(result).toStrictEqual({
 			from: 'Liter',
 			opinion: "Desert (Rabbi Avraham Chaim Naeh) - מדבריות (ר' אברהם חיים נאה",
-			result: 11.574074,
+			result: 11.574074074074074,
 			to: "Revi'is - רביעית",
 		});
 	});
@@ -127,7 +135,7 @@ describe('test convertUnits', () => {
 		expect(result).toStrictEqual({
 			from: 'Amah merubaas - אמה מרובעת',
 			opinion: RABBI_AVRAHAM_CHAIM_NAEH,
-			result: 0.230458,
+			result: 0.2304576036,
 			to: 'Square meter',
 		});
 	});
