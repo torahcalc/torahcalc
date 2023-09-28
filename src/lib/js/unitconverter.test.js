@@ -204,25 +204,25 @@ describe('test convertUnitsMulti', () => {
 
 	it('converts length units with opinion from standard', async () => {
 		const result = await convertUnitsMulti({ type: 'length', unitFromId: 'kilometer', amount: 3, opinionId: 'rabbi_yaakov_kamenetsky' });
-		expect(result.derech_yom.result).toBeCloseTo(((3 / 38.4048) * 10) / 9);
+		expect(result.derech_yom.result).toBeCloseTo((3 / 38.4048 / 10) * 9);
 		expect(result.derech_yom.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
-		expect(result.parsah.result).toBeCloseTo((((3 / 38.4048) * 10) / 9) * 10);
+		expect(result.parsah.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 10);
 		expect(result.parsah.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
-		expect(result.mil.result).toBeCloseTo((((3 / 38.4048) * 10) / 9) * 40);
+		expect(result.mil.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 40);
 		expect(result.mil.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
-		expect(result.ris.result).toBeCloseTo((((3 / 38.4048) * 10) / 9) * 300);
+		expect(result.ris.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 300);
 		expect(result.ris.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
-		expect(result.kaneh.result).toBeCloseTo((((3 / 38.4048) * 10) / 9) * 13333.333333333334);
+		expect(result.kaneh.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 13333.333333333334);
 		expect(result.kaneh.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
-		expect(result.amah.result).toBeCloseTo((((3 / 38.4048) * 10) / 9) * 80000);
+		expect(result.amah.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 80000);
 		expect(result.amah.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
-		expect(result.short_amah.result).toBeCloseTo((((3 / 38.4048) * 10) / 9) * 96000);
+		expect(result.short_amah.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 96000);
 		expect(result.short_amah.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
-		expect(result.zeret.result).toBeCloseTo((((3 / 38.4048) * 10) / 9) * 160000);
+		expect(result.zeret.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 160000);
 		expect(result.zeret.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
-		expect(result.tefach.result).toBeCloseTo((((3 / 38.4048) * 10) / 9) * 480000);
+		expect(result.tefach.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 480000);
 		expect(result.tefach.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
-		expect(result.etzbah.result).toBeCloseTo((((3 / 38.4048) * 10) / 9) * 1920000);
+		expect(result.etzbah.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 1920000);
 		expect(result.etzbah.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
 		expect(result.kilometer.result).toBeCloseTo(3);
 		expect(result.kilometer.opinion).toBe(undefined);
@@ -264,6 +264,10 @@ describe('test convertUnitsMulti', () => {
 		expect(result.onah.opinion).toBe(undefined);
 		expect(result.shaah.result).toBeCloseTo(8496);
 		expect(result.shaah.opinion).toBe(undefined);
+		expect(result.hiluch_mil.result).toBeCloseTo(28320);
+		expect(result.hiluch_mil.opinion).toBe(undefined);
+		expect(result.kdei_achilas_pras.result).toBeCloseTo(254880);
+		expect(result.kdei_achilas_pras.opinion).toBe(undefined);
 		expect(result.small_onah.result).toBeCloseTo(203904);
 		expect(result.small_onah.opinion).toBe(undefined);
 		expect(result.et.result).toBeCloseTo(4893696);

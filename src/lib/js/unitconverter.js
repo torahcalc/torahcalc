@@ -45,7 +45,7 @@ async function getExchangeRates() {
 /**
  * @typedef {{ name: string, value: number, type: "BIBLICAL"|"STANDARD", updated?: number }} Unit
  * @typedef {{ name: string, factor: number }} Opinion
- * @typedef {{ name: string, units: { [key: string]: Unit }, opinions?: { [key: string]: Opinion } }} Converter
+ * @typedef {{ name: string, units: { [key: string]: Unit }, opinions?: { [key: string]: Opinion }, unitOpinions?: { [key: string]: { [key: string]: Opinion } } }} Converter
  * @typedef {{[key: string]: Converter}} Converters
  */
 
@@ -241,6 +241,8 @@ export async function getConverters(fetchExchangeRates = true) {
 				yom: { name: 'Yom - יום', value: 17700, type: 'BIBLICAL' },
 				onah: { name: 'Onah - עונה', value: 35400, type: 'BIBLICAL' },
 				shaah: { name: 'Shaah - שעה', value: 424800, type: 'BIBLICAL' },
+				hiluch_mil: { name: 'Hiluch Mil - הילוך מיל', value: 1416e3, type: 'BIBLICAL' },
+				kdei_achilas_pras: { name: "K'dei achilas pras - כדי אכילת פרס", value: 12744e3, type: 'BIBLICAL' },
 				small_onah: { name: 'Small Onah - עונה', value: 10195200, type: 'BIBLICAL' },
 				et: { name: 'Et - עת', value: 244684800, type: 'BIBLICAL' },
 				chelek: { name: 'Chelek - חלק', value: 458784e3, type: 'BIBLICAL' },
@@ -255,6 +257,27 @@ export async function getConverters(fetchExchangeRates = true) {
 				minute: { name: 'Minute', value: 25488e3, type: 'STANDARD' },
 				second: { name: 'Second', value: 152928e4, type: 'STANDARD' },
 				millisecond: { name: 'Millisecond', value: 152928e7, type: 'STANDARD' },
+			},
+			unitOpinions: {
+				hiluch_mil: {
+					shulchan_aruch_harav: { name: 'Shulchan Aruch Harav (Hiluch Mil = 18 minutes)', factor: 1 },
+					biur_hagra: { name: 'Biur HaGra (Hiluch Mil = 22.5 minutes)', factor: 1.25 },
+					shulchan_aruch_harav_stringent: { name: 'Shulchan Aruch Harav (Hiluch Mil = 24 minutes)', factor: 4 / 3 },
+				},
+				kdei_achilas_pras: {
+					chasam_sofer: { name: "Chasam Sofer (K'dei Achilas Pras = 2 minutes)", factor: 1 },
+					rabbi_chanoch_henech_eigs: { name: "Rabbi Chanoch Henech Eigs (K'dei Achilas Pras = 3 minutes)", factor: 1.5 },
+					aruch_hashulchan: { name: "Aruch HaShulchan (K'dei Achilas Pras = 3 minutes)", factor: 1.5 },
+					aruch_hashulchan_stringent: { name: "Aruch HaShulchan (K'dei Achilas Pras = 4 minutes)", factor: 2 },
+					kaf_hachaim: { name: "Kaf Hachaim (K'dei Achilas Pras = 4 minutes)", factor: 2 },
+					kaf_hachaim_stringent: { name: "Kaf Hachaim (K'dei Achilas Pras = 7 minutes)", factor: 3.5 },
+					rabbi_avraham_chaim_naeh: { name: "Rabbi Avraham Chaim Na'eh (K'dei Achilas Pras = 4 minutes)", factor: 2 },
+					rabbi_yitzchak_elchonon_spector: { name: "Rabbi Yitzchak Elchonon Spector (K'dei Achilas Pras = 5 minutes)", factor: 2.5 },
+					rabbi_ovadiah_yosef: { name: "Rabbi Ovadiah Yosef (K'dei Achilas Pras = 8 minutes)", factor: 4 },
+					chasam_sofer_stringent: { name: "Chasam Sofer (K'dei Achilas Pras = 9 minutes)", factor: 4.5 },
+					rabbi_avraham_chaim_naeh_stringent: { name: "Rabbi Avraham Chaim Na'eh (K'dei Achilas Pras = 9 minutes)", factor: 4.5 },
+					darkei_horaah11: { name: "Darkei Hora'ah (K'dei Achilas Pras = 11 minutes and 9 seconds)", factor: 5.575 },
+				},
 			},
 		},
 	};
@@ -291,6 +314,24 @@ export function getOpinions(converters) {
 }
 
 /**
+ * Return a mapping of unit types to lists of unit opinions.
+ * @param {Converters} converters
+ * @returns {{[key: string]: string[]}} The opinions in a mapping of type to list of opinions
+ */
+export function getUnitOpinions(converters) {
+	/** @type {{[key: string]: string[]}} */
+	const opinions = {};
+	for (const [type, converter] of Object.entries(converters)) {
+		if (converter.unitOpinions) {
+			for (const [unit, unitOpinions] of Object.entries(converter.unitOpinions)) {
+				opinions[`${unit} (${type})`] = Object.keys(unitOpinions).map((opinion) => `${unit}.${opinion}`);
+			}
+		}
+	}
+	return opinions;
+}
+
+/**
  * Get the converter for a unit type.
  * @param {string} type - The type of unit to convert.
  * @returns {Promise<Converter>} - The converter for the unit type.
@@ -298,7 +339,7 @@ export function getOpinions(converters) {
 async function getConverter(type) {
 	type = type.trim().toLowerCase();
 	const converters = await getConverters();
-	if (!(type in converters)) {
+	if (!converters[type]) {
 		throw new Error(`Unit type '${type}' was not found`);
 	}
 	return converters[type];
@@ -328,15 +369,36 @@ export async function getUnit(type, unitId) {
 export async function getOpinion(type, opinionId) {
 	const converter = await getConverter(type);
 	opinionId = opinionId.trim().toLowerCase();
-	if (!('opinions' in converter)) {
+	if (!converter.opinions) {
 		throw new Error(`Opinions are not supported for this conversion type`);
 	}
-	// @ts-ignore - The existence of the opinions property is checked above
-	if (!(opinionId in converter.opinions)) {
+	if (!converter.opinions[opinionId]) {
 		throw new Error(`Opinion '${opinionId}' was not found`);
 	}
-	// @ts-ignore - The existence of the opinions property is checked above
 	return converter.opinions[opinionId];
+}
+
+/**
+ * Get the opinion details for a unit opinion.
+ * @param {string} type - The type of unit to convert.
+ * @param {string} unitOpinionId - The opinion to get the details for (unitId.opinionId)
+ * @returns {Promise<Opinion>} - The details of the opinion.
+ */
+export async function getUnitOpinion(type, unitOpinionId) {
+	const converter = await getConverter(type);
+	let [unitId, opinionId] = unitOpinionId.split('.');
+	unitId = unitId.trim().toLowerCase();
+	if (!converter.unitOpinions) {
+		throw new Error(`Unit opinions are not supported for this conversion type`);
+	}
+	if (!converter.unitOpinions[unitId]) {
+		throw new Error(`Unit '${unitId}' does not have any unit opinions`);
+	}
+	opinionId = opinionId.trim().toLowerCase();
+	if (!(opinionId in converter.unitOpinions[unitId])) {
+		throw new Error(`The unit opinion '${unitOpinionId}' was not found`);
+	}
+	return converter.unitOpinions[unitId][opinionId];
 }
 
 /**
@@ -346,11 +408,24 @@ export async function getOpinion(type, opinionId) {
  */
 export async function getDefaultOpinion(type) {
 	const converter = await getConverter(type);
-	if (!('opinions' in converter)) {
+	if (!converter.opinions) {
 		return null;
 	}
-	// @ts-ignore - The existence of the opinions property is checked above
 	return Object.values(converter.opinions).find((opinion) => opinion.factor === 1) || null;
+}
+
+/**
+ * Get the default unit opinion for a unit type (where the factor is 1)
+ * @param {string} type - The type of unit to convert.
+ * @param {string} unitId - The unit to get the default opinion for.
+ * @returns {Promise<Opinion|null>} - The default opinion for the unit type.
+ */
+export async function getDefaultUnitOpinion(type, unitId) {
+	const converter = await getConverter(type);
+	if (!converter?.unitOpinions?.[unitId]) {
+		return null;
+	}
+	return Object.values(converter.unitOpinions[unitId]).find((opinion) => opinion.factor === 1) || null;
 }
 
 /**
@@ -360,36 +435,67 @@ export async function getDefaultOpinion(type) {
  * @property {string} unitToId - The unit to convert to.
  * @property {number} [amount] - The amount to convert.
  * @property {string} [opinionId] - The opinion to use for the conversion (only when converting between standard and biblical units)
+ * @property {string[]} [unitOpinionIds] - The unit opinions to use for the conversion (unitId.opinionId)
+ * 
+ * @typedef {{ from: string, to: string, result: number, opinion?: string, unitOpinions?: string[] }} ConversionResult
  */
 
 /**
  * Convert a value from one unit to another.
  * @param {ConversionOptions} options - The options for the conversion.
- * @returns {Promise<{ from: string, to: string, result: number, opinion?: string }>} - The result of the conversion.
+ * @returns {Promise<ConversionResult>} - The result of the conversion.
  */
-export async function convertUnits({ type, unitFromId, unitToId, amount, opinionId }) {
+export async function convertUnits({ type, unitFromId, unitToId, amount, opinionId, unitOpinionIds }) {
+	// validate unitOpinionIds - make sure only one opinion per unit and that the unit exists
+	await validateUnitOpinionIds(type, unitOpinionIds);
+
 	// set the default amount to 1
 	if (amount === undefined) amount = 1;
+
 	// get the units
 	const unitFrom = await getUnit(type, unitFromId);
 	const unitTo = await getUnit(type, unitToId);
-	/** @type {{ from: string, to: string, result: number, opinion?: string }} */
+
+	/** @type {ConversionResult} */
 	const outputs = {
 		from: unitFrom.name,
 		to: unitTo.name,
 		result: (amount * unitTo.value) / unitFrom.value,
 	};
+
 	// if converting between standard and biblical units, apply the opinion
-	if (unitFrom.type !== unitTo.type) {
-		// if an opinion is specified, use it
-		// otherwise, use the default opinion (where the factor is 1)
-		const opinion = opinionId ? await getOpinion(type, opinionId) : await getDefaultOpinion(type);
-		// if an opinion was found, apply it and add it to the outputs
+	const defaultOpinion = await getDefaultOpinion(type);
+	if (unitFrom.type !== unitTo.type && defaultOpinion) {
+		const opinion = opinionId ? await getOpinion(type, opinionId) : defaultOpinion;
 		if (opinion) {
-			outputs.result *= opinion.factor;
+			// if converting from standard to biblical, apply the inverse
+			const factor = unitFrom.type === 'BIBLICAL' ? opinion.factor : 1 / opinion.factor;
+			outputs.result *= factor;
 			outputs.opinion = opinion.name;
 		}
 	}
+	// if the 'from' unit is in the unitOpinions, apply the opinion
+	const defaultFromUnitOpinion = await getDefaultUnitOpinion(type, unitFromId);
+	if (defaultFromUnitOpinion && unitFromId !== unitToId) {
+		const unitOpinionId = unitOpinionIds?.find((unitOpinionId) => unitOpinionId.startsWith(`${unitFromId}.`));
+		const opinion = unitOpinionId ? await getUnitOpinion(type, unitOpinionId) : defaultFromUnitOpinion;
+		if (opinion) {
+			outputs.result *= opinion.factor;
+			outputs.unitOpinions = [opinion.name];
+		}
+	}
+	// if the 'to' unit is in the unitOpinions, apply the opinion
+	const defaultToUnitOpinion = await getDefaultUnitOpinion(type, unitToId);
+	if (defaultToUnitOpinion && unitFromId !== unitToId) {
+		const unitOpinionId = unitOpinionIds?.find((unitOpinionId) => unitOpinionId.startsWith(`${unitToId}.`));
+		const opinion = unitOpinionId ? await getUnitOpinion(type, unitOpinionId) : defaultToUnitOpinion;
+		// if converting to the unit with the opinion, apply the inverse
+		if (opinion) {
+			outputs.result /= opinion.factor;
+			outputs.unitOpinions = outputs.unitOpinions ? [...outputs.unitOpinions, opinion.name] : [opinion.name];
+		}
+	}
+
 	// return the result
 	return outputs;
 }
@@ -400,8 +506,9 @@ export async function convertUnits({ type, unitFromId, unitToId, amount, opinion
  * @property {string} unitFromId - The unit to convert from.
  * @property {number} [amount] - The amount to convert.
  * @property {string} [opinionId] - The opinion to use for the converting between standard and biblical units.
+ * @property {string[]} [unitOpinionIds] - The unit opinions to use for the conversion (unitId.opinionId)
  *
- * @typedef {{ [key: string]: { name: string, result: number, opinion?: string } }} MultiConversionResult
+ * @typedef {{ [key: string]: { name: string, result: number, opinion?: string, unitOpinions?: string[] } }} MultiConversionResult
  *
  */
 
@@ -410,30 +517,52 @@ export async function convertUnits({ type, unitFromId, unitToId, amount, opinion
  * @param {MultiConversionOptions} options - The options for the conversion.
  * @returns {Promise<MultiConversionResult>} - The result of the conversion.
  */
-export async function convertUnitsMulti({ type, unitFromId, amount, opinionId }) {
+export async function convertUnitsMulti({ type, unitFromId, amount, opinionId, unitOpinionIds }) {
+	// validate unitOpinionIds - make sure only one opinion per unit and that the unit exists
+	await validateUnitOpinionIds(type, unitOpinionIds);
+
 	// set the default amount to 1
 	if (amount === undefined) amount = 1;
-	// get the units
-	const unitFrom = await getUnit(type, unitFromId);
+
 	/** @type {MultiConversionResult} */
 	const outputs = {};
 	// convert the amount to each compatible unit
-	for (const [unitToId, unitTo] of Object.entries((await getConverter(type)).units)) {
+	for (const unitToId of Object.keys((await getConverter(type)).units)) {
+		const result = await convertUnits({ type, unitFromId, unitToId, amount, opinionId, unitOpinionIds });
 		outputs[unitToId] = {
-			name: unitTo.name,
-			result: (amount * unitTo.value) / unitFrom.value,
+			name: result.to,
+			result: result.result,
 		};
-		if (unitFrom.type !== unitTo.type) {
-			// if an opinion is specified, use it
-			// otherwise, use the default opinion (where the factor is 1)
-			const opinion = opinionId ? await getOpinion(type, opinionId) : await getDefaultOpinion(type);
-			// if an opinion was found, apply it and add it to the outputs
-			if (opinion) {
-				outputs[unitToId].result *= opinion.factor;
-				outputs[unitToId].opinion = opinion.name;
-			}
-		}
+		if (result.opinion) outputs[unitToId].opinion = result.opinion;
+		if (result.unitOpinions) outputs[unitToId].unitOpinions = result.unitOpinions;
 	}
+
 	// return the results
 	return outputs;
+}
+
+/**
+ * Validate unitOpinionIds - make sure only one opinion per unit and that the units exist
+ *
+ * @param {string} type - The type of unit to convert.
+ * @param {string[]} [unitOpinionIds] - The unit opinions to use for the conversion (unitId.opinionId)
+ * @throws {Error} - If the unit opinion is invalid
+ */
+async function validateUnitOpinionIds(type, unitOpinionIds) {
+	if (!unitOpinionIds) return;
+	// remove duplicates
+	unitOpinionIds = [...new Set(unitOpinionIds)];
+	/** @type {{ [key: string]: string }} */
+	const unitOpinionIdsMap = {};
+	for (const unitOpinionId of unitOpinionIds) {
+		const [unitId, opinionId] = unitOpinionId.split('.');
+		if (!unitId || !opinionId) {
+			throw new Error(`Invalid unit opinion '${unitOpinionId}'`);
+		}
+		if (unitOpinionIdsMap[unitId]) {
+			throw new Error(`The unit opinion '${unitOpinionId}' cannot be used with '${unitOpinionIdsMap[unitId]}'`);
+		}
+		unitOpinionIdsMap[unitId] = unitOpinionId;
+		await getUnitOpinion(type, unitOpinionId);
+	}
 }

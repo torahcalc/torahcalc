@@ -86,7 +86,7 @@
 					{#each parameters as parameter}
 						<tr>
 							<td><code>{parameter.name}</code></td>
-							<td>{parameter.type}</td>
+							<td><code>{parameter.type}</code></td>
 							<td>
 								{#if parameter.required}
 									<span class="badge bg-success">Yes</span>

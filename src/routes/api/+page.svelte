@@ -1,7 +1,7 @@
 <script>
 	import { LETTER_SPELLING_VALUES } from '$lib/js/gematria.js';
 	import { calculateOmerHebrew, calculateOmerYear } from '$lib/js/omer';
-	import { getConverters, getUnits, getOpinions } from '$lib/js/unitconverter.js';
+	import { getConverters, getUnits, getOpinions, getUnitOpinions } from '$lib/js/unitconverter.js';
 	import { HDate } from '@hebcal/core';
 	import dayjs from 'dayjs';
 	import Endpoint from './Endpoint.svelte';
@@ -204,6 +204,20 @@
 					example: 'rabbi_avraham_chaim_naeh',
 					allowedValues: getOpinions(converters),
 				},
+				{
+					name: 'unitOpinion',
+					type: 'String[]',
+					required: false,
+					description: "Opinions for specific units such as Hiluch Mil and K'dei Achilas Pras. This parameter can be used multiple times to specify multiple unit opinions.",
+					example: 'kdei_achilas_pras.chasam_sofer',
+					allowedValues: getUnitOpinions(converters),
+				},
+			]}
+			examples={[
+				'/api/unitconverter?type=length&from=tefach&to=amah&amount=12',
+				'/api/unitconverter?type=length&from=amah&to=meter&amount=3&opinion=rabbi_avraham_chaim_naeh',
+				'/api/unitconverter?type=time&from=kdei_achilas_pras&to=minute&amount=1&unitOpinion=kdei_achilas_pras.aruch_hashulchan',
+				'/api/unitconverter?type=time&from=kdei_achilas_pras&to=hiluch_mil&amount=1&unitOpinion=kdei_achilas_pras.aruch_hashulchan&unitOpinion=hiluch_mil.biur_hagra',
 			]}
 		/>
 
@@ -245,6 +259,19 @@
 					example: 'rabbi_avraham_chaim_naeh',
 					allowedValues: getOpinions(converters),
 				},
+				{
+					name: 'unitOpinion',
+					type: 'String[]',
+					required: false,
+					description: "Opinions for specific units such as Hiluch Mil and K'dei Achilas Pras. This parameter can be used multiple times to specify multiple unit opinions.",
+					example: 'kdei_achilas_pras.chasam_sofer',
+					allowedValues: getUnitOpinions(converters),
+				},
+			]}
+			examples={[
+				'/api/unitcharts?type=coins&from=shekel&amount=1000',
+				'/api/unitcharts?type=length&from=derech_yom&amount=1&opinion=rabbi_avraham_chaim_naeh',
+				'/api/unitcharts?type=time&from=kdei_achilas_pras&amount=1&unitOpinion=kdei_achilas_pras.aruch_hashulchan&unitOpinion=hiluch_mil.biur_hagra',
 			]}
 		/>
 	{:catch}
