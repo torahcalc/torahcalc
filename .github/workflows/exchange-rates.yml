@@ -31,10 +31,14 @@ jobs:
 
       - name: Fetch Exchange Rates
         run: |
+          # Ensure that the data directory exists
           mkdir -p src/lib/data
+          # Fetch exchange rates from apilayer
           curl --request GET 'https://api.apilayer.com/exchangerates_data/latest?base=USD&symbols=CAD,EUR,GBP,ILS,XAG' \
             --header 'apikey: ${{ secrets.APILAYER_EXCHANGE_RATE_API_KEY }}' \
             --output src/lib/data/exchange-rates.json
+          # Assert that the API call was successful
+          grep 'success' src/lib/data/exchange-rates.json || exit 1
 
       - name: Add and commit changes
         env:
