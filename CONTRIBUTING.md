@@ -55,7 +55,7 @@ To build the static site and sync the capacitor project with the web app:
 
 ```bash
 npm run static
-npm run sync
+npx cap sync
 ```
 
 To open the project in Android Studio:
