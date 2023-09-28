@@ -2,18 +2,22 @@ import dayjs from 'dayjs';
 import FALLBACK_EXCHANGE_RATES from './../data/exchange-rates.json';
 
 /**
- * @type {{ [key: string]: number }|null} - Cached exchange rates for currencies and commodities.
+ * @typedef {{ success: boolean, timestamp: number, base: string, date: string, rates: { CAD: number, EUR: number, GBP: number, ILS: number, XAG: number }}} ExchangeRates
+ */
+
+/**
+ * @type {ExchangeRates|null} - Cached exchange rates for currencies and commodities.
  */
 let EXCHANGE_RATES = null;
 
 /**
  * Return the price of currencies and commodities.
- * @returns {Promise<{ [key: string]: number }>}} - The price of currencies and commodities as currency codes and prices compared to 1 USD.
+ * @returns {Promise<ExchangeRates>}} - The price of currencies and commodities as currency codes and prices compared to 1 USD.
  */
 async function getExchangeRates() {
 	// if FALLBACK_EXCHANGE_RATES has been updated in the last 7 days, use it
 	if (FALLBACK_EXCHANGE_RATES.date > dayjs().subtract(7, 'day').format('YYYY-MM-DD')) {
-		EXCHANGE_RATES = FALLBACK_EXCHANGE_RATES.rates;
+		EXCHANGE_RATES = FALLBACK_EXCHANGE_RATES;
 	}
 	// if we have cached exchange rates, return them
 	if (EXCHANGE_RATES !== null) {
@@ -23,26 +27,24 @@ async function getExchangeRates() {
 	const API_URL = 'https://cdn.jsdelivr.net/gh/torahcalc/torahcalc@main/src/lib/data/exchange-rates.json';
 	try {
 		const response = await fetch(API_URL);
-		/** @type {{ rates: { [key: string]: number } }} - The price of currencies and commodities as currency codes and prices compared to 1 USD. */
+		/** @type {ExchangeRates} - The price of currencies and commodities as currency codes and prices compared to 1 USD. */
 		// @ts-ignore - ignore response.json() being 'unknown' type
 		const data = await response.json();
 		if (!data.rates) {
 			throw new Error('Exchange rates not found');
 		}
-		EXCHANGE_RATES = data.rates;
-		// @ts-ignore - data.rates is not null
-		EXCHANGE_RATES.updateTimestamp = new Date().getTime();
+		EXCHANGE_RATES = data;
 		console.log('Exchange rates updated');
-		return data.rates;
+		return EXCHANGE_RATES;
 	} catch (error) {
 		console.error(error);
-		EXCHANGE_RATES = FALLBACK_EXCHANGE_RATES.rates;
+		EXCHANGE_RATES = FALLBACK_EXCHANGE_RATES;
 		return EXCHANGE_RATES;
 	}
 }
 
 /**
- * @typedef {{ name: string, value: number, type: "BIBLICAL"|"STANDARD", updated?: number }} Unit
+ * @typedef {{ name: string, value: number, type: "BIBLICAL"|"STANDARD", updated?: string }} Unit
  * @typedef {{ name: string, factor: number }} Opinion
  * @typedef {{ name: string, units: { [key: string]: Unit }, opinions?: { [key: string]: Opinion }, unitOpinions?: { [key: string]: { [key: string]: Opinion } } }} Converter
  * @typedef {{[key: string]: Converter}} Converters
@@ -57,12 +59,12 @@ export async function getConverters(fetchExchangeRates = true) {
 	// Get the value of 1 kikar shel kodesh (1777.7664 troy ounces) of silver in USD, NIS, EUR, CAD, and GBP.
 	const exchangeRates = fetchExchangeRates ? await getExchangeRates() : FALLBACK_EXCHANGE_RATES;
 	const kikarKodeshTroyOz = 1777.7664;
-	const kikarKodeshUSD = (1 / exchangeRates.XAG) * kikarKodeshTroyOz;
-	const kikarKodeshNIS = kikarKodeshUSD * exchangeRates.ILS;
-	const kikarKodeshEUR = kikarKodeshUSD * exchangeRates.EUR;
-	const kikarKodeshCAD = kikarKodeshUSD * exchangeRates.CAD;
-	const kikarKodeshGBP = kikarKodeshUSD * exchangeRates.GBP;
-	const updateTimestamp = exchangeRates.updateTimestamp;
+	const kikarKodeshUSD = (1 / exchangeRates.rates.XAG) * kikarKodeshTroyOz;
+	const kikarKodeshNIS = kikarKodeshUSD * exchangeRates.rates.ILS;
+	const kikarKodeshEUR = kikarKodeshUSD * exchangeRates.rates.EUR;
+	const kikarKodeshCAD = kikarKodeshUSD * exchangeRates.rates.CAD;
+	const kikarKodeshGBP = kikarKodeshUSD * exchangeRates.rates.GBP;
+	const updateDate = exchangeRates.date;
 	return {
 		length: {
 			name: 'Length',
@@ -213,13 +215,13 @@ export async function getConverters(fetchExchangeRates = true) {
 				mesimas: { name: 'Mesimas - מסימס', value: 576e3, type: 'BIBLICAL' },
 				kontrank: { name: 'Kontrank - קונטרק', value: 1152e3, type: 'BIBLICAL' },
 				perutah: { name: 'Perutah - פרוטה', value: 2304e3, type: 'BIBLICAL' },
-				usd: { name: 'US Dollars (USD)', value: kikarKodeshUSD, type: 'STANDARD', updated: updateTimestamp },
-				nis: { name: 'Israeli New Sheqels (NIS)', value: kikarKodeshNIS, type: 'STANDARD', updated: updateTimestamp },
-				eur: { name: 'European Euro (EUR)', value: kikarKodeshEUR, type: 'STANDARD', updated: updateTimestamp },
-				cad: { name: 'Canadian Dollars (CAD)', value: kikarKodeshCAD, type: 'STANDARD', updated: updateTimestamp },
-				gbp: { name: 'Pound sterling (GBP)', value: kikarKodeshGBP, type: 'STANDARD', updated: updateTimestamp },
+				usd: { name: 'US Dollars (USD)', value: kikarKodeshUSD, type: 'STANDARD', updated: updateDate },
+				nis: { name: 'Israeli New Sheqels (NIS)', value: kikarKodeshNIS, type: 'STANDARD', updated: updateDate },
+				eur: { name: 'European Euro (EUR)', value: kikarKodeshEUR, type: 'STANDARD', updated: updateDate },
+				cad: { name: 'Canadian Dollars (CAD)', value: kikarKodeshCAD, type: 'STANDARD', updated: updateDate },
+				gbp: { name: 'Pound sterling (GBP)', value: kikarKodeshGBP, type: 'STANDARD', updated: updateDate },
 				grams_of_silver: { name: 'Grams of silver', value: 55296, type: 'STANDARD' },
-				ounces_of_silver: { name: 'Ounces of silver', value: kikarKodeshTroyOz, type: 'STANDARD', updated: updateTimestamp },
+				ounces_of_silver: { name: 'Ounces of silver', value: kikarKodeshTroyOz, type: 'STANDARD', updated: updateDate },
 			},
 			opinions: {
 				shulchan_aruch_rambam: { name: 'Shulchan Aruch / Rambam - שולחן ערוך / רמב״ם', factor: 1 },
