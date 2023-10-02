@@ -21,8 +21,8 @@
 		flex: 0.6;
 	}
 
-    .experimental {
-        font-size: 0.5em;
-        color: #999;
-    }
+	.experimental {
+		font-size: 0.5em;
+		color: #999;
+	}
 </style>
