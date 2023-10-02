@@ -36,10 +36,10 @@ function moveImportsToTop(path) {
 
 /**
  * Add lint disable comment to the top of the file
- * 
+ *
  * @param {string} path - The path to the file to modify
  */
 function addLintDisable(path) {
-	const grammar = [`// @ts-nocheck`,`/* eslint-disable */`].join("\n") + "\n" + readFileSync(path, 'utf8');
+	const grammar = [`// @ts-nocheck`, `/* eslint-disable */`].join('\n') + '\n' + readFileSync(path, 'utf8');
 	writeFileSync(path, grammar);
 }
