@@ -1,6 +1,6 @@
 import nearley from 'nearley';
 import grammar from '$lib/grammars/generated/main.cjs';
-import { convertUnits, convertUnitsMultiAll, getConverters, getOpinion, getOpinions, getUnit } from './unitconverter';
+import { convertUnits, convertUnitsMultiAll, getConverters, getOpinion, getOpinions, getUnit, getUnitOpinions } from './unitconverter';
 
 const INPUT_INTERPRETATION = 'Input Interpretation';
 const RESULT = 'Result';
@@ -116,7 +116,14 @@ async function unitConversionQuery(derivation) {
 		// set the precision and remove trailing zeroes
 		const amount = result.result.toFixed(8).replace(/\.?0+$/, '');
 		const resultAmountAndUnit = `${amount} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}`;
-		return result.opinion ? `${resultAmountAndUnit} - <span class="opinion">${result.opinion}</span>` : resultAmountAndUnit;
+		if (result.opinion) {
+			return `${resultAmountAndUnit} - <span class="opinion">${result.opinion}</span>`;
+		} else if (result.unitOpinions) {
+			return `${resultAmountAndUnit} - <span class="opinion">${Object.entries(result.unitOpinions)
+				.map((opinion) => opinion[1])
+				.join(', ')}</span>`;
+		}
+		return resultAmountAndUnit;
 	};
 
 	let resultValue = '';
@@ -126,15 +133,29 @@ async function unitConversionQuery(derivation) {
 	sections.push({ title: INPUT_INTERPRETATION, content: `Convert ${derivation.amount} ${derivation.amount === 1 ? unitFrom.display : unitFrom.displayPlural} to ${unitTo.displayPlural}` });
 	const converters = await getConverters();
 	const opinions = getOpinions(converters)[unitType] ?? [];
+	const unitOpinionsForType = converters[unitType].unitOpinions ?? {};
+	const fromUnitOpinionIds = Object.keys(unitOpinionsForType[derivation.unitFrom.unitId] ?? {}).map((opinionId) => `${derivation.unitFrom.unitId}.${opinionId}`);
+	const toUnitOpinionIds = Object.keys(unitOpinionsForType[derivation.unitTo.unitId] ?? {}).map((opinionId) => `${derivation.unitTo.unitId}.${opinionId}`);
 	const params = { type: unitType, unitFromId: derivation.unitFrom.unitId, unitToId: derivation.unitTo.unitId, amount: derivation.amount };
 	const conversionResult = await convertUnits(params);
 	resultValue = formatResult(conversionResult);
 	// if there are multiple opinions, show all of them
 	/** @type Array<import('./unitconverter').ConversionResult>*/
-	if (conversionResult.opinion) {
+	if (conversionResult.opinion || conversionResult.unitOpinions) {
 		const conversionResults = [];
 		for (const opinionId of opinions) {
 			conversionResults.push(await convertUnits({ ...params, opinionId }));
+		}
+		if (fromUnitOpinionIds.length > 0 && toUnitOpinionIds.length > 0) {
+			for (const fromUnitOpinionId of fromUnitOpinionIds) {
+				for (const toUnitOpinionId of toUnitOpinionIds) {
+					conversionResults.push(await convertUnits({ ...params, unitOpinionIds: [fromUnitOpinionId, toUnitOpinionId] }));
+				}
+			}
+		} else if (fromUnitOpinionIds.length > 0 || toUnitOpinionIds.length > 0) {
+			for (const unitOpinionId of [...fromUnitOpinionIds, ...toUnitOpinionIds]) {
+				conversionResults.push(await convertUnits({ ...params, unitOpinionIds: [unitOpinionId] }));
+			}
 		}
 		resultValue = conversionResults.map(formatResult).join('\n');
 	}

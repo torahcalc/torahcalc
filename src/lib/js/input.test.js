@@ -96,6 +96,26 @@ describe('test unitConversionQuery', () => {
 		expect(sections[1].content).toBe('1080 Chalakim');
 	});
 
+	it('1 min to kdei achilas peras', async () => {
+		const sections = await calculateQuery('1 min to kdei achilas peras');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe("Convert 1 minute to K'dei Achilas Peras");
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain(`0.5 K'dei Achilas Peras - <span class="opinion">Chasam Sofer (K'dei Achilas Pras = 2 minutes)</span>`);
+		expect(sections[1].content).toContain(`0.0896861 K'dei Achilas Peras - <span class="opinion">Darkei Hora'ah (K'dei Achilas Pras = 11 minutes and 9 seconds)</span>`);
+	});
+
+	it('1 hiluch mil to kdei achilas peras', async () => {
+		const sections = await calculateQuery('1 hiluch mil to kdei achilas peras');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe("Convert 1 Hiluch Mil to K'dei Achilas Peras");
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain(`9 K'dei Achilas Peras - <span class="opinion">Shulchan Aruch Harav (Hiluch Mil = 18 minutes), Chasam Sofer (K'dei Achilas Pras = 2 minutes)</span>`);
+		expect(sections[1].content).toContain(
+			`2.15246637 K'dei Achilas Peras - <span class="opinion">Shulchan Aruch Harav (Hiluch Mil = 24 minutes), Darkei Hora'ah (K'dei Achilas Pras = 11 minutes and 9 seconds)</span>`
+		);
+	});
+
 	it('conversion chart for derech yom', async () => {
 		const sections = await calculateQuery('conversion chart for derech yom');
 		expect(sections[0].title).toBe('Input Interpretation');
