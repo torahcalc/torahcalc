@@ -120,7 +120,7 @@ describe('test convertUnits', () => {
 		const result = await convertUnits({ type: 'volume', unitFromId: 'liter', unitToId: 'reviis', amount: 1 });
 		expect(result).toStrictEqual({
 			from: 'Liter',
-			opinion: "Desert (Rabbi Avraham Chaim Naeh) - מדבריות (ר' אברהם חיים נאה",
+			opinion: "Desert (Rabbi Avraham Chaim Naeh) - (מדבריות (ר' אברהם חיים נאה",
 			result: 11.574074074074074,
 			to: "Revi'is - רביעית",
 		});
