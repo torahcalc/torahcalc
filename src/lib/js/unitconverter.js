@@ -64,7 +64,7 @@ export async function getConverters(fetchExchangeRates = true) {
 	const kikarKodeshEUR = kikarKodeshUSD * exchangeRates.rates.EUR;
 	const kikarKodeshCAD = kikarKodeshUSD * exchangeRates.rates.CAD;
 	const kikarKodeshGBP = kikarKodeshUSD * exchangeRates.rates.GBP;
-	const updateDate = exchangeRates.date;
+	const updateDate = dayjs(exchangeRates.timestamp * 1000).format('MMMM D, YYYY h:mm A');
 	return {
 		length: {
 			name: 'Length',

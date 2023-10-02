@@ -6,17 +6,21 @@ import { getUnit } from './unitconverter';
 describe('test units are valid', () => {
 	it('test units are valid', async () => {
 		for (const [unitType, unitMapping] of Object.entries(units)) {
-			for (const unitId of Object.values(unitMapping)) {
-				const unit = await getUnit(unitType, unitId);
-				expect(unit).toBeDefined();
+			for (const unitIds of Object.values(unitMapping)) {
+				for (const unitId of unitIds) {
+					const unit = await getUnit(unitType, unitId);
+					expect(unit).toBeDefined();
+				}
 			}
 		}
 	});
 
 	it('test that the unit id with underscores replaced with spaces is in the mapping', async () => {
 		for (const unitMapping of Object.values(units)) {
-			for (const unitId of Object.values(unitMapping)) {
-				expect(unitMapping).toHaveProperty(unitId.replace(/_/g, ' '));
+			for (const unitIds of Object.values(unitMapping)) {
+				for (const unitId of unitIds) {
+					expect(unitMapping).toHaveProperty(unitId.replace(/_/g, ' '));
+				}
 			}
 		}
 	});
@@ -76,7 +80,7 @@ describe('test unitConversionQuery', () => {
 	it('convert 1 us dollar to perutos', async () => {
 		const sections = await calculateQuery('convert 1 us dollar to perutos');
 		expect(sections[0].title).toBe('Input Interpretation');
-		expect(sections[0].content).toBe('Convert 1 US Dollar (USD) to Perutos');
+		expect(sections[0].content).toBe('Convert 1 US Dollar to Perutos');
 		expect(sections[1].title).toBe('Result');
 		expect(sections[1].content).toContain(' Perutos (Shulchan Aruch / Rambam - שולחן ערוך / רמב״ם)');
 		expect(sections[1].content).toContain(' Perutos (Rashi - רש״י)');
@@ -94,7 +98,7 @@ describe('test unitConversionQuery', () => {
 	it('conversion chart for derech yom', async () => {
 		const sections = await calculateQuery('conversion chart for derech yom');
 		expect(sections[0].title).toBe('Input Interpretation');
-		expect(sections[0].content).toBe('Show conversion chart for Derech Yom');
+		expect(sections[0].content).toBe('Show conversion chart for 1 Derech Yom');
 		expect(sections[1].title).toBe('Result');
 		expect(sections[1].content).toContain('1 Derech Yom');
 		expect(sections[1].content).toContain("10 Parsa'os");

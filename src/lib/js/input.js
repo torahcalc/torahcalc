@@ -142,7 +142,7 @@ async function unitConversionQuery(derivation) {
 	sections.push({ title: RESULT, content: resultValue });
 	const updatedDate = unitTo.updated ?? unitFrom.updated ?? null;
 	if (updatedDate) {
-		sections.push({ title: SOURCES, content: `Based on <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${dayjs(updatedDate).format('MMMM D, YYYY')}` });
+		sections.push({ title: SOURCES, content: `Based on <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${updatedDate}` });
 	}
 	return sections;
 }
@@ -192,7 +192,7 @@ async function conversionChartQuery(derivation) {
 	}
 	sections.push({ title: RESULT, content });
 	if (updatedDate) {
-		sections.push({ title: SOURCES, content: `Based on <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${dayjs(updatedDate).format('MMMM D, YYYY')}` });
+		sections.push({ title: SOURCES, content: `Based on <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${updatedDate}` });
 	}
 	return sections;
 }
