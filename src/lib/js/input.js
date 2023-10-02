@@ -6,38 +6,89 @@ const INPUT_INTERPRETATION = 'Input Interpretation';
 const RESULT = 'Result';
 
 /**
+ * Custom Error class for input errors
+ * @extends Error
+ */
+export class InputError extends Error {
+	/**
+	 * @param {string} message - The error message
+	 * @param {string} [details] - The details of the error
+	 */
+	constructor(message, details) {
+		super(message);
+		this.details = details;
+	}
+}
+
+/**
+ * @typedef {Object} InputOptions
+ * @property {string} [disambiguation] - The disambiguation to use to interpret the input
+ */
+
+/**
  * Respond to a search query using all available tools.
  * @param {string} search The search query.
+ * @param {InputOptions} [options] The options.
  * @returns {Promise<{ title: string, content: string }[]>} The response.
  */
-export async function query(search) {
+export async function calculateQuery(search, options = {}) {
+	/** @type {Array<{ title: string, content: string }>} */
+	const sections = [];
+
 	const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
 
 	// convert input to lowercase
 	search = search.toLowerCase();
 
 	// run the parser
-	parser.feed(search);
-
-	if (parser.results.length === 0) {
-		throw new Error('No results.');
+	try {
+		parser.feed(search);
+	} catch (e) {
+		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples.', `${e}`);
 	}
 
-	// get the first result
-	const derivations = [];
+	/** @type {Record<string, any>} */
+	const derivations = {};
 
-	// skip over invalid results
+	// determine disambiguations and skip invalid derivations
 	for (const derivation of parser.results) {
+		derivation.disambiguation = derivation.function;
 		if (derivation.function === 'unitConversionQuery') {
-			if (derivation?.fromUnit?.type !== derivation?.toUnit?.type) {
+			// skip derivation if unit types do not match
+			if (derivation.unitFrom.type !== derivation.unitTo.type) {
 				continue;
 			}
+			// units are disambiguated by unit type
+			const unitType = derivation.unitFrom.type;
+			const fromUnit = await getUnit(unitType, derivation.unitFrom.unitId);
+			const toUnit = await getUnit(unitType, derivation.unitTo.unitId);
+			derivation.disambiguation = `${unitType} (${fromUnit.displayPlural} to ${toUnit.displayPlural})`;
+		} else if (derivation.function === 'conversionChartQuery') {
+			// units are disambiguated by unit type
+			const unitType = derivation.unit.type;
+			const unit = await getUnit(unitType, derivation.unit.unitId);
+			derivation.disambiguation = `${unitType} (${unit.displayPlural})`;
 		}
-		derivations.push(derivation);
+		derivations[derivation.disambiguation] = derivation;
 	}
 
-	// TODO: handle multiple interpretations
-	const derivation = derivations[0];
+	if (Object.keys(derivations).length === 0) {
+		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples.');
+	}
+
+	const derivation = derivations[options.disambiguation ?? ''] ?? Object.values(derivations)[0];
+
+	if (Object.keys(derivations).length > 1) {
+		// create a section that allows switching to other interpretations (eg. interpreting as coins, interpret instead as [weight]())
+		const otherDerivations = Object.values(derivations).filter((other) => other.disambiguation !== derivation.disambiguation);
+		const otherInterpretations = otherDerivations.map((other) => other.disambiguation);
+		sections.push({
+			title: '',
+			content: `Interpreting as <b>${derivation.disambiguation}</b>. Interpret instead as ${otherInterpretations
+				.map((other) => `<a href="?q=${encodeURIComponent(search)}&disambiguation=${encodeURIComponent(other)}">${other}</a>`)
+				.join(', ')}.`,
+		});
+	}
 
 	/** @type {Record<string, () => Promise<{ title: string, content: string }[]> | { title: string, content: string }[]>} */
 	const sectionFunctions = {
@@ -46,7 +97,8 @@ export async function query(search) {
 	};
 
 	const func = sectionFunctions[derivation.function]();
-	return func instanceof Promise ? await func : func;
+	const calculatedSections = func instanceof Promise ? await func : func;
+	return [...sections, ...calculatedSections];
 }
 
 /**
@@ -100,7 +152,7 @@ async function conversionChartQuery(derivation) {
 	const sections = [];
 	const unitType = derivation.unit.type;
 	const unitFrom = await getUnit(unitType, derivation.unit.unitId);
-	sections.push({ title: INPUT_INTERPRETATION, content: `Show conversion chart for ${unitFrom.displayPlural}` });
+	sections.push({ title: INPUT_INTERPRETATION, content: `Show conversion chart for ${derivation.amount} ${derivation.amount === 1 ? unitFrom.display : unitFrom.displayPlural}` });
 	const params = { type: unitType, unitFromId: derivation.unit.unitId, amount: derivation.amount };
 	const conversionResults = await convertUnitsMultiAll(params);
 	// output no-opinion results first
@@ -116,17 +168,19 @@ async function conversionChartQuery(derivation) {
 	}
 	// output opinion results as a table where the first column is the opinion and the second column is the results for that opinion separated by newlines
 	delete conversionResults['no-opinion'];
-	content += '<table><tr><th>Opinion</th><th>Results</th></tr>';
-	for (const [opinionId, opinionResults] of Object.entries(conversionResults)) {
-		const opinion = await getOpinion(unitType, opinionId);
-		content += `<tr><td>${opinion.name}</td><td><ul>`;
-		for (const [unitId, result] of Object.entries(opinionResults)) {
-			const unitTo = await getUnit(unitType, unitId);
-			content += `<li>${result.result.toFixed(8).replace(/\.?0+$/, '')} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}</li>`;
+	if (Object.keys(conversionResults).length > 0) {
+		content += '<table><tr><th>Opinion</th><th>Results</th></tr>';
+		for (const [opinionId, opinionResults] of Object.entries(conversionResults)) {
+			const opinion = await getOpinion(unitType, opinionId);
+			content += `<tr><td>${opinion.name}</td><td><ul>`;
+			for (const [unitId, result] of Object.entries(opinionResults)) {
+				const unitTo = await getUnit(unitType, unitId);
+				content += `<li>${result.result.toFixed(8).replace(/\.?0+$/, '')} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}</li>`;
+			}
+			content += '</ul></td></tr>';
 		}
-		content += '</ul></td></tr>';
+		content += '</table>';
 	}
-	content += '</table>';
 	sections.push({ title: RESULT, content });
 	return sections;
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { query } from './input';
+import { calculateQuery } from './input';
 import { units } from '$lib/grammars/scripts/units';
 import { getUnit } from './unitconverter';
 
@@ -12,11 +12,19 @@ describe('test units are valid', () => {
 			}
 		}
 	});
+
+	it('test that the unit id with underscores replaced with spaces is in the mapping', async () => {
+		for (const unitMapping of Object.values(units)) {
+			for (const unitId of Object.values(unitMapping)) {
+				expect(unitMapping).toHaveProperty(unitId.replace(/_/g, ' '));
+			}
+		}
+	});
 });
 
 describe('test unitConversionQuery', () => {
 	it('convert 3.5 amah to meter', async () => {
-		const sections = await query('convert 3.5 amah to meter');
+		const sections = await calculateQuery('convert 3.5 amah to meter');
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe('Convert 3.5 Amos to meters');
 		expect(sections[1].title).toBe('Result');
@@ -33,7 +41,7 @@ describe('test unitConversionQuery', () => {
 	});
 
 	it('convert 1 amos to tefachim', async () => {
-		const sections = await query('convert 1 amah to tefachim');
+		const sections = await calculateQuery('convert 1 amah to tefachim');
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe('Convert 1 Amah to Tefachim');
 		expect(sections[1].title).toBe('Result');
@@ -41,7 +49,7 @@ describe('test unitConversionQuery', () => {
 	});
 
 	it('how many amos are in a parsah?', async () => {
-		const sections = await query('how many amos are in a parsah');
+		const sections = await calculateQuery('how many amos are in a parsah');
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe('Convert 1 Parsah to Amos');
 		expect(sections[1].title).toBe('Result');
@@ -49,7 +57,7 @@ describe('test unitConversionQuery', () => {
 	});
 
 	it('40 seah to us liquid gallons', async () => {
-		const sections = await query('40 seah to us liquid gallons');
+		const sections = await calculateQuery('40 seah to us liquid gallons');
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe('Convert 40 Seah to US liquid gallons');
 		expect(sections[1].title).toBe('Result');
@@ -66,7 +74,7 @@ describe('test unitConversionQuery', () => {
 	});
 
 	it('convert 1 us dollar to perutos', async () => {
-		const sections = await query('convert 1 us dollar to perutos');
+		const sections = await calculateQuery('convert 1 us dollar to perutos');
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe('Convert 1 US Dollar (USD) to Perutos');
 		expect(sections[1].title).toBe('Result');
@@ -76,7 +84,7 @@ describe('test unitConversionQuery', () => {
 	});
 
 	it('how many chalakim are in an hour?', async () => {
-		const sections = await query('how many chalakim are in an hour');
+		const sections = await calculateQuery('how many chalakim are in an hour');
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe('Convert 1 hour to Chalakim');
 		expect(sections[1].title).toBe('Result');
@@ -84,7 +92,7 @@ describe('test unitConversionQuery', () => {
 	});
 
 	it('conversion chart for derech yom', async () => {
-		const sections = await query('conversion chart for derech yom');
+		const sections = await calculateQuery('conversion chart for derech yom');
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe('Show conversion chart for Derech Yom');
 		expect(sections[1].title).toBe('Result');
