@@ -41,8 +41,8 @@ export async function query(search) {
 
 	/** @type {Record<string, () => Promise<{ title: string, content: string }[]> | { title: string, content: string }[]>} */
 	const sectionFunctions = {
-		"unitConversionQuery": async () => await unitConversionQuery(derivation),
-		"conversionChartQuery": async () => await conversionChartQuery(derivation),
+		unitConversionQuery: async () => await unitConversionQuery(derivation),
+		conversionChartQuery: async () => await conversionChartQuery(derivation),
 	};
 
 	const func = sectionFunctions[derivation.function]();
