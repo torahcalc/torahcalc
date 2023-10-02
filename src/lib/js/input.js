@@ -4,7 +4,7 @@ import { isHebrewLeapYear } from './leapyears';
 import { calculateMolad } from './molad';
 import { calculateOmer } from './omer';
 import nearley from 'nearley';
-import grammar from '$lib/grammars/_output.cjs';
+import grammar from '$lib/grammars/generated/main.cjs';
 import { convertUnits, convertUnitsMulti, convertUnitsMultiAll, getConverters, getOpinion, getOpinions, getUnit } from './unitconverter';
 
 const INPUT_INTERPRETATION = 'Input Interpretation';

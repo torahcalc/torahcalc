@@ -18,11 +18,9 @@
 #
 # More coming soon...
 
-@{%
-import {units} from "./units.js";
-%}
-
 @builtin "number.ne"  # unsigned_int, int, unsigned_decimal, decimal, percentage, jsonfloat
+
+@include "./generated/units.ne"  # unit, lengthUnit, areaUnit, volumeUnit, weightUnit, coinsUnit, timeUnit
 
 query[QUERY] -> _ $QUERY _ {% data => data[1] %}
              | _ $QUERY [?.] _ {% data => data[1] %}
@@ -36,16 +34,6 @@ unitConversionQuery -> [A-Za-z\s]:* _ jsonfloat __ unit __ ("to" | "in" | "into"
 
 conversionChartQuery -> "conversion" __ "chart" __ "for" __ jsonfloat __ unit {% data => ({type: "conversionChartQuery", unit: data[8], amount: data[6]}) %}
                     | "conversion" __ "chart" __ "for" __ unit {% data => ({type: "conversionChartQuery", unit: data[6], amount: 1}) %}
-
-unit -> [a-zA-Z\s]:+ {% function(data, location, reject) {
-    const unit = data[0].join("").trim().toLowerCase();
-    for (const [type, unitsOfType] of Object.entries(units)) {
-        if (unit in unitsOfType) {
-            return {type, unitId: unitsOfType[unit]};
-        }
-    }
-    return reject;
-} %}
 
 _ -> [ ]:* {% data => null %}
 
