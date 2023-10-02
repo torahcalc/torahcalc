@@ -44,7 +44,7 @@ async function getExchangeRates() {
 }
 
 /**
- * @typedef {{ name: string, value: number, type: "BIBLICAL"|"STANDARD", updated?: string }} Unit
+ * @typedef {{ name: string, value: number, type: "BIBLICAL"|"STANDARD", updated?: string, display: string, displayPlural: string }} Unit
  * @typedef {{ name: string, factor: number }} Opinion
  * @typedef {{ name: string, units: { [key: string]: Unit }, opinions?: { [key: string]: Opinion }, unitOpinions?: { [key: string]: { [key: string]: Opinion } } }} Converter
  * @typedef {{[key: string]: Converter}} Converters
@@ -69,25 +69,25 @@ export async function getConverters(fetchExchangeRates = true) {
 		length: {
 			name: 'Length',
 			units: {
-				derech_yom: { name: 'Derech Yom / Mahalach Yom - דרך יום / מהלך יום', value: 1, type: 'BIBLICAL' },
-				parsah: { name: 'Parsah - פרסה', value: 10, type: 'BIBLICAL' },
-				mil: { name: 'Mil - מיל', value: 40, type: 'BIBLICAL' },
-				ris: { name: 'Ris - ריס', value: 300, type: 'BIBLICAL' },
-				kaneh: { name: 'Kaneh - קנה', value: 40000 / 3, type: 'BIBLICAL' },
-				amah: { name: 'Amah - אמה', value: 8e4, type: 'BIBLICAL' },
-				short_amah: { name: 'Short Amah - אמה בת חמשה', value: 96e3, type: 'BIBLICAL' },
-				zeret: { name: 'Zeret - זרת', value: 16e4, type: 'BIBLICAL' },
-				tefach: { name: 'Tefach - טפח', value: 48e4, type: 'BIBLICAL' },
-				etzbah: { name: 'Etzbah - אצבע', value: 192e4, type: 'BIBLICAL' },
-				kilometer: { name: 'Kilometer', value: 38.4048, type: 'STANDARD' },
-				meter: { name: 'Meter', value: 38404.8, type: 'STANDARD' },
-				centimeter: { name: 'Centimeter', value: 3840480, type: 'STANDARD' },
-				millimeter: { name: 'Millimeter', value: 38404800, type: 'STANDARD' },
-				mile: { name: 'Mile', value: 23.86363636, type: 'STANDARD' },
-				yard: { name: 'Yard', value: 42e3, type: 'STANDARD' },
-				foot: { name: 'Foot', value: 126e3, type: 'STANDARD' },
-				inch: { name: 'Inch', value: 1512e3, type: 'STANDARD' },
-				nautical_mile: { name: 'Nautical mile', value: 20.73693305, type: 'STANDARD' },
+				derech_yom: { name: 'Derech Yom / Mahalach Yom - דרך יום / מהלך יום', value: 1, type: 'BIBLICAL', display: 'Derech Yom', displayPlural: 'Derech Yom' },
+				parsah: { name: 'Parsah - פרסה', value: 10, type: 'BIBLICAL', display: 'Parsah', displayPlural: "Parsa'os" },
+				mil: { name: 'Mil - מיל', value: 40, type: 'BIBLICAL', display: 'Mil', displayPlural: 'Milin' },
+				ris: { name: 'Ris - ריס', value: 300, type: 'BIBLICAL', display: 'Ris', displayPlural: 'Ris' },
+				kaneh: { name: 'Kaneh - קנה', value: 40000 / 3, type: 'BIBLICAL', display: 'Kaneh', displayPlural: 'Kanos' },
+				amah: { name: 'Amah - אמה', value: 8e4, type: 'BIBLICAL', display: 'Amah', displayPlural: 'Amos' },
+				short_amah: { name: 'Short Amah - אמה בת חמשה', value: 96e3, type: 'BIBLICAL', display: 'Short Amah', displayPlural: 'Short Amos' },
+				zeret: { name: 'Zeret - זרת', value: 16e4, type: 'BIBLICAL', display: 'Zeret', displayPlural: 'Zaros' },
+				tefach: { name: 'Tefach - טפח', value: 48e4, type: 'BIBLICAL', display: 'Tefach', displayPlural: 'Tefachim' },
+				etzbah: { name: 'Etzbah - אצבע', value: 192e4, type: 'BIBLICAL', display: 'Etzbah', displayPlural: "Etzba'os" },
+				kilometer: { name: 'Kilometer', value: 38.4048, type: 'STANDARD', display: 'kilometer', displayPlural: 'kilometers' },
+				meter: { name: 'Meter', value: 38404.8, type: 'STANDARD', display: 'meter', displayPlural: 'meters' },
+				centimeter: { name: 'Centimeter', value: 3840480, type: 'STANDARD', display: 'centimeter', displayPlural: 'centimeters' },
+				millimeter: { name: 'Millimeter', value: 38404800, type: 'STANDARD', display: 'millimeter', displayPlural: 'millimeters' },
+				mile: { name: 'Mile', value: 23.86363636, type: 'STANDARD', display: 'mile', displayPlural: 'miles' },
+				yard: { name: 'Yard', value: 42e3, type: 'STANDARD', display: 'yard', displayPlural: 'yards' },
+				foot: { name: 'Foot', value: 126e3, type: 'STANDARD', display: 'foot', displayPlural: 'feet' },
+				inch: { name: 'Inch', value: 1512e3, type: 'STANDARD', display: 'inch', displayPlural: 'inches' },
+				nautical_mile: { name: 'Nautical mile', value: 20.73693305, type: 'STANDARD', display: 'nautical mile', displayPlural: 'nautical miles' },
 			},
 			opinions: {
 				rabbi_avraham_chaim_naeh: { name: "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה", factor: 1 },
@@ -101,26 +101,26 @@ export async function getConverters(fetchExchangeRates = true) {
 		area: {
 			name: 'Area',
 			units: {
-				beis_kor: { name: 'Beis kor - בית כור', value: 1, type: 'BIBLICAL' },
-				beis_seasayim: { name: 'Beis seasayim - בית סאתים', value: 15, type: 'BIBLICAL' },
-				beis_seah: { name: 'Beis seah - בית סאה', value: 30, type: 'BIBLICAL' },
-				beis_kav: { name: 'Beis kav - בית קב', value: 180, type: 'BIBLICAL' },
-				beis_rova: { name: 'Beis rova - בית רובע', value: 720, type: 'BIBLICAL' },
-				amah_merubaas: { name: 'Amah merubaas - אמה מרובעת', value: 75e3, type: 'BIBLICAL' },
-				tefach_merubah: { name: 'Tefach merubah - טפח מרובע', value: 27e5, type: 'BIBLICAL' },
-				etzbah_merubaas: { name: 'Etzbah merubaas - אצבע מרובעת', value: 432e5, type: 'BIBLICAL' },
-				gris: { name: 'Gris - גריס', value: 53333333.333333336, type: 'BIBLICAL' },
-				adashah: { name: 'Adashah - עדשה', value: 48e7, type: 'BIBLICAL' },
-				searah: { name: 'Searah - שערה', value: 192e7, type: 'BIBLICAL' },
-				square_kilometer: { name: 'Square kilometer', value: 0.01728432027, type: 'STANDARD' },
-				square_meter: { name: 'Square meter', value: 17284.32027, type: 'STANDARD' },
-				square_centimeter: { name: 'Square centimeter', value: 172843202.7, type: 'STANDARD' },
-				square_mile: { name: 'Square mile', value: 0.006673513365186, type: 'STANDARD' },
-				square_yard: { name: 'Square yard', value: 20671.875, type: 'STANDARD' },
-				square_foot: { name: 'Square foot', value: 186046.875, type: 'STANDARD' },
-				square_inch: { name: 'Square inch', value: 26790750, type: 'STANDARD' },
-				hectare: { name: 'Hectare', value: 1.728432027, type: 'STANDARD' },
-				acre: { name: 'Acre', value: 4.271048553719, type: 'STANDARD' },
+				beis_kor: { name: 'Beis kor - בית כור', value: 1, type: 'BIBLICAL', display: 'Beis Kor', displayPlural: 'Batei Kor' },
+				beis_seasayim: { name: 'Beis seasayim - בית סאתים', value: 15, type: 'BIBLICAL', display: 'Beis Seasayim', displayPlural: 'Batei Seasayim' },
+				beis_seah: { name: 'Beis seah - בית סאה', value: 30, type: 'BIBLICAL', display: 'Beis Seah', displayPlural: 'Batei Seah' },
+				beis_kav: { name: 'Beis kav - בית קב', value: 180, type: 'BIBLICAL', display: 'Beis Kav', displayPlural: 'Batei Kav' },
+				beis_rova: { name: 'Beis rova - בית רובע', value: 720, type: 'BIBLICAL', display: 'Beis Rova', displayPlural: 'Batei Rova' },
+				amah_merubaas: { name: 'Amah merubaas - אמה מרובעת', value: 75e3, type: 'BIBLICAL', display: 'Amah Merubaas', displayPlural: 'Amah Merubaas' },
+				tefach_merubah: { name: 'Tefach merubah - טפח מרובע', value: 27e5, type: 'BIBLICAL', display: 'Tefach Merubah', displayPlural: 'Tefach Merubaas' },
+				etzbah_merubaas: { name: 'Etzbah merubaas - אצבע מרובעת', value: 432e5, type: 'BIBLICAL', display: 'Etzbah Merubaas', displayPlural: 'Etzbah Merubaas' },
+				gris: { name: 'Gris - גריס', value: 53333333.333333336, type: 'BIBLICAL', display: 'Gris', displayPlural: 'Gris' },
+				adashah: { name: 'Adashah - עדשה', value: 48e7, type: 'BIBLICAL', display: 'Adashah', displayPlural: 'Adashos' },
+				searah: { name: 'Searah - שערה', value: 192e7, type: 'BIBLICAL', display: 'Searah', displayPlural: 'Searos' },
+				square_kilometer: { name: 'Square kilometer', value: 0.01728432027, type: 'STANDARD', display: 'square kilometer', displayPlural: 'square kilometers' },
+				square_meter: { name: 'Square meter', value: 17284.32027, type: 'STANDARD', display: 'square meter', displayPlural: 'square meters' },
+				square_centimeter: { name: 'Square centimeter', value: 172843202.7, type: 'STANDARD', display: 'Square centimeter', displayPlural: 'square centimeters' },
+				square_mile: { name: 'Square mile', value: 0.006673513365186, type: 'STANDARD', display: 'square mile', displayPlural: 'square miles' },
+				square_yard: { name: 'Square yard', value: 20671.875, type: 'STANDARD', display: 'square yard', displayPlural: 'square yards' },
+				square_foot: { name: 'Square foot', value: 186046.875, type: 'STANDARD', display: 'square foot', displayPlural: 'square feet' },
+				square_inch: { name: 'Square inch', value: 26790750, type: 'STANDARD', display: 'square inch', displayPlural: 'square inches' },
+				hectare: { name: 'Hectare', value: 1.728432027, type: 'STANDARD', display: 'hectare', displayPlural: 'hectares' },
+				acre: { name: 'Acre', value: 4.271048553719, type: 'STANDARD', display: 'acre', displayPlural: 'acres' },
 			},
 			opinions: {
 				rabbi_avraham_chaim_naeh: { name: "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה", factor: 1 },
@@ -134,41 +134,41 @@ export async function getConverters(fetchExchangeRates = true) {
 		volume: {
 			name: 'Volume',
 			units: {
-				kor: { name: 'Kor / Chomer - כור / חומר', value: 1, type: 'BIBLICAL' },
-				letech: { name: 'Letech / Adriv - לתך / אדריב', value: 2, type: 'BIBLICAL' },
-				ephah: { name: 'Ephah / Bat - איפה / בת', value: 10, type: 'BIBLICAL' },
-				seah: { name: 'Seah - סאה', value: 30, type: 'BIBLICAL' },
-				tarkav: { name: 'Tarkav / Hin - תרקב / הין', value: 60, type: 'BIBLICAL' },
-				issaron: { name: 'Issaron / Omer - עשרון / עומר', value: 100, type: 'BIBLICAL' },
-				kav: { name: 'Kav - קב', value: 180, type: 'BIBLICAL' },
-				rova: { name: 'Rova / Log - רובע / לוג', value: 720, type: 'BIBLICAL' },
-				tomen: { name: 'Tomen - תומן', value: 1440, type: 'BIBLICAL' },
-				reviis: { name: "Revi'is - רביעית", value: 2880, type: 'BIBLICAL' },
-				uchlah: { name: 'Uchlah / Klah - עוכלא / כלה', value: 3600, type: 'BIBLICAL' },
-				beitzah: { name: 'Beitzah - ביצה', value: 4320, type: 'BIBLICAL' },
-				kezayis: { name: 'Kezayis - כזית', value: 8640, type: 'BIBLICAL' },
-				grogeres: { name: 'Grogeres - גרוגרת', value: 14400, type: 'BIBLICAL' },
-				mesurah: { name: 'Mesurah - משורה', value: 25920, type: 'BIBLICAL' },
-				kortov: { name: 'Kortov - קורטוב', value: 46080, type: 'BIBLICAL' },
-				us_liquid_gallon: { name: 'US liquid gallon', value: 65.7344601, type: 'STANDARD' },
-				us_liquid_quart: { name: 'US liquid quart ', value: 262.937841, type: 'STANDARD' },
-				us_liquid_pint: { name: 'US liquid pint', value: 525.875681, type: 'STANDARD' },
-				us_legal_cup: { name: 'US legal cup', value: 1036.8, type: 'STANDARD' },
-				us_fluid_ounce: { name: 'US fluid ounce', value: 8414.0109, type: 'STANDARD' },
-				us_tablespoon: { name: 'US tablespoon', value: 16828.0218, type: 'STANDARD' },
-				us_teaspoon: { name: 'US teaspoon', value: 50484.0817, type: 'STANDARD' },
-				cubic_meter: { name: 'Cubic meter', value: 0.248832, type: 'STANDARD' },
-				liter: { name: 'Liter', value: 248.832, type: 'STANDARD' },
-				milliliter: { name: 'Milliliter', value: 248832, type: 'STANDARD' },
-				imperial_gallon: { name: 'Imperial gallon', value: 54.735388, type: 'STANDARD' },
-				imperial_quart: { name: 'Imperial quart', value: 218.941552, type: 'STANDARD' },
-				imperial_pint: { name: 'Imperial pint', value: 437.883104, type: 'STANDARD' },
-				imperial_cup: { name: 'Imperial cup', value: 875.766285, type: 'STANDARD' },
-				imperial_fluid_ounce: { name: 'Imperial fluid ounce', value: 8757.66208, type: 'STANDARD' },
-				imperial_tablespoon: { name: 'Imperial tablespoon', value: 14012.2535, type: 'STANDARD' },
-				imperial_teaspoon: { name: 'Imperial teaspoon', value: 42036.7606, type: 'STANDARD' },
-				cubic_foot: { name: 'Cubic foot', value: 8.78741915, type: 'STANDARD' },
-				cubic_inch: { name: 'Cubic inch', value: 15184.6603, type: 'STANDARD' },
+				kor: { name: 'Kor / Chomer - כור / חומר', value: 1, type: 'BIBLICAL', display: 'Kor / Chomer', displayPlural: 'Kor / Chomer' },
+				letech: { name: 'Letech / Adriv - לתך / אדריב', value: 2, type: 'BIBLICAL', display: 'Letech / Adriv', displayPlural: 'Letech / Adriv' },
+				ephah: { name: 'Ephah / Bat - איפה / בת', value: 10, type: 'BIBLICAL', display: 'Ephah / Bat', displayPlural: 'Ephah / Bat' },
+				seah: { name: 'Seah - סאה', value: 30, type: 'BIBLICAL', display: 'Seah', displayPlural: 'Seah' },
+				tarkav: { name: 'Tarkav / Hin - תרקב / הין', value: 60, type: 'BIBLICAL', display: 'Tarkav / Hin', displayPlural: 'Tarkav / Hin' },
+				issaron: { name: 'Issaron / Omer - עשרון / עומר', value: 100, type: 'BIBLICAL', display: 'Issaron / Omer', displayPlural: 'Issaron / Omer' },
+				kav: { name: 'Kav - קב', value: 180, type: 'BIBLICAL', display: 'Kav', displayPlural: 'Kav' },
+				rova: { name: 'Rova / Log - רובע / לוג', value: 720, type: 'BIBLICAL', display: 'Rova / Log', displayPlural: 'Rova / Log' },
+				tomen: { name: 'Tomen - תומן', value: 1440, type: 'BIBLICAL', display: 'Tomen', displayPlural: 'Tomen' },
+				reviis: { name: "Revi'is - רביעית", value: 2880, type: 'BIBLICAL', display: "Revi'is", displayPlural: "Revi'is" },
+				uchlah: { name: 'Uchlah / Klah - עוכלא / כלה', value: 3600, type: 'BIBLICAL', display: 'Uchlah / Klah', displayPlural: 'Uchlah / Klah' },
+				beitzah: { name: 'Beitzah - ביצה', value: 4320, type: 'BIBLICAL', display: 'Beitzah', displayPlural: 'Beitzim' },
+				kezayis: { name: 'Kezayis - כזית', value: 8640, type: 'BIBLICAL', display: 'Kezayis', displayPlural: 'Kezaysim' },
+				grogeres: { name: 'Grogeres - גרוגרת', value: 14400, type: 'BIBLICAL', display: 'Grogeres', displayPlural: 'Grogaros' },
+				mesurah: { name: 'Mesurah - משורה', value: 25920, type: 'BIBLICAL', display: 'Mesurah', displayPlural: 'Mesuros' },
+				kortov: { name: 'Kortov - קורטוב', value: 46080, type: 'BIBLICAL', display: 'Kortov', displayPlural: 'Kortov' },
+				us_liquid_gallon: { name: 'US liquid gallon', value: 65.7344601, type: 'STANDARD', display: 'US liquid gallon', displayPlural: 'US liquid gallons' },
+				us_liquid_quart: { name: 'US liquid quart ', value: 262.937841, type: 'STANDARD', display: 'US liquid quart ', displayPlural: 'US liquid quarts' },
+				us_liquid_pint: { name: 'US liquid pint', value: 525.875681, type: 'STANDARD', display: 'US liquid pint', displayPlural: 'US liquid pints' },
+				us_legal_cup: { name: 'US legal cup', value: 1036.8, type: 'STANDARD', display: 'US legal cup', displayPlural: 'US legal cups' },
+				us_fluid_ounce: { name: 'US fluid ounce', value: 8414.0109, type: 'STANDARD', display: 'US fluid ounce', displayPlural: 'US fluid ounces' },
+				us_tablespoon: { name: 'US tablespoon', value: 16828.0218, type: 'STANDARD', display: 'US tablespoon', displayPlural: 'US tablespoons' },
+				us_teaspoon: { name: 'US teaspoon', value: 50484.0817, type: 'STANDARD', display: 'US teaspoon', displayPlural: 'US teaspoons' },
+				cubic_meter: { name: 'Cubic meter', value: 0.248832, type: 'STANDARD', display: 'cubic meter', displayPlural: 'cubic meters' },
+				liter: { name: 'Liter', value: 248.832, type: 'STANDARD', display: 'liter', displayPlural: 'liters' },
+				milliliter: { name: 'Milliliter', value: 248832, type: 'STANDARD', display: 'milliliter', displayPlural: 'milliliters' },
+				imperial_gallon: { name: 'Imperial gallon', value: 54.735388, type: 'STANDARD', display: 'Imperial gallon', displayPlural: 'Imperial gallons' },
+				imperial_quart: { name: 'Imperial quart', value: 218.941552, type: 'STANDARD', display: 'Imperial quart', displayPlural: 'Imperial quarts' },
+				imperial_pint: { name: 'Imperial pint', value: 437.883104, type: 'STANDARD', display: 'Imperial pint', displayPlural: 'Imperial pints' },
+				imperial_cup: { name: 'Imperial cup', value: 875.766285, type: 'STANDARD', display: 'Imperial cup', displayPlural: 'Imperial cups' },
+				imperial_fluid_ounce: { name: 'Imperial fluid ounce', value: 8757.66208, type: 'STANDARD', display: 'Imperial fluid ounce', displayPlural: 'Imperial fluid ounces' },
+				imperial_tablespoon: { name: 'Imperial tablespoon', value: 14012.2535, type: 'STANDARD', display: 'Imperial tablespoon', displayPlural: 'Imperial tablespoons' },
+				imperial_teaspoon: { name: 'Imperial teaspoon', value: 42036.7606, type: 'STANDARD', display: 'Imperial teaspoon', displayPlural: 'Imperial teaspoons' },
+				cubic_foot: { name: 'Cubic foot', value: 8.78741915, type: 'STANDARD', display: 'cubic foot', displayPlural: 'cubic feet' },
+				cubic_inch: { name: 'Cubic inch', value: 15184.6603, type: 'STANDARD', display: 'cubic inch', displayPlural: 'cubic inches' },
 			},
 			opinions: {
 				desert_rabbi_avraham_chaim_naeh: { name: "Desert (Rabbi Avraham Chaim Naeh) - מדבריות (ר' אברהם חיים נאה", factor: 1 },
@@ -182,46 +182,46 @@ export async function getConverters(fetchExchangeRates = true) {
 		weight: {
 			name: 'Mass / Weight',
 			units: {
-				kikar: { name: 'Kikar - כיכר', value: 1, type: 'BIBLICAL' },
-				mane: { name: 'Maneh / Litra - מנה / ליטרא', value: 60, type: 'BIBLICAL' },
-				tartimar: { name: 'Tartimar - תרטימר', value: 120, type: 'BIBLICAL' },
-				unkeya: { name: 'Unkeya - אונקיא', value: 750, type: 'BIBLICAL' },
-				sela: { name: 'Sela - סלע', value: 1500, type: 'BIBLICAL' },
-				shekel: { name: 'Shekel - שקל', value: 3e3, type: 'BIBLICAL' },
-				dinar: { name: 'Dinar / Zuz / Zin - דינר / זוז / זין', value: 6e3, type: 'BIBLICAL' },
-				kilogram: { name: 'Kilogram', value: 27, type: 'STANDARD' },
-				gram: { name: 'Gram', value: 27e3, type: 'STANDARD' },
-				milligram: { name: 'Milligram', value: 27e6, type: 'STANDARD' },
-				stone: { name: 'Stone', value: 4.2517722, type: 'STANDARD' },
-				pound: { name: 'Pound', value: 59.524811, type: 'STANDARD' },
-				ounce: { name: 'Ounce', value: 952.39697, type: 'STANDARD' },
+				kikar: { name: 'Kikar - כיכר', value: 1, type: 'BIBLICAL', display: 'Kikar', displayPlural: 'Kikar' },
+				mane: { name: 'Maneh / Litra - מנה / ליטרא', value: 60, type: 'BIBLICAL', display: 'Maneh / Litra', displayPlural: 'Manos / Litra' },
+				tartimar: { name: 'Tartimar - תרטימר', value: 120, type: 'BIBLICAL', display: 'Tartimar', displayPlural: 'Tartimar' },
+				unkeya: { name: 'Unkeya - אונקיא', value: 750, type: 'BIBLICAL', display: 'Unkeya', displayPlural: 'Unkeya' },
+				sela: { name: 'Sela - סלע', value: 1500, type: 'BIBLICAL', display: 'Sela', displayPlural: 'Selayim' },
+				shekel: { name: 'Shekel - שקל', value: 3e3, type: 'BIBLICAL', display: 'Shekel', displayPlural: 'Shekalim' },
+				dinar: { name: 'Dinar / Zuz / Zin - דינר / זוז / זין', value: 6e3, type: 'BIBLICAL', display: 'Dinar / Zuz / Zin', displayPlural: 'Dinarim / Zuzim / Zinim' },
+				kilogram: { name: 'Kilogram', value: 27, type: 'STANDARD', display: 'kilogram', displayPlural: 'kilograms' },
+				gram: { name: 'Gram', value: 27e3, type: 'STANDARD', display: 'gram', displayPlural: 'grams' },
+				milligram: { name: 'Milligram', value: 27e6, type: 'STANDARD', display: 'milligram', displayPlural: 'milligrams' },
+				stone: { name: 'Stone', value: 4.2517722, type: 'STANDARD', display: 'stone', displayPlural: 'stones' },
+				pound: { name: 'Pound', value: 59.524811, type: 'STANDARD', display: 'pound', displayPlural: 'pounds' },
+				ounce: { name: 'Ounce', value: 952.39697, type: 'STANDARD', display: 'ounce', displayPlural: 'ounces' },
 			},
 		},
 		coins: {
 			name: 'Coins',
 			units: {
-				kikar_shel_kodesh: { name: 'Kikar shel kodesh - כיכר של קודש', value: 1, type: 'BIBLICAL' },
-				kikar: { name: 'Kikar - כיכר', value: 2, type: 'BIBLICAL' },
-				mane_shel_kodesh: { name: 'Maneh shel kodesh - מנה של קודש', value: 60, type: 'BIBLICAL' },
-				mane: { name: 'Maneh - מנה', value: 120, type: 'BIBLICAL' },
-				dinar_zahav: { name: 'Dinar zahav - דינר זהב', value: 480, type: 'BIBLICAL' },
-				sela: { name: 'Sela - סלע', value: 3e3, type: 'BIBLICAL' },
-				shekel: { name: 'Shekel - שקל', value: 6e3, type: 'BIBLICAL' },
-				dinar: { name: 'Dinar / Zuz - דינר / זוז', value: 12e3, type: 'BIBLICAL' },
-				istera: { name: 'Istera / Tarpik - אסתרא / טרפעיק', value: 24e3, type: 'BIBLICAL' },
-				maah: { name: 'Maah - מעה', value: 72e3, type: 'BIBLICAL' },
-				pundyon: { name: 'Pundyon - פונדיון', value: 144e3, type: 'BIBLICAL' },
-				issar: { name: 'Issar - איסר', value: 288e3, type: 'BIBLICAL' },
-				mesimas: { name: 'Mesimas - מסימס', value: 576e3, type: 'BIBLICAL' },
-				kontrank: { name: 'Kontrank - קונטרק', value: 1152e3, type: 'BIBLICAL' },
-				perutah: { name: 'Perutah - פרוטה', value: 2304e3, type: 'BIBLICAL' },
-				usd: { name: 'US Dollars (USD)', value: kikarKodeshUSD, type: 'STANDARD', updated: updateDate },
-				nis: { name: 'Israeli New Sheqels (NIS)', value: kikarKodeshNIS, type: 'STANDARD', updated: updateDate },
-				eur: { name: 'European Euro (EUR)', value: kikarKodeshEUR, type: 'STANDARD', updated: updateDate },
-				cad: { name: 'Canadian Dollars (CAD)', value: kikarKodeshCAD, type: 'STANDARD', updated: updateDate },
-				gbp: { name: 'Pound sterling (GBP)', value: kikarKodeshGBP, type: 'STANDARD', updated: updateDate },
-				grams_of_silver: { name: 'Grams of silver', value: 55296, type: 'STANDARD' },
-				ounces_of_silver: { name: 'Ounces of silver', value: kikarKodeshTroyOz, type: 'STANDARD', updated: updateDate },
+				kikar_shel_kodesh: { name: 'Kikar shel kodesh - כיכר של קודש', value: 1, type: 'BIBLICAL', display: 'Kikar shel kodesh', displayPlural: 'Kikar shel kodesh' },
+				kikar: { name: 'Kikar - כיכר', value: 2, type: 'BIBLICAL', display: 'Kikar', displayPlural: 'Kikar' },
+				mane_shel_kodesh: { name: 'Maneh shel kodesh - מנה של קודש', value: 60, type: 'BIBLICAL', display: 'Maneh shel kodesh', displayPlural: 'Maneh shel kodesh' },
+				mane: { name: 'Maneh - מנה', value: 120, type: 'BIBLICAL', display: 'Maneh', displayPlural: 'Maneh' },
+				dinar_zahav: { name: 'Dinar zahav - דינר זהב', value: 480, type: 'BIBLICAL', display: 'Dinar zahav', displayPlural: 'Dinar zahav' },
+				sela: { name: 'Sela - סלע', value: 3e3, type: 'BIBLICAL', display: 'Sela', displayPlural: 'Selayim' },
+				shekel: { name: 'Shekel - שקל', value: 6e3, type: 'BIBLICAL', display: 'Shekel', displayPlural: 'Shekalim' },
+				dinar: { name: 'Dinar / Zuz - דינר / זוז', value: 12e3, type: 'BIBLICAL', display: 'Dinar / Zuz', displayPlural: 'Dinarim / Zuzim' },
+				istera: { name: 'Istera / Tarpik - אסתרא / טרפעיק', value: 24e3, type: 'BIBLICAL', display: 'Istera / Tarpik', displayPlural: 'Istera / Tarpik' },
+				maah: { name: 'Maah - מעה', value: 72e3, type: 'BIBLICAL', display: 'Maah', displayPlural: 'Maah' },
+				pundyon: { name: 'Pundyon - פונדיון', value: 144e3, type: 'BIBLICAL', display: 'Pundyon', displayPlural: 'Pundyon' },
+				issar: { name: 'Issar - איסר', value: 288e3, type: 'BIBLICAL', display: 'Issar', displayPlural: 'Issar' },
+				mesimas: { name: 'Mesimas - מסימס', value: 576e3, type: 'BIBLICAL', display: 'Mesimas', displayPlural: 'Mesimas' },
+				kontrank: { name: 'Kontrank - קונטרק', value: 1152e3, type: 'BIBLICAL', display: 'Kontrank', displayPlural: 'Kontrank' },
+				perutah: { name: 'Perutah - פרוטה', value: 2304e3, type: 'BIBLICAL', display: 'Perutah', displayPlural: 'Perutos' },
+				usd: { name: 'US Dollars (USD)', value: kikarKodeshUSD, type: 'STANDARD', updated: updateDate, display: 'US Dollar (USD)', displayPlural: 'US Dollars (USD)' },
+				nis: { name: 'Israeli New Sheqels (NIS)', value: kikarKodeshNIS, type: 'STANDARD', updated: updateDate, display: 'Israeli New Sheqel (NIS)', displayPlural: 'Israeli New Sheqels (NIS)' },
+				eur: { name: 'European Euro (EUR)', value: kikarKodeshEUR, type: 'STANDARD', updated: updateDate, display: 'European Euro (EUR)', displayPlural: 'European Euro (EUR)' },
+				cad: { name: 'Canadian Dollars (CAD)', value: kikarKodeshCAD, type: 'STANDARD', updated: updateDate, display: 'Canadian Dollar (CAD)', displayPlural: 'Canadian Dollars (CAD)' },
+				gbp: { name: 'Pound sterling (GBP)', value: kikarKodeshGBP, type: 'STANDARD', updated: updateDate, display: 'Pounds Sterling (GBP)', displayPlural: 'Pounds Sterling (GBP)' },
+				grams_of_silver: { name: 'Grams of silver', value: 55296, type: 'STANDARD', display: 'gram of silver', displayPlural: 'grams of silver' },
+				ounces_of_silver: { name: 'Ounces of silver', value: kikarKodeshTroyOz, type: 'STANDARD', updated: updateDate, display: 'ounce of silver', displayPlural: 'ounces of silver' },
 			},
 			opinions: {
 				shulchan_aruch_rambam: { name: 'Shulchan Aruch / Rambam - שולחן ערוך / רמב״ם', factor: 1 },
@@ -232,32 +232,32 @@ export async function getConverters(fetchExchangeRates = true) {
 		time: {
 			name: 'Time',
 			units: {
-				yovel: { name: 'Yovel - יובל', value: 1, type: 'BIBLICAL' },
-				shmittah: { name: 'Shmittah - שמיטה', value: 7.142857142857143, type: 'BIBLICAL' },
-				shanah: { name: 'Shanah - שנה', value: 50, type: 'BIBLICAL' },
-				tekufah: { name: 'Tekufah - תקופה', value: 200, type: 'BIBLICAL' },
-				chodesh: { name: 'Chodesh - חודש', value: 600, type: 'BIBLICAL' },
-				molad: { name: "Molad Emtza'i - מולד אמצעי", value: 458784e3 / 765433, type: 'BIBLICAL' },
-				shavuah: { name: 'Shavuah - שבוע', value: 2528.57142857, type: 'BIBLICAL' },
-				yom: { name: 'Yom - יום', value: 17700, type: 'BIBLICAL' },
-				onah: { name: 'Onah - עונה', value: 35400, type: 'BIBLICAL' },
-				shaah: { name: 'Shaah - שעה', value: 424800, type: 'BIBLICAL' },
-				hiluch_mil: { name: 'Hiluch Mil - הילוך מיל', value: 1416e3, type: 'BIBLICAL' },
-				kdei_achilas_pras: { name: "K'dei achilas pras - כדי אכילת פרס", value: 12744e3, type: 'BIBLICAL' },
-				small_onah: { name: 'Small Onah - עונה', value: 10195200, type: 'BIBLICAL' },
-				et: { name: 'Et - עת', value: 244684800, type: 'BIBLICAL' },
-				chelek: { name: 'Chelek - חלק', value: 458784e3, type: 'BIBLICAL' },
-				rega: { name: 'Rega - רגע', value: 34867584e3, type: 'BIBLICAL' },
-				century: { name: 'Century', value: 0.48493151, type: 'STANDARD' },
-				decade: { name: 'Decade', value: 4.8460994, type: 'STANDARD' },
-				year: { name: 'Year', value: 48.493151, type: 'STANDARD' },
-				month: { name: 'Month', value: 581.91717, type: 'STANDARD' },
-				week: { name: 'Week', value: 2528.5714, type: 'STANDARD' },
-				day: { name: 'Day', value: 17700, type: 'STANDARD' },
-				hour: { name: 'Hour', value: 424800, type: 'STANDARD' },
-				minute: { name: 'Minute', value: 25488e3, type: 'STANDARD' },
-				second: { name: 'Second', value: 152928e4, type: 'STANDARD' },
-				millisecond: { name: 'Millisecond', value: 152928e7, type: 'STANDARD' },
+				yovel: { name: 'Yovel - יובל', value: 1, type: 'BIBLICAL', display: 'Yovel', displayPlural: 'Yovelos' },
+				shmittah: { name: 'Shmittah - שמיטה', value: 7.142857142857143, type: 'BIBLICAL', display: 'Shmittah', displayPlural: 'Shmittos' },
+				shanah: { name: 'Shanah - שנה', value: 50, type: 'BIBLICAL', display: 'Shanah', displayPlural: 'Shanim' },
+				tekufah: { name: 'Tekufah - תקופה', value: 200, type: 'BIBLICAL', display: 'Tekufah', displayPlural: 'Tekufos' },
+				chodesh: { name: 'Chodesh - חודש', value: 600, type: 'BIBLICAL', display: 'Chodesh', displayPlural: 'Chodashim' },
+				molad: { name: "Molad Emtza'i - מולד אמצעי", value: 458784e3 / 765433, type: 'BIBLICAL', display: "Molad Emtza'i", displayPlural: "Molad Emtza'im" },
+				shavuah: { name: 'Shavuah - שבוע', value: 2528.57142857, type: 'BIBLICAL', display: 'Shavuah', displayPlural: 'Shavuos' },
+				yom: { name: 'Yom - יום', value: 17700, type: 'BIBLICAL', display: 'Yom', displayPlural: 'Yamim' },
+				onah: { name: 'Onah - עונה', value: 35400, type: 'BIBLICAL', display: 'Onah', displayPlural: 'Onos' },
+				shaah: { name: 'Shaah - שעה', value: 424800, type: 'BIBLICAL', display: 'Shaah', displayPlural: 'Shaos' },
+				hiluch_mil: { name: 'Hiluch Mil - הילוך מיל', value: 1416e3, type: 'BIBLICAL', display: 'Hiluch Mil', displayPlural: 'Hiluch Mil' },
+				kdei_achilas_pras: { name: "K'dei achilas pras - כדי אכילת פרס", value: 12744e3, type: 'BIBLICAL', display: "K'dei Achilas Peras", displayPlural: "K'dei Achilas Peras" },
+				small_onah: { name: 'Small Onah - עונה', value: 10195200, type: 'BIBLICAL', display: 'Small Onah', displayPlural: 'Small Onos' },
+				et: { name: 'Et - עת', value: 244684800, type: 'BIBLICAL', display: 'Et', displayPlural: 'Et' },
+				chelek: { name: 'Chelek - חלק', value: 458784e3, type: 'BIBLICAL', display: 'Chelek', displayPlural: 'Chalakim' },
+				rega: { name: 'Rega - רגע', value: 34867584e3, type: 'BIBLICAL', display: 'Rega', displayPlural: 'Regaim' },
+				century: { name: 'Century', value: 0.48493151, type: 'STANDARD', display: 'century', displayPlural: 'centuries' },
+				decade: { name: 'Decade', value: 4.8460994, type: 'STANDARD', display: 'decade', displayPlural: 'decades' },
+				year: { name: 'Year', value: 48.493151, type: 'STANDARD', display: 'year', displayPlural: 'years' },
+				month: { name: 'Month', value: 581.91717, type: 'STANDARD', display: 'month', displayPlural: 'months' },
+				week: { name: 'Week', value: 2528.5714, type: 'STANDARD', display: 'week', displayPlural: 'weeks' },
+				day: { name: 'Day', value: 17700, type: 'STANDARD', display: 'day', displayPlural: 'days' },
+				hour: { name: 'Hour', value: 424800, type: 'STANDARD', display: 'hour', displayPlural: 'hours' },
+				minute: { name: 'Minute', value: 25488e3, type: 'STANDARD', display: 'minute', displayPlural: 'minutes' },
+				second: { name: 'Second', value: 152928e4, type: 'STANDARD', display: 'second', displayPlural: 'seconds' },
+				millisecond: { name: 'Millisecond', value: 152928e7, type: 'STANDARD', display: 'millisecond', displayPlural: 'milliseconds' },
 			},
 			unitOpinions: {
 				hiluch_mil: {
@@ -509,7 +509,9 @@ export async function convertUnits({ type, unitFromId, unitToId, amount, opinion
  * @property {string} [opinionId] - The opinion to use for the converting between standard and biblical units.
  * @property {string[]} [unitOpinionIds] - The unit opinions to use for the conversion (unitId.opinionId)
  *
- * @typedef {{ [key: string]: { name: string, result: number, opinion?: string, unitOpinions?: string[] } }} MultiConversionResult
+ * @typedef {{ name: string, result: number, opinion?: string, unitOpinions?: string[] }} MultiConversionUnit
+ *
+ * @typedef {{ [key: string]: MultiConversionUnit }} MultiConversionResult
  *
  */
 
@@ -536,6 +538,43 @@ export async function convertUnitsMulti({ type, unitFromId, amount, opinionId, u
 		};
 		if (result.opinion) outputs[unitToId].opinion = result.opinion;
 		if (result.unitOpinions) outputs[unitToId].unitOpinions = result.unitOpinions;
+	}
+
+	// return the results
+	return outputs;
+}
+
+/**
+ * Convert a value from one unit to all compatible units according to all compatible opinions.
+ *
+ * @param {MultiConversionOptions} options - The options for the conversion.
+ * @returns {Promise<{ [key: string]: MultiConversionResult }>} - The result of the conversion.
+ */
+export async function convertUnitsMultiAll({ type, unitFromId, amount }) {
+	// set the default amount to 1
+	if (amount === undefined) amount = 1;
+
+	const opinions = getOpinions(await getConverters())[type] || [];
+
+	/** @type {{ [key: string]: MultiConversionResult }} */
+	const outputs = {
+		'no-opinion': {},
+	};
+	// convert the amount to each compatible opinion if there are any
+	if (opinions.length) {
+		for (const opinionId of opinions) {
+			const result = await convertUnitsMulti({ type, unitFromId, amount, opinionId });
+			outputs[opinionId] = {};
+			for (const [unitId, unitResult] of Object.entries(result)) {
+				if (unitResult.opinion) {
+					outputs[opinionId][unitId] = unitResult;
+				} else if (!outputs['no-opinion'][unitId]) {
+					outputs['no-opinion'][unitId] = unitResult;
+				}
+			}
+		}
+	} else {
+		outputs['no-opinion'] = await convertUnitsMulti({ type, unitFromId, amount });
 	}
 
 	// return the results
