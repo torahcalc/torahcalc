@@ -83,27 +83,32 @@
 <div class="card flex-card">
 	<h4 class="mb-4">Examples of what you can enter</h4>
 
-	<h6>Unit Conversions</h6>
+	<div class="mb-4">
+		<h6>Unit Conversions</h6>
 
-	<ul class="list-unstyled">
-		<li><InputExample clickFunction={setSections} query="Convert 3 Tefachim to inches." /></li>
-		<li><InputExample clickFunction={setSections} query="How many Amos are in a Parsah?" /></li>
-		<li><InputExample clickFunction={setSections} query="Convert 40 Seah to US liquid gallons." /></li>
-		<li><InputExample clickFunction={setSections} query="Convert 1 US Dollar to Perutos." /></li>
-		<li><InputExample clickFunction={setSections} query="How many Chalakim are in an hour?" /></li>
-		<li><InputExample clickFunction={setSections} query="Conversion chart for 1 Mil" /></li>
-	</ul>
-	<div>
-		{#await converters then converters}
-			<details>
-				<summary>Show list of units</summary>
+		<ul class="list-unstyled">
+			<li><InputExample clickFunction={setSections} query="Convert 3 Tefachim to inches." /></li>
+			<li><InputExample clickFunction={setSections} query="How many Amos are in a Parsah?" /></li>
+			<li><InputExample clickFunction={setSections} query="Convert 40 Seah to US liquid gallons." /></li>
+			<li><InputExample clickFunction={setSections} query="Convert 1 US Dollar to Perutos." /></li>
+			<li><InputExample clickFunction={setSections} query="How many Chalakim are in an hour?" /></li>
+			<li><InputExample clickFunction={setSections} query="Conversion chart for 1 Mil" /></li>
+		</ul>
 
-				<AvailableOptionsList mapping={getUnits(converters)} transform={async (unitType, unitId) => (await getUnit(unitType, unitId)).display} />
-			</details>
-		{:catch error}
-			<div>An error occurred while loading the list of units.</div>
-		{/await}
+		<div>
+			{#await converters then converters}
+				<details>
+					<summary>Show list of units</summary>
+
+					<AvailableOptionsList mapping={getUnits(converters)} transform={async (unitType, unitId) => (await getUnit(unitType, unitId)).display} />
+				</details>
+			{:catch error}
+				<div>An error occurred while loading the list of units.</div>
+			{/await}
+		</div>
 	</div>
+
+	<h6>More input types coming soon!</h6>
 </div>
 
 <style>
