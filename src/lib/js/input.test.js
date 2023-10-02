@@ -34,12 +34,12 @@ describe('test unitConversionQuery', () => {
 		expect(sections[1].title).toBe('Result');
 		expect(sections[1].content).toBe(
 			[
-				"1.68021 meters (Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה)",
-				'1.8669 meters (Rabbi Yaakov Kamenetsky - הרב יעקב קמנצקי)',
-				"1.889125 meters (Rabbi Moshe Feinstein - ר' משה פיינשטיין (Standard))",
-				"2.0447 meters (Rabbi Moshe Feinstein - ר' משה פיינשטיין (Stringent))",
-				'2.02019996 meters (Chazon Ish - חזון איש (Standard))',
-				'2.1 meters (Chazon Ish - חזון איש (Stringent))',
+				`1.68021 meters - <span class="opinion">Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה</span>`,
+				`1.8669 meters - <span class="opinion">Rabbi Yaakov Kamenetsky - הרב יעקב קמנצקי</span>`,
+				`1.889125 meters - <span class="opinion">Rabbi Moshe Feinstein - ר' משה פיינשטיין (Standard)</span>`,
+				`2.0447 meters - <span class="opinion">Rabbi Moshe Feinstein - ר' משה פיינשטיין (Stringent)</span>`,
+				`2.02019996 meters - <span class="opinion">Chazon Ish - חזון איש (Standard)</span>`,
+				`2.1 meters - <span class="opinion">Chazon Ish - חזון איש (Stringent)</span>`,
 			].join('\n')
 		);
 	});
@@ -67,12 +67,12 @@ describe('test unitConversionQuery', () => {
 		expect(sections[1].title).toBe('Result');
 		expect(sections[1].content).toBe(
 			[
-				"87.6459468 US liquid gallons (Desert (Rabbi Avraham Chaim Naeh) - מדבריות (ר' אברהם חיים נאה)",
-				'150.94579727 US liquid gallons (Desert (Chazon Ish) - מדבריות (חזון איש)',
-				"89.01541472 US liquid gallons (Jerusalem (Rabbi Avraham Chaim Naeh) - ירושלמיות (ר' אברהם חיים נאה)",
-				'181.78418596 US liquid gallons (Jerusalem (Chazon Ish) - ירושלמיות (חזון איש)',
-				"126.59970093 US liquid gallons (Tzipori (Rabbi Avraham Chaim Naeh) - ציפוריות (ר' אברהם חיים נאה)",
-				'217.49179391 US liquid gallons (Tzipori (Chazon Ish) - ציפוריות (חזון איש)',
+				`87.6459468 US liquid gallons - <span class="opinion">Desert (Rabbi Avraham Chaim Naeh) - (מדבריות (ר' אברהם חיים נאה</span>`,
+				`150.94579727 US liquid gallons - <span class="opinion">Desert (Chazon Ish) - (מדבריות (חזון איש</span>`,
+				`89.01541472 US liquid gallons - <span class="opinion">Jerusalem (Rabbi Avraham Chaim Naeh) - (ירושלמיות (ר' אברהם חיים נאה</span>`,
+				`181.78418596 US liquid gallons - <span class="opinion">Jerusalem (Chazon Ish) - (ירושלמיות (חזון איש</span>`,
+				`126.59970093 US liquid gallons - <span class="opinion">Tzipori (Rabbi Avraham Chaim Naeh) - (ציפוריות (ר' אברהם חיים נאה</span>`,
+				`217.49179391 US liquid gallons - <span class="opinion">Tzipori (Chazon Ish) - (ציפוריות (חזון איש</span>`,
 			].join('\n')
 		);
 	});
@@ -82,9 +82,10 @@ describe('test unitConversionQuery', () => {
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe('Convert 1 US Dollar to Perutos');
 		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toContain(' Perutos (Shulchan Aruch / Rambam - שולחן ערוך / רמב״ם)');
-		expect(sections[1].content).toContain(' Perutos (Rashi - רש״י)');
-		expect(sections[1].content).toContain(' Perutos (Other authorities - פוסקים אחרים)');
+		expect(sections[1].content).toContain(' Perutos');
+		expect(sections[1].content).toContain('Shulchan Aruch / Rambam - שולחן ערוך / רמב״ם');
+		expect(sections[1].content).toContain('Rashi - רש״י');
+		expect(sections[1].content).toContain('Other authorities - פוסקים אחרים');
 	});
 
 	it('how many chalakim are in an hour?', async () => {
