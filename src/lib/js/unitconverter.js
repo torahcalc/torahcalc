@@ -101,11 +101,11 @@ export async function getConverters(fetchExchangeRates = true) {
 		area: {
 			name: 'Area',
 			units: {
-				beit_kor: { name: 'Beit kor - בית כור', value: 1, type: 'BIBLICAL' },
-				beit_seasayim: { name: 'Beit seasayim - בית סאתים', value: 15, type: 'BIBLICAL' },
-				beit_seah: { name: 'Beit seah - בית סאה', value: 30, type: 'BIBLICAL' },
-				beit_kav: { name: 'Beit kav - בית קב', value: 180, type: 'BIBLICAL' },
-				beit_rova: { name: 'Beit rova - בית רובע', value: 720, type: 'BIBLICAL' },
+				beis_kor: { name: 'Beis kor - בית כור', value: 1, type: 'BIBLICAL' },
+				beis_seasayim: { name: 'Beis seasayim - בית סאתים', value: 15, type: 'BIBLICAL' },
+				beis_seah: { name: 'Beis seah - בית סאה', value: 30, type: 'BIBLICAL' },
+				beis_kav: { name: 'Beis kav - בית קב', value: 180, type: 'BIBLICAL' },
+				beis_rova: { name: 'Beis rova - בית רובע', value: 720, type: 'BIBLICAL' },
 				amah_merubaas: { name: 'Amah merubaas - אמה מרובעת', value: 75e3, type: 'BIBLICAL' },
 				tefach_merubah: { name: 'Tefach merubah - טפח מרובע', value: 27e5, type: 'BIBLICAL' },
 				etzbah_merubaas: { name: 'Etzbah merubaas - אצבע מרובעת', value: 432e5, type: 'BIBLICAL' },
