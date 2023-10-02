@@ -21,7 +21,17 @@ function generateUnitsGrammar(outputPath) {
 		grammar += `\n\n${unitType}Unit -> `;
 		const unitMapping = units[unitType];
 		grammar += Object.keys(unitMapping)
-			.map((unitInput) => `"${unitInput}" {% d => ({ type: '${unitType}', unitId: '${unitMapping[unitInput]}' }) %}`)
+			.map((unitInput) => {
+				if (typeof unitMapping[unitInput] !== 'string') {
+					return (
+						unitMapping[unitInput]
+							// @ts-ignore - unitMapping[unitInput] is an array
+							.map((unitId) => `"${unitInput}" {% d => ({ type: '${unitType}', unitId: '${unitId}' }) %}`)
+							.join('\n | ')
+					);
+				}
+				return `"${unitInput}" {% d => ({ type: '${unitType}', unitId: '${unitMapping[unitInput]}' }) %}`;
+			})
 			.join('\n | ');
 	}
 

@@ -1,9 +1,11 @@
+import dayjs from 'dayjs';
 import nearley from 'nearley';
 import grammar from '$lib/grammars/generated/main.cjs';
 import { convertUnits, convertUnitsMultiAll, getConverters, getOpinion, getOpinions, getUnit } from './unitconverter';
 
 const INPUT_INTERPRETATION = 'Input Interpretation';
 const RESULT = 'Result';
+const SOURCES = 'Sources';
 
 /**
  * Custom Error class for input errors
@@ -138,6 +140,10 @@ async function unitConversionQuery(derivation) {
 		resultValue = conversionResults.map(formatResult).join('\n');
 	}
 	sections.push({ title: RESULT, content: resultValue });
+	const updatedDate = unitTo.updated ?? unitFrom.updated ?? null;
+	if (updatedDate) {
+		sections.push({ title: SOURCES, content: `Based on <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${dayjs(updatedDate).format('MMMM D, YYYY')}` });
+	}
 	return sections;
 }
 
@@ -157,12 +163,14 @@ async function conversionChartQuery(derivation) {
 	const conversionResults = await convertUnitsMultiAll(params);
 	// output no-opinion results first
 	let content = '';
+	let updatedDate = null;
 	const noOpinionResults = conversionResults['no-opinion'];
 	if (noOpinionResults) {
 		content += '<ul>';
 		for (const [unitId, result] of Object.entries(noOpinionResults)) {
 			const unitTo = await getUnit(unitType, unitId);
 			content += `<li>${result.result.toFixed(8).replace(/\.?0+$/, '')} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}</li>`;
+			updatedDate = unitTo.updated ?? updatedDate;
 		}
 		content += '</ul>';
 	}
@@ -176,11 +184,15 @@ async function conversionChartQuery(derivation) {
 			for (const [unitId, result] of Object.entries(opinionResults)) {
 				const unitTo = await getUnit(unitType, unitId);
 				content += `<li>${result.result.toFixed(8).replace(/\.?0+$/, '')} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}</li>`;
+				updatedDate = unitTo.updated ?? updatedDate;
 			}
 			content += '</ul></td></tr>';
 		}
 		content += '</table>';
 	}
 	sections.push({ title: RESULT, content });
+	if (updatedDate) {
+		sections.push({ title: SOURCES, content: `Based on <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${dayjs(updatedDate).format('MMMM D, YYYY')}` });
+	}
 	return sections;
 }
