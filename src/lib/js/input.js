@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import nearley from 'nearley';
 import grammar from '$lib/grammars/generated/main.cjs';
 import { convertUnits, convertUnitsMultiAll, getConverters, getOpinion, getOpinions, getUnit } from './unitconverter';
