@@ -15,10 +15,10 @@
 	 * Set the query to calculate and update the URL
 	 */
 	async function setSections() {
+		query = queryInput;
 		const url = $page.url;
 		url.searchParams.set('q', query);
 		window.history.pushState({}, '', url);
-		query = queryInput;
 	}
 
 	/**
