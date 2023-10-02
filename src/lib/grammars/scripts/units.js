@@ -4,6 +4,8 @@ export const units = {
 		'derech yom': 'derech_yom',
 		'mahalach yom': 'derech_yom',
 		'days walk': 'derech_yom',
+		"day's walk": 'derech_yom',
+		"days' walk": 'derech_yom',
 		parsah: 'parsah',
 		parsa: 'parsah',
 		parsahs: 'parsah',

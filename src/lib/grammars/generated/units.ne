@@ -4,6 +4,8 @@
 lengthUnit -> "derech yom" {% d => ({ type: 'length', unitId: 'derech_yom' }) %}
  | "mahalach yom" {% d => ({ type: 'length', unitId: 'derech_yom' }) %}
  | "days walk" {% d => ({ type: 'length', unitId: 'derech_yom' }) %}
+ | "day's walk" {% d => ({ type: 'length', unitId: 'derech_yom' }) %}
+ | "days' walk" {% d => ({ type: 'length', unitId: 'derech_yom' }) %}
  | "parsah" {% d => ({ type: 'length', unitId: 'parsah' }) %}
  | "parsa" {% d => ({ type: 'length', unitId: 'parsah' }) %}
  | "parsahs" {% d => ({ type: 'length', unitId: 'parsah' }) %}

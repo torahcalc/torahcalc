@@ -23,17 +23,17 @@
 @include "./generated/units.ne"  # unit, lengthUnit, areaUnit, volumeUnit, weightUnit, coinsUnit, timeUnit
 
 query[QUERY] -> _ $QUERY _ {% data => data[1] %}
-             | _ $QUERY [?.] _ {% data => data[1] %}
+              | _ $QUERY [?.] _ {% data => data[1] %}
 
 main -> query[unitConversionQuery] {% data => data[0][0] %}
       | query[conversionChartQuery] {% data => data[0][0] %}
 
-unitConversionQuery -> [A-Za-z\s]:* _ jsonfloat __ unit __ ("to" | "in" | "into") __ unit {% data => ({type: "unitConversionQuery", fromUnit: data[4], toUnit: data[8], amount: data[2]}) %}
-                    | "how many" __ unit __ ("in" | "are in" | "to") __ ("a" | "an") __ unit {% data => ({type: "unitConversionQuery", fromUnit: data[8], toUnit: data[2], amount: 1}) %}
-                    | "how many" __ unit __ ("in" | "are in") __ jsonfloat __ unit {% data => ({type: "unitConversionQuery", fromUnit: data[8], toUnit: data[2], amount: data[6]}) %}
+unitConversionQuery -> [A-Za-z\s]:* jsonfloat _ unit __ ("to" | "in" | "into") __ unit {% data => ({type: "unitConversionQuery", fromUnit: data[3], toUnit: data[7], amount: data[1]}) %}
+                     | [A-Za-z\s]:* unit __ ("in" | "are in" | "to") __ ("a" | "an") __ unit {% data => ({type: "unitConversionQuery", fromUnit: data[7], toUnit: data[1], amount: 1}) %}
+                     | [A-Za-z\s]:* unit __ ("in" | "are in") __ jsonfloat _ unit {% data => ({type: "unitConversionQuery", fromUnit: data[7], toUnit: data[1], amount: data[5]}) %}
 
-conversionChartQuery -> "conversion" __ "chart" __ "for" __ jsonfloat __ unit {% data => ({type: "conversionChartQuery", unit: data[8], amount: data[6]}) %}
-                    | "conversion" __ "chart" __ "for" __ unit {% data => ({type: "conversionChartQuery", unit: data[6], amount: 1}) %}
+conversionChartQuery -> "conversion" __ "chart" __ "for" __ jsonfloat _ unit {% data => ({type: "conversionChartQuery", unit: data[8], amount: data[6]}) %}
+                      | "conversion" __ "chart" __ "for" __ unit {% data => ({type: "conversionChartQuery", unit: data[6], amount: 1}) %}
 
 _ -> [ ]:* {% data => null %}
 
