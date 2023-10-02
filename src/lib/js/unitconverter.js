@@ -64,7 +64,7 @@ export async function getConverters(fetchExchangeRates = true) {
 	const kikarKodeshEUR = kikarKodeshUSD * exchangeRates.rates.EUR;
 	const kikarKodeshCAD = kikarKodeshUSD * exchangeRates.rates.CAD;
 	const kikarKodeshGBP = kikarKodeshUSD * exchangeRates.rates.GBP;
-	const updateDate = dayjs(exchangeRates.timestamp * 1000).format('MMMM D, YYYY h:mm A');
+	const updateDate = dayjs(exchangeRates.timestamp * 1000).format('MMMM D, YYYY, h:mm A');
 	return {
 		length: {
 			name: 'Length',
@@ -187,7 +187,7 @@ export async function getConverters(fetchExchangeRates = true) {
 				tartimar: { name: 'Tartimar - תרטימר', value: 120, type: 'BIBLICAL', display: 'Tartimar', displayPlural: 'Tartimar' },
 				unkeya: { name: 'Unkeya - אונקיא', value: 750, type: 'BIBLICAL', display: 'Unkeya', displayPlural: 'Unkeya' },
 				sela: { name: 'Sela - סלע', value: 1500, type: 'BIBLICAL', display: 'Sela', displayPlural: 'Selayim' },
-				shekel: { name: 'Shekel - שקל', value: 3e3, type: 'BIBLICAL', display: 'Shekel', displayPlural: 'Shekalim' },
+				shekel: { name: 'Shekel - שקל', value: 3e3, type: 'BIBLICAL', display: 'Ancient Shekel', displayPlural: 'Ancient Shekalim' },
 				dinar: { name: 'Dinar / Zuz / Zin - דינר / זוז / זין', value: 6e3, type: 'BIBLICAL', display: 'Dinar / Zuz / Zin', displayPlural: 'Dinarim / Zuzim / Zinim' },
 				kilogram: { name: 'Kilogram', value: 27, type: 'STANDARD', display: 'kilogram', displayPlural: 'kilograms' },
 				gram: { name: 'Gram', value: 27e3, type: 'STANDARD', display: 'gram', displayPlural: 'grams' },
