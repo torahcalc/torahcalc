@@ -1,24 +1,31 @@
 /**
  * Script that runs before the grammar is compiled
- *
- * - Generates units.ne grammar from units.js
  */
 
 import { writeFileSync } from 'fs';
 import { units } from './units.js';
 
-const unitTypes = Object.keys(units);
+generateUnitsGrammar('./src/lib/grammars/generated/units.ne');
 
-let grammar = '# Grammar of unit names\n# Generated automatically from units.js in src/lib/grammars/scripts/prepare-input.js';
+/**
+ * Generates the units grammar
+ *
+ * @param {string} outputPath - The path to the output file with .ne extension
+ */
+function generateUnitsGrammar(outputPath) {
+	const unitTypes = Object.keys(units);
 
-for (const unitType of unitTypes) {
-	grammar += `\n\n${unitType}Unit -> `;
-	const unitMapping = units[unitType];
-	grammar += Object.keys(unitMapping)
-		.map((unitInput) => `"${unitInput}" {% d => ({ type: '${unitType}', unitId: '${unitMapping[unitInput]}' }) %}`)
-		.join('\n | ');
+	let grammar = '# Grammar of unit names\n# Generated automatically from units.js in src/lib/grammars/scripts/prepare-input.js';
+
+	for (const unitType of unitTypes) {
+		grammar += `\n\n${unitType}Unit -> `;
+		const unitMapping = units[unitType];
+		grammar += Object.keys(unitMapping)
+			.map((unitInput) => `"${unitInput}" {% d => ({ type: '${unitType}', unitId: '${unitMapping[unitInput]}' }) %}`)
+			.join('\n | ');
+	}
+
+	grammar += '\n\nunit -> ' + unitTypes.map((unitType) => `${unitType}Unit {% d => d[0] %}`).join('\n | ');
+
+	writeFileSync(outputPath, grammar);
 }
-
-grammar += '\n\nunit -> ' + unitTypes.map((unitType) => `${unitType}Unit {% d => d[0] %}`).join('\n | ');
-
-writeFileSync('./src/lib/grammars/generated/units.ne', grammar);

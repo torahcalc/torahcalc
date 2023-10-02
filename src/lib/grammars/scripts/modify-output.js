@@ -1,7 +1,5 @@
 /**
  * Script that runs on the output of the Nearley parser
- *
- * - Fixes top-level import issue by removing the import statement within the function and replacing it at the top of the file.
  */
 
 import { readFileSync, writeFileSync } from 'fs';
@@ -9,6 +7,7 @@ import { readFileSync, writeFileSync } from 'fs';
 const path = './src/lib/grammars/generated/main.cjs';
 
 moveImportsToTop(path);
+addLintDisable(path);
 
 /**
  * Moves all import statements to the top of the file
@@ -32,5 +31,15 @@ function moveImportsToTop(path) {
 		grammar = imports.join('\n') + '\n' + grammar;
 	}
 
+	writeFileSync(path, grammar);
+}
+
+/**
+ * Add lint disable comment to the top of the file
+ * 
+ * @param {string} path - The path to the file to modify
+ */
+function addLintDisable(path) {
+	const grammar = [`// @ts-nocheck`,`/* eslint-disable */`].join("\n") + "\n" + readFileSync(path, 'utf8');
 	writeFileSync(path, grammar);
 }
