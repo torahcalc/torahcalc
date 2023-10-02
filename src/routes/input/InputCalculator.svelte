@@ -1,6 +1,11 @@
 <script>
 	import { page } from '$app/stores';
 	import { calculateQuery } from '$lib/js/input';
+	import { getConverters, getUnit, getUnits } from '$lib/js/unitconverter';
+	import AvailableOptionsList from './AvailableOptionsList.svelte';
+	import InputExample from './InputExample.svelte';
+
+	const converters = getConverters(false);
 
 	/** @type {string} The current query in the input box (not yet submitted) */
 	let queryInput = $page.url.searchParams.get('q') ?? '';
@@ -14,7 +19,8 @@
 	/**
 	 * Set the query to calculate and update the URL
 	 */
-	async function setSections() {
+	async function setSections(newQuery = queryInput) {
+		queryInput = newQuery;
 		query = queryInput;
 		const url = $page.url;
 		url.searchParams.set('q', query);
@@ -44,18 +50,18 @@
 <div class="card flex-card input-control">
 	<div class="input-group">
 		<input type="text" bind:value={queryInput} class="form-control" placeholder="What do you want to calculate?" on:keyup={onQueryKeypress} />
-		<button class="btn btn-primary" on:click={setSections}>Calculate</button>
+		<button class="btn btn-primary" on:click={() => setSections(queryInput)}>Calculate</button>
 	</div>
 </div>
 
 {#if query !== ''}
 	{#await calculateQuery(query, { disambiguation })}
-		<div class="card flex-card">
-			<h2>Calculating...</h2>
+		<div class="card flex-card my-1">
+			<h6>Calculating...</h6>
 		</div>
 	{:then sections}
 		{#each sections as section}
-			<div class="card flex-card">
+			<div class="card flex-card my-1">
 				{#if section.title}
 					<h6>{section.title}</h6>
 				{/if}
@@ -63,7 +69,7 @@
 			</div>
 		{/each}
 	{:catch error}
-		<div class="card flex-card">
+		<div class="card flex-card my-1">
 			<h6>Error</h6>
 			<div>{error.message}</div>
 			{#if error.details}
@@ -73,6 +79,32 @@
 		</div>
 	{/await}
 {/if}
+
+<div class="card flex-card">
+	<h4 class="mb-4">Examples of what you can enter</h4>
+
+	<h6>Unit Conversions</h6>
+
+	<ul class="list-unstyled">
+		<li><InputExample clickFunction={setSections} query="Convert 3 Tefachim to inches." /></li>
+		<li><InputExample clickFunction={setSections} query="How many Amos are in a Parsah?" /></li>
+		<li><InputExample clickFunction={setSections} query="Convert 40 Seah to US liquid gallons." /></li>
+		<li><InputExample clickFunction={setSections} query="Convert 1 US Dollar to Perutos." /></li>
+		<li><InputExample clickFunction={setSections} query="How many Chalakim are in an hour?" /></li>
+		<li><InputExample clickFunction={setSections} query="Conversion chart for 1 Mil" /></li>
+	</ul>
+	<div>
+		{#await converters then converters}
+			<details>
+				<summary>Show list of units</summary>
+
+				<AvailableOptionsList mapping={getUnits(converters)} transform={async (unitType, unitId) => (await getUnit(unitType, unitId)).display} />
+			</details>
+		{:catch error}
+			<div>An error occurred while loading the list of units.</div>
+		{/await}
+	</div>
+</div>
 
 <style>
 </style>

@@ -37,7 +37,8 @@ p {
 	line-height: 1.5;
 }
 
-a {
+a,
+.btn-link {
 	color: var(--color-theme-1);
 	text-decoration: none;
 }
@@ -72,4 +73,10 @@ a:hover {
 .scroll-inner {
 	overflow-x: auto;
 	max-width: 100%;
+}
+
+/* Input Calculator */
+span.opinion {
+	color: var(--bs-secondary-color) !important;
+	font-style: italic;
 }

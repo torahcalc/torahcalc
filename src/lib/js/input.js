@@ -116,7 +116,7 @@ async function unitConversionQuery(derivation) {
 		// set the precision and remove trailing zeroes
 		const amount = result.result.toFixed(8).replace(/\.?0+$/, '');
 		const resultAmountAndUnit = `${amount} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}`;
-		return result.opinion ? `${resultAmountAndUnit} (${result.opinion})` : resultAmountAndUnit;
+		return result.opinion ? `${resultAmountAndUnit} - <span class="opinion">${result.opinion}</span>` : resultAmountAndUnit;
 	};
 
 	let resultValue = '';
@@ -176,7 +176,7 @@ async function conversionChartQuery(derivation) {
 	// output opinion results as a table where the first column is the opinion and the second column is the results for that opinion separated by newlines
 	delete conversionResults['no-opinion'];
 	if (Object.keys(conversionResults).length > 0) {
-		content += '<table><tr><th>Opinion</th><th>Results</th></tr>';
+		content += '<table class="table table-striped"><tr><th>Opinion</th><th>Results</th></tr>';
 		for (const [opinionId, opinionResults] of Object.entries(conversionResults)) {
 			const opinion = await getOpinion(unitType, opinionId);
 			content += `<tr><td>${opinion.name}</td><td><ul>`;

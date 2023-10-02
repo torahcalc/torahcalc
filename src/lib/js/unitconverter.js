@@ -171,12 +171,12 @@ export async function getConverters(fetchExchangeRates = true) {
 				cubic_inch: { name: 'Cubic inch', value: 15184.6603, type: 'STANDARD', display: 'cubic inch', displayPlural: 'cubic inches' },
 			},
 			opinions: {
-				desert_rabbi_avraham_chaim_naeh: { name: "Desert (Rabbi Avraham Chaim Naeh) - מדבריות (ר' אברהם חיים נאה", factor: 1 },
-				desert_chazon_ish: { name: 'Desert (Chazon Ish) - מדבריות (חזון איש', factor: 31 / 18 },
-				jerusalem_rabbi_avraham_chaim_naeh: { name: "Jerusalem (Rabbi Avraham Chaim Naeh) - ירושלמיות (ר' אברהם חיים נאה", factor: 65 / 64 },
-				jerusalem_chazon_ish: { name: 'Jerusalem (Chazon Ish) - ירושלמיות (חזון איש', factor: 56 / 27 },
-				tzipori_rabbi_avraham_chaim_naeh: { name: "Tzipori (Rabbi Avraham Chaim Naeh) - ציפוריות (ר' אברהם חיים נאה", factor: 13 / 9 },
-				tzipori_chazon_ish: { name: 'Tzipori (Chazon Ish) - ציפוריות (חזון איש', factor: 67 / 27 },
+				desert_rabbi_avraham_chaim_naeh: { name: "Desert (Rabbi Avraham Chaim Naeh) - (מדבריות (ר' אברהם חיים נאה", factor: 1 },
+				desert_chazon_ish: { name: 'Desert (Chazon Ish) - (מדבריות (חזון איש', factor: 31 / 18 },
+				jerusalem_rabbi_avraham_chaim_naeh: { name: "Jerusalem (Rabbi Avraham Chaim Naeh) - (ירושלמיות (ר' אברהם חיים נאה", factor: 65 / 64 },
+				jerusalem_chazon_ish: { name: 'Jerusalem (Chazon Ish) - (ירושלמיות (חזון איש', factor: 56 / 27 },
+				tzipori_rabbi_avraham_chaim_naeh: { name: "Tzipori (Rabbi Avraham Chaim Naeh) - (ציפוריות (ר' אברהם חיים נאה", factor: 13 / 9 },
+				tzipori_chazon_ish: { name: 'Tzipori (Chazon Ish) - (ציפוריות (חזון איש', factor: 67 / 27 },
 			},
 		},
 		weight: {

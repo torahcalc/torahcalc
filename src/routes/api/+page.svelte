@@ -6,7 +6,6 @@
 	import dayjs from 'dayjs';
 	import Endpoint from './Endpoint.svelte';
 	import Toc from 'svelte-toc';
-	import Fa from 'svelte-fa/src/fa.svelte';
 
 	const converters = getConverters(false);
 
