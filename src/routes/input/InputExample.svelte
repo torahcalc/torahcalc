@@ -7,7 +7,13 @@
 </script>
 
 <div>
-	<button on:click={() => clickFunction(query)} aria-label={query} class="btn btn-link">
+	<button on:click={() => clickFunction(query)} aria-label={query} class="btn btn-link example">
 		{query}
 	</button>
 </div>
+
+<style>
+	.example {
+		text-align: left;
+	}
+</style>
