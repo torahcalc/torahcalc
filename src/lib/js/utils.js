@@ -96,6 +96,23 @@ export function getLastSaturday(date) {
  * @returns {string} The formatted number.
  */
 export function formatNumber(number, precision = 8) {
-	const localeNum = number.toLocaleString(undefined, { maximumFractionDigits: precision });
-	return localeNum.includes('.') ? localeNum.replace(/\.?0+$/, '') : localeNum;
+	// set precision and add commas
+	let localeNum = number.toLocaleString(undefined, { maximumFractionDigits: precision });
+	// remove trailing zeros if there is a decimal point
+	localeNum = localeNum.includes('.') ? localeNum.replace(/\.?0+$/, '') : localeNum;
+	// replace commas with thin spaces
+	localeNum = localeNum.replace(/,/g, '\u2009');
+	// return the formatted number
+	return localeNum;
+}
+
+/**
+ * Format number and place it in a span with the class 'number'.
+ *
+ * @param {number} number - The number to format.
+ * @param {number} [precision=8] - The maximum number of digits after the decimal point.
+ * @returns {string} The formatted number.
+ */
+export function formatNumberHTML(number, precision = 8) {
+	return `<span class="number">${formatNumber(number, precision)}</span>`;
 }
