@@ -131,7 +131,10 @@ async function unitConversionQuery(derivation) {
 	const unitType = derivation.unitFrom.type;
 	const unitFrom = await getUnit(unitType, derivation.unitFrom.unitId);
 	const unitTo = await getUnit(unitType, derivation.unitTo.unitId);
-	sections.push({ title: INPUT_INTERPRETATION, content: `Convert ${formatNumberHTML(derivation.amount)} ${derivation.amount === 1 ? unitFrom.display : unitFrom.displayPlural} to ${unitTo.displayPlural}` });
+	sections.push({
+		title: INPUT_INTERPRETATION,
+		content: `Convert ${formatNumberHTML(derivation.amount)} ${derivation.amount === 1 ? unitFrom.display : unitFrom.displayPlural} to ${unitTo.displayPlural}`,
+	});
 	const converters = await getConverters();
 	const opinions = getOpinions(converters)[unitType] ?? [];
 	const unitOpinionsForType = converters[unitType].unitOpinions ?? {};
