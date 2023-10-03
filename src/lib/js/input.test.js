@@ -57,7 +57,7 @@ describe('test unitConversionQuery', () => {
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe('Convert 1 Parsah to Amos');
 		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toBe('8000 Amos');
+		expect(sections[1].content).toBe('8,000 Amos');
 	});
 
 	it('40 seah to us liquid gallons', async () => {
@@ -93,7 +93,7 @@ describe('test unitConversionQuery', () => {
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe('Convert 1 hour to Chalakim');
 		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toBe('1080 Chalakim');
+		expect(sections[1].content).toBe('1,080 Chalakim');
 	});
 
 	it('1 min to kdei achilas peras', async () => {
