@@ -162,11 +162,13 @@ export const LETTER_SPELLING_VALUES = {
 };
 
 /**
- * All gematria method keys with their names and hebrew names
- *
  * @typedef {Object} GematriaMethodName
  * @property {string} name - The name of the gematria method in English
  * @property {string} hebrewName - The name of the gematria method in Hebrew
+ */
+
+/**
+ * All gematria method keys with their names and hebrew names
  *
  * @type {{ [key: string]: GematriaMethodName }}
  */
@@ -378,9 +380,7 @@ export function getListOfGematriasInCommon(word1, word2) {
 			if (listOfGematrias1[gematria1] === listOfGematrias2[gematria2]) {
 				// add the gematria types and the value to the list
 				commonGematrias.push({
-					// @ts-ignore - gematria1 will always be a key of METHOD_NAMES
 					method1: METHOD_NAMES[gematria1],
-					// @ts-ignore - gematria2 will always be a key of METHOD_NAMES
 					method2: METHOD_NAMES[gematria2],
 					value: listOfGematrias1[gematria1],
 				});

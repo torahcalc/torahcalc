@@ -2,6 +2,7 @@ import nearley from 'nearley';
 import grammar from '$lib/grammars/generated/main.cjs';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
 import { formatNumberHTML } from './utils';
+import { METHOD_NAMES, calculateGematria } from './gematria';
 
 const INPUT_INTERPRETATION = 'Input Interpretation';
 const RESULT = 'Result';
@@ -96,10 +97,16 @@ export async function calculateQuery(search, options = {}) {
 	const sectionFunctions = {
 		unitConversionQuery: async () => await unitConversionQuery(derivation),
 		conversionChartQuery: async () => await conversionChartQuery(derivation),
+		gematriaQuery: () => gematriaQuery(derivation),
 	};
 
-	const func = sectionFunctions[derivation.function]();
-	const calculatedSections = func instanceof Promise ? await func : func;
+	const func = sectionFunctions[derivation.function];
+	if (!func) {
+		throw new InputError(`The ${derivation.function} function is not supported.`);
+	}
+	const retval = func();
+	/** @ts-ignore - @type {Array<{ title: string, content: string }>} */
+	const calculatedSections = retval instanceof Promise ? await retval : retval;
 	return [...sections, ...calculatedSections];
 }
 
@@ -216,5 +223,33 @@ async function conversionChartQuery(derivation) {
 	if (updatedDate) {
 		sections.push({ title: SOURCES, content: `Based on <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${updatedDate}` });
 	}
+	return sections;
+}
+
+/**
+ * Generate sections for a gematria query
+ *
+ * @param {{ function: string, gematriaMethod: string, text: string }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function gematriaQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+	const gematriaResult = calculateGematria({ text: derivation.text });
+	const primaryResult = gematriaResult[derivation.gematriaMethod];
+	if (!primaryResult) {
+		throw new InputError(`The ${derivation.gematriaMethod} gematria method is not supported.`);
+	}
+	const method = METHOD_NAMES[derivation.gematriaMethod];
+	sections.push({ title: INPUT_INTERPRETATION, content: `Calculate ${method.name} of ${derivation.text}` });
+	sections.push({ title: RESULT, content: `${formatNumberHTML(primaryResult)} in ${method.name}` });
+	// show all gematria methods in a table
+	let gematriaTable = '<table class="table table-striped"><tr><th>Method</th><th>Result</th></tr>';
+	for (const [gematriaMethod, result] of Object.entries(gematriaResult)) {
+		const method = METHOD_NAMES[gematriaMethod];
+		gematriaTable += `<tr><td>${method.name}</td><td>${formatNumberHTML(result)}</td></tr>`;
+	}
+	gematriaTable += '</table>';
+	sections.push({ title: 'Other Methods', content: gematriaTable });
 	return sections;
 }
