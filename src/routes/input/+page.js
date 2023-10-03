@@ -1,3 +1,2 @@
-// since there's no dynamic data here, we can prerender
-// it so that it gets served as a static asset in production
+// in order to render the page with url.searchParams, we need to not prerender
 export const prerender = false;
