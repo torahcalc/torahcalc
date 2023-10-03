@@ -146,6 +146,23 @@
 
 	<p>Welcome to the TorahCalc API. This API is currently in beta, and is subject to change.</p>
 
+	<h2 class="category">English Text Input Calculator</h2>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/input"
+		description="Use natural words to input what you want to calculate."
+		parameters={[
+			{
+				name: 'query',
+				type: 'String',
+				required: true,
+				description: 'The query to evaluate',
+				example: 'Convert 3 amos to inches.',
+			},
+		]}
+	/>
+
 	<h2 class="category">Biblical and Talmudic Units</h2>
 
 	{#await converters}
