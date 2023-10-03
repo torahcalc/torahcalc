@@ -2,8 +2,11 @@
 	import { page } from '$app/stores';
 	import { calculateQuery } from '$lib/js/input';
 	import { getConverters, getUnit, getUnits } from '$lib/js/unitconverter';
+	import { faCalculator, faScaleBalanced } from '@fortawesome/free-solid-svg-icons';
 	import AvailableOptionsList from './AvailableOptionsList.svelte';
 	import InputExample from './InputExample.svelte';
+	import Fa from 'svelte-fa/src/fa.svelte';
+	import { METHOD_NAMES } from '$lib/js/gematria';
 
 	const converters = getConverters(false);
 
@@ -84,7 +87,7 @@
 	<h4 class="mb-4">Examples of what you can enter</h4>
 
 	<div class="mb-4">
-		<h6>Unit Conversions</h6>
+		<h5><Fa icon={faScaleBalanced} class="me-1" /> Unit conversions</h5>
 
 		<ul class="list-unstyled">
 			<li><InputExample clickFunction={setSections} query="Convert 3 Tefachim to inches." /></li>
@@ -105,6 +108,26 @@
 			{:catch error}
 				<div>An error occurred while loading the list of units.</div>
 			{/await}
+		</div>
+	</div>
+
+	<div class="mb-4">
+		<h5><Fa icon={faCalculator} class="me-1" /> Gematria</h5>
+
+		<ul class="list-unstyled">
+			<li><InputExample clickFunction={setSections} query="Calculate Gematria of תורה." /></li>
+			<li><InputExample clickFunction={setSections} query="Calculate Mispar Gadol of מלך." /></li>
+			<li><InputExample clickFunction={setSections} query="Calculate Mispar Siduri of פרעה." /></li>
+			<li><InputExample clickFunction={setSections} query="Calculate Mispar Katan Mispari of משיח." /></li>
+			<li><InputExample clickFunction={setSections} query="Calculate AvGad of משה." /></li>
+		</ul>
+
+		<div>
+			<details>
+				<summary>Show list of gematria methods</summary>
+
+				<AvailableOptionsList array={Object.values(METHOD_NAMES).map((method) => method.name)} />
+			</details>
 		</div>
 	</div>
 

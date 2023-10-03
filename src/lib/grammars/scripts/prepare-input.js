@@ -3,9 +3,11 @@
  */
 
 import { writeFileSync } from 'fs';
-import { units } from './units.js';
+import { units } from '../units.js';
+import { gematriaMethods } from '../gematria-methods.js';
 
 generateUnitsGrammar('./src/lib/grammars/generated/units.ne');
+generateGematriaGrammar('./src/lib/grammars/generated/gematria.ne');
 
 /**
  * Generates the units grammar
@@ -28,6 +30,24 @@ function generateUnitsGrammar(outputPath) {
 	}
 
 	grammar += '\n\nunit -> ' + unitTypes.map((unitType) => `${unitType}Unit {% d => d[0] %}`).join('\n | ');
+
+	writeFileSync(outputPath, grammar);
+}
+
+/**
+ * Generates the gematria grammar
+ *
+ * @param {string} outputPath - The path to the output file with .ne extension
+ */
+function generateGematriaGrammar(outputPath) {
+	let grammar = '# Grammar of gematria\n# Generated automatically from gematria-methods.js in src/lib/grammars/scripts/prepare-input.js';
+
+	grammar += '\n\ngematriaMethod -> ';
+	grammar += Object.keys(gematriaMethods)
+		.map((methodInput) => {
+			return gematriaMethods[methodInput].map((value) => `"${methodInput.replace(/"/g, '\\"')}" {% d => '${value}' %}`).join('\n | ');
+		})
+		.join('\n | ');
 
 	writeFileSync(outputPath, grammar);
 }
