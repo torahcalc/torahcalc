@@ -1,6 +1,7 @@
 import nearley from 'nearley';
 import grammar from '$lib/grammars/generated/main.cjs';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
+import { formatNumberHTML } from './utils';
 
 const INPUT_INTERPRETATION = 'Input Interpretation';
 const RESULT = 'Result';
@@ -114,7 +115,7 @@ async function unitConversionQuery(derivation) {
 	/** @param {import('./unitconverter').ConversionResult} result */
 	const formatResult = (result) => {
 		// set the precision and remove trailing zeroes
-		const amount = result.result.toFixed(8).replace(/\.?0+$/, '');
+		const amount = formatNumberHTML(result.result);
 		const resultAmountAndUnit = `${amount} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}`;
 		if (result.opinion) {
 			return `${resultAmountAndUnit} - <span class="opinion">${result.opinion}</span>`;
@@ -130,7 +131,10 @@ async function unitConversionQuery(derivation) {
 	const unitType = derivation.unitFrom.type;
 	const unitFrom = await getUnit(unitType, derivation.unitFrom.unitId);
 	const unitTo = await getUnit(unitType, derivation.unitTo.unitId);
-	sections.push({ title: INPUT_INTERPRETATION, content: `Convert ${derivation.amount} ${derivation.amount === 1 ? unitFrom.display : unitFrom.displayPlural} to ${unitTo.displayPlural}` });
+	sections.push({
+		title: INPUT_INTERPRETATION,
+		content: `Convert ${formatNumberHTML(derivation.amount)} ${derivation.amount === 1 ? unitFrom.display : unitFrom.displayPlural} to ${unitTo.displayPlural}`,
+	});
 	const converters = await getConverters();
 	const opinions = getOpinions(converters)[unitType] ?? [];
 	const unitOpinionsForType = converters[unitType].unitOpinions ?? {};
@@ -178,7 +182,7 @@ async function conversionChartQuery(derivation) {
 	const sections = [];
 	const unitType = derivation.unit.type;
 	const unitFrom = await getUnit(unitType, derivation.unit.unitId);
-	sections.push({ title: INPUT_INTERPRETATION, content: `Show conversion chart for ${derivation.amount} ${derivation.amount === 1 ? unitFrom.display : unitFrom.displayPlural}` });
+	sections.push({ title: INPUT_INTERPRETATION, content: `Show conversion chart for ${formatNumberHTML(derivation.amount)} ${derivation.amount === 1 ? unitFrom.display : unitFrom.displayPlural}` });
 	const params = { type: unitType, unitFromId: derivation.unit.unitId, amount: derivation.amount };
 	const conversionResults = await convertUnitsMultiAll(params);
 	// output no-opinion results first
@@ -189,7 +193,7 @@ async function conversionChartQuery(derivation) {
 		content += '<ul>';
 		for (const [unitId, result] of Object.entries(noOpinionResults)) {
 			const unitTo = await getUnit(unitType, unitId);
-			content += `<li>${result.result.toFixed(8).replace(/\.?0+$/, '')} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}</li>`;
+			content += `<li>${formatNumberHTML(result.result)} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}</li>`;
 			updatedDate = unitTo.updated ?? updatedDate;
 		}
 		content += '</ul>';
@@ -203,7 +207,7 @@ async function conversionChartQuery(derivation) {
 			content += `<tr><td>${opinion.name}</td><td><ul>`;
 			for (const [unitId, result] of Object.entries(opinionResults)) {
 				const unitTo = await getUnit(unitType, unitId);
-				content += `<li>${result.result.toFixed(8).replace(/\.?0+$/, '')} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}</li>`;
+				content += `<li>${formatNumberHTML(result.result)} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}</li>`;
 				updatedDate = unitTo.updated ?? updatedDate;
 			}
 			content += '</ul></td></tr>';
