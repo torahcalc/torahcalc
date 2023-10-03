@@ -87,3 +87,15 @@ export function getLastSaturday(date) {
 	resultDate.setDate(date.getDate() - date.getDay() - 1);
 	return resultDate;
 }
+
+/**
+ * Format a number as a string with commas, maximum precision, and no trailing zeros.
+ *
+ * @param {number} number - The number to format.
+ * @param {number} [precision=8] - The maximum number of digits after the decimal point.
+ * @returns {string} The formatted number.
+ */
+export function formatNumber(number, precision = 8) {
+	const localeNum = number.toLocaleString(undefined, { maximumFractionDigits: precision });
+	return localeNum.includes('.') ? localeNum.replace(/\.?0+$/, '') : localeNum;
+}
