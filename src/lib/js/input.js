@@ -1,6 +1,6 @@
 import nearley from 'nearley';
 import grammar from '$lib/grammars/generated/main.cjs';
-import { convertUnits, convertUnitsMultiAll, getConverters, getOpinion, getOpinions, getUnit, getUnitOpinions } from './unitconverter';
+import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
 
 const INPUT_INTERPRETATION = 'Input Interpretation';
 const RESULT = 'Result';
@@ -199,7 +199,7 @@ async function conversionChartQuery(derivation) {
 	if (Object.keys(conversionResults).length > 0) {
 		content += '<table class="table table-striped"><tr><th>Opinion</th><th>Results</th></tr>';
 		for (const [opinionId, opinionResults] of Object.entries(conversionResults)) {
-			const opinion = await getOpinion(unitType, opinionId);
+			const opinion = (await getDefaultOpinion(unitType)) ? await getOpinion(unitType, opinionId) : await getUnitOpinion(unitType, opinionId);
 			content += `<tr><td>${opinion.name}</td><td><ul>`;
 			for (const [unitId, result] of Object.entries(opinionResults)) {
 				const unitTo = await getUnit(unitType, unitId);

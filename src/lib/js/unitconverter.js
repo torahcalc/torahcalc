@@ -371,7 +371,7 @@ export async function getOpinion(type, opinionId) {
 	const converter = await getConverter(type);
 	opinionId = opinionId.trim().toLowerCase();
 	if (!converter.opinions) {
-		throw new Error(`Opinions are not supported for this conversion type`);
+		throw new Error(`Opinions are not supported for ${type} units`);
 	}
 	if (!converter.opinions[opinionId]) {
 		throw new Error(`Opinion '${opinionId}' was not found`);
@@ -390,7 +390,7 @@ export async function getUnitOpinion(type, unitOpinionId) {
 	let [unitId, opinionId] = unitOpinionId.split('.');
 	unitId = unitId.trim().toLowerCase();
 	if (!converter.unitOpinions) {
-		throw new Error(`Unit opinions are not supported for this conversion type`);
+		throw new Error(`Unit opinions are not supported for ${type} units`);
 	}
 	if (!converter.unitOpinions[unitId]) {
 		throw new Error(`Unit '${unitId}' does not have any unit opinions`);
@@ -554,7 +554,12 @@ export async function convertUnitsMultiAll({ type, unitFromId, amount }) {
 	// set the default amount to 1
 	if (amount === undefined) amount = 1;
 
-	const opinions = getOpinions(await getConverters())[type] || [];
+	const converters = await getConverters();
+
+	const opinions = getOpinions(converters)[type] || [];
+	const unitOpinionsForType = converters[type].unitOpinions ?? {};
+	const fromUnitOpinionIds = Object.keys(unitOpinionsForType[unitFromId] ?? {}).map((opinionId) => `${unitFromId}.${opinionId}`);
+	const unitsWithOpinions = Object.keys(unitOpinionsForType);
 
 	/** @type {{ [key: string]: MultiConversionResult }} */
 	const outputs = {
@@ -573,8 +578,35 @@ export async function convertUnitsMultiAll({ type, unitFromId, amount }) {
 				}
 			}
 		}
+	} else if (fromUnitOpinionIds.length) {
+		for (const unitOpinionId of fromUnitOpinionIds) {
+			const result = await convertUnitsMulti({ type, unitFromId, amount, unitOpinionIds: [unitOpinionId] });
+			outputs[unitOpinionId] = {};
+			for (const [unitToId, unitResult] of Object.entries(result)) {
+				if (unitsWithOpinions.includes(unitToId) && unitToId !== unitFromId) {
+					// TODO: Support two different unit opinions
+				} else if (unitResult.unitOpinions) {
+					outputs[unitOpinionId][unitToId] = unitResult;
+				} else if (!outputs['no-opinion'][unitToId]) {
+					outputs['no-opinion'][unitToId] = unitResult;
+				}
+			}
+		}
 	} else {
-		outputs['no-opinion'] = await convertUnitsMulti({ type, unitFromId, amount });
+		const multiConversionResult = await convertUnitsMulti({ type, unitFromId, amount });
+		for (const [unitToId, unitResult] of Object.entries(multiConversionResult)) {
+			if (!unitResult.unitOpinions) {
+				outputs['no-opinion'][unitToId] = unitResult;
+			} else {
+				const toUnitOpinionIds = Object.keys(unitOpinionsForType[unitToId] ?? {}).map((opinionId) => `${unitToId}.${opinionId}`);
+				for (const unitOpinionId of toUnitOpinionIds) {
+					const result = await convertUnitsMulti({ type, unitFromId, amount, unitOpinionIds: [unitOpinionId] });
+					outputs[unitOpinionId] = {
+						[unitToId]: result[unitToId],
+					};
+				}
+			}
+		}
 	}
 
 	// return the results

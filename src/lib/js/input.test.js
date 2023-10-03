@@ -135,4 +135,15 @@ describe('test unitConversionQuery', () => {
 		expect(sections[1].content).toContain('46.17599909 kilometers');
 		expect(sections[1].content).toContain('47.99999991 kilometers');
 	});
+
+	it('chart for hiluch mil', async () => {
+		const sections = await calculateQuery('chart for hiluch mil');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Show conversion chart for 1 Hiluch Mil');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('1 Hiluch Mil');
+		expect(sections[1].content).toContain('0.00000071 Yovelos');
+		expect(sections[1].content).toContain('0.00000088 Yovelos');
+		expect(sections[1].content).toContain('0.00000094 Yovelos');
+	});
 });
