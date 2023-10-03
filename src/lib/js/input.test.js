@@ -153,7 +153,7 @@ describe('test gematriaQuery', () => {
 	it('Calculate gematria of אברהם אבינו', async () => {
 		const sections = await calculateQuery('Calculate gematria of אברהם אבינו');
 		expect(sections[0].title).toBe('Input Interpretation');
-		expect(sections[0].content).toBe('Calculate Mispar Hechrachi (Standard) of אברהם אבינו');
+		expect(sections[0].content).toBe('Calculate Mispar Hechrachi (Standard) of "אברהם אבינו"');
 		expect(sections[1].title).toBe('Result');
 		expect(sections[1].content).toContain(formatNumberHTML(317));
 		expect(sections[1].content).toContain('Mispar Hechrachi (Standard)');
