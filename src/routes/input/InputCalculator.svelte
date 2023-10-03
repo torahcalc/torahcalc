@@ -103,7 +103,7 @@
 				<details>
 					<summary>Show list of units</summary>
 
-					<AvailableOptionsList mapping={getUnits(converters)} transform={async (unitType, unitId) => (await getUnit(unitType, unitId)).display} />
+					<AvailableOptionsList mapping={getUnits(converters)} transform={async ([unitType, unitId]) => (await getUnit(unitType, unitId)).display} />
 				</details>
 			{:catch error}
 				<div>An error occurred while loading the list of units.</div>

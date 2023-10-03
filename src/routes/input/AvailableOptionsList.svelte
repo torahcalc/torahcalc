@@ -2,11 +2,11 @@
 	/** @type {{[key: string]: any[]}} The mapping of available options */
 	export let mapping = {};
 
-	/** @type {string[]} The list of available options */
+	/** @type {Array<string>} The array of available options */
 	export let array = [];
 
-	/** @type {(key: string, value?: string) => string|undefined|Promise<string>} The function to call to transform the value */
-	export let transform = Object.keys(mapping).length > 0 ? (key, value) => value : (value) => value;
+	/** @type {(entry: string|string[]) => string|Promise<string>} The function to call to transform the value */
+	export let transform = (entry) => entry.toString();
 
 	const types = Object.keys(mapping).length > 0 ? Object.keys(mapping) : [];
 
@@ -34,8 +34,8 @@
 					<td>
 						<ul>
 							{#each mapping[type] as option}
-								{#if transform(type, option) instanceof Promise}
-									{#await transform(type, option)}
+								{#if transform([type, option]) instanceof Promise}
+									{#await transform([type, option])}
 										<li><code>{option}</code></li>
 									{:then transformed}
 										<li><code>{transformed}</code></li>
@@ -43,7 +43,7 @@
 										<li><code>{option}</code></li>
 									{/await}
 								{:else}
-									<li><code>{transform(type, option)}</code></li>
+									<li><code>{transform([type, option])}</code></li>
 								{/if}
 							{/each}
 						</ul>
