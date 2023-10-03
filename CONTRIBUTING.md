@@ -47,6 +47,12 @@ To create a production build with the **frontend only**:
 npm run static
 ```
 
+To compile the Nearley grammar only:
+
+```bash
+npm run nearley
+```
+
 You can preview the production build with `npm run preview`.
 
 ## Mobile development

@@ -12,6 +12,10 @@
 			url: '/',
 		},
 		{
+			name: 'Input',
+			url: '/input',
+		},
+		{
 			name: 'Calendar and Zmanim',
 			children: [
 				{

@@ -3,17 +3,18 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
+		"dev": "npm run nearley && vite dev",
+		"build": "npm run nearley && vite build",
 		"static": "cross-env PUBLIC_ADAPTER='static' npm run build",
 		"static:dev": "cross-env PUBLIC_ADAPTER='static' npm run dev",
 		"deploy": "npm run build && vercel --prod",
-		"preview": "vite preview",
+		"preview": "npm run nearley && vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
-		"test": "vitest",
+		"test": "npm run nearley && vitest",
 		"lint": "prettier --plugin-search-dir . --check src/**/*.{svelte,js,css,html} *.{js,ts,json,md} && eslint src/**/*.{svelte,js}",
-		"format": "prettier --plugin-search-dir . --write src/**/*.{svelte,js,css,html} *.{js,ts,json,md}"
+		"format": "prettier --plugin-search-dir . --write src/**/*.{svelte,js,css,html} *.{js,ts,json,md}",
+		"nearley": "node src/lib/grammars/scripts/prepare-input.js && nearleyc src/lib/grammars/main.ne -o src/lib/grammars/generated/main.cjs && node src/lib/grammars/scripts/modify-output.js"
 	},
 	"dependencies": {
 		"@capacitor/android": "^5.3.0",
@@ -27,6 +28,7 @@
 		"cross-env": "^7.0.3",
 		"dayjs": "^1.11.10",
 		"dotenv": "^16.3.1",
+		"nearley": "^2.20.1",
 		"svelte-fa": "^3.0.4",
 		"svelte-toc": "^0.5.6"
 	},
