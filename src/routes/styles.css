@@ -61,6 +61,12 @@ a:hover {
 	margin: 1rem;
 }
 
+@media (max-width: 768px) {
+	.flex-card {
+		margin: 0.5rem 0;
+	}
+}
+
 .center {
 	text-align: center;
 }

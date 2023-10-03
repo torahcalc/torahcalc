@@ -50,7 +50,7 @@
 <div class="card flex-card input-control">
 	<div class="input-group">
 		<input type="text" bind:value={queryInput} class="form-control" placeholder="What do you want to calculate?" on:keyup={onQueryKeypress} />
-		<button class="btn btn-primary" on:click={() => setSections(queryInput)}>Calculate</button>
+		<button class="btn btn-primary" on:click={() => setSections(queryInput)}>Go</button>
 	</div>
 </div>
 
