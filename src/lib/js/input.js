@@ -117,13 +117,6 @@ async function unitConversionQuery(derivation) {
 		// set the precision and remove trailing zeroes
 		const amount = formatNumberHTML(result.result);
 		const resultAmountAndUnit = `${amount} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}`;
-		if (result.opinion) {
-			return `${resultAmountAndUnit} - <span class="opinion">${result.opinion}</span>`;
-		} else if (result.unitOpinions) {
-			return `${resultAmountAndUnit} - <span class="opinion">${Object.entries(result.unitOpinions)
-				.map((opinion) => opinion[1])
-				.join(', ')}</span>`;
-		}
 		return resultAmountAndUnit;
 	};
 
@@ -161,7 +154,12 @@ async function unitConversionQuery(derivation) {
 				conversionResults.push(await convertUnits({ ...params, unitOpinionIds: [unitOpinionId] }));
 			}
 		}
-		resultValue = conversionResults.map(formatResult).join('\n');
+		resultValue = "<table class='table table-striped'><tr><th>Opinion</th><th>Result</th></tr>";
+		for (const result of conversionResults) {
+			const opinion = result.opinion || Object.values(result.unitOpinions ?? {}).join(', ');
+			resultValue += `<tr><td>${opinion}</td><td>${formatResult(result)}</td></tr>`;
+		}
+		resultValue += '</table>';
 	}
 	sections.push({ title: RESULT, content: resultValue });
 	const updatedDate = unitTo.updated ?? unitFrom.updated ?? null;
