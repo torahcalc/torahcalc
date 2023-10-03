@@ -89,7 +89,7 @@ export function getLastSaturday(date) {
 }
 
 /**
- * Format a number as a string with commas, maximum precision, and no trailing zeros.
+ * Format a number as a string with thin spaces for commas, maximum precision, and no trailing zeros.
  *
  * @param {number} number - The number to format.
  * @param {number} [precision=8] - The maximum number of digits after the decimal point.
