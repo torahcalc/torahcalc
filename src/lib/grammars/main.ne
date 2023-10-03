@@ -26,6 +26,10 @@
 #
 # More coming soon...
 
+@{%
+import { displayHebrew } from "$lib/js/gematria.js";
+%}
+
 @builtin "number.ne"  # unsigned_int, int, unsigned_decimal, decimal, percentage, jsonfloat
 
 @include "./generated/units.ne"  # unit, lengthUnit, areaUnit, volumeUnit, weightUnit, coinsUnit, timeUnit
@@ -57,12 +61,7 @@ conversionChartQuery -> optionalWords[("conversion" | "conversions" | "convert")
 gematriaQuery -> optionalWords[("calculate" | "compute" | "what is" | "what's" | "how much is" | "how many is")] optionalWords["the"] gematriaMethod _ optionalWords["of"] hebrewString {% data => ({function: "gematriaQuery", gematriaMethod: data[2], text: data[5]}) %}
 
 # Hebrew words for Gematria calculations
-hebrewCharacter -> [\u05D0-\u05EA\u05F0\u05F1\u05F2\uFB1F\uFB2E-\uFB30\uFB4F\uFB21\uFB31\uFB4C\uFB32\uFB33\uFB22\uFB34\uFB23\uFB4B\uFB35\uFB36\uFB38\uFB39\uFB1D\uFB3A\uFB3B\uFB4D\uFB24\uFB3C\uFB25\uFB26\uFB3E\uFB40\u05C6\uFB41\uFB42\uFB20\uFB43\uFB44\uFB4E\uFB46\uFB47\uFB48\uFB27\uFB49\uFB2A-\uFB2D\uFB4A\uFB28] {% data => data[0] %}
-hebrewPunctuation -> [\u05F3\u05F4\u05B0-\u05C4\u0591-\u05AF.!?,;:()\s+\-]:+ {% data => data[0] %}
-hebrewString -> hebrewCharacter {% data => data[0] %}
-                  | hebrewPunctuation hebrewString {% data => data[0] + data[1] %}
-                  | hebrewCharacter hebrewString {% data => data[0] + data[1] %}
-                  | hebrewString hebrewCharacter {% data => data[0] + data[1] %}
+hebrewString -> [\u05D0-\u05EA\u05F0\u05F1\u05F2\uFB1F\uFB2E-\uFB30\uFB4F\uFB21\uFB31\uFB4C\uFB32\uFB33\uFB22\uFB34\uFB23\uFB4B\uFB35\uFB36\uFB38\uFB39\uFB1D\uFB3A\uFB3B\uFB4D\uFB24\uFB3C\uFB25\uFB26\uFB3E\uFB40\u05C6\uFB41\uFB42\uFB20\uFB43\uFB44\uFB4E\uFB46\uFB47\uFB48\uFB27\uFB49\uFB2A-\uFB2D\uFB4A\uFB28.!?,;:()\s+\-\u0591-\u05CF\u05F3\u05F4\uFB1D\uFB1E]:+ {% data => displayHebrew(data[0].join("")) %}
 
 # Whitespace (optional)
 _ -> [ ]:* {% data => null %}

@@ -222,35 +222,12 @@ export function getNumberOfWords(text) {
 }
 
 /**
- * @typedef {Object} GematriaOptions
- * @property {string} text - The word or phrase to calculate the gematria value of
- * @property {{ [key: string]: number }} [miluiInput] - The milui values to use for each letter
- */
-
-/**
- * Calculate the gematria value of a word
+ * Normalize Hebrew text for gematria calculation (replace non-standard hebrew characters with standard ones)
  *
- * @param {GematriaOptions} options - The options for calculating the gematria value
- * @returns {{ [key: string]: number }} The gematria values of the word or phrase for each method
+ * @param {string} text - The text to normalize
+ * @returns {string} The normalized text
  */
-export function calculateGematria({ text, miluiInput = {} }) {
-	// create milui values from input
-	const miluiValues = METHODS.shemi;
-	for (const [letter, value] of Object.entries(miluiInput)) {
-		if (!(letter.toLowerCase() in LETTER_KEYS)) {
-			throw new Error(`Unexpected letter name '${letter}' in miluiInput. Valid names are: ${Object.keys(LETTER_KEYS).join(', ')}`);
-		}
-		// @ts-ignore - letterIndices will always be an array of numbers
-		const letterIndices = LETTER_KEYS[letter.toLowerCase()];
-		for (const letterIndex of letterIndices) {
-			miluiValues[letterIndex] = value;
-		}
-	}
-
-	// determine number of words in phrase before modifying text
-	const numberOfWords = getNumberOfWords(text);
-
-	// replace non-standard hebrew characters with standard ones and remove non-hebrew characters
+export function normalizeHebrew(text) {
 	text = text.replace(/\u05F0/g, 'יב'); // \u05F0 = װ
 	text = text.replace(/\u05F1/g, 'טז'); // \u05F1 = ױ
 	text = text.replace(/[\u05F2\uFB1F]/g, 'כ'); // \u05F2 = ײ, \uFB1F = ײַ
@@ -278,7 +255,67 @@ export function calculateGematria({ text, miluiInput = {} }) {
 	text = text.replace(/[\uFB48\uFB27]/g, 'ר'); // \uFB48 = רּ, \uFB27 = ﬧ
 	text = text.replace(/[\uFB49\uFB2A-\uFB2D]/g, 'ש'); // \uFB49 = שּ, \uFB2A = שׁ, \uFB2B = שׂ, \uFB2C = שּׁ, \uFB2D = שּׂ
 	text = text.replace(/[\uFB4A\uFB28]/g, 'ת'); // \uFB4A = תּ, \uFB28 = ﬨ
-	text = text.replace(/[\u0020-\u05CF]|[\u05EB-\uFFFF]/g, ''); // remove any remaining non-hebrew characters
+	return text;
+}
+
+/**
+ * Remove non-display characters from text for making it easier to read (remove vowels, cantillation marks, etc. but keep spaces and punctuation)
+ *
+ * @param {string} text - The text to remove non-display characters from
+ * @returns {string} The text without non-display characters
+ */
+export function displayHebrew(text) {
+	text = normalizeHebrew(text);
+	text = text.replace(/[\u0591-\u05AF\u05BD\u05BF\u05C1\u05C2\u05C4-\u05C7\u05F3\u05F4\u05F5\u05F6\u05F7\u05F8\u05F9\u05FA\u05FB\u05FC\u05FD\u05FE\u05FF]/g, '');
+	text = text.replace(/[\u05B0-\u05BC\u05C0\u05C3\u05C6\u05C8-\u05CF\u05EB-\u05F2\uFB1D-\uFB1E]/g, '');
+	// remove trailing punctuation
+	text = text.replace(/[.!?,;:\u05BE\u05C3\u05C6\u05F3\u05F4\u05F5\u05F6\u05F7\u05F8\u05F9\u05FA\u05FB\u05FC\u05FD\u05FE\u05FF]+$/g, '');
+	return text;
+}
+
+/**
+ * Remove all non-hebrew characters from text
+ *
+ * @param {string} text - The text to remove non-hebrew characters from
+ * @returns {string} The text without non-hebrew characters
+ */
+export function removeNonHebrew(text) {
+	return text.replace(/[\u0020-\u05CF]|[\u05EB-\uFFFF]/g, '');
+}
+
+/**
+ * @typedef {Object} GematriaOptions
+ * @property {string} text - The word or phrase to calculate the gematria value of
+ * @property {{ [key: string]: number }} [miluiInput] - The milui values to use for each letter
+ */
+
+/**
+ * Calculate the gematria value of a word
+ *
+ * @param {GematriaOptions} options - The options for calculating the gematria value
+ * @returns {{ [key: string]: number }} The gematria values of the word or phrase for each method
+ */
+export function calculateGematria({ text, miluiInput = {} }) {
+	// create milui values from input
+	const miluiValues = METHODS.shemi;
+	for (const [letter, value] of Object.entries(miluiInput)) {
+		if (!(letter.toLowerCase() in LETTER_KEYS)) {
+			throw new Error(`Unexpected letter name '${letter}' in miluiInput. Valid names are: ${Object.keys(LETTER_KEYS).join(', ')}`);
+		}
+		// @ts-ignore - letterIndices will always be an array of numbers
+		const letterIndices = LETTER_KEYS[letter.toLowerCase()];
+		for (const letterIndex of letterIndices) {
+			miluiValues[letterIndex] = value;
+		}
+	}
+
+	// determine number of words in phrase before modifying text
+	text = text.toString().trim();
+	const numberOfWords = getNumberOfWords(text);
+
+	// replace non-standard hebrew characters with standard ones and remove non-hebrew characters
+	text = normalizeHebrew(text);
+	text = removeNonHebrew(text);
 
 	// calculate gematria values
 	const results = {

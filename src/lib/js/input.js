@@ -36,7 +36,7 @@ export class InputError extends Error {
  */
 export async function calculateQuery(search, options = {}) {
 	/** @type {Array<{ title: string, content: string }>} */
-	const sections = [];
+	const startSections = [];
 
 	const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
 
@@ -50,30 +50,7 @@ export async function calculateQuery(search, options = {}) {
 		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples.', `${e}`);
 	}
 
-	/** @type {Record<string, any>} */
-	const derivations = {};
-
-	// determine disambiguations and skip invalid derivations
-	for (const derivation of parser.results) {
-		derivation.disambiguation = derivation.function;
-		if (derivation.function === 'unitConversionQuery') {
-			// skip derivation if unit types do not match
-			if (derivation.unitFrom.type !== derivation.unitTo.type) {
-				continue;
-			}
-			// units are disambiguated by unit type
-			const unitType = derivation.unitFrom.type;
-			const fromUnit = await getUnit(unitType, derivation.unitFrom.unitId);
-			const toUnit = await getUnit(unitType, derivation.unitTo.unitId);
-			derivation.disambiguation = `${unitType} (${fromUnit.displayPlural} to ${toUnit.displayPlural})`;
-		} else if (derivation.function === 'conversionChartQuery') {
-			// units are disambiguated by unit type
-			const unitType = derivation.unit.type;
-			const unit = await getUnit(unitType, derivation.unit.unitId);
-			derivation.disambiguation = `${unitType} (${unit.displayPlural})`;
-		}
-		derivations[derivation.disambiguation] = derivation;
-	}
+	const derivations = await getValidDerivations(parser.results);
 
 	if (Object.keys(derivations).length === 0) {
 		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples.');
@@ -85,7 +62,7 @@ export async function calculateQuery(search, options = {}) {
 		// create a section that allows switching to other interpretations (eg. interpreting as coins, interpret instead as [weight]())
 		const otherDerivations = Object.values(derivations).filter((other) => other.disambiguation !== derivation.disambiguation);
 		const otherInterpretations = otherDerivations.map((other) => other.disambiguation);
-		sections.push({
+		startSections.push({
 			title: '',
 			content: `Interpreting as <b>${derivation.disambiguation}</b>. Interpret instead as ${otherInterpretations
 				.map((other) => `<a href="?q=${encodeURIComponent(search)}&disambiguation=${encodeURIComponent(other)}">${other}</a>`)
@@ -107,7 +84,45 @@ export async function calculateQuery(search, options = {}) {
 	const retval = func();
 	/** @ts-ignore - @type {Array<{ title: string, content: string }>} */
 	const calculatedSections = retval instanceof Promise ? await retval : retval;
-	return [...sections, ...calculatedSections];
+
+	return [...startSections, ...calculatedSections];
+}
+
+/**
+ * Filter the results of the parser to only the ones that are valid and add disambiguation information
+ *
+ * @param {any[]} results The results of the parser
+ * @returns {Promise<Record<string, any>>} The filtered results
+ */
+async function getValidDerivations(results) {
+	/** @type {Record<string, any>} */
+	const derivations = {};
+	// determine disambiguations and skip invalid derivations
+	for (const derivation of results) {
+		derivation.disambiguation = derivation.function;
+		if (derivation.function === 'unitConversionQuery') {
+			// skip derivation if unit types do not match
+			if (derivation.unitFrom.type !== derivation.unitTo.type) {
+				continue;
+			}
+			// units are disambiguated by unit type, from unit name, and to unit name
+			const unitType = derivation.unitFrom.type;
+			const fromUnit = await getUnit(unitType, derivation.unitFrom.unitId);
+			const toUnit = await getUnit(unitType, derivation.unitTo.unitId);
+			derivation.disambiguation = `${unitType} (${fromUnit.displayPlural} to ${toUnit.displayPlural})`;
+		} else if (derivation.function === 'conversionChartQuery') {
+			// units are disambiguated by unit type and unit name
+			const unitType = derivation.unit.type;
+			const unit = await getUnit(unitType, derivation.unit.unitId);
+			derivation.disambiguation = `${unitType} (${unit.displayPlural})`;
+		} else if (derivation.function === 'gematriaQuery') {
+			// gematria methods are disambiguated by method
+			const method = METHOD_NAMES[derivation.gematriaMethod];
+			derivation.disambiguation = `${method.name}`;
+		}
+		derivations[derivation.disambiguation] = derivation;
+	}
+	return derivations;
 }
 
 /**
@@ -241,7 +256,7 @@ function gematriaQuery(derivation) {
 		throw new InputError(`The ${derivation.gematriaMethod} gematria method is not supported.`);
 	}
 	const method = METHOD_NAMES[derivation.gematriaMethod];
-	sections.push({ title: INPUT_INTERPRETATION, content: `Calculate ${method.name} of ${derivation.text}` });
+	sections.push({ title: INPUT_INTERPRETATION, content: `Calculate ${method.name} of "${derivation.text}"` });
 	sections.push({ title: RESULT, content: `${formatNumberHTML(primaryResult)} in ${method.name}` });
 	// show all gematria methods in a table
 	let gematriaTable = '<table class="table table-striped"><tr><th>Method</th><th>Result</th></tr>';

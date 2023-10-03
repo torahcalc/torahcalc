@@ -3,6 +3,8 @@
 // Generated automatically by nearley, version 2.20.1
 // http://github.com/Hardmath123/nearley
 function id(x) { return x[0]; }
+
+import { displayHebrew } from "$lib/js/gematria.js";
 var grammar = {
     Lexer: undefined,
     ParserRules: [
@@ -2798,14 +2800,9 @@ var grammar = {
     {"name": "gematriaQuery$macrocall$5", "symbols": ["gematriaQuery$macrocall$6", "__"], "postprocess": data => data[0]},
     {"name": "gematriaQuery$macrocall$5", "symbols": ["_"], "postprocess": data => null},
     {"name": "gematriaQuery", "symbols": ["gematriaQuery$macrocall$1", "gematriaQuery$macrocall$3", "gematriaMethod", "_", "gematriaQuery$macrocall$5", "hebrewString"], "postprocess": data => ({function: "gematriaQuery", gematriaMethod: data[2], text: data[5]})},
-    {"name": "hebrewCharacter", "symbols": [/[\u05D0-\u05EA\u05F0\u05F1\u05F2\uFB1F\uFB2E-\uFB30\uFB4F\uFB21\uFB31\uFB4C\uFB32\uFB33\uFB22\uFB34\uFB23\uFB4B\uFB35\uFB36\uFB38\uFB39\uFB1D\uFB3A\uFB3B\uFB4D\uFB24\uFB3C\uFB25\uFB26\uFB3E\uFB40\u05C6\uFB41\uFB42\uFB20\uFB43\uFB44\uFB4E\uFB46\uFB47\uFB48\uFB27\uFB49\uFB2A-\uFB2D\uFB4A\uFB28]/], "postprocess": data => data[0]},
-    {"name": "hebrewPunctuation$ebnf$1", "symbols": [/[\u05F3\u05F4\u05B0-\u05C4\u0591-\u05AF.!?,;:()\s+\-]/]},
-    {"name": "hebrewPunctuation$ebnf$1", "symbols": ["hebrewPunctuation$ebnf$1", /[\u05F3\u05F4\u05B0-\u05C4\u0591-\u05AF.!?,;:()\s+\-]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "hebrewPunctuation", "symbols": ["hebrewPunctuation$ebnf$1"], "postprocess": data => data[0]},
-    {"name": "hebrewString", "symbols": ["hebrewCharacter"], "postprocess": data => data[0]},
-    {"name": "hebrewString", "symbols": ["hebrewPunctuation", "hebrewString"], "postprocess": data => data[0] + data[1]},
-    {"name": "hebrewString", "symbols": ["hebrewCharacter", "hebrewString"], "postprocess": data => data[0] + data[1]},
-    {"name": "hebrewString", "symbols": ["hebrewString", "hebrewCharacter"], "postprocess": data => data[0] + data[1]},
+    {"name": "hebrewString$ebnf$1", "symbols": [/[\u05D0-\u05EA\u05F0\u05F1\u05F2\uFB1F\uFB2E-\uFB30\uFB4F\uFB21\uFB31\uFB4C\uFB32\uFB33\uFB22\uFB34\uFB23\uFB4B\uFB35\uFB36\uFB38\uFB39\uFB1D\uFB3A\uFB3B\uFB4D\uFB24\uFB3C\uFB25\uFB26\uFB3E\uFB40\u05C6\uFB41\uFB42\uFB20\uFB43\uFB44\uFB4E\uFB46\uFB47\uFB48\uFB27\uFB49\uFB2A-\uFB2D\uFB4A\uFB28.!?,;:()\s+\-\u0591-\u05CF\u05F3\u05F4\uFB1D\uFB1E]/]},
+    {"name": "hebrewString$ebnf$1", "symbols": ["hebrewString$ebnf$1", /[\u05D0-\u05EA\u05F0\u05F1\u05F2\uFB1F\uFB2E-\uFB30\uFB4F\uFB21\uFB31\uFB4C\uFB32\uFB33\uFB22\uFB34\uFB23\uFB4B\uFB35\uFB36\uFB38\uFB39\uFB1D\uFB3A\uFB3B\uFB4D\uFB24\uFB3C\uFB25\uFB26\uFB3E\uFB40\u05C6\uFB41\uFB42\uFB20\uFB43\uFB44\uFB4E\uFB46\uFB47\uFB48\uFB27\uFB49\uFB2A-\uFB2D\uFB4A\uFB28.!?,;:()\s+\-\u0591-\u05CF\u05F3\u05F4\uFB1D\uFB1E]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
+    {"name": "hebrewString", "symbols": ["hebrewString$ebnf$1"], "postprocess": data => displayHebrew(data[0].join(""))},
     {"name": "_$ebnf$1", "symbols": []},
     {"name": "_$ebnf$1", "symbols": ["_$ebnf$1", /[ ]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "_", "symbols": ["_$ebnf$1"], "postprocess": data => null},
