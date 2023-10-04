@@ -37,6 +37,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Remove .env.local since the variables are in Vercel
+        run: rm .env.local
+
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25.1.1
         with:
