@@ -12,11 +12,11 @@
 
 	const converters = getConverters(false);
 
-    /** @type {string[]} The list of zmanim */
+	/** @type {string[]} The list of zmanim */
 	const zmanimList = [];
 	for (const zmanimType of Object.keys(ZMANIM_NAMES)) {
-        // @ts-ignore - assume key exists
-	    zmanimList.push(...Object.values(ZMANIM_NAMES[zmanimType]).map((zmanim) => zmanim.name));
+		// @ts-ignore - assume key exists
+		zmanimList.push(...Object.values(ZMANIM_NAMES[zmanimType]).map((zmanim) => zmanim.name));
 	}
 </script>
 

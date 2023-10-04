@@ -1,5 +1,5 @@
 <script>
-	import { properCase } from "$lib/js/utils";
+	import { properCase } from '$lib/js/utils';
 
 	/** @type {{[key: string]: any[]}} The mapping of available options */
 	export let mapping = {};

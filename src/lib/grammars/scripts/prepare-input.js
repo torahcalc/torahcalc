@@ -62,7 +62,7 @@ function generateGematriaGrammar(outputPath) {
 function generateZmanimGrammar(outputPath) {
 	let grammar = '# Grammar of zmanim\n# Generated automatically from zmanim-inputs.js in src/lib/grammars/scripts/prepare-input.js';
 
-	const zmanim = {...zmanimInputs.zmanim, ...zmanimInputs.events};
+	const zmanim = { ...zmanimInputs.zmanim, ...zmanimInputs.events };
 	const durations = zmanimInputs.durations;
 
 	grammar += '\n\nzman -> ';
