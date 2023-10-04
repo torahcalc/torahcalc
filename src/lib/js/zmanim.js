@@ -124,7 +124,8 @@ export const ZMANIM_NAMES = {
  * @property {string} [date] - The date to calculate zmanim for in YYYY-MM-DD format (defaults to today)
  * @property {number} latitude - The latitude of the location
  * @property {number} longitude - The longitude of the location
- * @property {string} [timezoneName] - The timezone name of the location (defaults to the timezone of the location)
+ * @property {string} timezone - The timezone name of the location (defaults to the timezone of the location)
+ * @property {string} [location] - The location for display purposes (latitude and longitude are used if not provided)
  */
 
 /**
@@ -135,13 +136,12 @@ export const ZMANIM_NAMES = {
  * Calculate zmanim for a given date and location
  *
  * @param {ZmanimOptions} options
- * @returns {Promise<{ timezone: string, zmanim: { [key: string]: Zman }, events: { [key: string]: Zman }, durations: { [key: string]: Zman } }>} - The zmanim, timed events, and shaah zmanis durations
+ * @returns {Promise<{ timezone: string, location?: string, zmanim: { [key: string]: Zman }, events: { [key: string]: Zman }, durations: { [key: string]: Zman } }>} - The zmanim, timed events, and shaah zmanis durations
  */
-export async function calculateZmanim({ date = dayjs().format('YYYY-MM-DD'), latitude, longitude, timezoneName = undefined }) {
+export async function calculateZmanim({ date = dayjs().format('YYYY-MM-DD'), latitude, longitude, timezone, location }) {
 	const zmanim = new Zmanim(dayjs(date).toDate(), latitude, longitude);
 	const alot72 = zmanim.sunriseOffset(-72, false);
 	const tzeit72 = zmanim.sunsetOffset(72, false);
-	const timezone = timezoneName || (await getTimezone(latitude, longitude));
 	const inIsrael = timezone === 'Asia/Jerusalem';
 	const candleLightingMins = inIsrael ? 40 : 18;
 
@@ -190,7 +190,8 @@ export async function calculateZmanim({ date = dayjs().format('YYYY-MM-DD'), lat
 	}
 
 	return {
-		timezone: timezone || '',
+		timezone,
+		...(location && { location }),
 		zmanim: {
 			alos16Point1: {
 				time: formatDateTimezone(zmanim.alotHaShachar()),

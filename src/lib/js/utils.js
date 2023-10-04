@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import { gregorianToHebrew } from './dateconverter';
 import { HDate } from '@hebcal/core';
-import { PUBLIC_GOOGLE_MAPS_API_KEY } from '$env/static/public';
 
 /**
  * Format a date as Mon, January 11, 2023. This method is modified to work with 2-digit years and years before year 1.
@@ -135,14 +134,14 @@ const CACHED_ADDRESS_LOCATIONS = {
  * Geocode a location using the Google Maps Geocoding API.
  *
  * @param {string} address - The address to geocode.
+ * @param {string} apiKey - The Google Maps API key.
  * @returns {Promise<{ lat: number, lng: number, formattedAddress: string }>} The geocoded location.
  * @throws {Error} If the address is not found.
  */
-export async function geocodeAddress(address) {
+export async function geocodeAddress(address, apiKey) {
 	if (address in CACHED_ADDRESS_LOCATIONS) {
 		return CACHED_ADDRESS_LOCATIONS[address];
 	}
-	const apiKey = typeof process !== 'undefined' ? process.env.PUBLIC_GOOGLE_MAPS_API_KEY : PUBLIC_GOOGLE_MAPS_API_KEY;
 	const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`);
 	const json = await response.json();
 	if (json.status !== 'OK') {
@@ -166,18 +165,18 @@ const CACHED_TIMEZONE_NAMES = {
  *
  * @param {number} latitude - The latitude of the location
  * @param {number} longitude - The longitude of the location
+ * @param {string} apiKey - The Google Maps API key
  * @returns {Promise<string>} - The timezone name
  */
-export async function getTimezone(latitude, longitude) {
+export async function getTimezone(latitude, longitude, apiKey) {
 	const location = `${latitude},${longitude}`;
 	if (location in CACHED_TIMEZONE_NAMES) {
 		return CACHED_TIMEZONE_NAMES[location];
 	}
-	const apiKey = typeof process !== 'undefined' ? process.env.PUBLIC_GOOGLE_MAPS_API_KEY : PUBLIC_GOOGLE_MAPS_API_KEY;
 	const response = await fetch(`https://maps.googleapis.com/maps/api/timezone/json?location=${location}&timestamp=1458000000&key=${apiKey}`);
 	const json = await response.json();
 	CACHED_TIMEZONE_NAMES[location] = json.timeZoneId;
-	if (json.status !== 'OK') {
+	if (json.status !== 'OK' || !json.timeZoneId) {
 		throw new Error('Could not get timezone for the provided location.');
 	}
 	return json.timeZoneId;

@@ -338,33 +338,27 @@ export async function zmanimQuery(derivation) {
 		throw new InputError('Please specify a location (city or latitude, longitude).');
 	}
 
-	// get the latitude and longitude of the location
-	let latitude = null;
-	let longitude = null;
-
-	// if it is in the format "latitude, longitude", use that
-	const latLongRegex = /^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/;
-	const latLongMatch = location.match(latLongRegex);
+	/** @type {{ date: string, latitude?: string, longitude?: string, location?: string }} */
+	const params = { date };
+	const latLongMatch = location.match(/^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/);
 	if (latLongMatch) {
-		latitude = parseFloat(latLongMatch[1]);
-		longitude = parseFloat(latLongMatch[3]);
-		location = `${latitude}, ${longitude}`;
+		params.latitude = latLongMatch[1];
+		params.longitude = latLongMatch[3];
 	} else {
-		// otherwise, use Google Maps Geocoding API
-		const locationData = await geocodeAddress(location);
-		latitude = locationData.lat;
-		longitude = locationData.lng;
-		if (locationData.formattedAddress) {
-			location = `${locationData.formattedAddress} (${latitude}, ${longitude})`;
-		} else if (!isNaN(latitude) && !isNaN(longitude)) {
-			location = `${latitude}, ${longitude}`;
-		} else {
-			throw new InputError(`An error occurred while geocoding your location. Please try again later.`, JSON.stringify(locationData, null, 2));
-		}
+		params.location = location;
 	}
 
 	// get the zmanim
-	const zmanimResult = await calculateZmanim({ date, latitude, longitude });
+	const zmanimResponse = await fetch(`/api/zmanim?${new URLSearchParams(params).toString()}`).then((r) => r.json());
+
+	if (zmanimResponse.success === false || !zmanimResponse.data) {
+		throw new InputError('Could not get zmanim for the provided location.', JSON.stringify(zmanimResponse, null, 2));
+	}
+
+	/** @type {{ timezone: string, location?: string, zmanim: { [key: string]: import('./zmanim').Zman }, events: { [key: string]: import('./zmanim').Zman }, durations: { [key: string]: import('./zmanim').Zman } }} */
+	const zmanimResult = zmanimResponse.data;
+
+	location = zmanimResult.location ?? location;
 
 	/**
 	 * Format a zman time

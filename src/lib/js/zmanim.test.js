@@ -7,6 +7,7 @@ describe('test calculateZmanim', () => {
 			date: '2023-09-24',
 			latitude: 40.7127753,
 			longitude: -74.0059728,
+			timezone: 'America/New_York',
 		});
 		expect(response.zmanim.alos16Point1.time).toBe('2023-09-24T05:23:56-04:00');
 		expect(response.zmanim.alos72.time).toBe('2023-09-24T05:33:19-04:00');
@@ -34,6 +35,7 @@ describe('test calculateZmanim', () => {
 			date: '2023-09-22',
 			latitude: 40.7127753,
 			longitude: -74.0059728,
+			timezone: 'America/New_York',
 		});
 		expect(response.events.candleLighting.time).toBe('2023-09-22T18:35:00-04:00');
 	});
@@ -43,6 +45,7 @@ describe('test calculateZmanim', () => {
 			date: '2023-09-24',
 			latitude: 40.7127753,
 			longitude: -74.0059728,
+			timezone: 'America/New_York',
 		});
 		expect(response.events.candleLighting.time).toBe('2023-09-24T18:32:00-04:00');
 	});
@@ -52,6 +55,7 @@ describe('test calculateZmanim', () => {
 			date: '2023-09-18',
 			latitude: 40.7127753,
 			longitude: -74.0059728,
+			timezone: 'America/New_York',
 		});
 		expect(response.events.fastBegins.time).toBe('2023-09-18T05:17:00-04:00');
 		expect(response.events.fastEnds.time).toBe('2023-09-18T19:33:00-04:00');
@@ -62,6 +66,7 @@ describe('test calculateZmanim', () => {
 			date: '2023-09-23',
 			latitude: 40.7127753,
 			longitude: -74.0059728,
+			timezone: 'America/New_York',
 		});
 		expect(response.events.havdalah.time).toBe('2023-09-23T19:32:00-04:00');
 	});
