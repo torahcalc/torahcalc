@@ -134,7 +134,7 @@ export function properCase(str) {
  * @throws {Error} If the address is not found.
  */
 export async function geocodeAddress(address) {
-	const apiKey = typeof process !== 'undefined' ? process.env.GOOGLE_MAPS_API_KEY : PUBLIC_GOOGLE_MAPS_API_KEY;
+	const apiKey = typeof process !== 'undefined' ? process.env.PUBLIC_GOOGLE_MAPS_API_KEY : PUBLIC_GOOGLE_MAPS_API_KEY;
 	const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`);
 	const json = await response.json();
 	if (json.status !== 'OK') {
@@ -165,7 +165,7 @@ export async function getTimezone(latitude, longitude) {
 	if (location in CACHED_TIMEZONE_NAMES) {
 		return CACHED_TIMEZONE_NAMES[location];
 	}
-	const apiKey = typeof process !== 'undefined' ? process.env.GOOGLE_MAPS_API_KEY : PUBLIC_GOOGLE_MAPS_API_KEY;
+	const apiKey = typeof process !== 'undefined' ? process.env.PUBLIC_GOOGLE_MAPS_API_KEY : PUBLIC_GOOGLE_MAPS_API_KEY;
 	const response = await fetch(`https://maps.googleapis.com/maps/api/timezone/json?location=${location}&timestamp=1458000000&key=${apiKey}`);
 	const json = await response.json();
 	CACHED_TIMEZONE_NAMES[location] = json.timeZoneId;
