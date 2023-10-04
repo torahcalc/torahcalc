@@ -12,10 +12,6 @@
 			url: '/',
 		},
 		{
-			name: 'Input Calculator',
-			url: '/input',
-		},
-		{
 			name: 'More Tools',
 			children: [
 				{

@@ -1,5 +1,6 @@
 <script>
 	import logo from '$lib/images/torahcalc.svg';
+	import InputCalculatorShortcut from './InputCalculatorShortcut.svelte';
 </script>
 
 <svelte:head>
@@ -8,14 +9,17 @@
 </svelte:head>
 
 <section>
-	<span class="logo">
-		<img src={logo} alt="TorahCalc" />
-	</span>
-	<h1 class="heading">Welcome to TorahCalc</h1>
+	<h1 class="heading d-flex align-items-center justify-content-center gap-4">
+		<img src={logo} alt="TorahCalc" class="logo" />
+		<div class="center">
+			<div>Welcome to TorahCalc</div>
+			<div class="subtext">Tools for Torah Study</div>
+		</div>
+	</h1>
 
-	<p>TorahCalc is a collection of tools for the study of the Torah.</p>
+	<div class="center">🚧 This site is still under construction. Contributions are welcome on <a href="https://github.com/torahcalc/torahcalc" target="_blank" rel="noopener noreferrer">GitHub</a>.</div>
 
-	<p>The new site is under construction. Please check back soon.</p>
+	<InputCalculatorShortcut />
 </section>
 
 <style>
@@ -23,7 +27,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		align-items: center;
 		flex: 0.6;
 	}
 
@@ -31,14 +34,14 @@
 		width: 100%;
 	}
 
-	.logo {
-		display: block;
-		padding-bottom: 1rem;
+	.subtext {
+		font-size: 0.5em;
+		color: #999;
+		margin-top: 0.5em;
 	}
 
-	.logo img {
-		width: 120px;
-		height: auto;
-		margin: 0 auto;
+	.logo {
+		height: 2em;
+		width: auto;
 	}
 </style>
