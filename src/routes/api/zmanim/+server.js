@@ -1,4 +1,4 @@
-import { GOOGLE_MAPS_API_KEY } from '$env/static/private';
+import * as env from '$env/static/private';
 import { createResponse, createErrorResponse } from '$lib/js/api/response.js';
 import { geocodeAddress, getTimezone } from '$lib/js/utils';
 import { calculateZmanim } from '$lib/js/zmanim';
@@ -16,7 +16,7 @@ export async function GET({ url }) {
 
 	try {
 		if (isNaN(latitude) || (isNaN(longitude) && location !== '')) {
-			const geocoded = await geocodeAddress(location, GOOGLE_MAPS_API_KEY);
+			const geocoded = await geocodeAddress(location, env.GOOGLE_MAPS_API_KEY);
 			latitude = geocoded.lat;
 			longitude = geocoded.lng;
 			location = geocoded.formattedAddress;
@@ -24,7 +24,7 @@ export async function GET({ url }) {
 		if (isNaN(latitude)) throw new Error("Missing or invalid 'latitude' parameter");
 		if (isNaN(longitude)) throw new Error("Missing or invalid 'longitude' parameter");
 		if (!timezone) {
-			timezone = await getTimezone(latitude, longitude, GOOGLE_MAPS_API_KEY);
+			timezone = await getTimezone(latitude, longitude, env.GOOGLE_MAPS_API_KEY);
 		}
 		return createResponse(await calculateZmanim({ date, latitude, longitude, timezone, location }));
 	} catch (error) {

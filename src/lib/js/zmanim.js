@@ -1,7 +1,6 @@
 import { Zmanim, HebrewCalendar, Location, TimedEvent } from '@hebcal/core';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { getTimezone } from './utils';
 
 dayjs.extend(duration);
 
