@@ -31,14 +31,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Copy .env.local.example to .env.local
-        run: cp .env.local.example .env.local
+      - name: Create .env.local
+        run: |
+          echo '
+          PUBLIC_GOOGLE_MAPS_API_KEY=${{ github.event_name != 'pull_request' && secrets.GOOGLE_MAPS_API_KEY_PROD || secrets.GOOGLE_MAPS_API_KEY_DEV }}
+          ' >> .env.local
+          
 
       - name: Build
         run: npm run build
-
-      - name: Remove .env.local since the variables are in Vercel
-        run: rm .env.local
 
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25.1.1
