@@ -408,7 +408,7 @@ export async function zmanimQuery(derivation) {
 			zmanimTable += `<tr><td>${zman.name}</td><td>${result.time}</td></tr>`;
 		}
 		zmanimTable += '</table>';
-		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate zmanim on ${formatDateObject(dateObject)} in ${location.trim()}` });
+		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate Zmanim on ${formatDateObject(dateObject)} in ${location.trim()}` });
 		sections.push({ title: RESULT, content: zmanimTable });
 	}
 

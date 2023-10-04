@@ -609,14 +609,14 @@
 				type: 'Number',
 				required: true,
 				description: 'The latitude of the location to calculate zmanim for',
-				example: 42.74521,
+				example: 40.7127753,
 			},
 			{
 				name: 'longitude',
 				type: 'Number',
 				required: true,
 				description: 'The longitude of the location to calculate zmanim for',
-				example: -73.810345,
+				example: -74.0059728,
 			},
 			{
 				name: 'timezone',

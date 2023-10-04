@@ -160,3 +160,52 @@ describe('test gematriaQuery', () => {
 		expect(sections[2].content).toContain(formatNumberHTML(990));
 	});
 });
+
+describe('test zmanimQuery', () => {
+	it('what time is chatzos in New York?', async () => {
+		const sections = await calculateQuery('what time is chatzos in New York?');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Calculate Chatzos on Wed, October 4, 2023 in New York, NY, USA (40.7127753, -74.0059728)');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('Chatzos is at ');
+		expect(sections[1].content).toContain('(America/New_York)');
+	});
+
+	it('Zmanim for New York on October 6, 2023', async () => {
+		const sections = await calculateQuery('Zmanim for New York on October 6, 2023');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Calculate Zmanim on Fri, October 6, 2023 in New York, NY, USA (40.7127753, -74.0059728)');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('Alos (16.1°)');
+		expect(sections[1].content).toContain('5:36 AM');
+		expect(sections[1].content).toContain('Candle Lighting');
+		expect(sections[1].content).toContain('6:12 PM');
+		expect(sections[1].content).toContain('Shaah Zmanis (GRA)');
+		expect(sections[1].content).toContain('57 minutes, 43 seconds');
+	});
+
+	it('zmanim for 1 Teves 5784 in New York', async () => {
+		const sections = await calculateQuery('zmanim for 19 Tishrei 5784 in New York');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Calculate Zmanim on Wed, October 4, 2023 in New York, NY, USA (40.7127753, -74.0059728)');
+	});
+
+	it('what time is sunset on December 25, 2023 in New York?', async () => {
+		const sections = await calculateQuery('what time is sunset on December 25, 2023 in New York?');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Calculate Sunset on Mon, December 25, 2023 in New York, NY, USA (40.7127753, -74.0059728)');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toBe('Sunset is at 4:33 PM (America/New_York)');
+	});
+
+	it('how long is a shaah zmanis in 40.7127753, -74.0059728?', async () => {
+		const sections = await calculateQuery('how long is a shaah zmanis in 40.7127753, -74.0059728?');
+		expect(sections[0].title).toBe('');
+		expect(sections[0].content).toContain('Shaah Zmanis (MGA) in 40.7127753, -74.0059728');
+		expect(sections[0].content).toContain('Shaah Zmanis (GRA) in 40.7127753, -74.0059728');
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toBe('Calculate Shaah Zmanis (GRA) on Wed, October 4, 2023 in 40.7127753, -74.0059728');
+		expect(sections[2].title).toBe('Result');
+		expect(sections[2].content).toBe('The Shaah Zmanis (GRA) length is 58 minutes, 10 seconds');
+	});
+});

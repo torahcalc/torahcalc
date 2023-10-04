@@ -126,6 +126,11 @@ export function properCase(str) {
 	return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 }
 
+/** @type {Object<string, { lat: number, lng: number, formattedAddress: string }>} */
+const CACHED_ADDRESS_LOCATIONS = {
+	'new york': { lat: 40.7127753, lng: -74.0059728, formattedAddress: 'New York, NY, USA' }, // New York for testing
+};
+
 /**
  * Geocode a location using the Google Maps Geocoding API.
  *
@@ -134,6 +139,9 @@ export function properCase(str) {
  * @throws {Error} If the address is not found.
  */
 export async function geocodeAddress(address) {
+	if (address in CACHED_ADDRESS_LOCATIONS) {
+		return CACHED_ADDRESS_LOCATIONS[address];
+	}
 	const apiKey = typeof process !== 'undefined' ? process.env.PUBLIC_GOOGLE_MAPS_API_KEY : PUBLIC_GOOGLE_MAPS_API_KEY;
 	const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`);
 	const json = await response.json();
@@ -150,7 +158,7 @@ export async function geocodeAddress(address) {
 
 /** @type {Object<string, string>} */
 const CACHED_TIMEZONE_NAMES = {
-	'42.74521,-73.810345': 'America/New_York', // Zip 12201 in Albany, NY for testing
+	'40.7127753,-74.0059728': 'America/New_York', // New York for testing
 };
 
 /**
