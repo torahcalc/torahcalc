@@ -47,13 +47,13 @@ export async function calculateQuery(search, options = {}) {
 	try {
 		parser.feed(search);
 	} catch (e) {
-		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples.', `${e}`);
+		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.', `${e}`);
 	}
 
 	const derivations = await getValidDerivations(parser.results);
 
 	if (Object.keys(derivations).length === 0) {
-		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples.');
+		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.');
 	}
 
 	const derivation = derivations[options.disambiguation ?? ''] ?? Object.values(derivations)[0];
