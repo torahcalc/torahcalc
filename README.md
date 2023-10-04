@@ -12,6 +12,8 @@ Old website: https://www.torahcalc.com
 
 Contributions are welcome! Please see [CONTRIBUTING.md](https://github.com/torahcalc/torahcalc/blob/main/CONTRIBUTING.md) for setup instructions. Make sure your contribution is meaningful and feel free to open an issue or pull request.
 
+As we migrate pages from the old site, please see [🚧 TorahCalc Migration Checklist](https://github.com/torahcalc/torahcalc/issues/1) for a list of what still needs to be done.
+
 ## Support
 
 If you like this project, give it a ⭐ and share it with friends!
