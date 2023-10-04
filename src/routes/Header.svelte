@@ -35,6 +35,10 @@
 					name: 'Gematria Methods',
 					url: '/info/gematria',
 				},
+				{
+					name: 'Biblical Units',
+					url: '/info/biblical-units',
+				},
 			],
 		},
 	];
