@@ -17,7 +17,9 @@
 		</div>
 	</h1>
 
-	<div class="center">🚧 This site is still under construction. Contributions are welcome on <a href="https://github.com/torahcalc/torahcalc" target="_blank" rel="noopener noreferrer">GitHub</a>.</div>
+	<div class="center">
+		🚧 This site is still under construction. Contributions are welcome on <a href="https://github.com/torahcalc/torahcalc" target="_blank" rel="noopener noreferrer">GitHub</a>.
+	</div>
 
 	<InputCalculatorShortcut />
 </section>

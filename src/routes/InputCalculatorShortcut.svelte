@@ -1,5 +1,5 @@
 <script>
-	import InputExamples from "./input/InputExamples.svelte";
+	import InputExamples from './input/InputExamples.svelte';
 
 	/** @type {string} The current query in the input box (not yet submitted) */
 	let queryInput = '';
