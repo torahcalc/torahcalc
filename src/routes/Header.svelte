@@ -12,11 +12,11 @@
 			url: '/',
 		},
 		{
-			name: 'Input',
+			name: 'Input Calculator',
 			url: '/input',
 		},
 		{
-			name: 'Calendar and Zmanim',
+			name: 'More Tools',
 			children: [
 				{
 					name: 'Date Converter',
@@ -29,7 +29,7 @@
 			],
 		},
 		{
-			name: 'Info',
+			name: 'Information',
 			children: [
 				{
 					name: 'Gematria Methods',
