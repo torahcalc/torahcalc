@@ -1,9 +1,9 @@
 import nearley from 'nearley';
 import grammar from '$lib/grammars/generated/main.cjs';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
-import { formatDateObject, formatNumberHTML, geocodeAddress } from './utils';
+import { formatDateObject, formatNumberHTML } from './utils';
 import { METHOD_NAMES, calculateGematria } from './gematria';
-import { ZMANIM_NAMES, calculateZmanim } from './zmanim';
+import { ZMANIM_NAMES } from './zmanim';
 import { HDate } from '@hebcal/core';
 import { hebrewToGregorian } from './dateconverter';
 import dayjs from 'dayjs';
@@ -349,7 +349,8 @@ export async function zmanimQuery(derivation) {
 	}
 
 	// get the zmanim
-	const zmanimResponse = await fetch(`/api/zmanim?${new URLSearchParams(params).toString()}`).then((r) => r.json());
+	let url = `/api/zmanim?${new URLSearchParams(params).toString()}`;
+	const zmanimResponse = await fetch(url).then((r) => r.json());
 
 	if (zmanimResponse.success === false || !zmanimResponse.data) {
 		throw new InputError('Could not get zmanim for the provided location.', JSON.stringify(zmanimResponse, null, 2));
