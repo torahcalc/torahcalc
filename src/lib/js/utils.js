@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { gregorianToHebrew } from './dateconverter';
 import { HDate } from '@hebcal/core';
+import { PUBLIC_GOOGLE_MAPS_API_KEY } from '$env/static/public';
 
 /**
  * Format a date as Mon, January 11, 2023. This method is modified to work with 2-digit years and years before year 1.
@@ -115,4 +116,61 @@ export function formatNumber(number, precision = 8) {
  */
 export function formatNumberHTML(number, precision = 8) {
 	return `<span class="number">${formatNumber(number, precision)}</span>`;
+}
+
+/**
+ * Transform a string to Proper Case
+ * @param {string} str - the string to transform
+ */
+export function properCase(str) {
+	return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+}
+
+/**
+ * Geocode a location using the Google Maps Geocoding API.
+ *
+ * @param {string} address - The address to geocode.
+ * @returns {Promise<{ lat: number, lng: number, formattedAddress: string }>} The geocoded location.
+ * @throws {Error} If the address is not found.
+ */
+export async function geocodeAddress(address) {
+	const apiKey = typeof process !== 'undefined' ? process.env.GOOGLE_MAPS_API_KEY : PUBLIC_GOOGLE_MAPS_API_KEY;
+	const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`);
+	const json = await response.json();
+	if (json.status !== 'OK') {
+		throw new Error(`Could not geocode address: ${json.status}`);
+	}
+	const result = json.results[0];
+	return {
+		lat: result.geometry.location.lat,
+		lng: result.geometry.location.lng,
+		formattedAddress: result.formatted_address,
+	};
+}
+
+/** @type {Object<string, string>} */
+const CACHED_TIMEZONE_NAMES = {
+	'42.74521,-73.810345': 'America/New_York', // Zip 12201 in Albany, NY for testing
+};
+
+/**
+ * Return the timezone name for a given latitude and longitude
+ *
+ * @param {number} latitude - The latitude of the location
+ * @param {number} longitude - The longitude of the location
+ * @returns {Promise<string>} - The timezone name
+ */
+export async function getTimezone(latitude, longitude) {
+	const location = `${latitude},${longitude}`;
+	if (location in CACHED_TIMEZONE_NAMES) {
+		return CACHED_TIMEZONE_NAMES[location];
+	}
+	const apiKey = typeof process !== 'undefined' ? process.env.GOOGLE_MAPS_API_KEY : PUBLIC_GOOGLE_MAPS_API_KEY;
+	const response = await fetch(`https://maps.googleapis.com/maps/api/timezone/json?location=${location}&timestamp=1458000000&key=${apiKey}`);
+	const json = await response.json();
+	CACHED_TIMEZONE_NAMES[location] = json.timeZoneId;
+	if (json.status !== 'OK') {
+		throw new Error('Could not get timezone for the provided location.');
+	}
+	return json.timeZoneId;
 }

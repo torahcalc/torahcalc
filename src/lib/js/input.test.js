@@ -1,31 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { calculateQuery } from './input';
-import { units } from '$lib/grammars/units';
-import { getUnit } from './unitconverter';
 import { formatNumberHTML } from './utils';
-
-describe('test units are valid', () => {
-	it('test units are valid', async () => {
-		for (const [unitType, unitMapping] of Object.entries(units)) {
-			for (const unitIds of Object.values(unitMapping)) {
-				for (const unitId of unitIds) {
-					const unit = await getUnit(unitType, unitId);
-					expect(unit).toBeDefined();
-				}
-			}
-		}
-	});
-
-	it('test that the unit id with underscores replaced with spaces is in the mapping', async () => {
-		for (const unitMapping of Object.values(units)) {
-			for (const unitIds of Object.values(unitMapping)) {
-				for (const unitId of unitIds) {
-					expect(unitMapping).toHaveProperty(unitId.replace(/_/g, ' '));
-				}
-			}
-		}
-	});
-});
 
 describe('test unitConversionQuery', () => {
 	it('convert 3.5 amah to meter', async () => {

@@ -1,8 +1,16 @@
 import nearley from 'nearley';
 import grammar from '$lib/grammars/generated/main.cjs';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
-import { formatNumberHTML } from './utils';
+import { formatDateObject, formatNumberHTML, geocodeAddress } from './utils';
 import { METHOD_NAMES, calculateGematria } from './gematria';
+import { ZMANIM_NAMES, calculateZmanim } from './zmanim';
+import { HDate } from '@hebcal/core';
+import { hebrewToGregorian } from './dateconverter';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(timezone);
+dayjs.extend(utc);
 
 const INPUT_INTERPRETATION = 'Input Interpretation';
 const RESULT = 'Result';
@@ -56,7 +64,7 @@ export async function calculateQuery(search, options = {}) {
 		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.');
 	}
 
-	const derivation = derivations[options.disambiguation ?? ''] ?? Object.values(derivations)[0];
+	const derivation = derivations[options.disambiguation ?? ''] ?? Object.values(derivations).sort((a, b) => b.disambiguationScore - a.disambiguationScore)[0];
 
 	if (Object.keys(derivations).length > 1) {
 		// create a section that allows switching to other interpretations (eg. interpreting as coins, interpret instead as [weight]())
@@ -75,11 +83,12 @@ export async function calculateQuery(search, options = {}) {
 		unitConversionQuery: async () => await unitConversionQuery(derivation),
 		conversionChartQuery: async () => await conversionChartQuery(derivation),
 		gematriaQuery: () => gematriaQuery(derivation),
+		zmanimQuery: async () => await zmanimQuery(derivation),
 	};
 
 	const func = sectionFunctions[derivation.function];
 	if (!func) {
-		throw new InputError(`The ${derivation.function} function is not supported.`);
+		throw new InputError(`The ${derivation.function} function is not supported.`, JSON.stringify(derivations, null, 2));
 	}
 	const retval = func();
 	/** @ts-ignore - @type {Array<{ title: string, content: string }>} */
@@ -99,7 +108,8 @@ async function getValidDerivations(results) {
 	const derivations = {};
 	// determine disambiguations and skip invalid derivations
 	for (const derivation of results) {
-		derivation.disambiguation = derivation.function;
+		derivation.disambiguation = Object.values(derivation).join(', ');
+		derivation.disambiguationScore = 0;
 		if (derivation.function === 'unitConversionQuery') {
 			// skip derivation if unit types do not match
 			if (derivation.unitFrom.type !== derivation.unitTo.type) {
@@ -119,6 +129,38 @@ async function getValidDerivations(results) {
 			// gematria methods are disambiguated by method
 			const method = METHOD_NAMES[derivation.gematriaMethod];
 			derivation.disambiguation = `${method.name}`;
+		} else if (derivation.function === 'zmanimQuery') {
+			// zmanim are disambiguated by zman, date, and location
+			// @ts-ignore - assume key exists
+			derivation.disambiguation = 'Zmanim';
+			if (derivation.zman) {
+				// @ts-ignore - assume key exists
+				const zman = ZMANIM_NAMES.zmanim[derivation.zman] ?? ZMANIM_NAMES.events[derivation.zman] ?? ZMANIM_NAMES.durations[derivation.zman];
+				derivation.disambiguation = `${zman.name}`;
+				derivation.disambiguationScore += 1;
+			}
+			if (derivation?.date?.gregorianDate) {
+				const gregorianDate = derivation.date.gregorianDate;
+				derivation.disambiguation += ` on ${dayjs(new Date(gregorianDate.year, gregorianDate.month - 1, gregorianDate.day)).format('MMMM D, YYYY')}`;
+				if (gregorianDate.year < 4000) {
+					derivation.disambiguationScore += 1;
+				}
+			} else if (derivation?.date?.hebrewDate) {
+				const hebrewDate = derivation.date.hebrewDate;
+				derivation.disambiguation += ` on ${new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year).render('en')}`;
+				if (hebrewDate.year > 4000) {
+					derivation.disambiguationScore += 1;
+				}
+			}
+			if (derivation.location) {
+				derivation.disambiguation += ` in ${derivation.location.trim()}`;
+				derivation.disambiguationScore += 1;
+				// skip interpretation if certain words are in the location
+				if (/\b(?:in|on|for)\b/.test(derivation.location)) {
+					continue;
+				}
+			}
+			derivation.disambiguation = derivation.disambiguation.trim();
 		}
 		derivations[derivation.disambiguation] = derivation;
 	}
@@ -266,5 +308,109 @@ function gematriaQuery(derivation) {
 	}
 	gematriaTable += '</table>';
 	sections.push({ title: 'Other Methods', content: gematriaTable });
+	return sections;
+}
+
+/**
+ * Generate sections for a zmanim query
+ *
+ * @param {{ function: string, zman?: string, date?: { gregorianDate?: { year: number, month: number, day: number }, hebrewDate?: { year: number, month: number, day: number } }, location?: string }} derivation
+ * @returns {Promise<{ title: string, content: string }[]>} The response.
+ */
+export async function zmanimQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+
+	let dateObject = new Date();
+	if (derivation?.date?.gregorianDate) {
+		const obj = derivation.date.gregorianDate;
+		dateObject = new Date(obj.year, obj.month - 1, obj.day);
+	} else if (derivation?.date?.hebrewDate) {
+		const obj = derivation.date.hebrewDate;
+		dateObject = hebrewToGregorian({ year: obj.year, month: obj.month, day: obj.day }).date;
+	}
+	let date = dayjs(dateObject).format('YYYY-MM-DD');
+
+	let location = derivation.location ?? '';
+
+	// TODO: support getting the user's location automatically
+	if (location.trim() === '') {
+		throw new InputError('Please specify a location (city or latitude, longitude).');
+	}
+
+	// get the latitude and longitude of the location
+	let latitude = null;
+	let longitude = null;
+
+	// if it is in the format "latitude, longitude", use that
+	const latLongRegex = /^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/;
+	const latLongMatch = location.match(latLongRegex);
+	if (latLongMatch) {
+		latitude = parseFloat(latLongMatch[1]);
+		longitude = parseFloat(latLongMatch[3]);
+		location = `${latitude}, ${longitude}`;
+	} else {
+		// otherwise, use Google Maps Geocoding API
+		const locationData = await geocodeAddress(location);
+		latitude = locationData.lat;
+		longitude = locationData.lng;
+		if (locationData.formattedAddress) {
+			location = `${locationData.formattedAddress} (${latitude}, ${longitude})`;
+		} else if (!isNaN(latitude) && !isNaN(longitude)) {
+			location = `${latitude}, ${longitude}`;
+		} else {
+			throw new InputError(`An error occurred while geocoding your location. Please try again later.`, JSON.stringify(locationData, null, 2));
+		}
+	}
+
+	// get the zmanim
+	const zmanimResult = await calculateZmanim({ date, latitude, longitude });
+
+	/**
+	 * Format a zman time
+	 * @param {string} time - The time to format
+	 * @param {string} timezone - The timezone to format the time in
+	 * @returns {string} The formatted time
+	 */
+	const formatZmanTime = (time, timezone) => {
+		return `${dayjs(time).tz(timezone).format('h:mm A')} (${timezone})`;
+	};
+
+	// get the zmanim result
+	if (derivation.zman) {
+		// @ts-ignore - assume key exists
+		const zmanResult = zmanimResult.zmanim[derivation.zman] ?? zmanimResult.events[derivation.zman] ?? zmanimResult.durations[derivation.zman];
+		if (!zmanResult) {
+			throw new InputError(`The ${derivation.zman} zman is not supported.`);
+		}
+		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate ${zmanResult.name} on ${formatDateObject(dateObject)} in ${location.trim()}` });
+		if (zmanimResult.durations[derivation.zman]) {
+			sections.push({ title: RESULT, content: `The ${zmanResult.name} length is ${zmanResult.time}` });
+		} else {
+			sections.push({ title: RESULT, content: `${zmanResult.name} is at ${formatZmanTime(zmanResult.time, zmanimResult.timezone)}` });
+		}
+	} else {
+		// show all zmanim in a table
+		let zmanimTable = '<table class="table table-striped"><tr><th>Zman</th><th>Result</th></tr>';
+		for (const [zmanId, result] of Object.entries(zmanimResult.zmanim)) {
+			// @ts-ignore - assume key exists
+			const zman = ZMANIM_NAMES.zmanim[zmanId];
+			zmanimTable += `<tr><td>${zman.name}</td><td>${formatZmanTime(result.time, zmanimResult.timezone)}</td></tr>`;
+		}
+		for (const [zmanId, result] of Object.entries(zmanimResult.events)) {
+			// @ts-ignore - assume key exists
+			const zman = ZMANIM_NAMES.events[zmanId];
+			zmanimTable += `<tr><td>${zman.name}</td><td>${formatZmanTime(result.time, zmanimResult.timezone)}</td></tr>`;
+		}
+		for (const [zmanId, result] of Object.entries(zmanimResult.durations)) {
+			// @ts-ignore - assume key exists
+			const zman = ZMANIM_NAMES.durations[zmanId];
+			zmanimTable += `<tr><td>${zman.name}</td><td>${result.time}</td></tr>`;
+		}
+		zmanimTable += '</table>';
+		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate zmanim on ${formatDateObject(dateObject)} in ${location.trim()}` });
+		sections.push({ title: RESULT, content: zmanimTable });
+	}
+
 	return sections;
 }

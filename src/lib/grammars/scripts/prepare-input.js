@@ -3,11 +3,13 @@
  */
 
 import { writeFileSync } from 'fs';
-import { units } from '../units.js';
-import { gematriaMethods } from '../gematria-methods.js';
+import { units } from '../inputs/unit-inputs.js';
+import { gematriaMethods } from '../inputs/gematria-inputs.js';
+import { zmanimInputs } from '../inputs/zmanim-inputs.js';
 
 generateUnitsGrammar('./src/lib/grammars/generated/units.ne');
 generateGematriaGrammar('./src/lib/grammars/generated/gematria.ne');
+generateZmanimGrammar('./src/lib/grammars/generated/zmanim.ne');
 
 /**
  * Generates the units grammar
@@ -46,6 +48,34 @@ function generateGematriaGrammar(outputPath) {
 	grammar += Object.keys(gematriaMethods)
 		.map((methodInput) => {
 			return gematriaMethods[methodInput].map((value) => `"${methodInput.replace(/"/g, '\\"')}" {% d => '${value}' %}`).join('\n | ');
+		})
+		.join('\n | ');
+
+	writeFileSync(outputPath, grammar);
+}
+
+/**
+ * Generates the zmanim grammar
+ *
+ * @param {string} outputPath - The path to the output file with .ne extension
+ */
+function generateZmanimGrammar(outputPath) {
+	let grammar = '# Grammar of zmanim\n# Generated automatically from zmanim-inputs.js in src/lib/grammars/scripts/prepare-input.js';
+
+	const zmanim = {...zmanimInputs.zmanim, ...zmanimInputs.events};
+	const durations = zmanimInputs.durations;
+
+	grammar += '\n\nzman -> ';
+	grammar += Object.keys(zmanim)
+		.map((zmanInput) => {
+			return zmanim[zmanInput].map((value) => `"${zmanInput.replace(/"/g, '\\"')}" {% d => '${value}' %}`).join('\n | ');
+		})
+		.join('\n | ');
+
+	grammar += '\n\nduration -> ';
+	grammar += Object.keys(durations)
+		.map((durationInput) => {
+			return durations[durationInput].map((value) => `"${durationInput.replace(/"/g, '\\"')}" {% d => '${value}' %}`).join('\n | ');
 		})
 		.join('\n | ');
 
