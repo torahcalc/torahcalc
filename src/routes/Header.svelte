@@ -28,6 +28,15 @@
 				},
 			],
 		},
+		{
+			name: 'Info',
+			children: [
+				{
+					name: 'Gematria Methods',
+					url: '/info/gematria',
+				},
+			],
+		}
 	];
 
 	// only show the API page on the full site and not on the static site
