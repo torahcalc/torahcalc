@@ -1283,7 +1283,7 @@
 		margin: 0 0 0.5em 2em;
 		font-size: 13px;
 		border-collapse: separate;
-        direction: rtl;
+		direction: rtl;
 	}
 	.gematriaChart td {
 		width: 3.7%;
