@@ -1,8 +1,9 @@
 <script>
 	import Fa from 'svelte-fa/src/fa.svelte';
-	import { faCalculator, faScaleBalanced } from '@fortawesome/free-solid-svg-icons';
+	import { faCalculator, faClock, faScaleBalanced } from '@fortawesome/free-solid-svg-icons';
 	import { getConverters, getUnit, getUnits } from '$lib/js/unitconverter';
 	import { METHOD_NAMES } from '$lib/js/gematria';
+	import { ZMANIM_NAMES } from '$lib/js/zmanim';
 	import InputExample from './InputExample.svelte';
 	import AvailableOptionsList from './AvailableOptionsList.svelte';
 
@@ -10,6 +11,13 @@
 	export let clickFunction;
 
 	const converters = getConverters(false);
+
+	/** @type {string[]} The list of zmanim */
+	const zmanimList = [];
+	for (const zmanimType of Object.keys(ZMANIM_NAMES)) {
+		// @ts-ignore - assume key exists
+		zmanimList.push(...Object.values(ZMANIM_NAMES[zmanimType]).map((zmanim) => zmanim.name));
+	}
 </script>
 
 <div class="card flex-card">
@@ -56,6 +64,26 @@
 				<summary>Show list of gematria methods</summary>
 
 				<AvailableOptionsList array={Object.values(METHOD_NAMES).map((method) => method.name)} />
+			</details>
+		</div>
+	</div>
+
+	<div class="mb-4">
+		<h5><Fa icon={faClock} class="me-1" /> Zmanim</h5>
+
+		<ul class="list-unstyled">
+			<li><InputExample {clickFunction} query="What time is Chatzos in New York?" /></li>
+			<li><InputExample {clickFunction} query="Zmanim for Denver" /></li>
+			<li><InputExample {clickFunction} query="Zmanim for 1 Teves 5784 in Jerusalem" /></li>
+			<li><InputExample {clickFunction} query="What time is sunset on December 25, 2023 in Los Angeles?" /></li>
+			<li><InputExample {clickFunction} query="How long is a Shaah Zmanis in 39.1, -107.4?" /></li>
+		</ul>
+
+		<div>
+			<details>
+				<summary>Show list of zmanim</summary>
+
+				<AvailableOptionsList array={zmanimList} />
 			</details>
 		</div>
 	</div>

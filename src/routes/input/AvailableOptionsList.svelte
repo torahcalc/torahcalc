@@ -1,4 +1,6 @@
 <script>
+	import { properCase } from '$lib/js/utils';
+
 	/** @type {{[key: string]: any[]}} The mapping of available options */
 	export let mapping = {};
 
@@ -9,14 +11,6 @@
 	export let transform = (entry) => entry.toString();
 
 	const types = Object.keys(mapping).length > 0 ? Object.keys(mapping) : [];
-
-	/**
-	 * Transform a string to Proper Case
-	 * @param {string} str - the string to transform
-	 */
-	const properCase = (str) => {
-		return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-	};
 </script>
 
 {#if Object.keys(mapping).length > 0}
