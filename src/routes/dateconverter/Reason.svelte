@@ -1,6 +1,6 @@
 <script>
 	import Fa from 'svelte-fa/src/fa.svelte';
-	import { faCheck, faX } from '@fortawesome/free-solid-svg-icons';
+	import { faCheck, faX } from '@danieloi/pro-solid-svg-icons';
 
 	export let success = false;
 	export let reason = '';
