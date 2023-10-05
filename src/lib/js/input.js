@@ -170,6 +170,8 @@ async function getValidDerivations(results) {
 				if (gregorianDate.format === 'MDY' || gregorianDate.format === 'MD') {
 					derivation.disambiguationScore += 1;
 				}
+				// prefer Gregorian dates over Hebrew dates
+				derivation.disambiguationScore += 1;
 			} else if (derivation?.date?.hebrewDate) {
 				const hebrewDate = derivation.date.hebrewDate;
 				hebrewDate.year = hebrewDate.year ?? new HDate().getFullYear();
