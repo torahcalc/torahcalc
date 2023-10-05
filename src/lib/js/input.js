@@ -379,7 +379,7 @@ export async function zmanimQuery(derivation) {
 	 * @returns {string} The formatted time
 	 */
 	const formatTableRow = (name, description, time) => {
-		return `<tr><td><div class="fw-bold">${name}</div><div class="small text-muted">${description}</div></td><td>${time}</td></tr>`
+		return `<tr><td><div class="fw-bold">${name}</div><div class="small text-muted">${description}</div></td><td>${time}</td></tr>`;
 	};
 
 	// get the zmanim result
@@ -420,7 +420,10 @@ export async function zmanimQuery(derivation) {
 			title: SOURCES,
 			content: `Zmanim are from the <a href="https://www.hebcal.com/home/1663/zmanim-halachic-times-api" target="_blank">Hebcal API</a>. Times are shown for the timezone <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">${zmanimResult.timezone}</a>.`,
 		});
-		sections.push({ title: 'Disclaimer', content: 'Due to imprecision and multiple algorithms, zmanim calculations can vary slightly from one source to another. Please do not rely on any calculations on any site to the last minute.' });
+		sections.push({
+			title: 'Disclaimer',
+			content: 'Due to imprecision and multiple algorithms, zmanim calculations can vary slightly from one source to another. Please do not rely on any calculations on any site to the last minute.',
+		});
 	}
 
 	return sections;

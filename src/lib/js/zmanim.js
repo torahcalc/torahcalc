@@ -79,12 +79,12 @@ export const ZMANIM_NAMES = {
 		tzeis3MediumStars: {
 			name: 'Tzeis (3 medium stars)',
 			hebrewName: 'צאת הכוכבים (3 כוכבים בינוניים)',
-			description: 'When 3 medium-sized stars are visible in the sky (sun is 7.083° below horizon)'
+			description: 'When 3 medium-sized stars are visible in the sky (sun is 7.083° below horizon)',
 		},
 		tzeis3Stars: {
 			name: 'Tzeis (3 stars)',
 			hebrewName: 'צאת הכוכבים (3 כוכבים)',
-			description: 'When 3 small-sized stars are visible in the sky (sun is 8.5° below horizon)'
+			description: 'When 3 small-sized stars are visible in the sky (sun is 8.5° below horizon)',
 		},
 		tzeis72: {
 			name: 'Tzeis (72 minutes)',
