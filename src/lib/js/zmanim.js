@@ -5,6 +5,16 @@ import duration from 'dayjs/plugin/duration';
 
 dayjs.extend(duration);
 
+/**
+ * @typedef {{ name: string, hebrewName: string, time: string, description: string, icon?: import('@danieloi/pro-solid-svg-icons').IconDefinition }} Zman - Details about a zman or timed event
+ */
+
+/**
+ * @typedef {Object} ZmanimNames
+ * @property {Record<string, Zman>} zmanim - Zmanim names
+ * @property {Record<string, Zman>} events - Timed event names
+ * @property {Record<string, Zman>} durations - Shaah zmanis duration names
+ */
 export const ZMANIM_NAMES = {
 	zmanim: {
 		alos16Point1: {
@@ -22,6 +32,11 @@ export const ZMANIM_NAMES = {
 			hebrewName: 'משיכיר',
 			description: 'Earliest time to put on tallis and tefillin - when the Sun is 11.5° below the horizon in the morning',
 		},
+		misheyakirMachmir: {
+			name: 'Misheyakir Machmir',
+			hebrewName: 'משיכיר מחמיר',
+			description: 'Earliest time to put on tallis and tefillin - when the Sun is 10.2° below the horizon in the morning',
+		},
 		sunrise: {
 			name: 'Sunrise',
 			hebrewName: 'נץ החמה',
@@ -37,11 +52,6 @@ export const ZMANIM_NAMES = {
 			name: 'Sof Zman Shma (GRA)',
 			hebrewName: 'סוף זמן שמע (גר"א)',
 			description: 'Latest time to recite Shema according to the Vilna Gaon - 3 halachic hours after sunrise',
-		},
-		misheyakirMachmir: {
-			name: 'Misheyakir Machmir',
-			hebrewName: 'משיכיר מחמיר',
-			description: 'Earliest time to put on tallis and tefillin - when the Sun is 10.2° below the horizon in the morning',
 		},
 		sofZmanTefillaMGA: {
 			name: 'Sof Zman Tefilla (MGA)',
@@ -147,10 +157,6 @@ export const ZMANIM_NAMES = {
  */
 
 /**
- * @typedef {{ name: string, hebrewName: string, time: string, description: string }} Zman - Details about a zman or timed event
- */
-
-/**
  * Calculate zmanim for a given date and location
  *
  * @param {ZmanimOptions} options
@@ -197,12 +203,15 @@ export async function calculateZmanim({ date = dayjs().format('YYYY-MM-DD'), lat
 			} else if (event.desc === 'Havdalah') {
 				description += ' - 3 small stars visible, sun is 8.5° below horizon';
 			}
+			// @ts-ignore - assume that the event is in the events object
+			const eventData = ZMANIM_NAMES.events[key] || {};
 			// add the event to the timedEvents object
 			timedEvents[key] = {
 				name: event.desc,
 				hebrewName: hebrewName,
 				time: formatDateTimezone(event.eventTime),
 				description: description,
+				icon: eventData?.icon,
 			};
 		}
 	}
@@ -212,83 +221,83 @@ export async function calculateZmanim({ date = dayjs().format('YYYY-MM-DD'), lat
 		...(location && { location }),
 		zmanim: {
 			alos16Point1: {
-				time: formatDateTimezone(zmanim.alotHaShachar()),
 				...ZMANIM_NAMES.zmanim.alos16Point1,
+				time: formatDateTimezone(zmanim.alotHaShachar()),
 			},
 			alos72: {
-				time: formatDateTimezone(alot72),
 				...ZMANIM_NAMES.zmanim.alos72,
+				time: formatDateTimezone(alot72),
 			},
 			misheyakir: {
-				time: formatDateTimezone(zmanim.misheyakir()),
 				...ZMANIM_NAMES.zmanim.misheyakir,
-			},
-			sunrise: {
-				time: formatDateTimezone(zmanim.sunrise()),
-				...ZMANIM_NAMES.zmanim.sunrise,
-			},
-			sofZmanShmaMGA: {
-				time: formatDateTimezone(zmanim.sofZmanShmaMGA()),
-				...ZMANIM_NAMES.zmanim.sofZmanShmaMGA,
-			},
-			sofZmanShmaGRA: {
-				time: formatDateTimezone(zmanim.sofZmanShma()),
-				...ZMANIM_NAMES.zmanim.sofZmanShmaGRA,
+				time: formatDateTimezone(zmanim.misheyakir()),
 			},
 			misheyakirMachmir: {
-				time: formatDateTimezone(zmanim.misheyakirMachmir()),
 				...ZMANIM_NAMES.zmanim.misheyakirMachmir,
+				time: formatDateTimezone(zmanim.misheyakirMachmir()),
+			},
+			sunrise: {
+				...ZMANIM_NAMES.zmanim.sunrise,
+				time: formatDateTimezone(zmanim.sunrise()),
+			},
+			sofZmanShmaMGA: {
+				...ZMANIM_NAMES.zmanim.sofZmanShmaMGA,
+				time: formatDateTimezone(zmanim.sofZmanShmaMGA()),
+			},
+			sofZmanShmaGRA: {
+				...ZMANIM_NAMES.zmanim.sofZmanShmaGRA,
+				time: formatDateTimezone(zmanim.sofZmanShma()),
 			},
 			sofZmanTefillaMGA: {
-				time: formatDateTimezone(zmanim.sofZmanTfillaMGA()),
 				...ZMANIM_NAMES.zmanim.sofZmanTefillaMGA,
+				time: formatDateTimezone(zmanim.sofZmanTfillaMGA()),
 			},
 			sofZmanTefillaGRA: {
-				time: formatDateTimezone(zmanim.sofZmanTfilla()),
 				...ZMANIM_NAMES.zmanim.sofZmanTefillaGRA,
+				time: formatDateTimezone(zmanim.sofZmanTfilla()),
 			},
 			chatzos: {
-				time: formatDateTimezone(zmanim.chatzot()),
 				...ZMANIM_NAMES.zmanim.chatzos,
+				time: formatDateTimezone(zmanim.chatzot()),
 			},
 			minchaGedola: {
-				time: formatDateTimezone(zmanim.minchaGedola()),
 				...ZMANIM_NAMES.zmanim.minchaGedola,
+				time: formatDateTimezone(zmanim.minchaGedola()),
 			},
 			minchaKetana: {
-				time: formatDateTimezone(zmanim.minchaKetana()),
 				...ZMANIM_NAMES.zmanim.minchaKetana,
+				time: formatDateTimezone(zmanim.minchaKetana()),
 			},
 			plagHamincha: {
-				time: formatDateTimezone(zmanim.plagHaMincha()),
 				...ZMANIM_NAMES.zmanim.plagHamincha,
+				time: formatDateTimezone(zmanim.plagHaMincha()),
 			},
 			sunset: {
-				time: formatDateTimezone(zmanim.sunset()),
 				...ZMANIM_NAMES.zmanim.sunset,
+				time: formatDateTimezone(zmanim.sunset()),
 			},
 			tzeis3MediumStars: {
-				time: formatDateTimezone(zmanim.tzeit(7.083)),
 				...ZMANIM_NAMES.zmanim.tzeis3MediumStars,
+				time: formatDateTimezone(zmanim.tzeit(7.083)),
 			},
 			tzeis3Stars: {
-				time: formatDateTimezone(zmanim.tzeit(8.5)),
 				...ZMANIM_NAMES.zmanim.tzeis3Stars,
+				time: formatDateTimezone(zmanim.tzeit(8.5)),
 			},
 			tzeis72: {
-				time: formatDateTimezone(tzeit72),
 				...ZMANIM_NAMES.zmanim.tzeis72,
+				time: formatDateTimezone(tzeit72),
 			},
 		},
 		events: timedEvents,
 		durations: {
 			shaahZmanisMGA: {
-				time: calculateShaahZmanis(alot72, tzeit72),
 				...ZMANIM_NAMES.durations.shaahZmanisMGA,
+				time: calculateShaahZmanis(alot72, tzeit72),
 			},
 			shaahZmanisGRA: {
-				time: calculateShaahZmanis(zmanim.sunrise(), zmanim.sunset()),
 				...ZMANIM_NAMES.durations.shaahZmanisGRA,
+				time: calculateShaahZmanis(zmanim.sunrise(), zmanim.sunset()),
 			},
 		},
 	};

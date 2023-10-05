@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { gregorianToHebrew } from './dateconverter';
 import { HDate } from '@hebcal/core';
+import DOMPurify from 'dompurify';
 
 /**
  * Format a date as Mon, January 11, 2023. This method is modified to work with 2-digit years and years before year 1.
@@ -180,4 +181,62 @@ export async function getTimezone(latitude, longitude, apiKey) {
 		throw new Error('Could not get timezone for the provided location.');
 	}
 	return json.timeZoneId;
+}
+
+/**
+ * @typedef {Object} TableBuilderOptions
+ * @property {Array<{ key: string, display: string }|string>} [headers] - The headers for the table (e.g. [{ key: 'name', display: 'Name' }, { key: 'age', display: 'Age' }] or ['Name', 'Age']).
+ * @property {string} [id] - The ID of the table.
+ * @property {string} [class] - The class of the table.
+ * @property {Object} [attributes] - Additional attributes to add to the table.
+ * @property {string} [caption] - The caption for the table.
+ * @property {boolean} [html=false] - Whether to treat values as HTML instead of sanitizing them.
+ */
+
+/**
+ * Convert a list of objects to an HTML table.
+ * 
+ * @param {{ [key: string]: any }[]} data - The data to convert to a table (e.g. [{ name: 'John', age: 30 }, { name: 'Jane', age: 25 }]).
+ * @param {TableBuilderOptions} options - Options for the table.
+ */
+export function dataToHtmlTable(data, options) {
+	let table = "<table";
+	if (options.id) {
+		table += ` id="${options.id}"`;
+	}
+	if (options.class) {
+		table += ` class="${options.class}"`;
+	}
+	if (options.attributes) {
+		for (const [key, value] of Object.entries(options.attributes)) {
+			table += ` ${key}="${value}"`;
+		}
+	}
+	table += '>';
+	if (options.caption) {
+		table += `<caption>${options.caption}</caption>`;
+	}
+	if (!options.headers) {
+		options.headers = Object.keys(data[0] ?? {});
+	}
+	// map all string headers to objects with key and display properties
+	const headers = options.headers.map((header) => typeof header === 'string' ? { key: header, display: header } : header);
+	table += '<thead>';
+	table += '<tr>';
+	for (const header of headers) {
+		table += `<th>${options.html ? header.display : DOMPurify.sanitize(header.display)}</th>`;
+	}
+	table += '</tr>';
+	table += '</thead>';
+	table += '<tbody>';
+	for (const row of data) {
+		table += '<tr>';
+		for (const header of headers) {
+			table += `<td>${options.html ? row[header.key] : DOMPurify.sanitize(row[header.key])}</td>`;
+		}
+		table += '</tr>';
+	}
+	table += '</tbody>';
+	table += '</table>';
+	return table;
 }

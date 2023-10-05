@@ -13,8 +13,8 @@
 	const types = Object.keys(mapping).length > 0 ? Object.keys(mapping) : [];
 </script>
 
-{#if Object.keys(mapping).length > 0}
-	<table class="table table-striped">
+<table class="table table-striped table-bordered">
+	{#if Object.keys(mapping).length > 0}
 		<thead>
 			<tr>
 				<th>Type</th>
@@ -45,9 +45,7 @@
 				</tr>
 			{/each}
 		</tbody>
-	</table>
-{:else if array.length > 0}
-	<table class="table table-striped">
+	{:else if array.length > 0}
 		<thead>
 			<tr>
 				<th>Options</th>
@@ -76,5 +74,5 @@
 				{/if}
 			{/each}
 		</tbody>
-	</table>
-{/if}
+	{/if}
+</table>

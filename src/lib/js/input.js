@@ -1,7 +1,7 @@
 import nearley from 'nearley';
 import grammar from '$lib/grammars/generated/main.cjs';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
-import { formatDateObject, formatNumberHTML } from './utils';
+import { dataToHtmlTable, formatDateObject, formatNumberHTML } from './utils';
 import { METHOD_NAMES, calculateGematria } from './gematria';
 import { ZMANIM_NAMES } from './zmanim';
 import { HDate } from '@hebcal/core';
@@ -253,12 +253,11 @@ async function unitConversionQuery(derivation) {
 				conversionResults.push(await convertUnits({ ...params, unitOpinionIds: [unitOpinionId] }));
 			}
 		}
-		resultValue = "<table class='table table-striped'><tr><th>Opinion</th><th>Result</th></tr>";
-		for (const result of conversionResults) {
+		const data = conversionResults.map((result) => {
 			const opinion = result.opinion || Object.values(result.unitOpinions ?? {}).join(', ');
-			resultValue += `<tr><td>${opinion}</td><td>${formatResult(result)}</td></tr>`;
-		}
-		resultValue += '</table>';
+			return { Opinion: opinion, Result: formatResult(result) };
+		});
+		resultValue = dataToHtmlTable(data, { headers: ['Opinion', 'Result'], class: 'table table-striped table-bordered' });
 	}
 	sections.push({ title: RESULT, content: resultValue });
 	const updatedDate = unitTo.updated ?? unitFrom.updated ?? null;
@@ -298,18 +297,19 @@ async function conversionChartQuery(derivation) {
 	// output opinion results as a table where the first column is the opinion and the second column is the results for that opinion separated by newlines
 	delete conversionResults['no-opinion'];
 	if (Object.keys(conversionResults).length > 0) {
-		content += '<table class="table table-striped"><tr><th>Opinion</th><th>Results</th></tr>';
+		const data = [];
 		for (const [opinionId, opinionResults] of Object.entries(conversionResults)) {
 			const opinion = (await getDefaultOpinion(unitType)) ? await getOpinion(unitType, opinionId) : await getUnitOpinion(unitType, opinionId);
-			content += `<tr><td>${opinion.name}</td><td><ul>`;
+			let results = '<ul>';
 			for (const [unitId, result] of Object.entries(opinionResults)) {
 				const unitTo = await getUnit(unitType, unitId);
-				content += `<li>${formatNumberHTML(result.result)} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}</li>`;
+				results += `<li>${formatNumberHTML(result.result)} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}</li>`;
 				updatedDate = unitTo.updated ?? updatedDate;
 			}
-			content += '</ul></td></tr>';
+			results += '</ul>';
+			data.push({ Opinion: opinion.name, Results: results });
 		}
-		content += '</table>';
+		content += dataToHtmlTable(data, { headers: ['Opinion', 'Results'], class: 'table table-striped table-bordered', html: true });
 	}
 	sections.push({ title: RESULT, content });
 	if (updatedDate) {
@@ -336,12 +336,11 @@ function gematriaQuery(derivation) {
 	sections.push({ title: INPUT_INTERPRETATION, content: `Calculate ${method.name} of "${derivation.text}"` });
 	sections.push({ title: RESULT, content: `${formatNumberHTML(primaryResult)} in ${method.name}` });
 	// show all gematria methods in a table
-	let gematriaTable = '<table class="table table-striped"><tr><th>Method</th><th>Result</th></tr>';
-	for (const [gematriaMethod, result] of Object.entries(gematriaResult)) {
+	const data = Object.entries(gematriaResult).map(([gematriaMethod, result]) => {
 		const method = METHOD_NAMES[gematriaMethod];
-		gematriaTable += `<tr><td>${method.name}</td><td>${formatNumberHTML(result)}</td></tr>`;
-	}
-	gematriaTable += '</table>';
+		return { Method: method.name, Result: formatNumberHTML(result) };
+	});
+	const gematriaTable = dataToHtmlTable(data, { headers: ['Method', 'Result'], class: 'table table-striped table-bordered' });
 	sections.push({ title: 'Other Methods', content: gematriaTable });
 	return sections;
 }
@@ -407,21 +406,20 @@ export async function zmanimQuery(derivation) {
 	};
 
 	/**
-	 * Format a zman time in a table row
-	 * @param {string} name - The name of the zman
-	 * @param {string} description - The description of the zman
-	 * @param {string} time - The formatted time
-	 * @param {{ prefix: string, iconName: string, icon: any[] }} [icon] - The icon to show next to the zman (icon represents width, height, aliases, unicode, svgPathData)
+	 * Format a zman name and description in a table row
+	 * @param {import('./zmanim').Zman} zman - The zman to format
 	 * @returns {string} The formatted time
 	 */
-	const formatTableRow = (name, description, time, icon) => {
-		let row = `<tr><td><div class="d-flex align-items-center gap-2 justify-content-start">`;
-		if (icon) {
-			const [width, height, , , svgPathData] = icon.icon;
+	const formatZmanCell = (zman) => {
+		let row = `<div class="d-flex align-items-center gap-2 justify-content-start">`;
+		if (zman.icon) {
+			const [width, height, , , svgPathData] = zman.icon.icon;
 			row += `<svg fill="currentColor" height="1em" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg"><path d="${svgPathData}" /></svg>`;
 		}
-		row += `<span class="fw-bold">${name}</span></div>`;
-		row += `<div class="small text-muted">${description}</div></td><td>${time}</td></tr>`;
+		row += `<span class="fw-bold">${zman.name}</span></div>`;
+		if (zman.description && zman.name !== zman.description) {
+			row += `<div class="small text-muted">${zman.description}</div>`;
+		}
 		return row;
 	};
 
@@ -439,26 +437,39 @@ export async function zmanimQuery(derivation) {
 			sections.push({ title: RESULT, content: `${zmanResult.name} is at ${formatZmanTime(zmanResult.time, zmanimResult.timezone)}` });
 		}
 	} else {
-		// show all zmanim in a table
-		let zmanimTable = '<table class="table table-striped"><tr><th>Zman</th><th>Result</th></tr>';
-		for (const [zmanId, result] of Object.entries(zmanimResult.zmanim)) {
+		// show all zmanim in tables
+		const zmanimTables = [];
+		const eventsData = Object.entries(zmanimResult.events).map(([zmanId, result]) => {
 			// @ts-ignore - assume key exists
-			const zman = ZMANIM_NAMES.zmanim[zmanId];
-			zmanimTable += formatTableRow(zman.name, zman.description, formatZmanTime(result.time, zmanimResult.timezone), zman.icon);
+			const zman = zmanimResult.events[zmanId];
+			return { Event: formatZmanCell(zman), Time: formatZmanTime(result.time, zmanimResult.timezone) };
+		});
+		if (eventsData.length > 0) {
+			let eventsSection = "<div class='border rounded px-3 my-3'><ul class='list-unstyled'>";
+			eventsSection += eventsData.map((event) => `<li class="my-3">${event.Event}${event.Time}</li>`).join('');
+			eventsSection += '</ul></div>';
+			zmanimTables.push(eventsSection);
 		}
-		for (const [zmanId, result] of Object.entries(zmanimResult.events)) {
+		const zmanimData = Object.entries(zmanimResult.zmanim).map(([zmanId, result]) => {
 			// @ts-ignore - assume key exists
-			const zman = ZMANIM_NAMES.events[zmanId];
-			zmanimTable += formatTableRow(zman.name, zman.description, formatZmanTime(result.time, zmanimResult.timezone), zman.icon);
+			const zman = zmanimResult.zmanim[zmanId];
+			return { Zman: formatZmanCell(zman), Time: formatZmanTime(result.time, zmanimResult.timezone) };
+		});
+		if (zmanimData.length > 0) {
+			const zmanimTable = dataToHtmlTable(zmanimData, { headers: ['Zman', 'Time'], class: 'table table-striped table-bordered' });
+			zmanimTables.push(zmanimTable);
 		}
-		for (const [zmanId, result] of Object.entries(zmanimResult.durations)) {
+		const durationsData = Object.entries(zmanimResult.durations).map(([zmanId, result]) => {
 			// @ts-ignore - assume key exists
-			const zman = ZMANIM_NAMES.durations[zmanId];
-			zmanimTable += formatTableRow(zman.name, zman.description, result.time, zman.icon);
+			const zman = zmanimResult.durations[zmanId];
+			return { Measurement: formatZmanCell(zman), Length: result.time };
+		});
+		if (durationsData.length > 0) {
+			const durationsTable = dataToHtmlTable(durationsData, { headers: ['Measurement', 'Length'], class: 'table table-striped table-bordered' });
+			zmanimTables.push(durationsTable);
 		}
-		zmanimTable += '</table>';
 		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate Zmanim on ${formatDateObject(dateObject)} in ${location.trim()}` });
-		sections.push({ title: RESULT, content: zmanimTable });
+		sections.push({ title: RESULT, content: zmanimTables.join('') });
 		sections.push({
 			title: SOURCES,
 			content: `Zmanim are from the <a href="https://www.hebcal.com/home/1663/zmanim-halachic-times-api" target="_blank">Hebcal API</a>. Times are shown for the timezone <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">${zmanimResult.timezone}</a>.`,

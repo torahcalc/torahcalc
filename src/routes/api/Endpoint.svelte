@@ -72,7 +72,7 @@
 
 	<div class="scroll-outer">
 		<div class="scroll-inner">
-			<table>
+			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
 						<th>Parameter</th>
@@ -155,21 +155,6 @@
 
 	.subsection-header {
 		margin-bottom: 0.5em;
-	}
-
-	table {
-		border-collapse: collapse;
-		width: 100%;
-	}
-
-	th,
-	td {
-		padding: 0.5em;
-		border: 1px solid #ccc;
-	}
-
-	th {
-		text-align: left;
 	}
 
 	.mono {
