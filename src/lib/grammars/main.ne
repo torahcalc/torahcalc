@@ -75,25 +75,34 @@ hebrewString -> [\u05D0-\u05EA\u05F0\u05F1\u05F2\uFB1F\uFB2E-\uFB30\uFB4F\uFB21\
 
 # Zmanim queries
 zmanimQuery -> optionalWords[("what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman {% data => ({function: "zmanimQuery", zman: data[1]}) %}
-             | optionalWords[("what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman __ ("in" | "for") __ location {% data => ({function: "zmanimQuery", zman: data[1], location: data[5]}) %}
-             | optionalWords[("what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman __ ("on" | "for") __ date {% data => ({function: "zmanimQuery", zman: data[1], date: data[5]}) %}
-             | optionalWords[("what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman __ ("on" | "for") __ date __ ("in" | "for") __ location {% data => ({function: "zmanimQuery", zman: data[1], date: data[5], location: data[9]}) %}
-             | optionalWords[("what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman __ ("in" | "for") __ location __ ("on" | "for") __ date {% data => ({function: "zmanimQuery", zman: data[1], date: data[9], location: data[5]}) %}
+             | optionalWords[("what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman _ optionalWords[("in" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[1], location: data[5]}) %}
+             | optionalWords[("what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", zman: data[1], date: data[5]}) %}
+             | optionalWords[("what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman _ optionalWords[("on" | "for")] _ date _ optionalWords[("in" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[1], date: data[5], location: data[9]}) %}
+             | optionalWords[("what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman _ optionalWords[("in" | "for")] _ location _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", zman: data[1], date: data[9], location: data[5]}) %}
              | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration {% data => ({function: "zmanimQuery", zman: data[2]}) %}
-             | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration __ ("in" | "for") __ location {% data => ({function: "zmanimQuery", zman: data[2], location: data[6]}) %}
-             | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration __ ("on" | "for") __ date {% data => ({function: "zmanimQuery", zman: data[2], date: data[6]}) %}
-             | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration __ ("on" | "for") __ date __ ("in" | "for") __ location {% data => ({function: "zmanimQuery", zman: data[2], date: data[6], location: data[8]}) %}
-             | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration __ ("in" | "for") __ location __ "on" __ date {% data => ({function: "zmanimQuery", zman: data[2], date: data[8], location: data[6]}) %}
-             | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration __ ("in" | "for") __ location {% data => ({function: "zmanimQuery", zman: data[2], location: data[6]}) %}
+             | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("in" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[2], location: data[6]}) %}
+             | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", zman: data[2], date: data[6]}) %}
+             | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("on" | "for")] _ date _ optionalWords[("in" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[2], date: data[6], location: data[8]}) %}
+             | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("in" | "for")] _ location _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", zman: data[2], date: data[8], location: data[6]}) %}
+             | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("in" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[2], location: data[6]}) %}
              | "zmanim" __ optionalWords["for"] date {% data => ({function: "zmanimQuery", date: data[3]}) %}
-             | "zmanim" __ optionalWords["for"] date __ "in" __ location {% data => ({function: "zmanimQuery", date: data[3], location: data[7]}) %}
+             | "zmanim" __ optionalWords["for"] date _ optionalWords[("in" | "for")] _ location {% data => ({function: "zmanimQuery", date: data[3], location: data[7]}) %}
              | "zmanim" __ optionalWords["for"] location {% data => ({function: "zmanimQuery", location: data[3]}) %}
-             | "zmanim" __ optionalWords["for"] location __ "on" __ date {% data => ({function: "zmanimQuery", date: data[7], location: data[3]}) %}
+             | "zmanim" __ optionalWords["for"] location _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", date: data[7], location: data[3]}) %}
 
 location -> [\w\s,.'()+":;\-]:+ {% data => data[0].join("") %}
 
 date -> gregorianDate {% data => ({gregorianDate: data[0]}) %}
       | hebrewDate {% data => ({hebrewDate: data[0]}) %}
+      | "today" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate()}}) %}
+      | "tomorrow" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() + 1}}) %}
+      | "yesterday" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() - 1}}) %}
+      | "next" __ "week" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() + 7}}) %}
+      | "next" __ "month" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 2, day: new Date().getDate()}}) %}
+      | "next" __ "year" {% data => ({gregorianDate: {year: new Date().getFullYear() + 1, month: new Date().getMonth() + 1, day: new Date().getDate()}}) %}
+      | "last" __ "week" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() - 7}}) %}
+      | "last" __ "month" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate()}}) %}
+      | "last" __ "year" {% data => ({gregorianDate: {year: new Date().getFullYear() - 1, month: new Date().getMonth() + 1, day: new Date().getDate()}}) %}
 gregorianDate -> dateOfMonth __ gregorianMonth ", " year {% data => ({year: data[4], month: data[2], day: data[0]}) %}
                | dateOfMonth __ gregorianMonth {% data => ({month: data[2], day: data[0]}) %}
                | gregorianMonth __ dateOfMonth ", " year {% data => ({year: data[4], month: data[0], day: data[2]}) %}

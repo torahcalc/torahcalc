@@ -156,7 +156,7 @@ async function getValidDerivations(results) {
 				derivation.disambiguation += ` in ${derivation.location.trim()}`;
 				derivation.disambiguationScore += 1;
 				// skip interpretation if certain words are in the location
-				if (/\b(?:in|on|for)\b/.test(derivation.location)) {
+				if (/\b(?:in|on|for|yesterday|today|tomorrow|next|last)\b/.test(derivation.location)) {
 					continue;
 				}
 			}
