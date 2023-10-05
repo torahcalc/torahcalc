@@ -6,6 +6,7 @@ import { METHOD_NAMES, calculateGematria } from './gematria';
 import { ZMANIM_NAMES } from './zmanim';
 import { HDate } from '@hebcal/core';
 import { hebrewToGregorian } from './dateconverter';
+import DOMPurify from 'dompurify';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
@@ -86,13 +87,25 @@ export async function calculateQuery(search, options = {}) {
 		zmanimQuery: async () => await zmanimQuery(derivation),
 	};
 
-	const func = sectionFunctions[derivation.function];
-	if (!func) {
-		throw new InputError(`The ${derivation.function} function is not supported.`, JSON.stringify(derivations, null, 2));
+	/** @type {Array<{ title: string, content: string }>} */
+	let calculatedSections = [];
+	try {
+		const func = sectionFunctions[derivation.function];
+		if (!func) {
+			throw new InputError(`The ${derivation.function} function is not supported.`, JSON.stringify(derivations, null, 2));
+		}
+		const retval = func();
+		/** @ts-ignore - @type {Array<{ title: string, content: string }>} */
+		calculatedSections = retval instanceof Promise ? await retval : retval;
+	} catch (e) {
+		if (e instanceof InputError) {
+			let errorHTML = DOMPurify.sanitize(e.message);
+			if (e.details) {
+				errorHTML += `<br /><details><summary>Details</summary><code><pre>${DOMPurify.sanitize(e.details)}</pre></code></details>`;
+			}
+			calculatedSections.push({ title: 'Error', content: errorHTML });
+		}
 	}
-	const retval = func();
-	/** @ts-ignore - @type {Array<{ title: string, content: string }>} */
-	const calculatedSections = retval instanceof Promise ? await retval : retval;
 
 	return [...startSections, ...calculatedSections];
 }
@@ -141,22 +154,34 @@ async function getValidDerivations(results) {
 			}
 			if (derivation?.date?.gregorianDate) {
 				const gregorianDate = derivation.date.gregorianDate;
-				derivation.disambiguation += ` on ${dayjs(new Date(gregorianDate.year, gregorianDate.month - 1, gregorianDate.day)).format('MMMM D, YYYY')}`;
+				gregorianDate.year = gregorianDate.year ?? new Date().getFullYear();
+				const dateObject = new Date(gregorianDate.year, gregorianDate.month - 1, gregorianDate.day);
+				if (isNaN(dateObject.getTime())) {
+					// skip interpretation if the date cannot be parsed
+					continue;
+				}
+				derivation.disambiguation += ` on ${dayjs(dateObject).format('MMMM D, YYYY')}`;
 				if (gregorianDate.year < 4000) {
 					derivation.disambiguationScore += 1;
 				}
 				// prefer MDY format over DMY format
-				if (gregorianDate.format === 'MDY') {
+				if (gregorianDate.format === 'MDY' || gregorianDate.format === 'MD') {
 					derivation.disambiguationScore += 1;
 				}
 			} else if (derivation?.date?.hebrewDate) {
 				const hebrewDate = derivation.date.hebrewDate;
-				derivation.disambiguation += ` on ${new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year).render('en')}`;
+				hebrewDate.year = hebrewDate.year ?? new HDate().getFullYear();
+				try {
+					derivation.disambiguation += ` on ${new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year).render('en')}`;
+				} catch (e) {
+					// skip interpretation if the date cannot be parsed
+					continue;
+				}
 				if (hebrewDate.year > 4000) {
 					derivation.disambiguationScore += 1;
 				}
 				// prefer MDY format over DMY format
-				if (hebrewDate.format === 'MDY') {
+				if (hebrewDate.format === 'MDY' || hebrewDate.format === 'MD') {
 					derivation.disambiguationScore += 1;
 				}
 			}
@@ -384,10 +409,18 @@ export async function zmanimQuery(derivation) {
 	 * @param {string} name - The name of the zman
 	 * @param {string} description - The description of the zman
 	 * @param {string} time - The formatted time
+	 * @param {{ prefix: string, iconName: string, icon: any[] }} [icon] - The icon to show next to the zman (icon represents width, height, aliases, unicode, svgPathData)
 	 * @returns {string} The formatted time
 	 */
-	const formatTableRow = (name, description, time) => {
-		return `<tr><td><div class="fw-bold">${name}</div><div class="small text-muted">${description}</div></td><td>${time}</td></tr>`;
+	const formatTableRow = (name, description, time, icon) => {
+		let row = `<tr><td><div class="d-flex align-items-center gap-2 justify-content-start">`;
+		if (icon) {
+			const [width, height, , , svgPathData] = icon.icon;
+			row += `<svg fill="currentColor" height="1em" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg"><path d="${svgPathData}" /></svg>`;
+		}
+		row += `<span class="fw-bold">${name}</span></div>`;
+		row += `<div class="small text-muted">${description}</div></td><td>${time}</td></tr>`;
+		return row;
 	};
 
 	// get the zmanim result
@@ -409,17 +442,17 @@ export async function zmanimQuery(derivation) {
 		for (const [zmanId, result] of Object.entries(zmanimResult.zmanim)) {
 			// @ts-ignore - assume key exists
 			const zman = ZMANIM_NAMES.zmanim[zmanId];
-			zmanimTable += formatTableRow(zman.name, zman.description, formatZmanTime(result.time, zmanimResult.timezone));
+			zmanimTable += formatTableRow(zman.name, zman.description, formatZmanTime(result.time, zmanimResult.timezone), zman.icon);
 		}
 		for (const [zmanId, result] of Object.entries(zmanimResult.events)) {
 			// @ts-ignore - assume key exists
 			const zman = ZMANIM_NAMES.events[zmanId];
-			zmanimTable += formatTableRow(zman.name, zman.description, formatZmanTime(result.time, zmanimResult.timezone));
+			zmanimTable += formatTableRow(zman.name, zman.description, formatZmanTime(result.time, zmanimResult.timezone), zman.icon);
 		}
 		for (const [zmanId, result] of Object.entries(zmanimResult.durations)) {
 			// @ts-ignore - assume key exists
 			const zman = ZMANIM_NAMES.durations[zmanId];
-			zmanimTable += formatTableRow(zman.name, zman.description, result.time);
+			zmanimTable += formatTableRow(zman.name, zman.description, result.time, zman.icon);
 		}
 		zmanimTable += '</table>';
 		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate Zmanim on ${formatDateObject(dateObject)} in ${location.trim()}` });
