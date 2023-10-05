@@ -73,12 +73,13 @@
 			<div>{error.message}</div>
 			{#if error.details || error.stack}
 				<br />
-				<details><summary>Details</summary>
+				<details>
+					<summary>Details</summary>
 					{#if error.details}
-					<code><pre>{error.details}</pre></code>
+						<code><pre>{error.details}</pre></code>
 					{/if}
 					{#if error.stack}
-					<code><pre>{error.stack}</pre></code>
+						<code><pre>{error.stack}</pre></code>
 					{/if}
 				</details>
 			{/if}
