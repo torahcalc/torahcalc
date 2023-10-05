@@ -112,6 +112,16 @@ export const ZMANIM_NAMES = {
 			description: 'Havdalah time - 3 small stars visible, sun is 8.5° below horizon',
 			icon: faWineGlass,
 		},
+		fastBegins: {
+			name: 'Fast Begins',
+			hebrewName: 'תחילת הצום',
+			description: 'Beginning of the fast',
+		},
+		fastEnds: {
+			name: 'Fast Ends',
+			hebrewName: 'סוף הצום',
+			description: 'End of the fast',
+		},
 	},
 	durations: {
 		shaahZmanisMGA: {

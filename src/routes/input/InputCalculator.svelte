@@ -71,9 +71,16 @@
 		<div class="card flex-card my-1">
 			<h6>Error</h6>
 			<div>{error.message}</div>
-			{#if error.details}
+			{#if error.details || error.stack}
 				<br />
-				<details><summary>Details</summary><code><pre>{error.details}</pre></code></details>
+				<details><summary>Details</summary>
+					{#if error.details}
+					<code><pre>{error.details}</pre></code>
+					{/if}
+					{#if error.stack}
+					<code><pre>{error.stack}</pre></code>
+					{/if}
+				</details>
 			{/if}
 		</div>
 	{/await}
