@@ -218,7 +218,7 @@ export async function calculateZmanim({ date = dayjs().format('YYYY-MM-DD'), lat
 
 	return {
 		timezone,
-		...(location && { location }),
+		...(location && { location, latitude, longitude }),
 		zmanim: {
 			alos16Point1: {
 				...ZMANIM_NAMES.zmanim.alos16Point1,
