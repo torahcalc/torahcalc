@@ -7,9 +7,9 @@ import { createErrorResponse } from '$lib/js/api/response.js';
 export async function GET({ url }) {
 	const location = url.searchParams.get('location');
 
-    if (!location) {
-        return createErrorResponse(new Error('Missing location parameter'));
-    }
+	if (!location) {
+		return createErrorResponse(new Error('Missing location parameter'));
+	}
 
 	const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=13&size=400x200&maptype=roadmap&markers=${location}&key=${env.GOOGLE_MAPS_API_KEY}`;
 	const blob = await fetch(mapUrl).then((r) => r.blob());

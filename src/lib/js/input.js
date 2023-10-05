@@ -434,7 +434,12 @@ export async function zmanimQuery(derivation) {
 		if (!zmanResult) {
 			throw new InputError(`The ${derivation.zman} zman is not supported.`);
 		}
-		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate ${zmanResult.name} on ${formatDateObject(dateObject)} in ${location.trim()} <img class="mt-3 img-fluid d-block" src="/input/maps?location=${zmanimResult.latitude},${zmanimResult.longitude}" />` });
+		sections.push({
+			title: INPUT_INTERPRETATION,
+			content: `Calculate ${zmanResult.name} on ${formatDateObject(dateObject)} in ${location.trim()} <img class="mt-3 img-fluid d-block" src="/input/maps?location=${zmanimResult.latitude},${
+				zmanimResult.longitude
+			}" />`,
+		});
 		if (zmanimResult.durations[derivation.zman]) {
 			sections.push({ title: RESULT, content: `The ${zmanResult.name} length is ${zmanResult.time}` });
 		} else {
@@ -472,7 +477,12 @@ export async function zmanimQuery(derivation) {
 			const durationsTable = dataToHtmlTable(durationsData, { headers: ['Measurement', 'Length'], class: 'table table-striped table-bordered' });
 			zmanimTables.push(durationsTable);
 		}
-		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate Zmanim on ${formatDateObject(dateObject)} in ${location.trim()} <img class="mt-3 img-fluid d-block" src="/input/maps?location=${zmanimResult.latitude},${zmanimResult.longitude}" />` });
+		sections.push({
+			title: INPUT_INTERPRETATION,
+			content: `Calculate Zmanim on ${formatDateObject(dateObject)} in ${location.trim()} <img class="mt-3 img-fluid d-block" src="/input/maps?location=${zmanimResult.latitude},${
+				zmanimResult.longitude
+			}" />`,
+		});
 		sections.push({ title: RESULT, content: zmanimTables.join('') });
 		sections.push({
 			title: SOURCES,
