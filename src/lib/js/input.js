@@ -104,6 +104,8 @@ export async function calculateQuery(search, options = {}) {
 				errorHTML += `<br /><details><summary>Details</summary><code><pre>${DOMPurify.sanitize(e.details)}</pre></code></details>`;
 			}
 			calculatedSections.push({ title: 'Error', content: errorHTML });
+		} else {
+			throw e;
 		}
 	}
 
