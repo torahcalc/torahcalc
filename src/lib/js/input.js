@@ -368,7 +368,18 @@ export async function zmanimQuery(derivation) {
 	 * @returns {string} The formatted time
 	 */
 	const formatZmanTime = (time, timezone) => {
-		return `${dayjs(time).tz(timezone).format('h:mm A')} (${timezone})`;
+		return dayjs(time).tz(timezone).format('h:mm A');
+	};
+
+	/**
+	 * Format a zman time in a table row
+	 * @param {string} name - The name of the zman
+	 * @param {string} description - The description of the zman
+	 * @param {string} time - The formatted time
+	 * @returns {string} The formatted time
+	 */
+	const formatTableRow = (name, description, time) => {
+		return `<tr><td><div class="fw-bold">${name}</div><div class="small text-muted">${description}</div></td><td>${time}</td></tr>`
 	};
 
 	// get the zmanim result
@@ -390,21 +401,26 @@ export async function zmanimQuery(derivation) {
 		for (const [zmanId, result] of Object.entries(zmanimResult.zmanim)) {
 			// @ts-ignore - assume key exists
 			const zman = ZMANIM_NAMES.zmanim[zmanId];
-			zmanimTable += `<tr><td>${zman.name}</td><td>${formatZmanTime(result.time, zmanimResult.timezone)}</td></tr>`;
+			zmanimTable += formatTableRow(zman.name, zman.description, formatZmanTime(result.time, zmanimResult.timezone));
 		}
 		for (const [zmanId, result] of Object.entries(zmanimResult.events)) {
 			// @ts-ignore - assume key exists
 			const zman = ZMANIM_NAMES.events[zmanId];
-			zmanimTable += `<tr><td>${zman.name}</td><td>${formatZmanTime(result.time, zmanimResult.timezone)}</td></tr>`;
+			zmanimTable += formatTableRow(zman.name, zman.description, formatZmanTime(result.time, zmanimResult.timezone));
 		}
 		for (const [zmanId, result] of Object.entries(zmanimResult.durations)) {
 			// @ts-ignore - assume key exists
 			const zman = ZMANIM_NAMES.durations[zmanId];
-			zmanimTable += `<tr><td>${zman.name}</td><td>${result.time}</td></tr>`;
+			zmanimTable += formatTableRow(zman.name, zman.description, result.time);
 		}
 		zmanimTable += '</table>';
 		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate Zmanim on ${formatDateObject(dateObject)} in ${location.trim()}` });
 		sections.push({ title: RESULT, content: zmanimTable });
+		sections.push({
+			title: SOURCES,
+			content: `Zmanim are from the <a href="https://www.hebcal.com/home/1663/zmanim-halachic-times-api" target="_blank">Hebcal API</a>. Times are shown for the timezone <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">${zmanimResult.timezone}</a>.`,
+		});
+		sections.push({ title: 'Disclaimer', content: 'Due to imprecision and multiple algorithms, zmanim calculations can vary slightly from one source to another. Please do not rely on any calculations on any site to the last minute.' });
 	}
 
 	return sections;

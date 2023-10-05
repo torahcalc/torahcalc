@@ -26,30 +26,30 @@ export const ZMANIM_NAMES = {
 			hebrewName: 'נץ החמה',
 			description: 'Upper edge of the sun appears over the eastern horizon in the morning (0.833° above horizon)',
 		},
-		sofZmanShmaGRA: {
-			name: 'Sof Zman Shma (GRA)',
-			hebrewName: 'סוף זמן שמע (גר"א)',
-			description: 'Latest time to recite Shema according to the Vilna Gaon - 3 halachic hours after sunrise',
-		},
 		sofZmanShmaMGA: {
 			name: 'Sof Zman Shma (MGA)',
 			hebrewName: 'סוף זמן שמע (מג"א)',
 			description: 'Latest time to recite Shema according to the Magen Avraham - 3 halachic hours after sunrise',
+		},
+		sofZmanShmaGRA: {
+			name: 'Sof Zman Shma (GRA)',
+			hebrewName: 'סוף זמן שמע (גר"א)',
+			description: 'Latest time to recite Shema according to the Vilna Gaon - 3 halachic hours after sunrise',
 		},
 		misheyakirMachmir: {
 			name: 'Misheyakir Machmir',
 			hebrewName: 'משיכיר מחמיר',
 			description: 'Earliest time to put on tallis and tefillin - when the Sun is 10.2° below the horizon in the morning',
 		},
-		sofZmanTefillaGRA: {
-			name: 'Sof Zman Tefilla (GRA)',
-			hebrewName: 'סוף זמן תפילה (גר"א)',
-			description: 'Latest time to recite Shacharit according to the Vilna Gaon - 4 halachic hours after sunrise',
-		},
 		sofZmanTefillaMGA: {
 			name: 'Sof Zman Tefilla (MGA)',
 			hebrewName: 'סוף זמן תפילה (מג"א)',
 			description: 'Latest time to recite Shacharit according to the Magen Avraham - 4 halachic hours after sunrise',
+		},
+		sofZmanTefillaGRA: {
+			name: 'Sof Zman Tefilla (GRA)',
+			hebrewName: 'סוף זמן תפילה (גר"א)',
+			description: 'Latest time to recite Shacharit according to the Vilna Gaon - 4 halachic hours after sunrise',
 		},
 		chatzos: {
 			name: 'Chatzos',
@@ -76,15 +76,15 @@ export const ZMANIM_NAMES = {
 			hebrewName: 'שקיעת החמה',
 			description: 'When the upper edge of the sun disappears below the horizon (0.833° below horizon)',
 		},
-		tzeis3Stars: {
-			name: 'Tzeis (3 stars)',
-			hebrewName: 'צאת הכוכבים (3 כוכבים)',
-			description: 'When 3 medium-sized stars are visible in the sky',
-		},
 		tzeis3MediumStars: {
 			name: 'Tzeis (3 medium stars)',
 			hebrewName: 'צאת הכוכבים (3 כוכבים בינוניים)',
-			description: 'When 3 medium-sized stars are visible in the sky',
+			description: 'When 3 medium-sized stars are visible in the sky (sun is 7.083° below horizon)'
+		},
+		tzeis3Stars: {
+			name: 'Tzeis (3 stars)',
+			hebrewName: 'צאת הכוכבים (3 כוכבים)',
+			description: 'When 3 small-sized stars are visible in the sky (sun is 8.5° below horizon)'
 		},
 		tzeis72: {
 			name: 'Tzeis (72 minutes)',
@@ -105,15 +105,15 @@ export const ZMANIM_NAMES = {
 		},
 	},
 	durations: {
-		shaahZmanisGRA: {
-			name: 'Shaah Zmanis (GRA)',
-			hebrewName: 'שעה זמנית (גר"א)',
-			description: 'Length of a halachic hour according to the Vilna Gaon - 1/12 of the time between sunrise and sunset',
-		},
 		shaahZmanisMGA: {
 			name: 'Shaah Zmanis (MGA)',
 			hebrewName: 'שעה זמנית (מג"א)',
-			description: 'Length of a halachic hour according to the Magen Avraham - 1/12 of the time between Alos (72 minutes before sunrise) and Tzeis (72 minutes after sunset)',
+			description: 'Halachic hour according to Magen Avraham - 1/12 of the time between Alos and Tzeis',
+		},
+		shaahZmanisGRA: {
+			name: 'Shaah Zmanis (GRA)',
+			hebrewName: 'שעה זמנית (גר"א)',
+			description: 'Halachic hour according to Vilna Gaon - 1/12 of the time between sunrise and sunset',
 		},
 	},
 };
@@ -208,25 +208,25 @@ export async function calculateZmanim({ date = dayjs().format('YYYY-MM-DD'), lat
 				time: formatDateTimezone(zmanim.sunrise()),
 				...ZMANIM_NAMES.zmanim.sunrise,
 			},
-			sofZmanShmaGRA: {
-				time: formatDateTimezone(zmanim.sofZmanShma()),
-				...ZMANIM_NAMES.zmanim.sofZmanShmaGRA,
-			},
 			sofZmanShmaMGA: {
 				time: formatDateTimezone(zmanim.sofZmanShmaMGA()),
 				...ZMANIM_NAMES.zmanim.sofZmanShmaMGA,
+			},
+			sofZmanShmaGRA: {
+				time: formatDateTimezone(zmanim.sofZmanShma()),
+				...ZMANIM_NAMES.zmanim.sofZmanShmaGRA,
 			},
 			misheyakirMachmir: {
 				time: formatDateTimezone(zmanim.misheyakirMachmir()),
 				...ZMANIM_NAMES.zmanim.misheyakirMachmir,
 			},
-			sofZmanTefillaGRA: {
-				time: formatDateTimezone(zmanim.sofZmanTfilla()),
-				...ZMANIM_NAMES.zmanim.sofZmanTefillaGRA,
-			},
 			sofZmanTefillaMGA: {
 				time: formatDateTimezone(zmanim.sofZmanTfillaMGA()),
 				...ZMANIM_NAMES.zmanim.sofZmanTefillaMGA,
+			},
+			sofZmanTefillaGRA: {
+				time: formatDateTimezone(zmanim.sofZmanTfilla()),
+				...ZMANIM_NAMES.zmanim.sofZmanTefillaGRA,
 			},
 			chatzos: {
 				time: formatDateTimezone(zmanim.chatzot()),
@@ -248,13 +248,13 @@ export async function calculateZmanim({ date = dayjs().format('YYYY-MM-DD'), lat
 				time: formatDateTimezone(zmanim.sunset()),
 				...ZMANIM_NAMES.zmanim.sunset,
 			},
-			tzeis3Stars: {
-				time: formatDateTimezone(zmanim.tzeit(8.5)),
-				...ZMANIM_NAMES.zmanim.tzeis3Stars,
-			},
 			tzeis3MediumStars: {
 				time: formatDateTimezone(zmanim.tzeit(7.083)),
 				...ZMANIM_NAMES.zmanim.tzeis3MediumStars,
+			},
+			tzeis3Stars: {
+				time: formatDateTimezone(zmanim.tzeit(8.5)),
+				...ZMANIM_NAMES.zmanim.tzeis3Stars,
 			},
 			tzeis72: {
 				time: formatDateTimezone(tzeit72),
@@ -263,13 +263,13 @@ export async function calculateZmanim({ date = dayjs().format('YYYY-MM-DD'), lat
 		},
 		events: timedEvents,
 		durations: {
-			shaahZmanisGRA: {
-				time: calculateShaahZmanis(zmanim.sunrise(), zmanim.sunset()),
-				...ZMANIM_NAMES.durations.shaahZmanisGRA,
-			},
 			shaahZmanisMGA: {
 				time: calculateShaahZmanis(alot72, tzeit72),
 				...ZMANIM_NAMES.durations.shaahZmanisMGA,
+			},
+			shaahZmanisGRA: {
+				time: calculateShaahZmanis(zmanim.sunrise(), zmanim.sunset()),
+				...ZMANIM_NAMES.durations.shaahZmanisGRA,
 			},
 		},
 	};
