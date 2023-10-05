@@ -1,6 +1,6 @@
 <script>
 	import Fa from 'svelte-fa/src/fa.svelte';
-	import { faCalculator, faClock, faScaleBalanced } from '@fortawesome/free-solid-svg-icons';
+	import { faCalculator, faSunrise, faScaleBalanced } from '@danieloi/pro-solid-svg-icons';
 	import { getConverters, getUnit, getUnits } from '$lib/js/unitconverter';
 	import { METHOD_NAMES } from '$lib/js/gematria';
 	import { ZMANIM_NAMES } from '$lib/js/zmanim';
@@ -69,7 +69,7 @@
 	</div>
 
 	<div class="mb-4">
-		<h5><Fa icon={faClock} class="me-1" /> Zmanim</h5>
+		<h5><Fa icon={faSunrise} class="me-1" /> Zmanim</h5>
 
 		<ul class="list-unstyled">
 			<li><InputExample {clickFunction} query="What time is Chatzos in New York?" /></li>

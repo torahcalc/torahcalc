@@ -3,8 +3,8 @@
 	import logo from '$lib/images/torahcalc.svg';
 	import Fa from 'svelte-fa/src/fa.svelte';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
+	import { faExternalLinkAlt } from '@danieloi/pro-solid-svg-icons';
 	import { PUBLIC_ADAPTER } from '$env/static/public';
-	import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 	const pages = [
 		{
