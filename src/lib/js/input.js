@@ -145,10 +145,18 @@ async function getValidDerivations(results) {
 				if (gregorianDate.year < 4000) {
 					derivation.disambiguationScore += 1;
 				}
+				// prefer MDY format over DMY format
+				if (gregorianDate.format === 'MDY') {
+					derivation.disambiguationScore += 1;
+				}
 			} else if (derivation?.date?.hebrewDate) {
 				const hebrewDate = derivation.date.hebrewDate;
 				derivation.disambiguation += ` on ${new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year).render('en')}`;
 				if (hebrewDate.year > 4000) {
+					derivation.disambiguationScore += 1;
+				}
+				// prefer MDY format over DMY format
+				if (hebrewDate.format === 'MDY') {
 					derivation.disambiguationScore += 1;
 				}
 			}
