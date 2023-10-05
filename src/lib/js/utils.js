@@ -195,12 +195,12 @@ export async function getTimezone(latitude, longitude, apiKey) {
 
 /**
  * Convert a list of objects to an HTML table.
- * 
+ *
  * @param {{ [key: string]: any }[]} data - The data to convert to a table (e.g. [{ name: 'John', age: 30 }, { name: 'Jane', age: 25 }]).
  * @param {TableBuilderOptions} options - Options for the table.
  */
 export function dataToHtmlTable(data, options) {
-	let table = "<table";
+	let table = '<table';
 	if (options.id) {
 		table += ` id="${options.id}"`;
 	}
@@ -220,7 +220,7 @@ export function dataToHtmlTable(data, options) {
 		options.headers = Object.keys(data[0] ?? {});
 	}
 	// map all string headers to objects with key and display properties
-	const headers = options.headers.map((header) => typeof header === 'string' ? { key: header, display: header } : header);
+	const headers = options.headers.map((header) => (typeof header === 'string' ? { key: header, display: header } : header));
 	table += '<thead>';
 	table += '<tr>';
 	for (const header of headers) {
