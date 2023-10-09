@@ -46,6 +46,9 @@
 	}
 </script>
 
+<!-- Update the query input when the back button is pressed or the URL is changed -->
+<svelte:window on:popstate={() => window.location.reload()} />
+
 <div class="card flex-card input-control">
 	<div class="input-group">
 		<input type="text" bind:value={queryInput} class="form-control" placeholder="What do you want to calculate?" on:keyup={onQueryKeypress} />
