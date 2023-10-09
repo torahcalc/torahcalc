@@ -484,15 +484,15 @@ export async function zmanimQuery(derivation) {
 			}" />`,
 		});
 		sections.push({ title: RESULT, content: zmanimTables.join('') });
-		sections.push({
-			title: SOURCES,
-			content: `Zmanim are from the <a href="https://www.hebcal.com/home/1663/zmanim-halachic-times-api" target="_blank">Hebcal API</a>. Times are shown for the timezone <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">${zmanimResult.timezone}</a>.`,
-		});
-		sections.push({
-			title: 'Disclaimer',
-			content: 'Due to imprecision and multiple algorithms, zmanim calculations can vary slightly from one source to another. Please do not rely on any calculations on any site to the last minute.',
-		});
 	}
+	sections.push({
+		title: SOURCES,
+		content: `Zmanim are from the <a href="https://www.hebcal.com/home/1663/zmanim-halachic-times-api" target="_blank">Hebcal API</a>. Times are shown for the timezone <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">${zmanimResult.timezone}</a>.`,
+	});
+	sections.push({
+		title: 'Disclaimer',
+		content: 'Due to imprecision and multiple algorithms, zmanim calculations can vary slightly from one source to another. Please do not rely on any calculations on any site to the last minute.',
+	});
 
 	return sections;
 }
