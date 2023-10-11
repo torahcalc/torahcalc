@@ -399,6 +399,9 @@ export async function zmanimQuery(derivation) {
 		location = `${zmanimResult.location} (${zmanimResult.latitude}, ${zmanimResult.longitude})`;
 	}
 
+	const resultLatitude = zmanimResult.latitude ?? params.latitude ?? '';
+	const resultLongitude = zmanimResult.longitude ?? params.longitude ?? '';
+
 	/**
 	 * Format a zman time
 	 * @param {string} time - The time to format
@@ -436,9 +439,8 @@ export async function zmanimQuery(derivation) {
 		}
 		sections.push({
 			title: INPUT_INTERPRETATION,
-			content: `Calculate ${zmanResult.name} on ${formatDateObject(dateObject)} in ${location.trim()} <img class="mt-3 img-fluid d-block" src="/input/maps?location=${zmanimResult.latitude},${
-				zmanimResult.longitude
-			}" />`,
+			content: `Calculate ${zmanResult.name} on ${formatDateObject(dateObject)} in ${location.trim()}
+						<img class="mt-3 img-fluid d-block" src="/input/maps?location=${resultLatitude},${resultLongitude}" />`,
 		});
 		if (zmanimResult.durations[derivation.zman]) {
 			sections.push({ title: RESULT, content: `The ${zmanResult.name} length is ${zmanResult.time}` });
@@ -479,9 +481,8 @@ export async function zmanimQuery(derivation) {
 		}
 		sections.push({
 			title: INPUT_INTERPRETATION,
-			content: `Calculate Zmanim on ${formatDateObject(dateObject)} in ${location.trim()} <img class="mt-3 img-fluid d-block" src="/input/maps?location=${zmanimResult.latitude},${
-				zmanimResult.longitude
-			}" />`,
+			content: `Calculate Zmanim on ${formatDateObject(dateObject)} in ${location.trim()}
+						<img class="mt-3 img-fluid d-block" src="/input/maps?location=${resultLatitude},${resultLongitude}" />`,
 		});
 		sections.push({ title: RESULT, content: zmanimTables.join('') });
 	}

@@ -129,6 +129,9 @@ export function properCase(str) {
 /** @type {Object<string, { lat: number, lng: number, formattedAddress: string }>} */
 const CACHED_ADDRESS_LOCATIONS = {
 	'new york': { lat: 40.7127753, lng: -74.0059728, formattedAddress: 'New York, NY, USA' }, // New York for testing
+	'denver': { lat: 39.7392358, lng: -104.990251, formattedAddress: 'Denver, CO, USA' }, // Denver for testing
+	'los angeles': { lat: 34.0549076, lng: -118.242643, formattedAddress: 'Los Angeles, CA, USA' }, // Los Angeles for testing
+	'jerusalem': { lat: 31.768319, lng: 35.21371, formattedAddress: 'Jerusalem, Israel' }, // Jerusalem for testing
 };
 
 /**
@@ -158,7 +161,11 @@ export async function geocodeAddress(address, apiKey) {
 
 /** @type {Object<string, string>} */
 const CACHED_TIMEZONE_NAMES = {
-	'40.7127753,-74.0059728': 'America/New_York', // New York for testing
+	'40.7127753,-74.0059728': 'America/New_York', // New York example for testing
+	'39.7392358,-104.990251': 'America/Denver', // Denver example
+	'34.0549076,-118.242643': 'America/Los_Angeles', // Los Angeles example
+	'31.776,35.23': 'Asia/Jerusalem', // Jerusalem example lat/lon
+	'31.768319,35.21371': 'Asia/Jerusalem', // Jerusalem example
 };
 
 /**

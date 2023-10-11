@@ -76,7 +76,7 @@
 			<li><InputExample {clickFunction} query="Zmanim for Denver" /></li>
 			<li><InputExample {clickFunction} query="Zmanim for 1 Teves 5784 in Jerusalem" /></li>
 			<li><InputExample {clickFunction} query="What time is sunset on December 25, 2023 in Los Angeles?" /></li>
-			<li><InputExample {clickFunction} query="How long is a Shaah Zmanis in 39.1, -107.4?" /></li>
+			<li><InputExample {clickFunction} query="How long is a Shaah Zmanis in 31.776, 35.23?" /></li>
 		</ul>
 
 		<div>
