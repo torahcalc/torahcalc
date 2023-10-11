@@ -129,9 +129,9 @@ export function properCase(str) {
 /** @type {Object<string, { lat: number, lng: number, formattedAddress: string }>} */
 const CACHED_ADDRESS_LOCATIONS = {
 	'new york': { lat: 40.7127753, lng: -74.0059728, formattedAddress: 'New York, NY, USA' }, // New York for testing
-	'denver': { lat: 39.7392358, lng: -104.990251, formattedAddress: 'Denver, CO, USA' }, // Denver for testing
+	denver: { lat: 39.7392358, lng: -104.990251, formattedAddress: 'Denver, CO, USA' }, // Denver for testing
 	'los angeles': { lat: 34.0549076, lng: -118.242643, formattedAddress: 'Los Angeles, CA, USA' }, // Los Angeles for testing
-	'jerusalem': { lat: 31.768319, lng: 35.21371, formattedAddress: 'Jerusalem, Israel' }, // Jerusalem for testing
+	jerusalem: { lat: 31.768319, lng: 35.21371, formattedAddress: 'Jerusalem, Israel' }, // Jerusalem for testing
 };
 
 /**
