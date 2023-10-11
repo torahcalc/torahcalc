@@ -409,7 +409,7 @@ export async function zmanimQuery(derivation) {
 	 * @returns {string} The formatted time
 	 */
 	const formatZmanTime = (time, timezone) => {
-		return dayjs(time).tz(timezone).format('h:mm A');
+		return dayjs(time).tz(timezone).format('h:mm A').replace(' ', '&nbsp;');
 	};
 
 	/**
