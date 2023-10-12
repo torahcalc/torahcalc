@@ -193,7 +193,7 @@ async function getValidDerivations(search, results) {
 			if (derivation.location) {
 				derivation.disambiguationScore += 1;
 				// skip interpretation if certain words are in the location
-				if (/\b(?:in|on|for|yesterday|today|tomorrow|next|last)\b/.test(derivation.location)) {
+				if (/\b(?:in|on|at|for|yesterday|today|tomorrow|next|last|zmanis|zmanit)\b/.test(derivation.location)) {
 					continue;
 				}
 				// extract the location from the search query
