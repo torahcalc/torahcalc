@@ -12,7 +12,7 @@
 			dataLayer.push(arguments);
 		}
 		gtag('js', new Date());
-		gtag('config', 'G-SZ4CJYT1W7');
+		gtag('config', 'G-SZ4CJYT1W7', { cookie_flags: 'SameSite=None;Secure' });
 	</script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
