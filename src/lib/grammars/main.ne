@@ -90,7 +90,7 @@ zmanimQuery -> optionalWords[("what time is" | "when is" | "what's the time of" 
              | "zmanim" __ optionalWords["for"] location {% data => ({function: "zmanimQuery", location: data[3]}) %}
              | "zmanim" __ optionalWords["for"] location _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", date: data[7], location: data[3]}) %}
 
-location -> [\w\s,.'()+":;\-]:+ {% data => data[0].join("") %}
+location -> [a-zÀ-ÖØ-öø-ÿ\d\s,.'()+":;\-]:+ {% data => data[0].join("") %}
 
 date -> gregorianDate {% data => ({gregorianDate: data[0]}) %}
       | hebrewDate {% data => ({hebrewDate: data[0]}) %}
