@@ -50,16 +50,16 @@ export async function calculateQuery(search, options = {}) {
 	const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
 
 	// convert input to lowercase
-	search = search.toLowerCase();
+	const searchLower = search.toLowerCase();
 
 	// run the parser
 	try {
-		parser.feed(search);
+		parser.feed(searchLower);
 	} catch (e) {
 		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.', `${e}`);
 	}
 
-	const derivations = await getValidDerivations(parser.results);
+	const derivations = await getValidDerivations(search, parser.results);
 
 	if (Object.keys(derivations).length === 0) {
 		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.');
@@ -115,10 +115,11 @@ export async function calculateQuery(search, options = {}) {
 /**
  * Filter the results of the parser to only the ones that are valid and add disambiguation information
  *
+ * @param {string} search The original search query
  * @param {any[]} results The results of the parser
  * @returns {Promise<Record<string, any>>} The filtered results
  */
-async function getValidDerivations(results) {
+async function getValidDerivations(search, results) {
 	/** @type {Record<string, any>} */
 	const derivations = {};
 	// determine disambiguations and skip invalid derivations
@@ -190,11 +191,22 @@ async function getValidDerivations(results) {
 				}
 			}
 			if (derivation.location) {
-				derivation.disambiguation += ` in ${derivation.location.trim()}`;
 				derivation.disambiguationScore += 1;
 				// skip interpretation if certain words are in the location
 				if (/\b(?:in|on|for|yesterday|today|tomorrow|next|last)\b/.test(derivation.location)) {
 					continue;
+				}
+				// extract the location from the search query
+				const regexEscapedDerivedLocation = derivation.location.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').trim();
+				// find the location in the search query ignoring case and check that is followed by a non-word character
+				const regex = new RegExp(`\\b${regexEscapedDerivedLocation}\\b(?=\\W|$)`, 'i');
+				const match = search.match(regex);
+				if (!match) {
+					// skip interpretation if the location cannot be found in the search query
+					continue;
+				} else {
+					// add the location to the disambiguation using the case from the search query
+					derivation.disambiguation += ` in "${match[0]}"`;
 				}
 			}
 			derivation.disambiguation = derivation.disambiguation.trim();
