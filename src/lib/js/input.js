@@ -1,11 +1,11 @@
 import nearley from 'nearley';
 import grammar from '$lib/grammars/generated/main.cjs';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
-import { dataToHtmlTable, formatDateObject, formatNumberHTML } from './utils';
+import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML } from './utils';
 import { METHOD_NAMES, calculateGematria } from './gematria';
 import { ZMANIM_NAMES } from './zmanim';
 import { HDate } from '@hebcal/core';
-import { hebrewToGregorian } from './dateconverter';
+import { gregorianToHebrew, hebrewToGregorian } from './dateconverter';
 import DOMPurify from 'dompurify';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -85,6 +85,7 @@ export async function calculateQuery(search, options = {}) {
 		conversionChartQuery: async () => await conversionChartQuery(derivation),
 		gematriaQuery: () => gematriaQuery(derivation),
 		zmanimQuery: async () => await zmanimQuery(derivation),
+		hebrewCalendarQuery: () => hebrewCalendarQuery(derivation),
 	};
 
 	/** @type {Array<{ title: string, content: string }>} */
@@ -155,7 +156,7 @@ async function getValidDerivations(search, results) {
 				derivation.disambiguation = `${zman.name}`;
 				derivation.disambiguationScore += 1;
 			}
-			if (derivation?.date?.gregorianDate) {
+			if (derivation?.date?.gregorianDate !== undefined) {
 				const gregorianDate = derivation.date.gregorianDate;
 				gregorianDate.year = gregorianDate.year ?? new Date().getFullYear();
 				const dateObject = new Date(gregorianDate.year, gregorianDate.month - 1, gregorianDate.day);
@@ -173,7 +174,7 @@ async function getValidDerivations(search, results) {
 				}
 				// prefer Gregorian dates over Hebrew dates
 				derivation.disambiguationScore += 1;
-			} else if (derivation?.date?.hebrewDate) {
+			} else if (derivation?.date?.hebrewDate !== undefined) {
 				const hebrewDate = derivation.date.hebrewDate;
 				hebrewDate.year = hebrewDate.year ?? new HDate().getFullYear();
 				try {
@@ -198,7 +199,7 @@ async function getValidDerivations(search, results) {
 				}
 				// extract the location from the search query
 				const regexEscapedDerivedLocation = derivation.location.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').trim();
-				// find the location in the search query ignoring case and check that is followed by a non-word character
+				// find the location in the search query ignoring case and check that is followed by a non-word character or the end of the string
 				const regex = new RegExp(`\\b${regexEscapedDerivedLocation}\\b(?=\\W|$)`, 'i');
 				const match = search.match(regex);
 				if (!match) {
@@ -208,8 +209,129 @@ async function getValidDerivations(search, results) {
 					// add the location to the disambiguation using the case from the search query
 					derivation.disambiguation += ` in "${match[0]}"`;
 				}
+				derivation.disambiguation = derivation.disambiguation.trim();
 			}
-			derivation.disambiguation = derivation.disambiguation.trim();
+		} else if (derivation.function === 'hebrewCalendarQuery') {
+			// if there is a year but no date, add derivations with for hebrewDate and gregorianDate with only the year
+			if (derivation.date === undefined && derivation.year !== undefined) {
+				const hebrewDateDerivation = {
+					...derivation,
+					date: { hebrewDate: { year: derivation.year, format: 'Y' } },
+					disambiguation: `Convert Hebrew year ${derivation.year} to Gregorian calendar`,
+					year: undefined,
+				};
+				const gregorianDateDerivation = {
+					...derivation,
+					date: { gregorianDate: { year: derivation.year, format: 'Y' } },
+					disambiguation: `Convert Gregorian year ${derivation.year} to Hebrew calendar`,
+					year: undefined,
+				};
+				if (derivation.year < 4000) {
+					gregorianDateDerivation.disambiguationScore += 1;
+				} else {
+					hebrewDateDerivation.disambiguationScore += 1;
+				}
+				if (derivation.year > 0) {
+					derivations[hebrewDateDerivation.disambiguation] = hebrewDateDerivation;
+				}
+				if (derivation.year !== 0) {
+					derivations[gregorianDateDerivation.disambiguation] = gregorianDateDerivation;
+				}
+				// continue since the derivations are already added
+				continue;
+			}
+			// if there is a date without a year, and the year is separated, add derivations with the year
+			if (derivation.date !== undefined && derivation.date?.hebrewDate?.year === undefined && derivation.date?.gregorianDate?.year === undefined && derivation.year !== undefined) {
+				if (derivation.date?.hebrewDate) {
+					const hebrewYearFromGregorian = derivation.year + (derivation.year < 0 ? 3761 : 3760);
+					const gregorianDateDerivation = {
+						...derivation,
+						date: { hebrewDate: { ...derivation.date.hebrewDate, year: hebrewYearFromGregorian } },
+						disambiguation: `Convert ${new HDate(derivation.date.hebrewDate.day, derivation.date.hebrewDate.month, hebrewYearFromGregorian).render('en')} to Gregorian calendar`,
+						year: undefined,
+						disambiguationScore: derivation.year <= 4000 ? 1 : 0,
+					};
+					if (hebrewYearFromGregorian > 0) {
+						derivations[gregorianDateDerivation.disambiguation] = gregorianDateDerivation;
+					}
+					// if an actual year was passed and not a relative year, add a derivation with the year treated as the Hebrew year
+					if (!/\b(last|next|this|upcoming|previous|current)\b/i.test(search)) {
+						const hebrewDateDerivation = {
+							...derivation,
+							date: { hebrewDate: { ...derivation.date.hebrewDate, year: derivation.year } },
+							disambiguation: `Convert ${new HDate(derivation.date.hebrewDate.day, derivation.date.hebrewDate.month, derivation.year).render('en')} to Gregorian calendar`,
+							year: undefined,
+							disambiguationScore: derivation.year > 4000 ? 1 : 0,
+						};
+						if (derivation.year > 0) {
+							derivations[hebrewDateDerivation.disambiguation] = hebrewDateDerivation;
+						}
+					}
+				} else if (derivation.date?.gregorianDate !== undefined) {
+					const gregorianDateDerivation = {
+						...derivation,
+						date: { gregorianDate: { ...derivation.date.gregorianDate, year: derivation.year } },
+						disambiguation: `Convert ${formatDate(derivation.year, derivation.date.gregorianDate.month, derivation.date.gregorianDate.day)} to Hebrew calendar`,
+						year: undefined,
+						disambiguationScore: derivation.year <= 4000 ? 1 : 0,
+					};
+					if (derivation.year !== 0) {
+						derivations[gregorianDateDerivation.disambiguation] = gregorianDateDerivation;
+					}
+					// if an actual year was passed and not a relative year, add a derivation with the year converted to the Hebrew year
+					if (!/\b(last|next|this|upcoming|previous|current)\b/i.test(search)) {
+						const gregorianYearFromHebrew = derivation.year - (derivation.year <= 3761 ? 3762 : 3761);
+						const hebrewDateDerivation = {
+							...derivation,
+							date: { gregorianDate: { ...derivation.date.gregorianDate, year: gregorianYearFromHebrew } },
+							disambiguation: `Convert ${formatDate(gregorianYearFromHebrew, derivation.date.gregorianDate.month, derivation.date.gregorianDate.day)} to Hebrew calendar`,
+							year: undefined,
+							disambiguationScore: derivation.year > 4000 ? 1 : 0,
+						};
+						if (gregorianYearFromHebrew !== 0) {
+							derivations[hebrewDateDerivation.disambiguation] = hebrewDateDerivation;
+						}
+					}
+				}
+				// continue since the derivations are already added
+				continue;
+			}
+			// converting gregorian to hebrew
+			else if (derivation.date?.gregorianDate !== undefined) {
+				const gregorianDate = derivation.date.gregorianDate;
+				gregorianDate.year = gregorianDate.year ?? new Date().getFullYear();
+				const dateObject = new Date(gregorianDate.year, gregorianDate.month - 1, gregorianDate.day);
+				if (isNaN(dateObject.getTime())) {
+					// skip interpretation if the date cannot be parsed
+					continue;
+				}
+				derivation.disambiguation = `Convert ${dayjs(dateObject).format('MMMM D, YYYY')} to Hebrew calendar`;
+				if (gregorianDate.year < 4000) {
+					derivation.disambiguationScore += 1;
+				}
+				// prefer MDY format over DMY format
+				if (gregorianDate.format === 'MDY' || gregorianDate.format === 'MD') {
+					derivation.disambiguationScore += 1;
+				}
+			}
+			// converting hebrew to gregorian
+			else if (derivation.date?.hebrewDate) {
+				const hebrewDate = derivation.date.hebrewDate;
+				hebrewDate.year = hebrewDate.year ?? new HDate().getFullYear();
+				try {
+					derivation.disambiguation = `Convert ${new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year).render('en')} to Gregorian calendar`;
+				} catch (e) {
+					// skip interpretation if the date cannot be parsed
+					continue;
+				}
+				if (hebrewDate.year > 4000) {
+					derivation.disambiguationScore += 1;
+				}
+				// prefer MDY format over DMY format
+				if (hebrewDate.format === 'MDY' || hebrewDate.format === 'MD') {
+					derivation.disambiguationScore += 1;
+				}
+			}
 		}
 		derivations[derivation.disambiguation] = derivation;
 	}
@@ -506,6 +628,74 @@ export async function zmanimQuery(derivation) {
 		title: 'Disclaimer',
 		content: 'Due to imprecision and multiple algorithms, zmanim calculations can vary slightly from one source to another. Please do not rely on any calculations on any site to the last minute.',
 	});
+
+	return sections;
+}
+
+/**
+ * Generate sections for a Hebrew calendar query
+ *
+ * @param {{ function: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number }, hebrewDate?: { year?: number, month?: number, day?: number } }, year?: number }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function hebrewCalendarQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+
+	// convert the gregorian date to a Hebrew date
+	if (derivation.date?.gregorianDate) {
+		const gregorianDate = derivation.date.gregorianDate;
+		// if there is only a year, show the year in Hebrew
+		if (gregorianDate?.year && !gregorianDate.month && !gregorianDate.day) {
+			sections.push({ title: INPUT_INTERPRETATION, content: `Convert Gregorian year ${formatNumberHTML(gregorianDate.year, -1)} to Hebrew calendar` });
+			const startHebrewYear = gregorianDate.year + (gregorianDate.year < 0 ? 3761 : 3760);
+			const endHebrewYear = startHebrewYear + 1;
+			sections.push({
+				title: RESULT,
+				content: `Gregorian year ${formatNumberHTML(gregorianDate.year, -1)} starts in the Hebrew year ${formatNumberHTML(startHebrewYear, -1)} and ends in ${formatNumberHTML(endHebrewYear, -1)}`,
+			});
+		}
+		//  convert the gregorian date to a Hebrew date
+		else {
+			gregorianDate.year = gregorianDate.year ?? new Date().getFullYear();
+			gregorianDate.month = gregorianDate.month ?? 1;
+			gregorianDate.day = gregorianDate.day ?? 1;
+			const dateObject = new Date(gregorianDate.year, gregorianDate.month - 1, gregorianDate.day);
+			if (isNaN(dateObject.getTime())) {
+				throw new InputError(`The date ${gregorianDate.year}-${gregorianDate.month}-${gregorianDate.day} is invalid.`);
+			}
+			const hebrewDate = gregorianToHebrew({ year: gregorianDate.year, month: gregorianDate.month, day: gregorianDate.day });
+			sections.push({ title: INPUT_INTERPRETATION, content: `Convert ${formatDateObject(dateObject)} to Hebrew calendar` });
+			sections.push({ title: RESULT, content: `${hebrewDate.displayEn} / ${hebrewDate.displayGematriya}` });
+		}
+	}
+	// convert the Hebrew date to a gregorian date
+	else if (derivation.date?.hebrewDate) {
+		const hebrewDate = derivation.date.hebrewDate;
+		// if there is only a year, show the year in Hebrew
+		if (hebrewDate.year && !hebrewDate.month && !hebrewDate.day) {
+			sections.push({ title: INPUT_INTERPRETATION, content: `Convert Hebrew year ${formatNumberHTML(hebrewDate.year, -1)} to Gregorian calendar` });
+			const startGregorianYear = hebrewDate.year - (hebrewDate.year <= 3761 ? 3762 : 3761);
+			const endGregorianYear = startGregorianYear + 1;
+			sections.push({
+				title: RESULT,
+				content: `Hebrew year ${formatNumberHTML(hebrewDate.year, -1)} starts in the Gregorian year ${formatNumberHTML(startGregorianYear, -1)} and ends in ${formatNumberHTML(endGregorianYear, -1)}`,
+			});
+		}
+		//  convert the Hebrew date to a gregorian date
+		else {
+			hebrewDate.year = hebrewDate.year ?? new HDate().getFullYear();
+			hebrewDate.month = hebrewDate.month ?? 1;
+			hebrewDate.day = hebrewDate.day ?? 1;
+			const dateObject = hebrewToGregorian({ year: hebrewDate.year, month: hebrewDate.month, day: hebrewDate.day }).date;
+			sections.push({ title: INPUT_INTERPRETATION, content: `Convert ${new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year).render('en')} to Gregorian calendar` });
+			sections.push({ title: RESULT, content: `${formatDateObject(dateObject)}` });
+		}
+	}
+	// unknown query
+	else {
+		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.', JSON.stringify(derivation, null, 2));
+	}
 
 	return sections;
 }

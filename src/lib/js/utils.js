@@ -108,15 +108,18 @@ export function formatNumber(number, precision = 8) {
 }
 
 /**
- * Format number and place it in a span with the class 'number'.
+ * Format text or a number and place it in a span with the class 'number'.
  *
- * @param {number} number - The number to format.
- * @param {number} [precision=8] - The maximum number of digits after the decimal point.
+ * @param {number|string} text - The text or number to format.
+ * @param {number} [precision=8] - The maximum number of digits after the decimal point, use -1 to disable formatting as a number.
  * @returns {string} The formatted number.
  */
-export function formatNumberHTML(number, precision = 8) {
-	return `<span class="number">${formatNumber(number, precision)}</span>`;
-}
+export function formatNumberHTML(text, precision = 8) {
+	if (!isNaN(Number(text)) && precision >= 0) {
+		 text = formatNumber(Number(text), precision);
+	}
+	return `<span class="number">${DOMPurify.sanitize(text.toString())}</span>`;
+}	
 
 /**
  * Transform a string to Proper Case
