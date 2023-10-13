@@ -421,7 +421,8 @@ describe('test sefiras haomer', () => {
 	});
 });
 
-describe('test zmanim', () => {
+// ! These tests won't work because "fetch" is not defined in the test environment
+describe('! TODO: test zmanim', () => {
 	it('What time is Chatzos in New York?');
 
 	it('Zmanim for Denver');
@@ -434,13 +435,42 @@ describe('test zmanim', () => {
 });
 
 describe('test daily learning', () => {
-	it("What is today's Daf Yomi?");
+	it("What is today's Daf Yomi?", async () => {
+		const sections = await calculateQuery("What is today's Daf Yomi?");
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('Calculate the Daf Yomi for ');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain(' / ');
+		expect(sections[2].title).toBe('Sources');
+		expect(sections[2].content).toContain('Read online');
+	});
 
-	it('What is the Daf Yomi for tomorrow?');
+	it('What is the Nach Yomi for May 12, 2023?', async () => {
+		const sections = await calculateQuery('What is the Nach Yomi for May 12, 2023?');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('Calculate the Nach Yomi for Fri, May 12, 2023');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('Psalms 98');
+		expect(sections[1].content).toContain('תְּהִלִּים צ״ח');
+		expect(sections[2].title).toBe('Sources');
+		expect(sections[2].content).toContain('Read online');
+	});
 
-	it('What is the Nach Yomi for May 12, 2023?');
+	it('What are the daily psalms for May 12, 2023?', async () => {
+		const sections = await calculateQuery('What are the daily psalms for May 12, 2023?');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('Calculate the Daily Psalms for Fri, May 12, 2023');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('Psalms 104-105');
+		expect(sections[1].content).toContain('תְּהִלִּים ק״ד-ק״ה');
+	});
 
-	it('What are the daily psalms for tomorrow?');
-
-	it('What is the Weekly Daf for 18 Iyar?');
+	it('What is the Weekly Daf for 18 Iyar, 5784?', async () => {
+		const sections = await calculateQuery('What is the Weekly Daf for 18 Iyar, 5784?');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('Calculate the Daf Weekly for Sun, May 26, 2024');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('Ketubot 90');
+		expect(sections[1].content).toContain('כתובות דף צ׳');
+	});
 });
