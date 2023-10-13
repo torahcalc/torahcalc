@@ -547,10 +547,10 @@ function gematriaSearchQuery(derivation) {
 		const gematriaResult = calculateGematria({ text: derivation.text });
 		const primaryResult = gematriaResult[derivation.gematriaMethod];
 		value = primaryResult;
-		sections.push({ title: INPUT_INTERPRETATION, content: `Find words with the standard Gematria value equal to the ${methodName} of "${derivation.text}"` });
+		sections.push({ title: INPUT_INTERPRETATION, content: `Find words and verses with the standard Gematria value equal to the ${methodName} of "${derivation.text}"` });
 	} else if (derivation.value) {
 		value = derivation.value;
-		sections.push({ title: INPUT_INTERPRETATION, content: `Find words with the standard Gematria value equal to ${formatNumberHTML(value)}` });
+		sections.push({ title: INPUT_INTERPRETATION, content: `Find words and verses with the standard Gematria value equal to ${formatNumberHTML(value)}` });
 	} else {
 		throw new InputError('The value or text parameter must be specified.');
 	}

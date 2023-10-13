@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { calculateQuery } from './input';
 import { formatNumberHTML } from './utils';
 
-describe('test unitConversionQuery', () => {
+describe('test unit conversions', () => {
 	it('convert 3.5 amah to meter', async () => {
 		const sections = await calculateQuery('convert 3.5 amah to meter');
 		expect(sections[0].title).toBe('Input Interpretation');
@@ -91,7 +91,7 @@ describe('test unitConversionQuery', () => {
 	});
 });
 
-describe('test conversionChartQuery', () => {
+describe('test unit conversion charts', () => {
 	it('conversion chart for derech yom', async () => {
 		const sections = await calculateQuery('conversion chart for derech yom');
 		expect(sections[0].title).toBe('Input Interpretation');
@@ -124,7 +124,7 @@ describe('test conversionChartQuery', () => {
 	});
 });
 
-describe('test gematriaQuery', () => {
+describe('test gematria calculation', () => {
 	it('Calculate gematria of אברהם אבינו', async () => {
 		const sections = await calculateQuery('Calculate gematria of אברהם אבינו');
 		expect(sections[0].title).toBe('Input Interpretation');
@@ -159,4 +159,99 @@ describe('test gematriaQuery', () => {
 		expect(sections[2].content).toContain(formatNumberHTML(453));
 		expect(sections[2].content).toContain(formatNumberHTML(990));
 	});
+});
+
+describe('test gematria search', () => {
+	it('What words have a gematria of 613?', async () => {
+		const sections = await calculateQuery('What words have a gematria of 613?');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe(`Find words and verses with the standard Gematria value equal to ${formatNumberHTML(613)}`);
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('אורות');
+		expect(sections[1].content).toContain('תוארו');
+		expect(sections[1].content).toContain('בראתי');
+		expect(sections[1].content).toContain('ותראו');
+	});
+
+	it('What words have the same gematria as תורה?', async () => {
+		const sections = await calculateQuery('What words have the same gematria as תורה?');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Find words and verses with the standard Gematria value equal to the Mispar Hechrachi (Standard Value) of "תורה"');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('אתרי');
+		expect(sections[1].content).toContain('כמתאננים');
+	});
+
+	it('What pesukim have a gematria of 930?', async () => {
+		const sections = await calculateQuery('What pesukim have a gematria of 930?');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe(`Find words and verses with the standard Gematria value equal to ${formatNumberHTML(930)}`);
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('לרשת');
+		expect(sections[1].content).toContain('שמות לא:יב - ויאמר יהוה, אל-משה לאמר.');
+		expect(sections[1].content).toContain('במדבר לא:כה - ויאמר יהוה, אל-משה לאמר.');
+	});
+});
+
+describe('test gematria two-word match', () => {
+	it('Gematria equivalences for תורה and משנה.', async () => {
+		const sections = await calculateQuery('Gematria equivalences for תורה and משנה.');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Find gematria equivalences for "תורה" and "משנה"');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('53');
+		expect(sections[1].content).toContain('Mispar Siduri (Ordinal Value) of "תורה"');
+		expect(sections[1].content).toContain('Mispar Siduri (Ordinal Value) of "משנה"');
+		expect(sections[1].content).toContain('8');
+		expect(sections[1].content).toContain('Mispar Katan Mispari of "תורה"');
+		expect(sections[1].content).toContain('Mispar Katan Mispari of "משנה"');
+	});
+
+	it('Gematria equivalences for תפילין and חיים with Mispar Kolel.', async () => {
+		const sections = await calculateQuery('Gematria equivalences for תפילין and חיים with Mispar Kolel.');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Find gematria equivalences for "תפילין" and "חיים" with the Mispar Kolel method');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('69');
+		expect(sections[1].content).toContain('Ofanim of "תפילין"');
+		expect(sections[1].content).toContain('Mispar Kolel of "חיים"');
+		expect(sections[1].content).not.toContain('Reverse Avgad of "תפילין"');
+	});
+
+	it('Gematria equivalences for תורה and משנה in the same method.', async () => {
+		const sections = await calculateQuery('Gematria equivalences for תורה and משנה in the same method.');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Find gematria equivalences for "תורה" and "משנה" with the same method');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('53');
+		expect(sections[1].content).toContain('Mispar Siduri (Ordinal Value) of "תורה"');
+		expect(sections[1].content).toContain('Mispar Siduri (Ordinal Value) of "משנה"');
+		expect(sections[1].content).toContain('8');
+		expect(sections[1].content).toContain('Mispar Katan Mispari of "תורה"');
+		expect(sections[1].content).toContain('Mispar Katan Mispari of "משנה"');
+	});
+});
+
+describe('test hebrew calendar', () => {
+	it('TODO: Not yet tested');
+});
+
+describe('test leap years', () => {
+	it('TODO: Not yet tested');
+});
+
+describe('test molad', () => {
+	it('TODO: Not yet tested');
+});
+
+describe('test sefiras haomer', () => {
+	it('TODO: Not yet tested');
+});
+
+describe('test zmanim', () => {
+	it('TODO: Not yet tested');
+});
+
+describe('test daily learning', () => {
+	it('TODO: Not yet tested');
 });
