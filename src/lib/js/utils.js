@@ -116,10 +116,10 @@ export function formatNumber(number, precision = 8) {
  */
 export function formatNumberHTML(text, precision = 8) {
 	if (!isNaN(Number(text)) && precision >= 0) {
-		 text = formatNumber(Number(text), precision);
+		text = formatNumber(Number(text), precision);
 	}
 	return `<span class="number">${DOMPurify.sanitize(text.toString())}</span>`;
-}	
+}
 
 /**
  * Transform a string to Proper Case
