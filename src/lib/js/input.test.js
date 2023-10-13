@@ -384,13 +384,41 @@ describe('test molad', () => {
 });
 
 describe('test sefiras haomer', () => {
-	it('Sefiras Haomer for tonight');
+	it('Day of Omer on May 12, 2023', async () => {
+		const sections = await calculateQuery('Day of Omer on May 12, 2023');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Calculate the omer on Fri, May 12, 2023');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('day 36');
+		expect(sections[1].content).toContain('day 37');
+	});
 
-	it('Day of Omer on May 12, 2023');
+	it('Day of Omer on April 17, 2023 at night', async () => {
+		const sections = await calculateQuery('Day of Omer on April 17, 2023 at night');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Calculate the omer on Mon, April 17, 2023 at night');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).not.toContain('day 11');
+		expect(sections[1].content).toContain('day 12');
+		expect(sections[1].content).not.toContain('day 13');
+	});
 
-	it('Day of Omer on April 17, 2023 at night');
+	it('Day of Omer on 18 Iyar', async () => {
+		const sections = await calculateQuery('Day of Omer on 18 Iyar');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('Calculate the omer on 18th of Iyar, ');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).not.toContain('day 32');
+		expect(sections[1].content).toContain('day 33');
+		expect(sections[1].content).not.toContain('day 34');
+	});
 
-	it('Day of Omer on 18 Iyar');
+	it('Sefiras Haomer for tonight', async () => {
+		const sections = await calculateQuery('Sefiras Haomer for tonight');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('Calculate the omer on ');
+		expect(sections[1].title).toBe('Result');
+	});
 });
 
 describe('test zmanim', () => {
