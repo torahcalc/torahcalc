@@ -297,14 +297,52 @@ describe('test hebrew calendar', () => {
 	});
 });
 
-// Is this year a leap year
-// Was 5775 a leap year
-// Will 5790 be a leap year
-// Is next year a leap year
-// Is Gregorian year 2023 a leap year
-// Is Hebrew year 5784 a leap year
 describe('test leap years', () => {
-	it('TODO: Not yet tested');
+	it('Is this year a leap year', async () => {
+		const sections = await calculateQuery('Is this year a leap year');
+		expect(sections[0].title).toBe('');
+		expect(sections[0].content).toContain('a leap year on the Hebrew calendar');
+		expect(sections[0].content).toContain('a leap year on the Gregorian calendar');
+	});
+
+	it('Was 5775 a leap year', async () => {
+		const sections = await calculateQuery('Was 5775 a leap year');
+		expect(sections[0].title).toBe('');
+		expect(sections[0].content).toContain('Is 5775 a leap year on the Hebrew calendar');
+		expect(sections[0].content).toContain('Is 5775 a leap year on the Gregorian calendar');
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toBe('Is 5775 a leap year on the Hebrew calendar?');
+		expect(sections[2].title).toBe('Result');
+		expect(sections[2].content).toBe('No, 5775 is not a leap year');
+		expect(sections[3].title).toBe('Reason');
+		expect(sections[3].content).toBe('5775 is the 18th year of the 19-year Metonic cycle and is therefore not a leap year.');
+		expect(sections[4].title).toBe('Next Leap Year');
+		expect(sections[4].content).toContain('5776');
+	});
+
+	it('Will 5790 be a leap year', async () => {
+		const sections = await calculateQuery('Will 5790 be a leap year');
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toBe('Is 5790 a leap year on the Hebrew calendar?');
+		expect(sections[2].title).toBe('Result');
+		expect(sections[2].content).toBe('Yes, 5790 is a leap year');
+		expect(sections[3].title).toBe('Reason');
+		expect(sections[3].content).toBe('5790 is the 14th year of the 19-year Metonic cycle and is therefore a leap year.');
+		expect(sections[4].title).toBe('Next Leap Year');
+		expect(sections[4].content).toContain('5793');
+	});
+
+	it('Is Gregorian year 2023 a leap year', async () => {
+		const sections = await calculateQuery('Is Gregorian year 2023 a leap year');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Is 2023 a leap year on the Gregorian calendar?');
+	});
+
+	it('Is Hebrew year 5784 a leap year', async () => {
+		const sections = await calculateQuery('Is Hebrew year 5784 a leap year');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Is 5784 a leap year on the Hebrew calendar?');
+	});
 });
 
 // Calculate the molad of Sivan 5781
