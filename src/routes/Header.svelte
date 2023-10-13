@@ -58,6 +58,7 @@
 		for (const dropdown of dropdowns) {
 			dropdown.classList.remove('show');
 		}
+    collapseMenu();
 	}
 
 	/**
@@ -73,6 +74,14 @@
 		}
 		hideDropdowns();
 	}
+
+  function collapseMenu() {
+    const navBarButton = document.querySelector(`button.navbar-toggler`);
+    const navBarButtonIsDisplayed = navBarButton && window.getComputedStyle(navBarButton).display !== 'none';
+    if (navBarButtonIsDisplayed) {
+      navBarButton?.dispatchEvent(new CustomEvent('click'));
+    }
+  }
 </script>
 
 <svelte:window on:click={handleWindowClick} />
