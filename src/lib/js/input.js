@@ -4,8 +4,10 @@ import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, g
 import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML } from './utils';
 import { METHOD_NAMES, calculateGematria } from './gematria';
 import { ZMANIM_NAMES } from './zmanim';
-import { HDate } from '@hebcal/core';
+import { calculateMolad } from './molad';
+import { isHebrewLeapYear } from './leapyears';
 import { gregorianToHebrew, hebrewToGregorian } from './dateconverter';
+import { HDate } from '@hebcal/core';
 import DOMPurify from 'dompurify';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -86,6 +88,7 @@ export async function calculateQuery(search, options = {}) {
 		gematriaQuery: () => gematriaQuery(derivation),
 		zmanimQuery: async () => await zmanimQuery(derivation),
 		hebrewCalendarQuery: () => hebrewCalendarQuery(derivation),
+		moladQuery: () => moladQuery(derivation),
 	};
 
 	/** @type {Array<{ title: string, content: string }>} */
@@ -695,6 +698,42 @@ function hebrewCalendarQuery(derivation) {
 	// unknown query
 	else {
 		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.', JSON.stringify(derivation, null, 2));
+	}
+
+	return sections;
+}
+
+/**
+ * Generate sections for a Molad query
+ * @param {{ function: string, month?: number, year: number }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function moladQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+
+	const timeFormat = '12Hr'; // TODO: support 24Hr format
+
+	if (derivation.month !== undefined) {
+		const molad = calculateMolad(derivation.year, derivation.month);
+
+		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the molad of <strong>${molad.monthName}</strong>` });
+		sections.push({ title: RESULT, content: `<ul><li>${molad.timeFormat[timeFormat]}</li><li>${molad.dayOfWeekFormat[timeFormat]}</li><li>${molad.hebrewDateFormat[timeFormat]}</li></ul>` });
+		if (!molad.shabbosMevarchim.roshHashanah) {
+			sections.push({
+				title: 'Rosh Chodesh and Shabbos Mevarchim',
+				content: `<ul><li>Shabbos Mevarchim ${molad.monthName} is on <strong>${molad.shabbosMevarchim.shabbosMevarchim}</strong></li><li>Rosh Chodesh ${molad.monthName} is on <strong>${molad.shabbosMevarchim.roshChodesh}</strong> (${molad.shabbosMevarchim.roshChodeshDayOfWeekDisplayEn} / ${molad.shabbosMevarchim.roshChodeshDayOfWeekDisplayHe})</li></ul>`,
+			});
+		}
+	} else {
+		const monthsInYear = isHebrewLeapYear(derivation.year).isLeapYear ? 13 : 12;
+		const data = Array.from({ length: monthsInYear }, (_, i) => {
+			const molad = calculateMolad(derivation.year, i + 1);
+			return { Month: molad.monthName, Molad: `<ul><li>${molad.timeFormat[timeFormat]}</li><li>${molad.dayOfWeekFormat[timeFormat]}</li><li>${molad.hebrewDateFormat[timeFormat]}</li></ul>` };
+		});
+		const moladTable = dataToHtmlTable(data, { headers: ['Month', 'Molad'], class: 'table table-striped table-bordered' });
+		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the molados for Hebrew year ${derivation.year}` });
+		sections.push({ title: RESULT, content: moladTable });
 	}
 
 	return sections;

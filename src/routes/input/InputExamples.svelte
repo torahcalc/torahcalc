@@ -1,6 +1,6 @@
 <script>
 	import Fa from 'svelte-fa/src/fa.svelte';
-	import { faCalculator, faSunrise, faScaleBalanced, faCalendarAlt } from '@danieloi/pro-solid-svg-icons';
+	import { faCalculator, faSunrise, faScaleBalanced, faCalendarAlt, faMoonOverSun } from '@danieloi/pro-solid-svg-icons';
 	import { getConverters, getUnit, getUnits } from '$lib/js/unitconverter';
 	import { METHOD_NAMES } from '$lib/js/gematria';
 	import { ZMANIM_NAMES } from '$lib/js/zmanim';
@@ -97,6 +97,17 @@
 			<li><InputExample {clickFunction} query="Convert 5780 to Gregorian calendar." /></li>
 			<li><InputExample {clickFunction} query="When will 14 Nissan fall next year?" /></li>
 			<li><InputExample {clickFunction} query="Today's date on Hebrew calendar." /></li>
+		</ul>
+	</div>
+
+	<div class="mb-4">
+		<h5><Fa icon={faMoonOverSun} class="me-1" /> Molad</h5>
+
+		<ul class="list-unstyled">
+			<li><InputExample {clickFunction} query="Calculate the molad of Sivan 5781." /></li>
+			<li><InputExample {clickFunction} query="When will the molad of Elul be?" /></li>
+			<li><InputExample {clickFunction} query="When is the next molad?" /></li>
+			<li><InputExample {clickFunction} query="Calculate molados for 5781." /></li>
 		</ul>
 	</div>
 

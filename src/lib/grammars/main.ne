@@ -40,10 +40,60 @@
 # - When will 14 Nissan fall next year?
 # - Today's date on Hebrew calendar.
 #
+#
+# Molad
+# -----
+# - Calculate the molad of Sivan 5781.
+# - When will the molad of Elul be?
+# - When is the next molad?
+# - Calculate molados for 5781.
+# 
 # More coming soon...
 
 @{%
 import { displayHebrew } from "$lib/js/gematria.js";
+import { HDate } from '@hebcal/core';
+
+/**
+ * Returns the next Hebrew month
+ * @returns {{month: number, year: number}}
+ */
+function getNextHebrewMonth() {
+      const today = new HDate();
+      const monthsInYear = today.isLeapYear() ? 13 : 12;
+      const nextHebrewMonth = (today.getMonth() + 1) % monthsInYear || monthsInYear;
+      return {
+            month: nextHebrewMonth,
+            year: nextHebrewMonth === 1 ? today.getFullYear() + 1 : today.getFullYear(),
+      };
+
+}
+
+/**
+ * Returns the previous Hebrew month
+ * @returns {{month: number, year: number}}
+ */
+function getPrevHebrewMonth() {
+      const today = new HDate();
+      const monthsInPrevYear = (7 * today.getFullYear()) % 19 < 7 ? 13 : 12;
+      const prevHebrewMonth = (today.getMonth() - 1) || monthsInPrevYear;
+      return {
+            month: prevHebrewMonth,
+            year: prevHebrewMonth === monthsInPrevYear ? today.getFullYear() - 1 : today.getFullYear(),
+      };
+}
+
+/**
+ * Returns the current Hebrew month
+ * @returns {{month: number, year: number}}
+ */
+function getCurrentHebrewMonth() {
+      const today = new HDate();
+      return {
+            month: today.getMonth(),
+            year: today.getFullYear(),
+      };
+}
 %}
 
 @builtin "number.ne"  # unsigned_int, int, unsigned_decimal, decimal, percentage, jsonfloat
@@ -70,6 +120,7 @@ main -> query[unitConversionQuery] {% data => data[0][0] %}
       | query[gematriaQuery] {% data => data[0][0] %}
       | query[zmanimQuery] {% data => data[0][0] %}
       | query[hebrewCalendarQuery] {% data => data[0][0] %}
+      | query[moladQuery] {% data => data[0][0] %}
 
 # Unit conversion queries
 unitConversionQuery -> optionalWords[[A-Za-z\s]:*] jsonfloat _ unit __ ("to" | "in" | "into") __ unit {% data => ({function: "unitConversionQuery", unitFrom: data[3], unitTo: data[7], amount: data[1]}) %}
@@ -111,7 +162,12 @@ hebrewCalendarQuery -> optionalWords[("convert" | "translate")] date _ optionalW
                      | optionalWords[("convert" | "translate")] year _ optionalWords[("on" | "to" | "into")] _ optionalWords[("gregorian" | "english" | "standard" | "hebrew" | "jewish")] _ optionalWordsEnd[("calendar" | "date")] {% data => ({function: "hebrewCalendarQuery", year: data[1]}) %}
                      | optionalWords["when"] optionalWords[("will" | "is" | "does" | "did")] date __ optionalWords[("fall" | "occur" | "be" | "land")] optionalWords["in"] year {% data => ({function: "hebrewCalendarQuery", date: data[2], year: data[6]}) %}
 
-# Date parsing for Zmanim and Hebrew Calendar queries
+# Molad queries
+moladQuery -> optionalWords[("calculate" | "compute" | "what is" | "what's" | "when is" | "when's" | "what time is" | "what time was")] optionalWords["the"] moladMonth {% data => ({function: "moladQuery", ...data[2]}) %}
+            | optionalWords["when will"] optionalWords["the"] moladMonth _ optionalWordsEnd[("be" | "occur" | "land" | "fall")] {% data => ({function: "moladQuery", ...data[2]}) %}
+            | optionalWords[("calculate" | "compute" | "what are" | "when are")] optionalWords["the"] ("molados" | "moladot" | "moladim" | "molads" | "molad") _ optionalWords[("for" | "or" | "in")] year {% data => ({function: "moladQuery", year: data[5]}) %}
+
+# Date parsing for Zmanim, Hebrew Calendar, and Molad queries
 date -> gregorianDate {% data => ({gregorianDate: data[0]}) %}
       | hebrewDate {% data => ({hebrewDate: data[0]}) %}
       | "today" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate()}}) %}
@@ -141,6 +197,11 @@ hebrewDate -> dateOfMonth __ hebrewMonth (", " | __) year {% data => ({year: dat
             | hebrewMonth dateSeparator dateOfMonth dateSeparator year {% data => ({year: data[4], month: data[0], day: data[2], format: "MDY"}) %}
             | dateOfMonth dateSeparator hebrewMonth {% data => ({month: data[2], day: data[0], format: "DM"}) %}
             | hebrewMonth dateSeparator dateOfMonth {% data => ({month: data[0], day: data[2], format: "MD"}) %}
+moladMonth -> "molad" __ optionalWords["of"] hebrewMonth __ year {% data => ({year: data[5], month: data[3]}) %}
+            | "molad" __ optionalWords["of"] hebrewMonth {% data => ({month: data[3], year: new HDate().getFullYear()}) %}
+            | ("next" | "upcoming") __ "molad" {% data => getNextHebrewMonth() %}
+            | ("last" | "previous") __ "molad" {% data => getPrevHebrewMonth() %}
+            | ("this" | "this month's" | "current") __ "molad" {% data => getCurrentHebrewMonth() %}
 dateSeparator -> ("-"|"/"|".") {% data => null %}
 year -> [0-9]:+ {% data => parseInt(data[0].join("")) %}
       | "-" [0-9]:+ {% data => parseInt(data[0] + data[1].join("")) %}

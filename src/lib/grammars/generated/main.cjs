@@ -5,6 +5,48 @@
 function id(x) { return x[0]; }
 
 import { displayHebrew } from "$lib/js/gematria.js";
+import { HDate } from '@hebcal/core';
+
+/**
+ * Returns the next Hebrew month
+ * @returns {{month: number, year: number}}
+ */
+function getNextHebrewMonth() {
+      const today = new HDate();
+      const monthsInYear = today.isLeapYear() ? 13 : 12;
+      const nextHebrewMonth = (today.getMonth() + 1) % monthsInYear || monthsInYear;
+      return {
+            month: nextHebrewMonth,
+            year: nextHebrewMonth === 1 ? today.getFullYear() + 1 : today.getFullYear(),
+      };
+
+}
+
+/**
+ * Returns the previous Hebrew month
+ * @returns {{month: number, year: number}}
+ */
+function getPrevHebrewMonth() {
+      const today = new HDate();
+      const monthsInPrevYear = (7 * today.getFullYear()) % 19 < 7 ? 13 : 12;
+      const prevHebrewMonth = (today.getMonth() - 1) || monthsInPrevYear;
+      return {
+            month: prevHebrewMonth,
+            year: prevHebrewMonth === monthsInPrevYear ? today.getFullYear() - 1 : today.getFullYear(),
+      };
+}
+
+/**
+ * Returns the current Hebrew month
+ * @returns {{month: number, year: number}}
+ */
+function getCurrentHebrewMonth() {
+      const today = new HDate();
+      return {
+            month: today.getMonth(),
+            year: today.getFullYear(),
+      };
+}
 var grammar = {
     Lexer: undefined,
     ParserRules: [
@@ -3165,6 +3207,10 @@ var grammar = {
     {"name": "main$macrocall$9", "symbols": ["_", "main$macrocall$10", "_"], "postprocess": data => data[1]},
     {"name": "main$macrocall$9", "symbols": ["_", "main$macrocall$10", /[?.]/, "_"], "postprocess": data => data[1]},
     {"name": "main", "symbols": ["main$macrocall$9"], "postprocess": data => data[0][0]},
+    {"name": "main$macrocall$12", "symbols": ["moladQuery"]},
+    {"name": "main$macrocall$11", "symbols": ["_", "main$macrocall$12", "_"], "postprocess": data => data[1]},
+    {"name": "main$macrocall$11", "symbols": ["_", "main$macrocall$12", /[?.]/, "_"], "postprocess": data => data[1]},
+    {"name": "main", "symbols": ["main$macrocall$11"], "postprocess": data => data[0][0]},
     {"name": "unitConversionQuery$macrocall$2$ebnf$1", "symbols": []},
     {"name": "unitConversionQuery$macrocall$2$ebnf$1", "symbols": ["unitConversionQuery$macrocall$2$ebnf$1", /[A-Za-z\s]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "unitConversionQuery$macrocall$2", "symbols": ["unitConversionQuery$macrocall$2$ebnf$1"]},
@@ -3690,6 +3736,85 @@ var grammar = {
     {"name": "hebrewCalendarQuery$macrocall$23", "symbols": ["hebrewCalendarQuery$macrocall$24", "__"], "postprocess": data => data[0]},
     {"name": "hebrewCalendarQuery$macrocall$23", "symbols": ["_"], "postprocess": data => null},
     {"name": "hebrewCalendarQuery", "symbols": ["hebrewCalendarQuery$macrocall$17", "hebrewCalendarQuery$macrocall$19", "date", "__", "hebrewCalendarQuery$macrocall$21", "hebrewCalendarQuery$macrocall$23", "year"], "postprocess": data => ({function: "hebrewCalendarQuery", date: data[2], year: data[6]})},
+    {"name": "moladQuery$macrocall$2$subexpression$1$string$1", "symbols": [{"literal":"c"}, {"literal":"a"}, {"literal":"l"}, {"literal":"c"}, {"literal":"u"}, {"literal":"l"}, {"literal":"a"}, {"literal":"t"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$2$subexpression$1", "symbols": ["moladQuery$macrocall$2$subexpression$1$string$1"]},
+    {"name": "moladQuery$macrocall$2$subexpression$1$string$2", "symbols": [{"literal":"c"}, {"literal":"o"}, {"literal":"m"}, {"literal":"p"}, {"literal":"u"}, {"literal":"t"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$2$subexpression$1", "symbols": ["moladQuery$macrocall$2$subexpression$1$string$2"]},
+    {"name": "moladQuery$macrocall$2$subexpression$1$string$3", "symbols": [{"literal":"w"}, {"literal":"h"}, {"literal":"a"}, {"literal":"t"}, {"literal":" "}, {"literal":"i"}, {"literal":"s"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$2$subexpression$1", "symbols": ["moladQuery$macrocall$2$subexpression$1$string$3"]},
+    {"name": "moladQuery$macrocall$2$subexpression$1$string$4", "symbols": [{"literal":"w"}, {"literal":"h"}, {"literal":"a"}, {"literal":"t"}, {"literal":"'"}, {"literal":"s"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$2$subexpression$1", "symbols": ["moladQuery$macrocall$2$subexpression$1$string$4"]},
+    {"name": "moladQuery$macrocall$2$subexpression$1$string$5", "symbols": [{"literal":"w"}, {"literal":"h"}, {"literal":"e"}, {"literal":"n"}, {"literal":" "}, {"literal":"i"}, {"literal":"s"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$2$subexpression$1", "symbols": ["moladQuery$macrocall$2$subexpression$1$string$5"]},
+    {"name": "moladQuery$macrocall$2$subexpression$1$string$6", "symbols": [{"literal":"w"}, {"literal":"h"}, {"literal":"e"}, {"literal":"n"}, {"literal":"'"}, {"literal":"s"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$2$subexpression$1", "symbols": ["moladQuery$macrocall$2$subexpression$1$string$6"]},
+    {"name": "moladQuery$macrocall$2$subexpression$1$string$7", "symbols": [{"literal":"w"}, {"literal":"h"}, {"literal":"a"}, {"literal":"t"}, {"literal":" "}, {"literal":"t"}, {"literal":"i"}, {"literal":"m"}, {"literal":"e"}, {"literal":" "}, {"literal":"i"}, {"literal":"s"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$2$subexpression$1", "symbols": ["moladQuery$macrocall$2$subexpression$1$string$7"]},
+    {"name": "moladQuery$macrocall$2$subexpression$1$string$8", "symbols": [{"literal":"w"}, {"literal":"h"}, {"literal":"a"}, {"literal":"t"}, {"literal":" "}, {"literal":"t"}, {"literal":"i"}, {"literal":"m"}, {"literal":"e"}, {"literal":" "}, {"literal":"w"}, {"literal":"a"}, {"literal":"s"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$2$subexpression$1", "symbols": ["moladQuery$macrocall$2$subexpression$1$string$8"]},
+    {"name": "moladQuery$macrocall$2", "symbols": ["moladQuery$macrocall$2$subexpression$1"]},
+    {"name": "moladQuery$macrocall$1", "symbols": ["moladQuery$macrocall$2", "__"], "postprocess": data => data[0]},
+    {"name": "moladQuery$macrocall$1", "symbols": ["_"], "postprocess": data => null},
+    {"name": "moladQuery$macrocall$4$string$1", "symbols": [{"literal":"t"}, {"literal":"h"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$4", "symbols": ["moladQuery$macrocall$4$string$1"]},
+    {"name": "moladQuery$macrocall$3", "symbols": ["moladQuery$macrocall$4", "__"], "postprocess": data => data[0]},
+    {"name": "moladQuery$macrocall$3", "symbols": ["_"], "postprocess": data => null},
+    {"name": "moladQuery", "symbols": ["moladQuery$macrocall$1", "moladQuery$macrocall$3", "moladMonth"], "postprocess": data => ({function: "moladQuery", ...data[2]})},
+    {"name": "moladQuery$macrocall$6$string$1", "symbols": [{"literal":"w"}, {"literal":"h"}, {"literal":"e"}, {"literal":"n"}, {"literal":" "}, {"literal":"w"}, {"literal":"i"}, {"literal":"l"}, {"literal":"l"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$6", "symbols": ["moladQuery$macrocall$6$string$1"]},
+    {"name": "moladQuery$macrocall$5", "symbols": ["moladQuery$macrocall$6", "__"], "postprocess": data => data[0]},
+    {"name": "moladQuery$macrocall$5", "symbols": ["_"], "postprocess": data => null},
+    {"name": "moladQuery$macrocall$8$string$1", "symbols": [{"literal":"t"}, {"literal":"h"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$8", "symbols": ["moladQuery$macrocall$8$string$1"]},
+    {"name": "moladQuery$macrocall$7", "symbols": ["moladQuery$macrocall$8", "__"], "postprocess": data => data[0]},
+    {"name": "moladQuery$macrocall$7", "symbols": ["_"], "postprocess": data => null},
+    {"name": "moladQuery$macrocall$10$subexpression$1$string$1", "symbols": [{"literal":"b"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$10$subexpression$1", "symbols": ["moladQuery$macrocall$10$subexpression$1$string$1"]},
+    {"name": "moladQuery$macrocall$10$subexpression$1$string$2", "symbols": [{"literal":"o"}, {"literal":"c"}, {"literal":"c"}, {"literal":"u"}, {"literal":"r"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$10$subexpression$1", "symbols": ["moladQuery$macrocall$10$subexpression$1$string$2"]},
+    {"name": "moladQuery$macrocall$10$subexpression$1$string$3", "symbols": [{"literal":"l"}, {"literal":"a"}, {"literal":"n"}, {"literal":"d"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$10$subexpression$1", "symbols": ["moladQuery$macrocall$10$subexpression$1$string$3"]},
+    {"name": "moladQuery$macrocall$10$subexpression$1$string$4", "symbols": [{"literal":"f"}, {"literal":"a"}, {"literal":"l"}, {"literal":"l"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$10$subexpression$1", "symbols": ["moladQuery$macrocall$10$subexpression$1$string$4"]},
+    {"name": "moladQuery$macrocall$10", "symbols": ["moladQuery$macrocall$10$subexpression$1"]},
+    {"name": "moladQuery$macrocall$9", "symbols": ["moladQuery$macrocall$10", "_"], "postprocess": data => data[0]},
+    {"name": "moladQuery$macrocall$9", "symbols": ["_"], "postprocess": data => null},
+    {"name": "moladQuery", "symbols": ["moladQuery$macrocall$5", "moladQuery$macrocall$7", "moladMonth", "_", "moladQuery$macrocall$9"], "postprocess": data => ({function: "moladQuery", ...data[2]})},
+    {"name": "moladQuery$macrocall$12$subexpression$1$string$1", "symbols": [{"literal":"c"}, {"literal":"a"}, {"literal":"l"}, {"literal":"c"}, {"literal":"u"}, {"literal":"l"}, {"literal":"a"}, {"literal":"t"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$12$subexpression$1", "symbols": ["moladQuery$macrocall$12$subexpression$1$string$1"]},
+    {"name": "moladQuery$macrocall$12$subexpression$1$string$2", "symbols": [{"literal":"c"}, {"literal":"o"}, {"literal":"m"}, {"literal":"p"}, {"literal":"u"}, {"literal":"t"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$12$subexpression$1", "symbols": ["moladQuery$macrocall$12$subexpression$1$string$2"]},
+    {"name": "moladQuery$macrocall$12$subexpression$1$string$3", "symbols": [{"literal":"w"}, {"literal":"h"}, {"literal":"a"}, {"literal":"t"}, {"literal":" "}, {"literal":"a"}, {"literal":"r"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$12$subexpression$1", "symbols": ["moladQuery$macrocall$12$subexpression$1$string$3"]},
+    {"name": "moladQuery$macrocall$12$subexpression$1$string$4", "symbols": [{"literal":"w"}, {"literal":"h"}, {"literal":"e"}, {"literal":"n"}, {"literal":" "}, {"literal":"a"}, {"literal":"r"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$12$subexpression$1", "symbols": ["moladQuery$macrocall$12$subexpression$1$string$4"]},
+    {"name": "moladQuery$macrocall$12", "symbols": ["moladQuery$macrocall$12$subexpression$1"]},
+    {"name": "moladQuery$macrocall$11", "symbols": ["moladQuery$macrocall$12", "__"], "postprocess": data => data[0]},
+    {"name": "moladQuery$macrocall$11", "symbols": ["_"], "postprocess": data => null},
+    {"name": "moladQuery$macrocall$14$string$1", "symbols": [{"literal":"t"}, {"literal":"h"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$14", "symbols": ["moladQuery$macrocall$14$string$1"]},
+    {"name": "moladQuery$macrocall$13", "symbols": ["moladQuery$macrocall$14", "__"], "postprocess": data => data[0]},
+    {"name": "moladQuery$macrocall$13", "symbols": ["_"], "postprocess": data => null},
+    {"name": "moladQuery$subexpression$1$string$1", "symbols": [{"literal":"m"}, {"literal":"o"}, {"literal":"l"}, {"literal":"a"}, {"literal":"d"}, {"literal":"o"}, {"literal":"s"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$subexpression$1", "symbols": ["moladQuery$subexpression$1$string$1"]},
+    {"name": "moladQuery$subexpression$1$string$2", "symbols": [{"literal":"m"}, {"literal":"o"}, {"literal":"l"}, {"literal":"a"}, {"literal":"d"}, {"literal":"o"}, {"literal":"t"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$subexpression$1", "symbols": ["moladQuery$subexpression$1$string$2"]},
+    {"name": "moladQuery$subexpression$1$string$3", "symbols": [{"literal":"m"}, {"literal":"o"}, {"literal":"l"}, {"literal":"a"}, {"literal":"d"}, {"literal":"i"}, {"literal":"m"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$subexpression$1", "symbols": ["moladQuery$subexpression$1$string$3"]},
+    {"name": "moladQuery$subexpression$1$string$4", "symbols": [{"literal":"m"}, {"literal":"o"}, {"literal":"l"}, {"literal":"a"}, {"literal":"d"}, {"literal":"s"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$subexpression$1", "symbols": ["moladQuery$subexpression$1$string$4"]},
+    {"name": "moladQuery$subexpression$1$string$5", "symbols": [{"literal":"m"}, {"literal":"o"}, {"literal":"l"}, {"literal":"a"}, {"literal":"d"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$subexpression$1", "symbols": ["moladQuery$subexpression$1$string$5"]},
+    {"name": "moladQuery$macrocall$16$subexpression$1$string$1", "symbols": [{"literal":"f"}, {"literal":"o"}, {"literal":"r"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$16$subexpression$1", "symbols": ["moladQuery$macrocall$16$subexpression$1$string$1"]},
+    {"name": "moladQuery$macrocall$16$subexpression$1$string$2", "symbols": [{"literal":"o"}, {"literal":"r"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$16$subexpression$1", "symbols": ["moladQuery$macrocall$16$subexpression$1$string$2"]},
+    {"name": "moladQuery$macrocall$16$subexpression$1$string$3", "symbols": [{"literal":"i"}, {"literal":"n"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$16$subexpression$1", "symbols": ["moladQuery$macrocall$16$subexpression$1$string$3"]},
+    {"name": "moladQuery$macrocall$16", "symbols": ["moladQuery$macrocall$16$subexpression$1"]},
+    {"name": "moladQuery$macrocall$15", "symbols": ["moladQuery$macrocall$16", "__"], "postprocess": data => data[0]},
+    {"name": "moladQuery$macrocall$15", "symbols": ["_"], "postprocess": data => null},
+    {"name": "moladQuery", "symbols": ["moladQuery$macrocall$11", "moladQuery$macrocall$13", "moladQuery$subexpression$1", "_", "moladQuery$macrocall$15", "year"], "postprocess": data => ({function: "moladQuery", year: data[5]})},
     {"name": "date", "symbols": ["gregorianDate"], "postprocess": data => ({gregorianDate: data[0]})},
     {"name": "date", "symbols": ["hebrewDate"], "postprocess": data => ({hebrewDate: data[0]})},
     {"name": "date$string$1", "symbols": [{"literal":"t"}, {"literal":"o"}, {"literal":"d"}, {"literal":"a"}, {"literal":"y"}], "postprocess": function joiner(d) {return d.join('');}},
@@ -3761,6 +3886,38 @@ var grammar = {
     {"name": "hebrewDate", "symbols": ["hebrewMonth", "dateSeparator", "dateOfMonth", "dateSeparator", "year"], "postprocess": data => ({year: data[4], month: data[0], day: data[2], format: "MDY"})},
     {"name": "hebrewDate", "symbols": ["dateOfMonth", "dateSeparator", "hebrewMonth"], "postprocess": data => ({month: data[2], day: data[0], format: "DM"})},
     {"name": "hebrewDate", "symbols": ["hebrewMonth", "dateSeparator", "dateOfMonth"], "postprocess": data => ({month: data[0], day: data[2], format: "MD"})},
+    {"name": "moladMonth$string$1", "symbols": [{"literal":"m"}, {"literal":"o"}, {"literal":"l"}, {"literal":"a"}, {"literal":"d"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladMonth$macrocall$2$string$1", "symbols": [{"literal":"o"}, {"literal":"f"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladMonth$macrocall$2", "symbols": ["moladMonth$macrocall$2$string$1"]},
+    {"name": "moladMonth$macrocall$1", "symbols": ["moladMonth$macrocall$2", "__"], "postprocess": data => data[0]},
+    {"name": "moladMonth$macrocall$1", "symbols": ["_"], "postprocess": data => null},
+    {"name": "moladMonth", "symbols": ["moladMonth$string$1", "__", "moladMonth$macrocall$1", "hebrewMonth", "__", "year"], "postprocess": data => ({year: data[5], month: data[3]})},
+    {"name": "moladMonth$string$2", "symbols": [{"literal":"m"}, {"literal":"o"}, {"literal":"l"}, {"literal":"a"}, {"literal":"d"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladMonth$macrocall$4$string$1", "symbols": [{"literal":"o"}, {"literal":"f"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladMonth$macrocall$4", "symbols": ["moladMonth$macrocall$4$string$1"]},
+    {"name": "moladMonth$macrocall$3", "symbols": ["moladMonth$macrocall$4", "__"], "postprocess": data => data[0]},
+    {"name": "moladMonth$macrocall$3", "symbols": ["_"], "postprocess": data => null},
+    {"name": "moladMonth", "symbols": ["moladMonth$string$2", "__", "moladMonth$macrocall$3", "hebrewMonth"], "postprocess": data => ({month: data[3], year: new HDate().getFullYear()})},
+    {"name": "moladMonth$subexpression$1$string$1", "symbols": [{"literal":"n"}, {"literal":"e"}, {"literal":"x"}, {"literal":"t"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladMonth$subexpression$1", "symbols": ["moladMonth$subexpression$1$string$1"]},
+    {"name": "moladMonth$subexpression$1$string$2", "symbols": [{"literal":"u"}, {"literal":"p"}, {"literal":"c"}, {"literal":"o"}, {"literal":"m"}, {"literal":"i"}, {"literal":"n"}, {"literal":"g"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladMonth$subexpression$1", "symbols": ["moladMonth$subexpression$1$string$2"]},
+    {"name": "moladMonth$string$3", "symbols": [{"literal":"m"}, {"literal":"o"}, {"literal":"l"}, {"literal":"a"}, {"literal":"d"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladMonth", "symbols": ["moladMonth$subexpression$1", "__", "moladMonth$string$3"], "postprocess": data => getNextHebrewMonth()},
+    {"name": "moladMonth$subexpression$2$string$1", "symbols": [{"literal":"l"}, {"literal":"a"}, {"literal":"s"}, {"literal":"t"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladMonth$subexpression$2", "symbols": ["moladMonth$subexpression$2$string$1"]},
+    {"name": "moladMonth$subexpression$2$string$2", "symbols": [{"literal":"p"}, {"literal":"r"}, {"literal":"e"}, {"literal":"v"}, {"literal":"i"}, {"literal":"o"}, {"literal":"u"}, {"literal":"s"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladMonth$subexpression$2", "symbols": ["moladMonth$subexpression$2$string$2"]},
+    {"name": "moladMonth$string$4", "symbols": [{"literal":"m"}, {"literal":"o"}, {"literal":"l"}, {"literal":"a"}, {"literal":"d"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladMonth", "symbols": ["moladMonth$subexpression$2", "__", "moladMonth$string$4"], "postprocess": data => getPrevHebrewMonth()},
+    {"name": "moladMonth$subexpression$3$string$1", "symbols": [{"literal":"t"}, {"literal":"h"}, {"literal":"i"}, {"literal":"s"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladMonth$subexpression$3", "symbols": ["moladMonth$subexpression$3$string$1"]},
+    {"name": "moladMonth$subexpression$3$string$2", "symbols": [{"literal":"t"}, {"literal":"h"}, {"literal":"i"}, {"literal":"s"}, {"literal":" "}, {"literal":"m"}, {"literal":"o"}, {"literal":"n"}, {"literal":"t"}, {"literal":"h"}, {"literal":"'"}, {"literal":"s"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladMonth$subexpression$3", "symbols": ["moladMonth$subexpression$3$string$2"]},
+    {"name": "moladMonth$subexpression$3$string$3", "symbols": [{"literal":"c"}, {"literal":"u"}, {"literal":"r"}, {"literal":"r"}, {"literal":"e"}, {"literal":"n"}, {"literal":"t"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladMonth$subexpression$3", "symbols": ["moladMonth$subexpression$3$string$3"]},
+    {"name": "moladMonth$string$5", "symbols": [{"literal":"m"}, {"literal":"o"}, {"literal":"l"}, {"literal":"a"}, {"literal":"d"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladMonth", "symbols": ["moladMonth$subexpression$3", "__", "moladMonth$string$5"], "postprocess": data => getCurrentHebrewMonth()},
     {"name": "dateSeparator$subexpression$1", "symbols": [{"literal":"-"}]},
     {"name": "dateSeparator$subexpression$1", "symbols": [{"literal":"/"}]},
     {"name": "dateSeparator$subexpression$1", "symbols": [{"literal":"."}]},

@@ -137,15 +137,6 @@ export function calculateMolad(year, month) {
 		'24Hr': dayOfWeekStr + newMolad.format('HH:00'),
 	};
 
-	const result = {
-		timeString: newMolad.toISOString().replace('T', ' ').replace('Z', ''),
-		timeFormat,
-		dayOfWeekFormat,
-		hebrewDateFormat,
-		monthName: `${hebrewMonthMap[month]} ${year}`,
-		shabbosMevarchim: {},
-	};
-
 	// Shabbos Mevorchim and Rosh Chodesh
 	const firstOfMonth = hebrewToGregorian({ year: year, month: month, day: 1 }).date;
 	const dayBeforeFirstOfMonth = new Date(firstOfMonth);
@@ -164,13 +155,19 @@ export function calculateMolad(year, month) {
 		roshChodeshDayOfWeekDisplayHe += ' ' + HEBREW_DAYS_OF_WEEK[secondDayRoshChodesh.getDay()].secondDayHebrew;
 	}
 	const shabbosMevarchim = formatDateObject(lastSat);
-	result.shabbosMevarchim = {
-		roshChodesh,
-		roshChodeshDayOfWeekDisplayEn,
-		roshChodeshDayOfWeekDisplayHe,
-		shabbosMevarchim,
-		roshHashanah: month === 7,
+	
+	return {
+		timeString: newMolad.toISOString().replace('T', ' ').replace('Z', ''),
+		timeFormat,
+		dayOfWeekFormat,
+		hebrewDateFormat,
+		monthName: `${hebrewMonthMap[month]} ${year}`,
+		shabbosMevarchim: {
+			roshChodesh,
+			roshChodeshDayOfWeekDisplayEn,
+			roshChodeshDayOfWeekDisplayHe,
+			shabbosMevarchim,
+			roshHashanah: month === 7,
+		},
 	};
-
-	return result;
 }
