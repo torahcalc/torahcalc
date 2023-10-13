@@ -817,7 +817,7 @@ function moladQuery(derivation) {
 	if (derivation.month !== undefined) {
 		const molad = calculateMolad(derivation.year, derivation.month);
 
-		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the molad of <strong>${molad.monthName}</strong>` });
+		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the molad of ${molad.monthName}` });
 		sections.push({ title: RESULT, content: `<ul><li>${molad.timeFormat[timeFormat]}</li><li>${molad.dayOfWeekFormat[timeFormat]}</li><li>${molad.hebrewDateFormat[timeFormat]}</li></ul>` });
 		if (!molad.shabbosMevarchim.roshHashanah) {
 			sections.push({

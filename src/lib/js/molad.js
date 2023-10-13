@@ -111,8 +111,8 @@ export function calculateMolad(year, month) {
 
 	// Time format (eg. "Thursday, Oct. 3, 2024, 3:21 pm and 13 chalakim")
 	const timeFormat = {
-		'12Hr': newMolad.format('dddd, MMM. D, YYYY, h:mm a') + ' and ' + chalakimText,
-		'24Hr': newMolad.format('dddd, MMM. D, YYYY, HH:mm') + ' and ' + chalakimText,
+		'12Hr': newMolad.format('dddd, MMMM D, YYYY, h:mm a') + ' and ' + chalakimText,
+		'24Hr': newMolad.format('dddd, MMMM D, YYYY, HH:mm') + ' and ' + chalakimText,
 	};
 
 	// Hebrew date format (eg. "1st of Tishrei, 5783, 3:21 pm and 13 chalakim")

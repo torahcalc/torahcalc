@@ -345,36 +345,74 @@ describe('test leap years', () => {
 	});
 });
 
-// Calculate the molad of Sivan 5781
-// When will the molad of Elul be
-// When is the next molad
-// Calculate molados for 5781
 describe('test molad', () => {
-	it('TODO: Not yet tested');
+	it('Calculate the molad of Sivan 5781.', async () => {
+		const sections = await calculateQuery('Calculate the molad of Sivan 5781.');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Calculate the molad of Sivan 5781');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('Tuesday, May 11, 2021, 8:31 pm and 7 chalakim');
+		expect(sections[1].content).toContain('Tuesday evening, 31 minutes and 7 chalakim after 8:00 pm');
+		expect(sections[1].content).toContain('29th of Iyar, 5781, 8:31 pm and 7 chalakim');
+		expect(sections[2].title).toBe('Rosh Chodesh and Shabbos Mevarchim');
+		expect(sections[2].content).toContain('Sat, May 8, 2021');
+		expect(sections[2].content).toContain('Wed, May 12, 2021');
+	});
+
+	it('When will the molad of Elul be?', async () => {
+		const sections = await calculateQuery('When will the molad of Elul be?');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('Calculate the molad of Elul ');
+	});
+
+	it('When is the next molad?', async () => {
+		const sections = await calculateQuery('When is the next molad?');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('Calculate the molad of ');
+	});
+
+	it('Calculate molados for 5781.', async () => {
+		const sections = await calculateQuery('Calculate molados for 5781.');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Calculate the molados for Hebrew year 5781');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('Nissan 5781');
+		expect(sections[1].content).toContain('Saturday, March 13, 2021');
+		expect(sections[1].content).toContain('Adar 5781');
+		expect(sections[1].content).toContain('Friday, February 12, 2021');
+	});
 });
 
-// Sefiras Haomer for
-// Day of Omer on May 12,
-// Day of Omer on April 17, 2023 at
-// Day of Omer on 18
 describe('test sefiras haomer', () => {
-	it('TODO: Not yet tested');
+	it('Sefiras Haomer for tonight');
+
+	it('Day of Omer on May 12, 2023');
+
+	it('Day of Omer on April 17, 2023 at night');
+
+	it('Day of Omer on 18 Iyar');
 });
 
-// What time is Chatzos in New York
-// Zmanim for
-// Zmanim for 1 Teves 5784 in
-// What time is sunset on 12/25/2023 in Los Angeles
-// How long is a Shaah Zmanis in 31.776, 35.23
 describe('test zmanim', () => {
-	it('TODO: Not yet tested');
+	it('What time is Chatzos in New York?');
+
+	it('Zmanim for Denver');
+
+	it('Zmanim for 1 Teves 5784 in Jerusalem');
+
+	it('What time is sunset on 12/25/2023 in Los Angeles?');
+
+	it('How long is a Shaah Zmanis in 31.776, 35.23?');
 });
 
-// What is today's Daf Yomi
-// What is the Daf Yomi for tomorrow
-// What is the Nach Yomi for May 12, 2023
-// What are the daily psalms for tomorrow
-// What is the Weekly Daf for 18 Iyar
 describe('test daily learning', () => {
-	it('TODO: Not yet tested');
+	it("What is today's Daf Yomi?");
+
+	it('What is the Daf Yomi for tomorrow?');
+
+	it('What is the Nach Yomi for May 12, 2023?');
+
+	it('What are the daily psalms for tomorrow?');
+
+	it('What is the Weekly Daf for 18 Iyar?');
 });

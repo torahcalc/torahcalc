@@ -21,8 +21,8 @@ describe('test calculateMolad', () => {
 				shabbosMevarchim: 'Sat, September 28, 2024',
 			},
 			timeFormat: {
-				'12Hr': 'Thursday, Oct. 3, 2024, 3:21 am and 13 chalakim',
-				'24Hr': 'Thursday, Oct. 3, 2024, 03:21 and 13 chalakim',
+				'12Hr': 'Thursday, October 3, 2024, 3:21 am and 13 chalakim',
+				'24Hr': 'Thursday, October 3, 2024, 03:21 and 13 chalakim',
 			},
 			timeString: '2024-10-03 03:21:43.333',
 			monthName: 'Tishrei 5785',
@@ -48,8 +48,8 @@ describe('test calculateMolad', () => {
 				shabbosMevarchim: 'Sat, December 12, 2009',
 			},
 			timeFormat: {
-				'12Hr': 'Thursday, Dec. 17, 2009, 12:59 am and 10 chalakim',
-				'24Hr': 'Thursday, Dec. 17, 2009, 00:59 and 10 chalakim',
+				'12Hr': 'Thursday, December 17, 2009, 12:59 am and 10 chalakim',
+				'24Hr': 'Thursday, December 17, 2009, 00:59 and 10 chalakim',
 			},
 			timeString: '2009-12-17 00:59:33.333',
 			monthName: 'Teves 5770',
@@ -75,8 +75,8 @@ describe('test calculateMolad', () => {
 				shabbosMevarchim: 'Sat, August 23, 2025',
 			},
 			timeFormat: {
-				'12Hr': 'Saturday, Aug. 23, 2025, 11:26 pm and 6 chalakim',
-				'24Hr': 'Saturday, Aug. 23, 2025, 23:26 and 6 chalakim',
+				'12Hr': 'Saturday, August 23, 2025, 11:26 pm and 6 chalakim',
+				'24Hr': 'Saturday, August 23, 2025, 23:26 and 6 chalakim',
 			},
 			timeString: '2025-08-23 23:26:20.000',
 			monthName: 'Elul 5785',
