@@ -1,6 +1,6 @@
 <script>
 	import Fa from 'svelte-fa/src/fa.svelte';
-	import { faCalculator, faSunrise, faScaleBalanced, faCalendarAlt, faMoonOverSun } from '@danieloi/pro-solid-svg-icons';
+	import { faCalculator, faSunrise, faScaleBalanced, faCalendarAlt, faMoonOverSun, faWheatAlt } from '@danieloi/pro-solid-svg-icons';
 	import { getConverters, getUnit, getUnits } from '$lib/js/unitconverter';
 	import { METHOD_NAMES } from '$lib/js/gematria';
 	import { ZMANIM_NAMES } from '$lib/js/zmanim';
@@ -94,6 +94,7 @@
 		<ul class="list-unstyled">
 			<li><InputExample {clickFunction} query="Convert 21 Kislev, 5730 to Gregorian calendar." /></li>
 			<li><InputExample {clickFunction} query="Convert December 1, 1969 to Hebrew calendar." /></li>
+			<li><InputExample {clickFunction} query="Convert December 1, 1969 after sunset to Hebrew calendar." /></li>
 			<li><InputExample {clickFunction} query="Convert 5780 to Gregorian calendar." /></li>
 			<li><InputExample {clickFunction} query="When will 14 Nissan fall next year?" /></li>
 			<li><InputExample {clickFunction} query="Today's date on Hebrew calendar." /></li>
@@ -108,6 +109,16 @@
 			<li><InputExample {clickFunction} query="When will the molad of Elul be?" /></li>
 			<li><InputExample {clickFunction} query="When is the next molad?" /></li>
 			<li><InputExample {clickFunction} query="Calculate molados for 5781." /></li>
+		</ul>
+	</div>
+
+	<div class="mb-4">
+		<h5><Fa icon={faWheatAlt} class="me-1" /> Sefiras HaOmer</h5>
+		<ul class="list-unstyled">
+			<li><InputExample {clickFunction} query="Sefiras Haomer for tonight" /></li>
+			<li><InputExample {clickFunction} query="Day of Omer on May 12, 2023" /></li>
+			<li><InputExample {clickFunction} query="Day of Omer on April 17, 2023 at night" /></li>
+			<li><InputExample {clickFunction} query="Day of Omer on 18 Iyar" /></li>
 		</ul>
 	</div>
 

@@ -6,12 +6,13 @@ import { METHOD_NAMES, calculateGematria } from './gematria';
 import { ZMANIM_NAMES } from './zmanim';
 import { calculateMolad } from './molad';
 import { isHebrewLeapYear } from './leapyears';
-import { gregorianToHebrew, hebrewToGregorian } from './dateconverter';
+import { formatHebrewDateEn, gregorianToHebrew, hebrewToGregorian } from './dateconverter';
 import { HDate } from '@hebcal/core';
 import DOMPurify from 'dompurify';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import { calculateOmerDate, calculateOmerHebrew } from './omer';
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
@@ -89,6 +90,7 @@ export async function calculateQuery(search, options = {}) {
 		zmanimQuery: async () => await zmanimQuery(derivation),
 		hebrewCalendarQuery: () => hebrewCalendarQuery(derivation),
 		moladQuery: () => moladQuery(derivation),
+		sefirasHaOmerQuery: () => sefirasHaOmerQuery(derivation),
 	};
 
 	/** @type {Array<{ title: string, content: string }>} */
@@ -181,7 +183,7 @@ async function getValidDerivations(search, results) {
 				const hebrewDate = derivation.date.hebrewDate;
 				hebrewDate.year = hebrewDate.year ?? new HDate().getFullYear();
 				try {
-					derivation.disambiguation += ` on ${new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year).render('en')}`;
+					derivation.disambiguation += ` on ${formatHebrewDateEn(new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year))}`;
 				} catch (e) {
 					// skip interpretation if the date cannot be parsed
 					continue;
@@ -250,7 +252,7 @@ async function getValidDerivations(search, results) {
 					const gregorianDateDerivation = {
 						...derivation,
 						date: { hebrewDate: { ...derivation.date.hebrewDate, year: hebrewYearFromGregorian } },
-						disambiguation: `Convert ${new HDate(derivation.date.hebrewDate.day, derivation.date.hebrewDate.month, hebrewYearFromGregorian).render('en')} to Gregorian calendar`,
+						disambiguation: `Convert ${formatHebrewDateEn(new HDate(derivation.date.hebrewDate.day, derivation.date.hebrewDate.month, hebrewYearFromGregorian))} to Gregorian calendar`,
 						year: undefined,
 						disambiguationScore: derivation.year <= 4000 ? 1 : 0,
 					};
@@ -262,7 +264,7 @@ async function getValidDerivations(search, results) {
 						const hebrewDateDerivation = {
 							...derivation,
 							date: { hebrewDate: { ...derivation.date.hebrewDate, year: derivation.year } },
-							disambiguation: `Convert ${new HDate(derivation.date.hebrewDate.day, derivation.date.hebrewDate.month, derivation.year).render('en')} to Gregorian calendar`,
+							disambiguation: `Convert ${formatHebrewDateEn(new HDate(derivation.date.hebrewDate.day, derivation.date.hebrewDate.month, derivation.year))} to Gregorian calendar`,
 							year: undefined,
 							disambiguationScore: derivation.year > 4000 ? 1 : 0,
 						};
@@ -284,10 +286,11 @@ async function getValidDerivations(search, results) {
 					// if an actual year was passed and not a relative year, add a derivation with the year converted to the Hebrew year
 					if (!/\b(last|next|this|upcoming|previous|current)\b/i.test(search)) {
 						const gregorianYearFromHebrew = derivation.year - (derivation.year <= 3761 ? 3762 : 3761);
+						const afterSunsetText = derivation.date.gregorianDate.afterSunset ? '(after sunset) ' : '';
 						const hebrewDateDerivation = {
 							...derivation,
 							date: { gregorianDate: { ...derivation.date.gregorianDate, year: gregorianYearFromHebrew } },
-							disambiguation: `Convert ${formatDate(gregorianYearFromHebrew, derivation.date.gregorianDate.month, derivation.date.gregorianDate.day)} to Hebrew calendar`,
+							disambiguation: `Convert ${formatDate(gregorianYearFromHebrew, derivation.date.gregorianDate.month, derivation.date.gregorianDate.day)} ${afterSunsetText}to Hebrew calendar`,
 							year: undefined,
 							disambiguationScore: derivation.year > 4000 ? 1 : 0,
 						};
@@ -308,7 +311,8 @@ async function getValidDerivations(search, results) {
 					// skip interpretation if the date cannot be parsed
 					continue;
 				}
-				derivation.disambiguation = `Convert ${dayjs(dateObject).format('MMMM D, YYYY')} to Hebrew calendar`;
+				const afterSunsetText = derivation.date.gregorianDate.afterSunset ? '(after sunset) ' : '';
+				derivation.disambiguation = `Convert ${dayjs(dateObject).format('MMMM D, YYYY')} ${afterSunsetText}to Hebrew calendar`;
 				if (gregorianDate.year < 4000) {
 					derivation.disambiguationScore += 1;
 				}
@@ -322,7 +326,7 @@ async function getValidDerivations(search, results) {
 				const hebrewDate = derivation.date.hebrewDate;
 				hebrewDate.year = hebrewDate.year ?? new HDate().getFullYear();
 				try {
-					derivation.disambiguation = `Convert ${new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year).render('en')} to Gregorian calendar`;
+					derivation.disambiguation = `Convert ${formatHebrewDateEn(new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year))} to Gregorian calendar`;
 				} catch (e) {
 					// skip interpretation if the date cannot be parsed
 					continue;
@@ -638,7 +642,7 @@ export async function zmanimQuery(derivation) {
 /**
  * Generate sections for a Hebrew calendar query
  *
- * @param {{ function: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number }, hebrewDate?: { year?: number, month?: number, day?: number } }, year?: number }} derivation
+ * @param {{ function: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } }, year?: number }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function hebrewCalendarQuery(derivation) {
@@ -650,7 +654,8 @@ function hebrewCalendarQuery(derivation) {
 		const gregorianDate = derivation.date.gregorianDate;
 		// if there is only a year, show the year in Hebrew
 		if (gregorianDate?.year && !gregorianDate.month && !gregorianDate.day) {
-			sections.push({ title: INPUT_INTERPRETATION, content: `Convert Gregorian year ${formatNumberHTML(gregorianDate.year, -1)} to Hebrew calendar` });
+			const afterSunsetText = derivation.date.gregorianDate.afterSunset ? '(after sunset) ' : '';
+			sections.push({ title: INPUT_INTERPRETATION, content: `Convert Gregorian year ${formatNumberHTML(gregorianDate.year, -1)} ${afterSunsetText}to Hebrew calendar` });
 			const startHebrewYear = gregorianDate.year + (gregorianDate.year < 0 ? 3761 : 3760);
 			const endHebrewYear = startHebrewYear + 1;
 			sections.push({
@@ -667,8 +672,9 @@ function hebrewCalendarQuery(derivation) {
 			if (isNaN(dateObject.getTime())) {
 				throw new InputError(`The date ${gregorianDate.year}-${gregorianDate.month}-${gregorianDate.day} is invalid.`);
 			}
-			const hebrewDate = gregorianToHebrew({ year: gregorianDate.year, month: gregorianDate.month, day: gregorianDate.day });
-			sections.push({ title: INPUT_INTERPRETATION, content: `Convert ${formatDateObject(dateObject)} to Hebrew calendar` });
+			const hebrewDate = gregorianToHebrew({ year: gregorianDate.year, month: gregorianDate.month, day: gregorianDate.day, afterSunset: gregorianDate.afterSunset || false });
+			const afterSunsetText = derivation.date.gregorianDate.afterSunset ? '(after sunset) ' : '';
+			sections.push({ title: INPUT_INTERPRETATION, content: `Convert ${formatDateObject(dateObject)} ${afterSunsetText}to Hebrew calendar` });
 			sections.push({ title: RESULT, content: `${hebrewDate.displayEn} / ${hebrewDate.displayGematriya}` });
 		}
 	}
@@ -691,7 +697,7 @@ function hebrewCalendarQuery(derivation) {
 			hebrewDate.month = hebrewDate.month ?? 1;
 			hebrewDate.day = hebrewDate.day ?? 1;
 			const dateObject = hebrewToGregorian({ year: hebrewDate.year, month: hebrewDate.month, day: hebrewDate.day }).date;
-			sections.push({ title: INPUT_INTERPRETATION, content: `Convert ${new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year).render('en')} to Gregorian calendar` });
+			sections.push({ title: INPUT_INTERPRETATION, content: `Convert ${formatHebrewDateEn(new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year))} to Gregorian calendar` });
 			sections.push({ title: RESULT, content: `${formatDateObject(dateObject)}` });
 		}
 	}
@@ -734,6 +740,86 @@ function moladQuery(derivation) {
 		const moladTable = dataToHtmlTable(data, { headers: ['Month', 'Molad'], class: 'table table-striped table-bordered' });
 		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the molados for Hebrew year ${derivation.year}` });
 		sections.push({ title: RESULT, content: moladTable });
+	}
+
+	return sections;
+}
+
+/**
+ * Generate sections for a Sefiras HaOmer query
+ * @param {{ function: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } } }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function sefirasHaOmerQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+
+	// calculate the omer from a gregorian date
+	if (derivation.date?.gregorianDate) {
+		/**
+		 * Format night count
+		 * @param {{ nightCount: import('./omer').Omer | null }} omer - The omer to format
+		 * @returns {string}
+		 */
+		const formatNightCount = (omer) =>
+			omer.nightCount
+				? `${omer.nightCount.night} count day ${omer.nightCount.dayOfOmer}<br />"${omer.nightCount.formulaEn}"<br />"${omer.nightCount.formulaHe}"<br />${omer.nightCount.sefiraEn} / ${omer.nightCount.sefiraHe}`
+				: 'There is no night count for this date';
+
+		/**
+		 * Format day count
+		 * @param {{ dayCount: import('./omer').Omer | null }} omer - The omer to format
+		 * @returns {string}
+		 */
+		const formatDayCount = (omer) =>
+			omer.dayCount
+				? `In the day of ${omer.dayCount.day} count day ${omer.dayCount.dayOfOmer}<br />"${omer.dayCount.formulaEn}"<br />"${omer.dayCount.formulaHe}"<br />${omer.dayCount.sefiraEn} / ${omer.dayCount.sefiraHe}`
+				: 'There is no day count for this date';
+
+		const gregorianDate = derivation.date.gregorianDate;
+		gregorianDate.year = gregorianDate.year ?? new Date().getFullYear();
+		gregorianDate.month = gregorianDate.month ?? 1;
+		gregorianDate.day = gregorianDate.day ?? 1;
+		const dateObject = new Date(gregorianDate.year, gregorianDate.month - 1, gregorianDate.day);
+		const omer = calculateOmerDate(dayjs(dateObject).format('YYYY-MM-DD'));
+		const nightCountOnly = gregorianDate.afterSunset ?? false;
+		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the omer on ${formatDateObject(dateObject)}${nightCountOnly ? ' at night' : ''}` });
+
+		if (nightCountOnly && omer.nightCount) {
+			sections.push({ title: RESULT, content: formatNightCount(omer) });
+		} else if (omer.dayCount && omer.nightCount) {
+			sections.push({ title: RESULT, content: `${formatDayCount(omer)}<br /><br />${formatNightCount(omer)}` });
+		} else if (omer.dayCount) {
+			sections.push({ title: RESULT, content: `${formatDayCount(omer)}<br /><br />Shavuos starts at night` });
+		} else if (omer.nightCount) {
+			sections.push({ title: RESULT, content: formatNightCount(omer) });
+		} else {
+			sections.push({ title: RESULT, content: 'There is no omer count for this date' });
+		}
+	}
+	// calculate the omer from a Hebrew date
+	else if (derivation.date?.hebrewDate) {
+		/**
+		 * Format Hebrew day count
+		 * @param {{ count: import('./omer').Omer | null }} omer - The omer to format
+		 * @returns {string}
+		 */
+		const formatHebrewDayCount = (omer) =>
+			omer.count
+				? `On ${omer.count.hebrewDate} (${omer.count.night}) count day ${omer.count.dayOfOmer}<br />"${omer.count.formulaEn}"<br />"${omer.count.formulaHe}"<br />${omer.count.sefiraEn} / ${omer.count.sefiraHe}`
+				: 'There is no day count for this date';
+
+		const hebrewDate = derivation.date.hebrewDate;
+		hebrewDate.year = hebrewDate.year ?? new HDate().getFullYear();
+		hebrewDate.month = hebrewDate.month ?? 1;
+		hebrewDate.day = hebrewDate.day ?? 1;
+		const omer = calculateOmerHebrew(hebrewDate.year, hebrewDate.month, hebrewDate.day);
+		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the omer on ${formatHebrewDateEn(new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year))}` });
+		if (omer.count) {
+			sections.push({ title: RESULT, content: formatHebrewDayCount(omer) });
+		} else {
+			sections.push({ title: RESULT, content: 'There is no omer count for this date' });
+		}
 	}
 
 	return sections;

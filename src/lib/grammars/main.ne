@@ -5,16 +5,13 @@
 #
 # Unit conversions
 # ----------------
-# - "convert 10 amos to meters"
-# - "convert 1 amah to tefachim."
-# - "how many amos are in a parsah?"
-# - "convert 40 seah to us liquid gallons."
-# - "convert 1 us dollar to perutos."
-# - "how many chalakim are in an hour?"
-#
-# Multi-unit conversion charts
-# ----------------------------
-# - "conversion chart for 1 mil"
+# - Convert 10 amos to meters
+# - Convert 1 amah to tefachim.
+# - How many amos are in a parsah?
+# - Convert 40 seah to us liquid gallons.
+# - Convert 1 us dollar to perutos.
+# - How many chalakim are in an hour?
+# - Conversion chart for 1 mil
 #
 # Gematria calculations
 # ---------------------
@@ -26,11 +23,11 @@
 #
 # Zmanim
 # ------
-# - "what time is chatzos in New York?"
-# - "zmanim for Denver"
-# - "zmanim for 1 Teves 5784 in Jerusalem"
-# - "what time is sunset on December 25, 2023 in Los Angeles?"
-# - "how long is a shaah zmanis in 39.1, -107.4?"
+# - What time is chatzos in New York?
+# - Zmanim for Denver
+# - Zmanim for 1 Teves 5784 in Jerusalem
+# - What time is sunset on December 25, 2023 in Los Angeles?
+# - How long is a shaah zmanis in 39.1, -107.4?
 #
 # Hebrew Calendar
 # ---------------
@@ -47,6 +44,12 @@
 # - When will the molad of Elul be?
 # - When is the next molad?
 # - Calculate molados for 5781.
+#
+# Sefiras HaOmer
+# --------------
+# - Sefiras Haomer for tonight
+# - Day of Omer on May 12, 2021
+# - Day of Omer on 18 Iyar
 # 
 # More coming soon...
 
@@ -121,6 +124,7 @@ main -> query[unitConversionQuery] {% data => data[0][0] %}
       | query[zmanimQuery] {% data => data[0][0] %}
       | query[hebrewCalendarQuery] {% data => data[0][0] %}
       | query[moladQuery] {% data => data[0][0] %}
+      | query[sefirasHaOmerQuery] {% data => data[0][0] %}
 
 # Unit conversion queries
 unitConversionQuery -> optionalWords[[A-Za-z\s]:*] jsonfloat _ unit __ ("to" | "in" | "into") __ unit {% data => ({function: "unitConversionQuery", unitFrom: data[3], unitTo: data[7], amount: data[1]}) %}
@@ -167,13 +171,19 @@ moladQuery -> optionalWords[("calculate" | "compute" | "what is" | "what's" | "w
             | optionalWords["when will"] optionalWords["the"] moladMonth _ optionalWordsEnd[("be" | "occur" | "land" | "fall")] {% data => ({function: "moladQuery", ...data[2]}) %}
             | optionalWords[("calculate" | "compute" | "what are" | "when are")] optionalWords["the"] ("molados" | "moladot" | "moladim" | "molads" | "molad") _ optionalWords[("for" | "or" | "in")] year {% data => ({function: "moladQuery", year: data[5]}) %}
 
-# Date parsing for Zmanim, Hebrew Calendar, and Molad queries
+# Sefiras HaOmer queries
+sefirasHaOmerQuery -> optionalWords[("calculate" | "compute" | "what is" | "what's")] optionalWords["the"] ("day of omer" | "omer" | "omer count" | "sefiras haomer" | "sefirat haomer" | "sefirah" | "sefiras ha'omer" | "sefirat ha'omer") __ optionalWords[("on" | "for")] date {% data => ({function: "sefirasHaOmerQuery", date: data[5]}) %}
+
+# Date parsing for Zmanim, Hebrew Calendar, Molad, and Omer queries
 date -> gregorianDate {% data => ({gregorianDate: data[0]}) %}
       | hebrewDate {% data => ({hebrewDate: data[0]}) %}
       | "today" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate()}}) %}
       | "today's" __ "date" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate()}}) %}
+      | "tonight" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate(), afterSunset: true }}) %}
       | "tomorrow" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() + 1}}) %}
+      | "tomorrow night" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() + 1, afterSunset: true }}) %}
       | "yesterday" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() - 1}}) %}
+      | "last night" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() - 1, afterSunset: true }}) %}
       | ("next" | "upcoming") __ "week" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() + 7}}) %}
       | ("next" | "upcoming") __ "month" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 2, day: new Date().getDate()}}) %}
       | ("last" | "previous") __ "week" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() - 7}}) %}
@@ -188,6 +198,7 @@ gregorianDate -> dateOfMonth __ gregorianMonth (", " | __) year {% data => ({yea
                | gregorianMonth dateSeparator dateOfMonth dateSeparator year {% data => ({year: data[4], month: data[0], day: data[2], format: "MDY"}) %}
                | dateOfMonth dateSeparator gregorianMonth {% data => ({month: data[2], day: data[0], format: "DM"}) %}
                | gregorianMonth dateSeparator dateOfMonth {% data => ({month: data[0], day: data[2], format: "MD"}) %}
+               | gregorianDate __ ("(" | _) ("after sunset" | "after sundown" | "after nightfall" | "after nightfall" | "at night" | "night") (")" | _) {% data => ({afterSunset: true, ...data[0]}) %}
 hebrewDate -> dateOfMonth __ hebrewMonth (", " | __) year {% data => ({year: data[4], month: data[2], day: data[0], format: "DMY"}) %}
             | dateOfMonth __ hebrewMonth {% data => ({month: data[2], day: data[0], format: "DM"}) %}
             | hebrewMonth __ dateOfMonth (", " | __) year {% data => ({year: data[4], month: data[0], day: data[2], format: "MDY"}) %}
