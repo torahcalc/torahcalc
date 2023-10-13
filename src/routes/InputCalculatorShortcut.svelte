@@ -8,7 +8,14 @@
 	 * Set the query to calculate and update the URL
 	 */
 	async function openQuery(newQuery = queryInput) {
-		window.location.href = `/input?q=${encodeURIComponent(newQuery)}`;
+		queryInput = newQuery;
+		const url = new URL('/input', window.location.origin);
+		url.searchParams.set('q', queryInput);
+		/** @type {HTMLAnchorElement} */
+		// @ts-ignore - assume the element exists
+		const link = document.getElementById('queryUrl');
+		link.href = url.toString();
+		setTimeout(() => link.click(), 0);
 	}
 
 	/**
@@ -22,6 +29,8 @@
 	}
 </script>
 
+<a class="d-none" href="/input?q={encodeURIComponent(queryInput)}" id="queryUrl">Open Query</a>
+
 <div class="card flex-card input-control">
 	<div class="input-group">
 		<input type="text" bind:value={queryInput} class="form-control" placeholder="What do you want to calculate?" on:keyup={onQueryKeypress} />
@@ -30,6 +39,3 @@
 </div>
 
 <InputExamples clickFunction={openQuery} />
-
-<style>
-</style>

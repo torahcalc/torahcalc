@@ -60,18 +60,17 @@ You can preview the production build with `npm run preview`.
 To build the static site and sync the capacitor project with the web app:
 
 ```bash
-npm run static
-npx cap sync
+npm run mobile
 ```
 
-To open the project in Android Studio:
+To build the static site, sync the capacitor project, and open the project in Android Studio:
 
 ```bash
-npx cap open android
+npm run android:dev
 ```
 
-To open the project in XCode:
+To build the static site, sync the capacitor project, and open the project in Android Studio:
 
 ```bash
-npx cap open ios
+npm run ios:dev
 ```

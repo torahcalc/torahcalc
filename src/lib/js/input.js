@@ -1,3 +1,4 @@
+import { PUBLIC_ADAPTER, PUBLIC_BASE_URL } from '$env/static/public';
 import nearley from 'nearley';
 import grammar from '$lib/grammars/generated/main.cjs';
 import { LEARNING_TYPE_NAMES, calculateDailyLearning } from './dailylearning';
@@ -567,7 +568,14 @@ export async function zmanimQuery(derivation) {
 
 	// get the zmanim
 	let url = `/api/zmanim?${new URLSearchParams(params).toString()}`;
-	const zmanimResponse = await fetch(url).then((r) => r.json());
+	if (PUBLIC_ADAPTER === 'static') {
+		url = PUBLIC_BASE_URL + url;
+	}
+	const zmanimResponse = await fetch(url)
+		.then((response) => response.json())
+		.catch((error) => {
+			throw new InputError(`Failed to fetch zmanim. Make sure you are connected to the internet.`, error.toString());
+		});
 
 	if (zmanimResponse.success === false || !zmanimResponse.data) {
 		throw new InputError(`Could not get zmanim for the provided location: "${location}".`, JSON.stringify(zmanimResponse, null, 2));
@@ -611,6 +619,11 @@ export async function zmanimQuery(derivation) {
 		return row;
 	};
 
+	let mapUrl = `/input/maps?location=${resultLatitude},${resultLongitude}`;
+	if (PUBLIC_ADAPTER === 'static') {
+		mapUrl = PUBLIC_BASE_URL + mapUrl;
+	}
+
 	// get the zmanim result
 	if (derivation.zman) {
 		// @ts-ignore - assume key exists
@@ -621,7 +634,7 @@ export async function zmanimQuery(derivation) {
 		sections.push({
 			title: INPUT_INTERPRETATION,
 			content: `Calculate ${zmanResult.name} on ${formatDateObject(dateObject)} in ${location.trim()}
-						<img class="mt-3 img-fluid d-block" src="/input/maps?location=${resultLatitude},${resultLongitude}" />`,
+						<img class="mt-3 img-fluid d-block" src="${mapUrl}" />`,
 		});
 		if (zmanimResult.durations[derivation.zman]) {
 			sections.push({ title: RESULT, content: `The ${zmanResult.name} length is ${zmanResult.time}` });
@@ -663,7 +676,7 @@ export async function zmanimQuery(derivation) {
 		sections.push({
 			title: INPUT_INTERPRETATION,
 			content: `Calculate Zmanim on ${formatDateObject(dateObject)} in ${location.trim()}
-						<img class="mt-3 img-fluid d-block" src="/input/maps?location=${resultLatitude},${resultLongitude}" />`,
+						<img class="mt-3 img-fluid d-block" src="${mapUrl}" />`,
 		});
 		sections.push({ title: RESULT, content: zmanimTables.join('') });
 	}

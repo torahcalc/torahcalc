@@ -14,7 +14,10 @@
 		"test": "npm run nearley && vitest",
 		"lint": "prettier --plugin-search-dir . --check src/**/*.{svelte,js,css,html} *.{js,ts,json,md} && eslint src/**/*.{svelte,js}",
 		"format": "prettier --plugin-search-dir . --write src/**/*.{svelte,js,css,html} *.{js,ts,json,md}",
-		"nearley": "node src/lib/grammars/scripts/prepare-input.js && nearleyc src/lib/grammars/main.ne -o src/lib/grammars/generated/main.cjs && node src/lib/grammars/scripts/modify-output.js"
+		"nearley": "node src/lib/grammars/scripts/prepare-input.js && nearleyc src/lib/grammars/main.ne -o src/lib/grammars/generated/main.cjs && node src/lib/grammars/scripts/modify-output.js",
+		"mobile": "npm run static && npx cap sync",
+		"android:dev": "export CAPACITOR_ANDROID_STUDIO_PATH=\"$(which android-studio)\" && npm run mobile && npx cap open android",
+		"ios:dev": "npm run mobile && npx cap open ios"
 	},
 	"dependencies": {
 		"@capacitor/android": "^5.3.0",
