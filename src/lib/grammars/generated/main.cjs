@@ -3523,7 +3523,7 @@ var grammar = {
     {"name": "gematriaSearchPrefix$subexpression$2", "symbols": ["gematriaSearchPrefix$subexpression$2$string$1"]},
     {"name": "gematriaSearchPrefix$subexpression$2$string$2", "symbols": [{"literal":"a"}, {"literal":"s"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "gematriaSearchPrefix$subexpression$2", "symbols": ["gematriaSearchPrefix$subexpression$2$string$2"]},
-    {"name": "gematriaSearchPrefix", "symbols": ["gematriaSearchPrefix$macrocall$1", "gematriaSearchPrefix$subexpression$1", "gematriaSearchPrefix$macrocall$3", "gematriaSearchPrefix$macrocall$5", "gematriaMethod", "__", "gematriaSearchPrefix$subexpression$2"], "postprocess": data => data[4]},
+    {"name": "gematriaSearchPrefix", "symbols": ["gematriaSearchPrefix$macrocall$1", "gematriaSearchPrefix$subexpression$1", "__", "gematriaSearchPrefix$macrocall$3", "gematriaSearchPrefix$macrocall$5", "gematriaMethod", "__", "gematriaSearchPrefix$subexpression$2"], "postprocess": data => data[5]},
     {"name": "gematriaTwoWordMatchQuery", "symbols": ["gematriaTwoWordMatchPrefix"], "postprocess": data => ({function: "gematriaTwoWordMatchQuery", ...data[0]})},
     {"name": "gematriaTwoWordMatchQuery$macrocall$2$subexpression$1$string$1", "symbols": [{"literal":"w"}, {"literal":"i"}, {"literal":"t"}, {"literal":"h"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "gematriaTwoWordMatchQuery$macrocall$2$subexpression$1", "symbols": ["gematriaTwoWordMatchQuery$macrocall$2$subexpression$1$string$1"]},

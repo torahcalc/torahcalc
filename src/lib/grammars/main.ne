@@ -173,7 +173,7 @@ gematriaQuery -> optionalWords[("calculate" | "compute" | "what is" | "what's" |
 gematriaSearchQuery -> gematriaSearchPrefix __ hebrewString {% data => ({function: "gematriaSearchQuery", gematriaMethod: data[0], text: data[2] }) %}
                      | gematriaSearchPrefix __ int {% data => ({function: "gematriaSearchQuery", gematriaMethod: data[0], value: data[2] }) %}
 
-gematriaSearchPrefix -> optionalWords[("calculate" | "what" | "which" | "list" | "show" | "display" | "find" | "search")] ("words" | "pesukim" | "words and pesukim" | "verses" | "words and verses" | "sentences" | "phrases" | "words and phrases" | "words and sentences") optionalWords["have"] optionalWords[("the" | "a" | "the same")] gematriaMethod __ ("of" | "as") {% data => data[4] %}
+gematriaSearchPrefix -> optionalWords[("calculate" | "what" | "which" | "list" | "show" | "display" | "find" | "search")] ("words" | "pesukim" | "words and pesukim" | "verses" | "words and verses" | "sentences" | "phrases" | "words and phrases" | "words and sentences") __ optionalWords["have"] optionalWords[("the" | "a" | "the same")] gematriaMethod __ ("of" | "as") {% data => data[5] %}
 
 # Gematria two-word match finder queries
 gematriaTwoWordMatchQuery -> gematriaTwoWordMatchPrefix {% data => ({function: "gematriaTwoWordMatchQuery", ...data[0]}) %}
