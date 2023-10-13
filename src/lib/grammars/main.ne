@@ -37,6 +37,12 @@
 # - When will 14 Nissan fall next year?
 # - Today's date on Hebrew calendar.
 #
+# Leap Years
+# ----------
+# - Is this year a leap year?
+# - Was 5775 a leap year?
+# - Will 5784 be a leap year?
+# - Is next year a leap year?
 #
 # Molad
 # -----
@@ -125,6 +131,7 @@ main -> query[unitConversionQuery] {% data => data[0][0] %}
       | query[hebrewCalendarQuery] {% data => data[0][0] %}
       | query[moladQuery] {% data => data[0][0] %}
       | query[sefirasHaOmerQuery] {% data => data[0][0] %}
+      | query[leapYearQuery] {% data => data[0][0] %}
 
 # Unit conversion queries
 unitConversionQuery -> optionalWords[[A-Za-z\s]:*] jsonfloat _ unit __ ("to" | "in" | "into") __ unit {% data => ({function: "unitConversionQuery", unitFrom: data[3], unitTo: data[7], amount: data[1]}) %}
@@ -169,12 +176,16 @@ hebrewCalendarQuery -> optionalWords[("convert" | "translate")] date _ optionalW
 # Molad queries
 moladQuery -> optionalWords[("calculate" | "compute" | "what is" | "what's" | "when is" | "when's" | "what time is" | "what time was")] optionalWords["the"] moladMonth {% data => ({function: "moladQuery", ...data[2]}) %}
             | optionalWords["when will"] optionalWords["the"] moladMonth _ optionalWordsEnd[("be" | "occur" | "land" | "fall")] {% data => ({function: "moladQuery", ...data[2]}) %}
-            | optionalWords[("calculate" | "compute" | "what are" | "when are")] optionalWords["the"] ("molados" | "moladot" | "moladim" | "molads" | "molad") _ optionalWords[("for" | "or" | "in")] year {% data => ({function: "moladQuery", year: data[5]}) %}
+            | optionalWords[("calculate" | "compute" | "what are" | "when are")] optionalWords["the"] ("molados" | "moladot" | "moladim" | "molads" | "molad") _ optionalWords[("for" | "or" | "in")] hebrewYear {% data => ({function: "moladQuery", year: data[5]}) %}
 
 # Sefiras HaOmer queries
 sefirasHaOmerQuery -> optionalWords[("calculate" | "compute" | "what is" | "what's")] optionalWords["the"] ("day of omer" | "omer" | "omer count" | "sefiras haomer" | "sefirat haomer" | "sefirah" | "sefiras ha'omer" | "sefirat ha'omer") __ optionalWords[("on" | "for")] date {% data => ({function: "sefirasHaOmerQuery", date: data[5]}) %}
 
-# Date parsing for Zmanim, Hebrew Calendar, Molad, and Omer queries
+# Leap Year queries
+leapYearQuery -> optionalWords[("is" | "was" | "will")] optionalWords[("gregorian" | "english" | "standard")] optionalWords["year"] gregorianYear __ optionalWords[("be a" | "a")] "leap year" {% data => ({function: "leapYearQuery", year: data[3], calendar: "gregorian"}) %}
+               | optionalWords[("is" | "was" | "will")] optionalWords[("hebrew" | "jewish")] optionalWords["year"] hebrewYear __ optionalWords[("be a" | "a")] "leap year" {% data => ({function: "leapYearQuery", year: data[3], calendar: "hebrew"}) %}
+
+# Date parsing
 date -> gregorianDate {% data => ({gregorianDate: data[0]}) %}
       | hebrewDate {% data => ({hebrewDate: data[0]}) %}
       | "today" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate()}}) %}
@@ -189,36 +200,43 @@ date -> gregorianDate {% data => ({gregorianDate: data[0]}) %}
       | ("last" | "previous") __ "week" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() - 7}}) %}
       | ("last" | "previous") __ "month" {% data => ({gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate()}}) %}
       | ("last" | "previous") __ "year" {% data => ({gregorianDate: {year: new Date().getFullYear() - 1, month: new Date().getMonth() + 1, day: new Date().getDate()}}) %}
-gregorianDate -> dateOfMonth __ gregorianMonth (", " | __) year {% data => ({year: data[4], month: data[2], day: data[0], format: "DMY"}) %}
+gregorianDate -> dateOfMonth __ gregorianMonth (", " | __) gregorianYear {% data => ({year: data[4], month: data[2], day: data[0], format: "DMY"}) %}
                | dateOfMonth __ gregorianMonth {% data => ({month: data[2], day: data[0], format: "DM"}) %}
-               | gregorianMonth __ dateOfMonth (", " | __) year {% data => ({year: data[4], month: data[0], day: data[2], format: "MDY"}) %}
+               | gregorianMonth __ dateOfMonth (", " | __) gregorianYear {% data => ({year: data[4], month: data[0], day: data[2], format: "MDY"}) %}
                | gregorianMonth __ dateOfMonth {% data => ({month: data[0], day: data[2], format: "MD"}) %}
-               | dateOfMonth dateSeparator gregorianMonth dateSeparator year {% data => ({year: data[4], month: data[2], day: data[0], format: "DMY"}) %}
-               | year dateSeparator gregorianMonth dateSeparator dateOfMonth {% data => ({year: data[0], month: data[2], day: data[4], format: "YMD"}) %}
-               | gregorianMonth dateSeparator dateOfMonth dateSeparator year {% data => ({year: data[4], month: data[0], day: data[2], format: "MDY"}) %}
+               | dateOfMonth dateSeparator gregorianMonth dateSeparator gregorianYear {% data => ({year: data[4], month: data[2], day: data[0], format: "DMY"}) %}
+               | gregorianYear dateSeparator gregorianMonth dateSeparator dateOfMonth {% data => ({year: data[0], month: data[2], day: data[4], format: "YMD"}) %}
+               | gregorianMonth dateSeparator dateOfMonth dateSeparator gregorianYear {% data => ({year: data[4], month: data[0], day: data[2], format: "MDY"}) %}
                | dateOfMonth dateSeparator gregorianMonth {% data => ({month: data[2], day: data[0], format: "DM"}) %}
                | gregorianMonth dateSeparator dateOfMonth {% data => ({month: data[0], day: data[2], format: "MD"}) %}
                | gregorianDate __ ("(" | _) ("after sunset" | "after sundown" | "after nightfall" | "after nightfall" | "at night" | "night") (")" | _) {% data => ({afterSunset: true, ...data[0]}) %}
-hebrewDate -> dateOfMonth __ hebrewMonth (", " | __) year {% data => ({year: data[4], month: data[2], day: data[0], format: "DMY"}) %}
+hebrewDate -> dateOfMonth __ hebrewMonth (", " | __) hebrewYear {% data => ({year: data[4], month: data[2], day: data[0], format: "DMY"}) %}
             | dateOfMonth __ hebrewMonth {% data => ({month: data[2], day: data[0], format: "DM"}) %}
-            | hebrewMonth __ dateOfMonth (", " | __) year {% data => ({year: data[4], month: data[0], day: data[2], format: "MDY"}) %}
+            | hebrewMonth __ dateOfMonth (", " | __) hebrewYear {% data => ({year: data[4], month: data[0], day: data[2], format: "MDY"}) %}
             | hebrewMonth __ dateOfMonth {% data => ({month: data[0], day: data[2], format: "MD"}) %}
-            | dateOfMonth dateSeparator hebrewMonth dateSeparator year {% data => ({year: data[4], month: data[2], day: data[0], format: "DMY"}) %}
-            | year dateSeparator hebrewMonth dateSeparator dateOfMonth {% data => ({year: data[0], month: data[2], day: data[4], format: "YMD"}) %}
-            | hebrewMonth dateSeparator dateOfMonth dateSeparator year {% data => ({year: data[4], month: data[0], day: data[2], format: "MDY"}) %}
+            | dateOfMonth dateSeparator hebrewMonth dateSeparator hebrewYear {% data => ({year: data[4], month: data[2], day: data[0], format: "DMY"}) %}
+            | hebrewYear dateSeparator hebrewMonth dateSeparator dateOfMonth {% data => ({year: data[0], month: data[2], day: data[4], format: "YMD"}) %}
+            | hebrewMonth dateSeparator dateOfMonth dateSeparator hebrewYear {% data => ({year: data[4], month: data[0], day: data[2], format: "MDY"}) %}
             | dateOfMonth dateSeparator hebrewMonth {% data => ({month: data[2], day: data[0], format: "DM"}) %}
             | hebrewMonth dateSeparator dateOfMonth {% data => ({month: data[0], day: data[2], format: "MD"}) %}
-moladMonth -> "molad" __ optionalWords["of"] hebrewMonth __ year {% data => ({year: data[5], month: data[3]}) %}
+moladMonth -> "molad" __ optionalWords["of"] hebrewMonth __ hebrewYear {% data => ({year: data[5], month: data[3]}) %}
             | "molad" __ optionalWords["of"] hebrewMonth {% data => ({month: data[3], year: new HDate().getFullYear()}) %}
             | ("next" | "upcoming") __ "molad" {% data => getNextHebrewMonth() %}
             | ("last" | "previous") __ "molad" {% data => getPrevHebrewMonth() %}
             | ("this" | "this month's" | "current") __ "molad" {% data => getCurrentHebrewMonth() %}
 dateSeparator -> ("-"|"/"|".") {% data => null %}
-year -> [0-9]:+ {% data => parseInt(data[0].join("")) %}
+year -> gregorianYear {% data => data[0] %}
+      | hebrewYear {% data => data[0] %}
+gregorianYear -> [0-9]:+ {% data => parseInt(data[0].join("")) %}
       | "-" [0-9]:+ {% data => parseInt(data[0] + data[1].join("")) %}
       | optionalWords["the"] ("next" | "upcoming" | "following") __ "year" {% data => new Date().getFullYear() + 1 %}
       | optionalWords["the"] ("last" | "previous") __ "year" {% data => new Date().getFullYear() - 1 %}
       | ("this" | "the current") __ "year" {% data => new Date().getFullYear() %}
+hebrewYear -> [0-9]:+ {% data => parseInt(data[0].join("")) %}
+            | "-" [0-9]:+ {% data => parseInt(data[0] + data[1].join("")) %}
+            | optionalWords["the"] ("next" | "upcoming" | "following") __ "year" {% data => new HDate().getFullYear() + 1 %}
+            | optionalWords["the"] ("last" | "previous") __ "year" {% data => new HDate().getFullYear() - 1 %}
+            | ("this" | "the current") __ "year" {% data => new HDate().getFullYear() %}
 dateOfMonth ->  ("0":? [1-9] | [12] [0-9] | "3" [01]) {% data => parseInt((data[0][0] || "") + data[0][1]) %}
 gregorianMonth -> ("january"|"jan."|"jan"|"1"|"01") {% data => 1 %}
        | ("february"|"feb."|"feb"|"2"|"02") {% data => 2 %}

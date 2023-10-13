@@ -1,11 +1,11 @@
 import nearley from 'nearley';
 import grammar from '$lib/grammars/generated/main.cjs';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
-import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML } from './utils';
+import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, properCase } from './utils';
 import { METHOD_NAMES, calculateGematria } from './gematria';
 import { ZMANIM_NAMES } from './zmanim';
 import { calculateMolad } from './molad';
-import { isHebrewLeapYear } from './leapyears';
+import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears';
 import { formatHebrewDateEn, gregorianToHebrew, hebrewToGregorian } from './dateconverter';
 import { HDate } from '@hebcal/core';
 import DOMPurify from 'dompurify';
@@ -50,6 +50,7 @@ export async function calculateQuery(search, options = {}) {
 	/** @type {Array<{ title: string, content: string }>} */
 	const startSections = [];
 
+	// @ts-ignore - assume grammar is correct type
 	const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
 
 	// convert input to lowercase
@@ -91,6 +92,7 @@ export async function calculateQuery(search, options = {}) {
 		hebrewCalendarQuery: () => hebrewCalendarQuery(derivation),
 		moladQuery: () => moladQuery(derivation),
 		sefirasHaOmerQuery: () => sefirasHaOmerQuery(derivation),
+		leapYearQuery: () => leapYearQuery(derivation),
 	};
 
 	/** @type {Array<{ title: string, content: string }>} */
@@ -336,6 +338,20 @@ async function getValidDerivations(search, results) {
 				}
 				// prefer MDY format over DMY format
 				if (hebrewDate.format === 'MDY' || hebrewDate.format === 'MD') {
+					derivation.disambiguationScore += 1;
+				}
+			}
+		} else if (derivation.function === 'leapYearQuery') {
+			derivation.disambiguation = `Is ${derivation.year} a leap year`;
+			if (derivation.calendar === 'hebrew') {
+				derivation.disambiguation += ' on the Hebrew calendar';
+				derivation.disambiguationScore += 1;
+				if (derivation.year > 4000) {
+					derivation.disambiguationScore += 1;
+				}
+			} else if (derivation.calendar === 'gregorian') {
+				derivation.disambiguation += ' on the Gregorian calendar';
+				if (derivation.year <= 4000) {
 					derivation.disambiguationScore += 1;
 				}
 			}
@@ -821,6 +837,25 @@ function sefirasHaOmerQuery(derivation) {
 			sections.push({ title: RESULT, content: 'There is no omer count for this date' });
 		}
 	}
+
+	return sections;
+}
+
+/**
+ * Generate sections for a Leap Year query
+ * @param {{ function: string, year: number, calendar: "hebrew" | "gregorian" }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function leapYearQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+
+	const result = derivation.calendar === 'hebrew' ? isHebrewLeapYear(derivation.year) : isGregorianLeapYear(derivation.year);
+
+	sections.push({ title: INPUT_INTERPRETATION, content: `Is ${derivation.year} a leap year in the ${properCase(derivation.calendar)} calendar?` });
+	sections.push({ title: RESULT, content: result.isLeapYear ? `Yes, ${derivation.year} is a leap year` : `No, ${derivation.year} is not a leap year` });
+	sections.push({ title: 'Reason', content: result.reason });
+	sections.push({ title: 'Next Leap Year', content: result.nextLeapYearReason });
 
 	return sections;
 }
