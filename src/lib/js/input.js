@@ -123,6 +123,26 @@ export async function calculateQuery(search, options = {}) {
 }
 
 /**
+ * Format a parse result date
+ * @param {{ gregorianDate?: { year: number, month: number, day: number, format: string, afterSunset: boolean }, hebrewDate?: { year: number, month: number, day: number, format: string }}} date - The date to format
+ * @returns {string} The formatted date
+ */
+function formatParseResultDate(date) {
+	if (date.gregorianDate) {
+		date.gregorianDate.year = date.gregorianDate.year ?? new Date().getFullYear();
+		date.gregorianDate.month = date.gregorianDate.month ?? 1;
+		date.gregorianDate.day = date.gregorianDate.day ?? 1;
+		return formatDate(date.gregorianDate.year, date.gregorianDate.month, date.gregorianDate.day) + (date.gregorianDate.afterSunset ? ' after sunset' : '');
+	} else if (date.hebrewDate) {
+		date.hebrewDate.year = date.hebrewDate.year ?? new HDate().getFullYear();
+		date.hebrewDate.month = date.hebrewDate.month ?? 1;
+		date.hebrewDate.day = date.hebrewDate.day ?? 1;
+		return formatHebrewDateEn(new HDate(date.hebrewDate.day, date.hebrewDate.month, date.hebrewDate.year));
+	}
+	throw new Error('Invalid date');
+}
+
+/**
  * Filter the results of the parser to only the ones that are valid and add disambiguation information
  *
  * @param {string} search The original search query
@@ -357,6 +377,8 @@ async function getValidDerivations(search, results) {
 					derivation.disambiguationScore += 1;
 				}
 			}
+		} else if (derivation.function === 'dailyLearningQuery') {
+			derivation.disambiguation = `${LEARNING_TYPE_NAMES[derivation.dailyLearningType]} for ${formatParseResultDate(derivation.date)}`;
 		}
 		derivations[derivation.disambiguation] = derivation;
 	}

@@ -17,6 +17,8 @@ export const dailyLearningTypes = {
 	yerushalmi: ['yerushalmiYomiVilna', 'yerushalmiYomiSchottenstein'],
 	'yerushalmi yomi vilna': ['yerushalmiYomiVilna'],
 	'yerushalmi yomi schottenstein': ['yerushalmiYomiSchottenstein'],
+	'yerushalmi vilna': ['yerushalmiYomiVilna'],
+	'yerushalmi schottenstein': ['yerushalmiYomiSchottenstein'],
 	vilna: ['yerushalmiYomiVilna'],
 	schottenstein: ['yerushalmiYomiSchottenstein'],
 	'chofetz chaim': ['chofetzChaim'],
