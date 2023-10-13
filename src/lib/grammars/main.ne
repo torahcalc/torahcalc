@@ -3,7 +3,7 @@
 # Example queries supported
 # =========================
 #
-# Unit conversions
+# Unit Conversions
 # ----------------
 # - Convert 10 amos to meters
 # - Convert 1 amah to tefachim.
@@ -13,13 +13,25 @@
 # - How many chalakim are in an hour?
 # - Conversion chart for 1 mil
 #
-# Gematria calculations
+# Gematria Calculations
 # ---------------------
 # - Calculate Gematria of תורה.
 # - Calculate Mispar Gadol of מלך.
 # - Calculate Mispar Siduri of פרעה.
 # - Calculate Mispar Katan Mispari of משיח.
 # - Calculate AvGad of משה.
+#
+# Gematria Search
+# ---------------
+# - What words have a gematria of 613?
+# - What words have the same gematria as תורה?
+# - What pesukim have a gematria of 613?
+#
+# Gematria Two-Word Match Finder
+# ------------------------------
+# - Calculate gematria equivalences for תורה and משנה.
+# - Calculate gematria equivalences for תורה and משנה with Mispar Katan Mispari.
+# - Calculate gematria equivalences for תורה and משנה in the same method.
 #
 # Zmanim
 # ------
@@ -136,6 +148,8 @@ optionalWordsEnd[STRING] -> $STRING _ {% data => data[0] %}
 main -> query[unitConversionQuery] {% data => data[0][0] %}
       | query[conversionChartQuery] {% data => data[0][0] %}
       | query[gematriaQuery] {% data => data[0][0] %}
+      | query[gematriaSearchQuery] {% data => data[0][0] %}
+      | query[gematriaTwoWordMatchQuery] {% data => data[0][0] %}
       | query[zmanimQuery] {% data => data[0][0] %}
       | query[hebrewCalendarQuery] {% data => data[0][0] %}
       | query[moladQuery] {% data => data[0][0] %}
@@ -154,6 +168,19 @@ conversionChartQuery -> optionalWords[("conversion" | "conversions" | "convert")
 
 # Gematria queries
 gematriaQuery -> optionalWords[("calculate" | "compute" | "what is" | "what's" | "how much is" | "how many is")] optionalWords["the"] gematriaMethod _ optionalWords["of"] hebrewString {% data => ({function: "gematriaQuery", gematriaMethod: data[2], text: data[5]}) %}
+
+# Gematria search queries
+gematriaSearchQuery -> gematriaSearchPrefix __ hebrewString {% data => ({function: "gematriaSearchQuery", gematriaMethod: data[0], text: data[2] }) %}
+                     | gematriaSearchPrefix __ int {% data => ({function: "gematriaSearchQuery", gematriaMethod: data[0], value: data[2] }) %}
+
+gematriaSearchPrefix -> optionalWords[("calculate" | "what" | "which" | "list" | "show" | "display" | "find" | "search")] ("words" | "pesukim" | "words and pesukim" | "verses" | "words and verses" | "sentences" | "phrases" | "words and phrases" | "words and sentences") optionalWords["have"] optionalWords[("the" | "a" | "the same")] gematriaMethod __ ("of" | "as") {% data => data[4] %}
+
+# Gematria two-word match finder queries
+gematriaTwoWordMatchQuery -> gematriaTwoWordMatchPrefix {% data => ({function: "gematriaTwoWordMatchQuery", ...data[0]}) %}
+                           | gematriaTwoWordMatchPrefix __ optionalWords[("with" | "in")] gematriaMethod {% data => ({function: "gematriaTwoWordMatchQuery", ...data[0], gematriaMethod: data[3]}) %}
+                           | gematriaTwoWordMatchPrefix __ optionalWords[("with" | "in")] optionalWords["the"] "same method" {% data => ({function: "gematriaTwoWordMatchQuery", ...data[0], sameMethod: true}) %}
+
+gematriaTwoWordMatchPrefix -> optionalWords[("calculate" | "list" | "show" | "display" | "find" | "search")] gematriaMethod __ ("equivalences" | "matches") __ optionalWords[("of" | "for" | "with")] hebrewString __ "and" __ hebrewString {% data => ({ word1: data[6], word2: data[10] }) %}
 
 # Hebrew words for Gematria calculations
 hebrewString -> [\u05D0-\u05EA\u05F0\u05F1\u05F2\uFB1F\uFB2E-\uFB30\uFB4F\uFB21\uFB31\uFB4C\uFB32\uFB33\uFB22\uFB34\uFB23\uFB4B\uFB35\uFB36\uFB38\uFB39\uFB1D\uFB3A\uFB3B\uFB4D\uFB24\uFB3C\uFB25\uFB26\uFB3E\uFB40\u05C6\uFB41\uFB42\uFB20\uFB43\uFB44\uFB4E\uFB46\uFB47\uFB48\uFB27\uFB49\uFB2A-\uFB2D\uFB4A\uFB28.!?,;:()\s+\-\u0591-\u05CF\u05F3\u05F4\uFB1D\uFB1E]:+ {% data => displayHebrew(data[0].join("")) %}

@@ -3,7 +3,7 @@ import nearley from 'nearley';
 import grammar from '$lib/grammars/generated/main.cjs';
 import { LEARNING_TYPE_NAMES, calculateDailyLearning } from './dailylearning';
 import { formatHebrewDateEn, gregorianToHebrew, hebrewToGregorian } from './dateconverter';
-import { METHOD_NAMES, calculateGematria } from './gematria';
+import { METHOD_NAMES, WORD_LIST_NAMES, calculateGematria, getListOfGematriasInCommon, searchGematria } from './gematria';
 import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears';
 import { calculateMolad } from './molad';
 import { calculateOmerDate, calculateOmerHebrew } from './omer';
@@ -90,6 +90,8 @@ export async function calculateQuery(search, options = {}) {
 		unitConversionQuery: async () => await unitConversionQuery(derivation),
 		conversionChartQuery: async () => await conversionChartQuery(derivation),
 		gematriaQuery: () => gematriaQuery(derivation),
+		gematriaSearchQuery: () => gematriaSearchQuery(derivation),
+		gematriaTwoWordMatchQuery: () => gematriaTwoWordMatchQuery(derivation),
 		zmanimQuery: async () => await zmanimQuery(derivation),
 		hebrewCalendarQuery: () => hebrewCalendarQuery(derivation),
 		moladQuery: () => moladQuery(derivation),
@@ -513,9 +515,6 @@ function gematriaQuery(derivation) {
 	const sections = [];
 	const gematriaResult = calculateGematria({ text: derivation.text });
 	const primaryResult = gematriaResult[derivation.gematriaMethod];
-	if (!primaryResult) {
-		throw new InputError(`The ${derivation.gematriaMethod} gematria method is not supported.`);
-	}
 	const method = METHOD_NAMES[derivation.gematriaMethod];
 	sections.push({ title: INPUT_INTERPRETATION, content: `Calculate ${method.name} of "${derivation.text}"` });
 	sections.push({ title: RESULT, content: `${formatNumberHTML(primaryResult)} in ${method.name}` });
@@ -526,6 +525,103 @@ function gematriaQuery(derivation) {
 	});
 	const gematriaTable = dataToHtmlTable(data, { headers: ['Method', 'Result'], class: 'table table-striped table-bordered' });
 	sections.push({ title: 'Other Methods', content: gematriaTable });
+	return sections;
+}
+
+/**
+ * Generate sections for a gematria search query
+ * @param {{ function: string, gematriaMethod: string, value?: number, text?: string }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function gematriaSearchQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+
+	const methodName = METHOD_NAMES[derivation.gematriaMethod].name;
+	if (derivation.gematriaMethod !== 'standard') {
+		throw new InputError('The Gematria search function currently only supports the standard Gematria method.');
+	}
+
+	let value = 0;
+	if (derivation.text) {
+		const gematriaResult = calculateGematria({ text: derivation.text });
+		const primaryResult = gematriaResult[derivation.gematriaMethod];
+		value = primaryResult;
+		sections.push({ title: INPUT_INTERPRETATION, content: `Find words with the standard Gematria value equal to the ${methodName} of "${derivation.text}"` });
+	} else if (derivation.value) {
+		value = derivation.value;
+		sections.push({ title: INPUT_INTERPRETATION, content: `Find words with the standard Gematria value equal to ${formatNumberHTML(value)}` });
+	} else {
+		throw new InputError('The value or text parameter must be specified.');
+	}
+
+	const matches = searchGematria(value);
+	let gematriaWordLists = '';
+	for (const [wordListKey, words] of Object.entries(matches)) {
+		const listName = WORD_LIST_NAMES[wordListKey];
+		let wordList = '<ul>';
+		for (const word of words) {
+			wordList += `<li>${word}</li>`;
+		}
+		wordList += '</ul>';
+		if (words.length > 0) {
+			gematriaWordLists += `<h4>${listName}</h4>${wordList}`;
+		}
+	}
+	sections.push({ title: RESULT, content: gematriaWordLists });
+
+	return sections;
+}
+
+/**
+ * Generate sections for a gematria two-word match query
+ * @param {{ function: string, gematriaMethod?: string, word1: string, word2: string, sameMethod?: boolean }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function gematriaTwoWordMatchQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+
+	const gematriaMethodName = derivation.gematriaMethod ? METHOD_NAMES[derivation.gematriaMethod].name : '';
+
+	if (derivation.gematriaMethod) {
+		sections.push({ title: INPUT_INTERPRETATION, content: `Find gematria equivalences for "${derivation.word1}" and "${derivation.word2}" with the ${gematriaMethodName} method` });
+	} else if (derivation.sameMethod) {
+		sections.push({ title: INPUT_INTERPRETATION, content: `Find gematria equivalences for "${derivation.word1}" and "${derivation.word2}" with the same method` });
+	} else {
+		sections.push({ title: INPUT_INTERPRETATION, content: `Find gematria equivalences for "${derivation.word1}" and "${derivation.word2}"` });
+	}
+
+	const results = getListOfGematriasInCommon(derivation.word1, derivation.word2);
+
+	// filter results
+	const filteredResults = results.filter((result) => {
+		return !(
+			(gematriaMethodName && result.method1.name !== gematriaMethodName && result.method2.name !== gematriaMethodName) ||
+			(derivation.sameMethod && result.method1.name !== result.method2.name)
+		);
+	});
+
+	if (filteredResults.length === 0) {
+		sections.push({ title: RESULT, content: 'No gematria values in common were found.' });
+	} else {
+		let resultTable = '<div style="display: grid; grid-template-columns: 1fr 1fr 5fr 1fr 5fr; text-align: center; grid-row-gap: 0.5rem; grid-column-gap: 0rem; align-items: center;">';
+		for (const result of filteredResults) {
+			resultTable += `<div class="border rounded p-2">${formatNumberHTML(result.value)}</div>`;
+			resultTable += `<div>=</div>`;
+			resultTable += `<div class="border rounded p-2">${result.method1.name} of "${derivation.word1}"</div>`;
+			resultTable += `<div>=</div>`;
+			resultTable += `<div class="border rounded p-2">${result.method2.name} of "${derivation.word2}"</div>`;
+		}
+		resultTable += '</div>';
+		sections.push({ title: RESULT, content: resultTable });
+	}
+
+	sections.push({
+		title: 'About',
+		content: `<p class="small m-0">Javascript adaptation by TorahCalc. Original code in Kotlin by <a href="ssternbach@torahdownloads.com">ssternbach@torahdownloads.com</a>.
+					Check out <a href="https://torahdownloads.com/">TorahDownloads.com</a> to find tens of thousands of shiurim on hundreds of topics, all available for free to stream or download!</p>`,
+	});
 	return sections;
 }
 

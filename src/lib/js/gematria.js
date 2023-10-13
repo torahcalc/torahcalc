@@ -162,6 +162,20 @@ export const LETTER_SPELLING_VALUES = {
 };
 
 /**
+ * Display names for each word list
+ * @type {{ [key: string]: string }}
+ */
+export const WORD_LIST_NAMES = {
+	COMMON_WORDS: 'Common Hebrew Words',
+	TORAH_WORDS: 'Words in the Torah',
+	BEREISHIS_PESUKIM: 'Pesukim (Verses) in Bereishis',
+	SHEMOS_PESUKIM: 'Pesukim (Verses) in Shemos',
+	VAYIKRA_PESUKIM: 'Pesukim (Verses) in Vayikra',
+	BAMIDBAR_PESUKIM: 'Pesukim (Verses) in Bamidbar',
+	DEVARIM_PESUKIM: 'Pesukim (Verses) in Devarim',
+};
+
+/**
  * @typedef {Object} GematriaMethodName
  * @property {string} name - The name of the gematria method in English
  * @property {string} hebrewName - The name of the gematria method in Hebrew
@@ -173,10 +187,10 @@ export const LETTER_SPELLING_VALUES = {
  * @type {{ [key: string]: GematriaMethodName }}
  */
 export const METHOD_NAMES = {
-	standard: { name: 'Mispar Hechrachi (Standard)', hebrewName: 'מספר החרכי' },
+	standard: { name: 'Mispar Hechrachi (Standard Value)', hebrewName: 'מספר החרכי' },
 	gadol: { name: 'Mispar Gadol (Large Sofit)', hebrewName: 'מספר גדול' },
-	siduri: { name: 'Mispar Siduri (Ordinal)', hebrewName: 'מספר סידורי' },
-	katan: { name: 'Mispar Katan (Reduced)', hebrewName: 'מספר קטן' },
+	siduri: { name: 'Mispar Siduri (Ordinal Value)', hebrewName: 'מספר סידורי' },
+	katan: { name: 'Mispar Katan (Reduced Value)', hebrewName: 'מספר קטן' },
 	perati: { name: 'Mispar Perati (Squared Values)', hebrewName: 'מספר פרטי' },
 	shemi: { name: 'Mispar Shemi / Milui (Full Name)', hebrewName: 'מספר שמי / מילוי' },
 	neelam: { name: "Mispar Ne'elam", hebrewName: 'מספר נעלם' },
@@ -356,27 +370,13 @@ export function calculateGematria({ text, miluiInput = {} }) {
 }
 
 /**
- * @typedef {Object} GematriaSearchOptions
- * @property {string} [text] - The word or phrase to calculate the gematria value of
- * @property {number} [value] - The gematria value to search for
- */
-
-/**
  * Find words and verses in the Torah with the same gematria value as the given word or phrase
  *
- * @param {GematriaSearchOptions} options - The options for calculating the gematria value
- * @returns {{ [key: string]: string[] }} The words and verses in the Torah with the same gematria value as the given word or phrase
+ * TODO: Add support for specifying the target gematria method (note - this is not currently supported by the data objects)
+ * 
+ * @param {Number} value - The gematria value to search for
  */
-export function searchGematria({ text, value }) {
-	if (text !== undefined) {
-		if (value !== undefined) {
-			throw new Error("Unexpected 'text' and 'value' parameters. Only one of these parameters should be provided.");
-		}
-		value = calculateGematria({ text }).standard;
-	}
-	if (value === undefined) {
-		throw new Error("Missing 'text' or 'value' parameter");
-	}
+export function searchGematria(value) {
 	return {
 		COMMON_WORDS: COMMON_WORDS[value] || [],
 		TORAH_WORDS: TORAH_WORDS[value] || [],

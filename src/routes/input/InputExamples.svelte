@@ -1,6 +1,6 @@
 <script>
 	import Fa from 'svelte-fa/src/fa.svelte';
-	import { faCalculator, faSunrise, faScaleBalanced, faCalendarAlt, faMoonOverSun, faWheatAlt, faCalendarPlus, faBookOpenCover } from '@danieloi/pro-solid-svg-icons';
+	import { faCalculator, faSunrise, faScaleBalanced, faCalendarAlt, faMoonOverSun, faWheatAlt, faCalendarPlus, faBookOpenCover, faListCheck, faTableColumns } from '@danieloi/pro-solid-svg-icons';
 	import { getConverters, getUnit, getUnits } from '$lib/js/unitconverter';
 	import { METHOD_NAMES } from '$lib/js/gematria';
 	import { ZMANIM_NAMES } from '$lib/js/zmanim';
@@ -72,6 +72,30 @@
 						<AvailableOptionsList array={Object.values(METHOD_NAMES).map((method) => method.name)} />
 					</details>
 				</div>
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<div class="category">
+				<h5><Fa icon={faListCheck} class="me-1" /> Gematria Search</h5>
+
+				<ul class="list-unstyled">
+					<li><InputExample {clickFunction} query="What words have a gematria of 613?" /></li>
+					<li><InputExample {clickFunction} query="What words have the same gematria as תורה?" /></li>
+					<li><InputExample {clickFunction} query="What pesukim have a gematria of 930?" /></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<div class="category">
+				<h5><Fa icon={faTableColumns} class="me-1" /> Gematria Two-Word Match</h5>
+
+				<ul class="list-unstyled">
+					<li><InputExample {clickFunction} query="Gematria equivalences for תורה and משנה." /></li>
+					<li><InputExample {clickFunction} query="Gematria equivalences for תפילין and חיים with Mispar Kolel." /></li>
+					<li><InputExample {clickFunction} query="Gematria equivalences for תורה and משנה in the same method." /></li>
+				</ul>
 			</div>
 		</div>
 
@@ -191,28 +215,34 @@
 	.category h5 {
 		color: rgba(var(--category-color), 1);
 	}
-	.categories > :nth-child(8n + 1) .category {
-		--category-color: 56, 142, 60;
+	.categories > :nth-child(10n + 1) .category {
+		--category-color: 56, 142, 60; /* green */
 	}
-	.categories > :nth-child(8n + 2) .category {
-		--category-color: 63, 81, 181;
+	.categories > :nth-child(10n + 2) .category {
+		--category-color: 63, 81, 181; /* indigo */
 	}
-	.categories > :nth-child(8n + 3) .category {
-		--category-color: 233, 30, 99;
+	.categories > :nth-child(10n + 3) .category {
+		--category-color: 156, 39, 176; /* purple */
 	}
-	.categories > :nth-child(8n + 4) .category {
-		--category-color: 156, 39, 176;
+	.categories > :nth-child(10n + 4) .category {
+		--category-color: 33, 150, 243; /* blue */
 	}
-	.categories > :nth-child(8n + 5) .category {
-		--category-color: 0, 150, 136;
+	.categories > :nth-child(10n + 5) .category {
+		--category-color: 233, 30, 99; /* magenta */
 	}
-	.categories > :nth-child(8n + 6) .category {
-		--category-color: 121, 85, 72;
+	.categories > :nth-child(10n + 6) .category {
+		--category-color: 244, 67, 54; /* red */
 	}
-	.categories > :nth-child(8n + 7) .category {
-		--category-color: 255, 152, 0;
+	.categories > :nth-child(10n + 7) .category {
+		--category-color: 0, 150, 136; /* teal */
 	}
-	.categories > :nth-child(8n + 8) .category {
-		--category-color: 96, 125, 139;
+	.categories > :nth-child(10n + 8) .category {
+		--category-color: 121, 85, 72; /* brown */
+	}
+	.categories > :nth-child(10n + 9) .category {
+		--category-color: 255, 152, 0; /* orange */
+	}
+	.categories > :nth-child(10n + 10) .category {
+		--category-color: 96, 125, 139; /* blue-grey */
 	}
 </style>
