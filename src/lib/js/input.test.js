@@ -233,25 +233,110 @@ describe('test gematria two-word match', () => {
 });
 
 describe('test hebrew calendar', () => {
-	it('TODO: Not yet tested');
+	it('Convert 21 Kislev, 5730 to Gregorian calendar', async () => {
+		const sections = await calculateQuery('Convert 21 Kislev, 5730 to Gregorian calendar');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Convert 21st of Kislev, 5730 to Gregorian calendar');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toBe('Mon, December 1, 1969');
+	});
+
+	it('Convert December 1, 1969 to Hebrew calendar', async () => {
+		const sections = await calculateQuery('Convert December 1, 1969 to Hebrew calendar');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Convert Mon, December 1, 1969 to Hebrew calendar');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toBe('21st of Kislev, 5730 / כ״א כִּסְלֵו תש״ל');
+	});
+
+	it('Convert December 1, 1969 after sunset', async () => {
+		const sections = await calculateQuery('Convert December 1, 1969 after sunset');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Convert Mon, December 1, 1969 (after sunset) to Hebrew calendar');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toBe('22nd of Kislev, 5730 / כ״ב כִּסְלֵו תש״ל');
+	});
+
+	it('Convert 5780 to Gregorian calendar', async () => {
+		const sections = await calculateQuery('Convert 5780 to Gregorian calendar');
+		expect(sections[0].title).toBe('');
+		expect(sections[0].content).toContain('Convert Hebrew year 5780 to Gregorian calendar');
+		expect(sections[0].content).toContain('Convert Gregorian year 5780 to Hebrew calendar');
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toBe(`Convert Hebrew year ${formatNumberHTML(5780, -1)} to Gregorian calendar`);
+		expect(sections[2].title).toBe('Result');
+		expect(sections[2].content).toBe(`Hebrew year ${formatNumberHTML(5780, -1)} starts in the Gregorian year ${formatNumberHTML(2019, -1)} and ends in ${formatNumberHTML(2020, -1)}`);
+	});
+
+	it('When will 14 Nissan fall in 5784', async () => {
+		const sections = await calculateQuery('When will 14 Nissan fall in 5784');
+		expect(sections[0].title).toBe('');
+		expect(sections[0].content).toContain('Convert 14th of Nissan, 5784 to Gregorian calendar');
+		expect(sections[0].content).toContain('Convert 14th of Nissan, 9544 to Gregorian calendar');
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toBe('Convert 14th of Nissan, 5784 to Gregorian calendar');
+		expect(sections[2].title).toBe('Result');
+		expect(sections[2].content).toBe('Mon, April 22, 2024');
+	});
+
+	it('When will 14 Nissan fall next year', async () => {
+		const sections = await calculateQuery('When will 14 Nissan fall next year');
+		expect(sections[0].title).toBe('');
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toContain('Convert 14th of Nissan, ');
+		expect(sections[1].content).toContain(' to Gregorian calendar');
+	});
+
+	it("Today's date on Hebrew calendar", async () => {
+		const sections = await calculateQuery("Today's date on Hebrew calendar");
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('Convert ');
+		expect(sections[0].content).toContain(' to Hebrew calendar');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain(' / ');
+	});
 });
 
+// Is this year a leap year
+// Was 5775 a leap year
+// Will 5790 be a leap year
+// Is next year a leap year
+// Is Gregorian year 2023 a leap year
+// Is Hebrew year 5784 a leap year
 describe('test leap years', () => {
 	it('TODO: Not yet tested');
 });
 
+// Calculate the molad of Sivan 5781
+// When will the molad of Elul be
+// When is the next molad
+// Calculate molados for 5781
 describe('test molad', () => {
 	it('TODO: Not yet tested');
 });
 
+// Sefiras Haomer for
+// Day of Omer on May 12,
+// Day of Omer on April 17, 2023 at
+// Day of Omer on 18
 describe('test sefiras haomer', () => {
 	it('TODO: Not yet tested');
 });
 
+// What time is Chatzos in New York
+// Zmanim for
+// Zmanim for 1 Teves 5784 in
+// What time is sunset on 12/25/2023 in Los Angeles
+// How long is a Shaah Zmanis in 31.776, 35.23
 describe('test zmanim', () => {
 	it('TODO: Not yet tested');
 });
 
+// What is today's Daf Yomi
+// What is the Daf Yomi for tomorrow
+// What is the Nach Yomi for May 12, 2023
+// What are the daily psalms for tomorrow
+// What is the Weekly Daf for 18 Iyar
 describe('test daily learning', () => {
 	it('TODO: Not yet tested');
 });
