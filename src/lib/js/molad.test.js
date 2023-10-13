@@ -60,8 +60,8 @@ describe('test calculateMolad', () => {
 		const response = calculateMolad(5785, 6); // August 23, 2025 11:26 pm and 6 chalakim
 		expect(response).toStrictEqual({
 			dayOfWeekFormat: {
-				'12Hr': 'Saturday evening, 26 minutes and 6 chalakim after 11:00 pm',
-				'24Hr': 'Saturday evening, 26 minutes and 6 chalakim after 23:00',
+				'12Hr': 'Saturday afternoon, 26 minutes and 6 chalakim after 11:00 pm',
+				'24Hr': 'Saturday afternoon, 26 minutes and 6 chalakim after 23:00',
 			},
 			hebrewDateFormat: {
 				'12Hr': '29th of Av, 5785, 11:26 pm and 6 chalakim',
@@ -116,5 +116,59 @@ describe('test calculateMolad', () => {
 	it('calculates molad in year 5767', async () => {
 		const response = calculateMolad(5767, 12); // February 17, 2007 11:17:36 am 11 chalakim
 		expect(response.timeString).toBe('2007-02-17 11:17:36.667');
+	});
+
+	it('calculates molad where 0 minute should be omitted', async () => {
+		const response = calculateMolad(5771, 13); // February 17, 2007 11:17:36 am 11 chalakim
+    expect(response).toStrictEqual({
+      timeString: '2011-03-05 00:00:23.333',
+      timeFormat: {
+        '12Hr': 'Saturday, Mar. 5, 2011, 12:00 am and 7 chalakim',
+        '24Hr': 'Saturday, Mar. 5, 2011, 00:00 and 7 chalakim'
+      },
+      dayOfWeekFormat: {
+        '12Hr': 'Saturday morning, 7 chalakim after 12:00 am',
+        '24Hr': 'Saturday morning, 7 chalakim after 00:00'
+      },
+      hebrewDateFormat: {
+        '12Hr': '29th of Adar, 5771, 12:00 am and 7 chalakim',
+        '24Hr': '29th of Adar, 5771, 00:00 and 7 chalakim'
+      },
+      monthName: 'Adar II 5771',
+      shabbosMevarchim: {
+        roshChodesh: 'Sun, March 6, 2011 and Mon, March 7, 2011',
+        roshChodeshDayOfWeekDisplayEn: "B'Yom Rishon Uv'Yom Sheni",
+        roshChodeshDayOfWeekDisplayHe: 'ביום ראשון וביום שני',
+        shabbosMevarchim: 'Sat, March 5, 2011',
+        roshHashanah: false
+      }
+    });
+	});
+
+  it('calculates molad where 0 chalakim should be omitted', async () => {
+		const response = calculateMolad(5784, 7); // February 17, 2007 11:17:36 am 11 chalakim
+    expect(response).toStrictEqual({
+      "timeString": "2023-09-15 05:49:00.000",
+      "timeFormat": {
+          "12Hr": "Friday, Sep. 15, 2023, 5:49 am",
+          "24Hr": "Friday, Sep. 15, 2023, 05:49"
+      },
+      "dayOfWeekFormat": {
+          "12Hr": "Friday morning, 49 minutes after 5:00 am",
+          "24Hr": "Friday morning, 49 minutes after 05:00"
+      },
+      "hebrewDateFormat": {
+          "12Hr": "29th of Elul, 5783, 5:49 am",
+          "24Hr": "29th of Elul, 5783, 05:49"
+      },
+      "monthName": "Tishrei 5784",
+      "shabbosMevarchim": {
+          "roshChodesh": "Sat, September 16, 2023",
+          "roshChodeshDayOfWeekDisplayEn": "B'Yom Shabbos Kodesh",
+          "roshChodeshDayOfWeekDisplayHe": "ביום שבת קודש",
+          "shabbosMevarchim": "Sat, September 9, 2023",
+          "roshHashanah": true
+      }
+    });
 	});
 });

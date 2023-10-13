@@ -111,15 +111,15 @@ export function calculateMolad(year, month) {
 
 	// Time format (eg. "Thursday, Oct. 3, 2024, 3:21 pm and 13 chalakim")
 	const timeFormat = {
-		'12Hr': newMolad.format('dddd, MMMM D, YYYY, h:mm a') + ' and ' + chalakimText,
-		'24Hr': newMolad.format('dddd, MMMM D, YYYY, HH:mm') + ' and ' + chalakimText,
+		'12Hr': newMolad.format('dddd, MMMM D, YYYY, h:mm a') + formatChalakimText(chalakim),
+		'24Hr': newMolad.format('dddd, MMMM D, YYYY, HH:mm') + formatChalakimText(chalakim),
 	};
 
 	// Hebrew date format (eg. "1st of Tishrei, 5783, 3:21 pm and 13 chalakim")
 	const hebrewDate = gregorianToHebrew({ year: newMolad.year(), month: newMolad.month() + 1, day: newMolad.date() });
 	const hebrewDateFormat = {
-		'12Hr': hebrewDate.displayEn + ', ' + newMolad.format('h:mm a') + ' and ' + chalakimText,
-		'24Hr': hebrewDate.displayEn + ', ' + newMolad.format('HH:mm') + ' and ' + chalakimText,
+		'12Hr': hebrewDate.displayEn + ', ' + newMolad.format('h:mm a') + formatChalakimText(chalakim),
+		'24Hr': hebrewDate.displayEn + ', ' + newMolad.format('HH:mm') + formatChalakimText(chalakim),
 	};
 
 	// Day of week format (eg. "Thursday afternoon, 21 minutes and 13 chalakim after 3:00 pm")
@@ -131,7 +131,7 @@ export function calculateMolad(year, month) {
 	} else {
 		dayOfWeekStr += ' evening, ';
 	}
-	dayOfWeekStr += newMolad.minute() + ' minutes and ' + chalakimText + ' after ';
+	dayOfWeekStr += formatDayOfWeekWithChalakimText(newMolad.minute(), chalakim);
 	const dayOfWeekFormat = {
 		'12Hr': dayOfWeekStr + newMolad.format('h:00 a'),
 		'24Hr': dayOfWeekStr + newMolad.format('HH:00'),
@@ -170,4 +170,35 @@ export function calculateMolad(year, month) {
 			roshHashanah: month === 7,
 		},
 	};
+}
+
+/**
+ * Format and display day of week with chalakim text 
+ * 
+ * @param {number} moladMinute
+ * @param {number} chalakim
+ */
+function formatDayOfWeekWithChalakimText(moladMinute, chalakim) {
+  const shouldShowMoladMinuteText = moladMinute > 0;
+  const shouldShowChalakimText = chalakim > 0;
+  const andText = shouldShowMoladMinuteText && shouldShowChalakimText ? ' and ' : '';
+  const afterText = shouldShowMoladMinuteText || shouldShowChalakimText ? ' after ' : '';
+  const moladMinuteText = shouldShowMoladMinuteText ? moladMinute + ' minutes' : '';
+
+  return moladMinuteText + andText + formatChalakimText(chalakim, '') + afterText;
+}
+
+/**
+ * Format and display chalakim text only when chalakim is greater than 0
+ * 
+ * @param {number} chalakim
+ * @param {string} andText - with default equal to ' and '
+ */
+function formatChalakimText(chalakim, andText = ' and ') {
+  const chalakimText = `${chalakim} ${chalakim == 1 ? 'chelek' : 'chalakim'}`;
+  if (chalakim > 0) {
+    return andText + chalakimText;
+  }
+
+  return '';
 }
