@@ -9,5 +9,5 @@ node_modules
 .output
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-android
-ios
+android/**
+ios/**
