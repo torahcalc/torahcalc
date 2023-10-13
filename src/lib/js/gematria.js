@@ -373,7 +373,7 @@ export function calculateGematria({ text, miluiInput = {} }) {
  * Find words and verses in the Torah with the same gematria value as the given word or phrase
  *
  * TODO: Add support for specifying the target gematria method (note - this is not currently supported by the data objects)
- * 
+ *
  * @param {Number} value - The gematria value to search for
  */
 export function searchGematria(value) {
