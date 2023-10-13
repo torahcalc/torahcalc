@@ -1,18 +1,19 @@
 import nearley from 'nearley';
 import grammar from '$lib/grammars/generated/main.cjs';
+import { LEARNING_TYPE_NAMES, calculateDailyLearning } from './dailylearning';
+import { formatHebrewDateEn, gregorianToHebrew, hebrewToGregorian } from './dateconverter';
+import { METHOD_NAMES, calculateGematria } from './gematria';
+import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears';
+import { calculateMolad } from './molad';
+import { calculateOmerDate, calculateOmerHebrew } from './omer';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
 import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, properCase } from './utils';
-import { METHOD_NAMES, calculateGematria } from './gematria';
 import { ZMANIM_NAMES } from './zmanim';
-import { calculateMolad } from './molad';
-import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears';
-import { formatHebrewDateEn, gregorianToHebrew, hebrewToGregorian } from './dateconverter';
 import { HDate } from '@hebcal/core';
 import DOMPurify from 'dompurify';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { calculateOmerDate, calculateOmerHebrew } from './omer';
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
@@ -93,6 +94,7 @@ export async function calculateQuery(search, options = {}) {
 		moladQuery: () => moladQuery(derivation),
 		sefirasHaOmerQuery: () => sefirasHaOmerQuery(derivation),
 		leapYearQuery: () => leapYearQuery(derivation),
+		dailyLearningQuery: () => dailyLearningQuery(derivation),
 	};
 
 	/** @type {Array<{ title: string, content: string }>} */
@@ -856,6 +858,51 @@ function leapYearQuery(derivation) {
 	sections.push({ title: RESULT, content: result.isLeapYear ? `Yes, ${derivation.year} is a leap year` : `No, ${derivation.year} is not a leap year` });
 	sections.push({ title: 'Reason', content: result.reason });
 	sections.push({ title: 'Next Leap Year', content: result.nextLeapYearReason });
+
+	return sections;
+}
+
+/**
+ * Generate sections for a Daily Learning query
+ * @param {{ function: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } }, dailyLearningType: string }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function dailyLearningQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+
+	let date = new Date();
+	if (derivation?.date?.gregorianDate) {
+		const gregorianDate = derivation.date.gregorianDate;
+		gregorianDate.year = gregorianDate.year ?? new Date().getFullYear();
+		gregorianDate.month = gregorianDate.month ?? 1;
+		gregorianDate.day = gregorianDate.day ?? 1;
+		date = new Date(gregorianDate.year, gregorianDate.month - 1, gregorianDate.day);
+	} else if (derivation?.date?.hebrewDate) {
+		const hebrewDate = derivation.date.hebrewDate;
+		hebrewDate.year = hebrewDate.year ?? new HDate().getFullYear();
+		hebrewDate.month = hebrewDate.month ?? 1;
+		hebrewDate.day = hebrewDate.day ?? 1;
+		date = hebrewToGregorian({ year: hebrewDate.year, month: hebrewDate.month, day: hebrewDate.day }).date;
+	}
+
+	const results = calculateDailyLearning(dayjs(date).format('YYYY-MM-DD'));
+
+	/** @type {import('./dailylearning').DailyLearning | null} */
+	// @ts-ignore - assume type is DailyLearning
+	const learningResult = results[derivation.dailyLearningType];
+
+	const learningTypeName = LEARNING_TYPE_NAMES[derivation.dailyLearningType];
+
+	sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the ${learningTypeName} for ${formatDateObject(date)}` });
+	if (learningResult !== null) {
+		sections.push({ title: RESULT, content: `${learningResult.name} / ${learningResult.hebrewName}` });
+		if (learningResult.url) {
+			sections.push({ title: SOURCES, content: `Read online at <a href="${learningResult.url}" target="_blank">${learningResult.url}</a>` });
+		}
+	} else {
+		sections.push({ title: RESULT, content: `There is no ${learningTypeName} for this date` });
+	}
 
 	return sections;
 }

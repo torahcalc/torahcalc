@@ -22,6 +22,22 @@ import dayjs from 'dayjs';
 import { dateToHDate, tryOrDefault } from './utils';
 
 /**
+ * Learning type keys mapped to their full names.
+ * @type {{ [key: string]: string }}
+ */
+export const LEARNING_TYPE_NAMES = {
+	dafYomi: 'Daf Yomi',
+	nachYomi: 'Nach Yomi',
+	yerushalmiYomiVilna: 'Yerushalmi Yomi (Vilna)',
+	yerushalmiYomiSchottenstein: 'Yerushalmi Yomi (Schottenstein)',
+	chofetzChaim: 'Chofetz Chaim',
+	dailyRamban: 'Daily Rambam',
+	shemiratHaLashon: 'Shemirat HaLashon',
+	dailyPsalms: 'Daily Psalms',
+	dafWeekly: 'Daf Weekly',
+};
+
+/**
  * Calculate the daily learning for a given date.
  * @param {string} date - The date to calculate the Daf Yomi for in YYYY-MM-DD format.
  * @returns {{ [key: string]: string|DailyLearning|null }} - The Daf Yomi, Nach Yomi, Yerushalmi Yomi, Chofetz Chaim, Daily Rambam, Shemirat HaLashon, Daily Psalms, and Weekly Daf for the given date.

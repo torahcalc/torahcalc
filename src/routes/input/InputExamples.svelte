@@ -152,6 +152,27 @@
 			</div>
 		</div>
 
+		<div class="col-md-6">
+			<div class="category">
+				<h5><Fa icon={faBookOpenCover} class="me-1" /> Daily Learning / Daf Yomi</h5>
+				<ul class="list-unstyled">
+					<li><InputExample {clickFunction} query="What is today's Daf Yomi?" /></li>
+					<li><InputExample {clickFunction} query="What is the Daf Yomi for tomorrow?" /></li>
+					<li><InputExample {clickFunction} query="What is the Nach Yomi for May 12, 2023?" /></li>
+					<li><InputExample {clickFunction} query="What are the daily psalms for tomorrow?" /></li>
+					<li><InputExample {clickFunction} query="What is the Weekly Daf for 18 Iyar?" /></li>
+				</ul>
+
+				<div>
+					<details>
+						<summary>Show list of daily learning types</summary>
+
+						<AvailableOptionsList array={Object.values(LEARNING_TYPE_NAMES)} />
+					</details>
+				</div>
+			</div>
+		</div>
+
 		<div class="col-12 px-3 pt-3">
 			<h6>More input types coming soon!</h6>
 		</div>

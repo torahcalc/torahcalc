@@ -56,6 +56,14 @@
 # - Sefiras Haomer for tonight
 # - Day of Omer on May 12, 2021
 # - Day of Omer on 18 Iyar
+#
+# Daily Learning / Daf Yomi
+# -------------------------
+# - What is today's Daf Yomi?
+# - What is the Daf Yomi for tomorrow?
+# - What is the Nach Yomi for May 12, 2023?
+# - What are the daily psalms for tomorrow?
+# - What is the Weekly Daf for 18 Iyar?
 # 
 # More coming soon...
 
@@ -110,6 +118,7 @@ function getCurrentHebrewMonth() {
 @include "./generated/units.ne"  # unit, lengthUnit, areaUnit, volumeUnit, weightUnit, coinsUnit, timeUnit
 @include "./generated/gematria.ne"  # gematriaMethod
 @include "./generated/zmanim.ne"  # zman, duration
+@include "./generated/daily-learning.ne"  # dailyLearningType
 
 # Macro for matching a query with optional trailing spaces and punctuation at the end
 query[QUERY] -> _ $QUERY _ {% data => data[1] %}
@@ -119,7 +128,7 @@ query[QUERY] -> _ $QUERY _ {% data => data[1] %}
 optionalWords[STRING] -> $STRING __ {% data => data[0] %}
                   | _ {% data => null %}
 
-# Macro for matching a string with optional trailing spaces or optional whitespace
+# Macro for matching a string with optional trailing spaces or optional whitespace - can be used at the end of a query
 optionalWordsEnd[STRING] -> $STRING _ {% data => data[0] %}
                           | _ {% data => null %}
 
@@ -132,6 +141,7 @@ main -> query[unitConversionQuery] {% data => data[0][0] %}
       | query[moladQuery] {% data => data[0][0] %}
       | query[sefirasHaOmerQuery] {% data => data[0][0] %}
       | query[leapYearQuery] {% data => data[0][0] %}
+      | query[dailyLearningQuery] {% data => data[0][0] %}
 
 # Unit conversion queries
 unitConversionQuery -> optionalWords[[A-Za-z\s]:*] jsonfloat _ unit __ ("to" | "in" | "into") __ unit {% data => ({function: "unitConversionQuery", unitFrom: data[3], unitTo: data[7], amount: data[1]}) %}
@@ -184,6 +194,12 @@ sefirasHaOmerQuery -> optionalWords[("calculate" | "compute" | "what is" | "what
 # Leap Year queries
 leapYearQuery -> optionalWords[("is" | "was" | "will")] optionalWords[("gregorian" | "english" | "standard")] optionalWords["year"] gregorianYear __ optionalWords[("be a" | "a")] "leap year" {% data => ({function: "leapYearQuery", year: data[3], calendar: "gregorian"}) %}
                | optionalWords[("is" | "was" | "will")] optionalWords[("hebrew" | "jewish")] optionalWords["year"] hebrewYear __ optionalWords[("be a" | "a")] "leap year" {% data => ({function: "leapYearQuery", year: data[3], calendar: "hebrew"}) %}
+
+# Daily Learning queries
+dailyLearningQuery -> optionalWords[("what is" | "what was" | "what's" | "what are")] optionalWords["the"] optionalWords["daily"] dailyLearningType __ optionalWords[("for" | "on")] date {% data => ({function: "dailyLearningQuery", date: data[6], dailyLearningType: data[3]}) %}
+                    | optionalWords[("what is" | "what was" | "what's" | "what are")] ("today's" | "this week's") optionalWords["daily"] dailyLearningType {% data => ({function: "dailyLearningQuery", date: { gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate()}}, dailyLearningType: data[3]}) %}
+                    | optionalWords[("what is" | "what was" | "what's" | "what are")] "tomorrow's" optionalWords["daily"] dailyLearningType {% data => ({function: "dailyLearningQuery", date: { gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() + 1}}, dailyLearningType: data[3]}) %}
+                    | optionalWords[("what is" | "what was" | "what's" | "what are")] "yesterday's" optionalWords["daily"] dailyLearningType {% data => ({function: "dailyLearningQuery", date: { gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() - 1}}, dailyLearningType: data[3]}) %}
 
 # Date parsing
 date -> gregorianDate {% data => ({gregorianDate: data[0]}) %}

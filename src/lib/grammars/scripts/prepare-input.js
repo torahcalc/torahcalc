@@ -6,10 +6,12 @@ import { writeFileSync } from 'fs';
 import { units } from '../inputs/unit-inputs.js';
 import { gematriaMethods } from '../inputs/gematria-inputs.js';
 import { zmanimInputs } from '../inputs/zmanim-inputs.js';
+import { dailyLearningTypes } from '../inputs/daily-learning-inputs.js';
 
 generateUnitsGrammar('./src/lib/grammars/generated/units.ne');
 generateGematriaGrammar('./src/lib/grammars/generated/gematria.ne');
 generateZmanimGrammar('./src/lib/grammars/generated/zmanim.ne');
+generateDailyLearningGrammar('./src/lib/grammars/generated/daily-learning.ne');
 
 /**
  * Generates the units grammar
@@ -76,6 +78,24 @@ function generateZmanimGrammar(outputPath) {
 	grammar += Object.keys(durations)
 		.map((durationInput) => {
 			return durations[durationInput].map((value) => `"${durationInput.replace(/"/g, '\\"')}" {% d => '${value}' %}`).join('\n | ');
+		})
+		.join('\n | ');
+
+	writeFileSync(outputPath, grammar);
+}
+
+/**
+ * Generates the daily learning grammar
+ *
+ * @param {string} outputPath - The path to the output file with .ne extension
+ */
+function generateDailyLearningGrammar(outputPath) {
+	let grammar = '# Grammar of daily learning\n# Generated automatically from daily-learning-inputs.js in src/lib/grammars/scripts/prepare-input.js';
+
+	grammar += '\n\ndailyLearningType -> ';
+	grammar += Object.keys(dailyLearningTypes)
+		.map((typeInput) => {
+			return dailyLearningTypes[typeInput].map((value) => `"${typeInput.replace(/"/g, '\\"')}" {% d => '${value}' %}`).join('\n | ');
 		})
 		.join('\n | ');
 
