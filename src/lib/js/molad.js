@@ -155,7 +155,7 @@ export function calculateMolad(year, month) {
 		roshChodeshDayOfWeekDisplayHe += ' ' + HEBREW_DAYS_OF_WEEK[secondDayRoshChodesh.getDay()].secondDayHebrew;
 	}
 	const shabbosMevarchim = formatDateObject(lastSat);
-	
+
 	return {
 		timeString: newMolad.toISOString().replace('T', ' ').replace('Z', ''),
 		timeFormat,
