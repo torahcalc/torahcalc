@@ -1,18 +1,20 @@
+import { PUBLIC_ADAPTER, PUBLIC_BASE_URL } from '$env/static/public';
 import nearley from 'nearley';
 import grammar from '$lib/grammars/generated/main.cjs';
+import { LEARNING_TYPE_NAMES, calculateDailyLearning } from './dailylearning';
+import { formatHebrewDateEn, gregorianToHebrew, hebrewToGregorian } from './dateconverter';
+import { METHOD_NAMES, WORD_LIST_NAMES, calculateGematria, getListOfGematriasInCommon, searchGematria } from './gematria';
+import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears';
+import { calculateMolad } from './molad';
+import { calculateOmerDate, calculateOmerHebrew } from './omer';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
 import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, properCase } from './utils';
-import { METHOD_NAMES, calculateGematria } from './gematria';
 import { ZMANIM_NAMES } from './zmanim';
-import { calculateMolad } from './molad';
-import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears';
-import { formatHebrewDateEn, gregorianToHebrew, hebrewToGregorian } from './dateconverter';
 import { HDate } from '@hebcal/core';
 import DOMPurify from 'dompurify';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { calculateOmerDate, calculateOmerHebrew } from './omer';
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
@@ -66,7 +68,7 @@ export async function calculateQuery(search, options = {}) {
 	const derivations = await getValidDerivations(search, parser.results);
 
 	if (Object.keys(derivations).length === 0) {
-		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.');
+		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.', JSON.stringify(parser.results, null, 2));
 	}
 
 	const derivation = derivations[options.disambiguation ?? ''] ?? Object.values(derivations).sort((a, b) => b.disambiguationScore - a.disambiguationScore)[0];
@@ -88,11 +90,14 @@ export async function calculateQuery(search, options = {}) {
 		unitConversionQuery: async () => await unitConversionQuery(derivation),
 		conversionChartQuery: async () => await conversionChartQuery(derivation),
 		gematriaQuery: () => gematriaQuery(derivation),
+		gematriaSearchQuery: () => gematriaSearchQuery(derivation),
+		gematriaTwoWordMatchQuery: () => gematriaTwoWordMatchQuery(derivation),
 		zmanimQuery: async () => await zmanimQuery(derivation),
 		hebrewCalendarQuery: () => hebrewCalendarQuery(derivation),
 		moladQuery: () => moladQuery(derivation),
 		sefirasHaOmerQuery: () => sefirasHaOmerQuery(derivation),
 		leapYearQuery: () => leapYearQuery(derivation),
+		dailyLearningQuery: () => dailyLearningQuery(derivation),
 	};
 
 	/** @type {Array<{ title: string, content: string }>} */
@@ -118,6 +123,26 @@ export async function calculateQuery(search, options = {}) {
 	}
 
 	return [...startSections, ...calculatedSections];
+}
+
+/**
+ * Format a parse result date
+ * @param {{ gregorianDate?: { year: number, month: number, day: number, format: string, afterSunset: boolean }, hebrewDate?: { year: number, month: number, day: number, format: string }}} date - The date to format
+ * @returns {string} The formatted date
+ */
+function formatParseResultDate(date) {
+	if (date.gregorianDate) {
+		date.gregorianDate.year = date.gregorianDate.year ?? new Date().getFullYear();
+		date.gregorianDate.month = date.gregorianDate.month ?? 1;
+		date.gregorianDate.day = date.gregorianDate.day ?? 1;
+		return formatDate(date.gregorianDate.year, date.gregorianDate.month, date.gregorianDate.day) + (date.gregorianDate.afterSunset ? ' after sunset' : '');
+	} else if (date.hebrewDate) {
+		date.hebrewDate.year = date.hebrewDate.year ?? new HDate().getFullYear();
+		date.hebrewDate.month = date.hebrewDate.month ?? 1;
+		date.hebrewDate.day = date.hebrewDate.day ?? 1;
+		return formatHebrewDateEn(new HDate(date.hebrewDate.day, date.hebrewDate.month, date.hebrewDate.year));
+	}
+	throw new Error('Invalid date');
 }
 
 /**
@@ -190,7 +215,7 @@ async function getValidDerivations(search, results) {
 					// skip interpretation if the date cannot be parsed
 					continue;
 				}
-				if (hebrewDate.year > 4000) {
+				if (hebrewDate.year > 4000 && hebrewDate.year < 7000) {
 					derivation.disambiguationScore += 1;
 				}
 				// prefer MDY format over DMY format
@@ -219,95 +244,33 @@ async function getValidDerivations(search, results) {
 				derivation.disambiguation = derivation.disambiguation.trim();
 			}
 		} else if (derivation.function === 'hebrewCalendarQuery') {
-			// if there is a year but no date, add derivations with for hebrewDate and gregorianDate with only the year
+			// if there is a year and no date, convert just the year
 			if (derivation.date === undefined && derivation.year !== undefined) {
-				const hebrewDateDerivation = {
-					...derivation,
-					date: { hebrewDate: { year: derivation.year, format: 'Y' } },
-					disambiguation: `Convert Hebrew year ${derivation.year} to Gregorian calendar`,
-					year: undefined,
-				};
-				const gregorianDateDerivation = {
-					...derivation,
-					date: { gregorianDate: { year: derivation.year, format: 'Y' } },
-					disambiguation: `Convert Gregorian year ${derivation.year} to Hebrew calendar`,
-					year: undefined,
-				};
-				if (derivation.year < 4000) {
-					gregorianDateDerivation.disambiguationScore += 1;
-				} else {
-					hebrewDateDerivation.disambiguationScore += 1;
-				}
-				if (derivation.year > 0) {
-					derivations[hebrewDateDerivation.disambiguation] = hebrewDateDerivation;
-				}
-				if (derivation.year !== 0) {
-					derivations[gregorianDateDerivation.disambiguation] = gregorianDateDerivation;
-				}
-				// continue since the derivations are already added
-				continue;
-			}
-			// if there is a date without a year, and the year is separated, add derivations with the year
-			if (derivation.date !== undefined && derivation.date?.hebrewDate?.year === undefined && derivation.date?.gregorianDate?.year === undefined && derivation.year !== undefined) {
-				if (derivation.date?.hebrewDate) {
-					const hebrewYearFromGregorian = derivation.year + (derivation.year < 0 ? 3761 : 3760);
-					const gregorianDateDerivation = {
-						...derivation,
-						date: { hebrewDate: { ...derivation.date.hebrewDate, year: hebrewYearFromGregorian } },
-						disambiguation: `Convert ${formatHebrewDateEn(new HDate(derivation.date.hebrewDate.day, derivation.date.hebrewDate.month, hebrewYearFromGregorian))} to Gregorian calendar`,
-						year: undefined,
-						disambiguationScore: derivation.year <= 4000 ? 1 : 0,
-					};
-					if (hebrewYearFromGregorian > 0) {
-						derivations[gregorianDateDerivation.disambiguation] = gregorianDateDerivation;
+				if (derivation.year.calendar === 'hebrew') {
+					derivation.date = { hebrewDate: { year: derivation.year.value, format: 'Y' } };
+					derivation.disambiguation = `Convert Hebrew year ${derivation.year.value} to Gregorian calendar`;
+					if (derivation.year.value > 4000 && derivation.year.value < 7000) {
+						derivation.disambiguationScore += 1;
 					}
-					// if an actual year was passed and not a relative year, add a derivation with the year treated as the Hebrew year
-					if (!/\b(last|next|this|upcoming|previous|current)\b/i.test(search)) {
-						const hebrewDateDerivation = {
-							...derivation,
-							date: { hebrewDate: { ...derivation.date.hebrewDate, year: derivation.year } },
-							disambiguation: `Convert ${formatHebrewDateEn(new HDate(derivation.date.hebrewDate.day, derivation.date.hebrewDate.month, derivation.year))} to Gregorian calendar`,
-							year: undefined,
-							disambiguationScore: derivation.year > 4000 ? 1 : 0,
-						};
-						if (derivation.year > 0) {
-							derivations[hebrewDateDerivation.disambiguation] = hebrewDateDerivation;
-						}
-					}
-				} else if (derivation.date?.gregorianDate !== undefined) {
-					const gregorianDateDerivation = {
-						...derivation,
-						date: { gregorianDate: { ...derivation.date.gregorianDate, year: derivation.year } },
-						disambiguation: `Convert ${formatDate(derivation.year, derivation.date.gregorianDate.month, derivation.date.gregorianDate.day)} to Hebrew calendar`,
-						year: undefined,
-						disambiguationScore: derivation.year <= 4000 ? 1 : 0,
-					};
-					if (derivation.year !== 0) {
-						derivations[gregorianDateDerivation.disambiguation] = gregorianDateDerivation;
-					}
-					// if an actual year was passed and not a relative year, add a derivation with the year converted to the Hebrew year
-					if (!/\b(last|next|this|upcoming|previous|current)\b/i.test(search)) {
-						const gregorianYearFromHebrew = derivation.year - (derivation.year <= 3761 ? 3762 : 3761);
-						const afterSunsetText = derivation.date.gregorianDate.afterSunset ? '(after sunset) ' : '';
-						const hebrewDateDerivation = {
-							...derivation,
-							date: { gregorianDate: { ...derivation.date.gregorianDate, year: gregorianYearFromHebrew } },
-							disambiguation: `Convert ${formatDate(gregorianYearFromHebrew, derivation.date.gregorianDate.month, derivation.date.gregorianDate.day)} ${afterSunsetText}to Hebrew calendar`,
-							year: undefined,
-							disambiguationScore: derivation.year > 4000 ? 1 : 0,
-						};
-						if (gregorianYearFromHebrew !== 0) {
-							derivations[hebrewDateDerivation.disambiguation] = hebrewDateDerivation;
-						}
+				} else if (derivation.year.calendar === 'gregorian') {
+					derivation.date = { gregorianDate: { year: derivation.year.value, format: 'Y' } };
+					derivation.disambiguation = `Convert Gregorian year ${derivation.year.value} to Hebrew calendar`;
+					if (derivation.year.value < 4000) {
+						derivation.disambiguationScore += 1;
 					}
 				}
-				// continue since the derivations are already added
-				continue;
 			}
 			// converting gregorian to hebrew
 			else if (derivation.date?.gregorianDate !== undefined) {
+				let gregorianYear = derivation.date.gregorianDate.year ?? new Date().getFullYear();
+				if (derivation.year?.calendar === 'hebrew') {
+					// convert the hebrew year to gregorian
+					gregorianYear = derivation.year.value - (derivation.year.value <= 3761 ? 3762 : 3761);
+				} else if (derivation.year?.calendar === 'gregorian') {
+					gregorianYear = derivation.year.value;
+				}
+				derivation.date = { gregorianDate: { ...derivation.date.gregorianDate, year: gregorianYear } };
 				const gregorianDate = derivation.date.gregorianDate;
-				gregorianDate.year = gregorianDate.year ?? new Date().getFullYear();
 				const dateObject = new Date(gregorianDate.year, gregorianDate.month - 1, gregorianDate.day);
 				if (isNaN(dateObject.getTime())) {
 					// skip interpretation if the date cannot be parsed
@@ -324,16 +287,23 @@ async function getValidDerivations(search, results) {
 				}
 			}
 			// converting hebrew to gregorian
-			else if (derivation.date?.hebrewDate) {
+			else if (derivation.date?.hebrewDate !== undefined) {
+				let hebrewYear = derivation.date.hebrewDate.year ?? new HDate().getFullYear();
+				if (derivation.year?.calendar === 'hebrew') {
+					hebrewYear = derivation.year.value;
+				} else if (derivation.year?.calendar === 'gregorian') {
+					// convert the gregorian year to hebrew
+					hebrewYear = derivation.year.value + (derivation.year.value < 0 ? 3761 : 3760);
+				}
+				derivation.date = { hebrewDate: { ...derivation.date.hebrewDate, year: hebrewYear } };
 				const hebrewDate = derivation.date.hebrewDate;
-				hebrewDate.year = hebrewDate.year ?? new HDate().getFullYear();
 				try {
 					derivation.disambiguation = `Convert ${formatHebrewDateEn(new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year))} to Gregorian calendar`;
 				} catch (e) {
 					// skip interpretation if the date cannot be parsed
 					continue;
 				}
-				if (hebrewDate.year > 4000) {
+				if (hebrewDate.year > 4000 && hebrewDate.year < 7000) {
 					derivation.disambiguationScore += 1;
 				}
 				// prefer MDY format over DMY format
@@ -346,7 +316,7 @@ async function getValidDerivations(search, results) {
 			if (derivation.calendar === 'hebrew') {
 				derivation.disambiguation += ' on the Hebrew calendar';
 				derivation.disambiguationScore += 1;
-				if (derivation.year > 4000) {
+				if (derivation.year > 4000 && derivation.year < 7000) {
 					derivation.disambiguationScore += 1;
 				}
 			} else if (derivation.calendar === 'gregorian') {
@@ -355,6 +325,8 @@ async function getValidDerivations(search, results) {
 					derivation.disambiguationScore += 1;
 				}
 			}
+		} else if (derivation.function === 'dailyLearningQuery') {
+			derivation.disambiguation = `${LEARNING_TYPE_NAMES[derivation.dailyLearningType]} for ${formatParseResultDate(derivation.date)}`;
 		}
 		derivations[derivation.disambiguation] = derivation;
 	}
@@ -488,9 +460,6 @@ function gematriaQuery(derivation) {
 	const sections = [];
 	const gematriaResult = calculateGematria({ text: derivation.text });
 	const primaryResult = gematriaResult[derivation.gematriaMethod];
-	if (!primaryResult) {
-		throw new InputError(`The ${derivation.gematriaMethod} gematria method is not supported.`);
-	}
 	const method = METHOD_NAMES[derivation.gematriaMethod];
 	sections.push({ title: INPUT_INTERPRETATION, content: `Calculate ${method.name} of "${derivation.text}"` });
 	sections.push({ title: RESULT, content: `${formatNumberHTML(primaryResult)} in ${method.name}` });
@@ -501,6 +470,103 @@ function gematriaQuery(derivation) {
 	});
 	const gematriaTable = dataToHtmlTable(data, { headers: ['Method', 'Result'], class: 'table table-striped table-bordered' });
 	sections.push({ title: 'Other Methods', content: gematriaTable });
+	return sections;
+}
+
+/**
+ * Generate sections for a gematria search query
+ * @param {{ function: string, gematriaMethod: string, value?: number, text?: string }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function gematriaSearchQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+
+	const methodName = METHOD_NAMES[derivation.gematriaMethod].name;
+	if (derivation.gematriaMethod !== 'standard') {
+		throw new InputError('The Gematria search function currently only supports the standard Gematria method.');
+	}
+
+	let value = 0;
+	if (derivation.text) {
+		const gematriaResult = calculateGematria({ text: derivation.text });
+		const primaryResult = gematriaResult[derivation.gematriaMethod];
+		value = primaryResult;
+		sections.push({ title: INPUT_INTERPRETATION, content: `Find words and verses with the standard Gematria value equal to the ${methodName} of "${derivation.text}"` });
+	} else if (derivation.value) {
+		value = derivation.value;
+		sections.push({ title: INPUT_INTERPRETATION, content: `Find words and verses with the standard Gematria value equal to ${formatNumberHTML(value)}` });
+	} else {
+		throw new InputError('The value or text parameter must be specified.');
+	}
+
+	const matches = searchGematria(value);
+	let gematriaWordLists = '';
+	for (const [wordListKey, words] of Object.entries(matches)) {
+		const listName = WORD_LIST_NAMES[wordListKey];
+		let wordList = '<ul>';
+		for (const word of words) {
+			wordList += `<li>${word}</li>`;
+		}
+		wordList += '</ul>';
+		if (words.length > 0) {
+			gematriaWordLists += `<h4>${listName}</h4>${wordList}`;
+		}
+	}
+	sections.push({ title: RESULT, content: gematriaWordLists });
+
+	return sections;
+}
+
+/**
+ * Generate sections for a gematria two-word match query
+ * @param {{ function: string, gematriaMethod?: string, word1: string, word2: string, sameMethod?: boolean }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function gematriaTwoWordMatchQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+
+	const gematriaMethodName = derivation.gematriaMethod ? METHOD_NAMES[derivation.gematriaMethod].name : '';
+
+	if (derivation.gematriaMethod) {
+		sections.push({ title: INPUT_INTERPRETATION, content: `Find gematria equivalences for "${derivation.word1}" and "${derivation.word2}" with the ${gematriaMethodName} method` });
+	} else if (derivation.sameMethod) {
+		sections.push({ title: INPUT_INTERPRETATION, content: `Find gematria equivalences for "${derivation.word1}" and "${derivation.word2}" with the same method` });
+	} else {
+		sections.push({ title: INPUT_INTERPRETATION, content: `Find gematria equivalences for "${derivation.word1}" and "${derivation.word2}"` });
+	}
+
+	const results = getListOfGematriasInCommon(derivation.word1, derivation.word2);
+
+	// filter results
+	const filteredResults = results.filter((result) => {
+		return !(
+			(gematriaMethodName && result.method1.name !== gematriaMethodName && result.method2.name !== gematriaMethodName) ||
+			(derivation.sameMethod && result.method1.name !== result.method2.name)
+		);
+	});
+
+	if (filteredResults.length === 0) {
+		sections.push({ title: RESULT, content: 'No gematria values in common were found.' });
+	} else {
+		let resultTable = '<div style="display: grid; grid-template-columns: 1fr 1fr 5fr 1fr 5fr; text-align: center; grid-row-gap: 0.5rem; grid-column-gap: 0rem; align-items: center;">';
+		for (const result of filteredResults) {
+			resultTable += `<div class="border rounded p-2">${formatNumberHTML(result.value)}</div>`;
+			resultTable += `<div>=</div>`;
+			resultTable += `<div class="border rounded p-2">${result.method1.name} of "${derivation.word1}"</div>`;
+			resultTable += `<div>=</div>`;
+			resultTable += `<div class="border rounded p-2">${result.method2.name} of "${derivation.word2}"</div>`;
+		}
+		resultTable += '</div>';
+		sections.push({ title: RESULT, content: resultTable });
+	}
+
+	sections.push({
+		title: 'About',
+		content: `<p class="small m-0">Javascript adaptation by TorahCalc. Original code in Kotlin by <a href="ssternbach@torahdownloads.com">ssternbach@torahdownloads.com</a>.
+					Check out <a href="https://torahdownloads.com/">TorahDownloads.com</a> to find tens of thousands of shiurim on hundreds of topics, all available for free to stream or download!</p>`,
+	});
 	return sections;
 }
 
@@ -543,7 +609,14 @@ export async function zmanimQuery(derivation) {
 
 	// get the zmanim
 	let url = `/api/zmanim?${new URLSearchParams(params).toString()}`;
-	const zmanimResponse = await fetch(url).then((r) => r.json());
+	if (PUBLIC_ADAPTER === 'static') {
+		url = PUBLIC_BASE_URL + url;
+	}
+	const zmanimResponse = await fetch(url)
+		.then((response) => response.json())
+		.catch((error) => {
+			throw new InputError(`Failed to fetch zmanim. Make sure you are connected to the internet.`, error.toString());
+		});
 
 	if (zmanimResponse.success === false || !zmanimResponse.data) {
 		throw new InputError(`Could not get zmanim for the provided location: "${location}".`, JSON.stringify(zmanimResponse, null, 2));
@@ -587,6 +660,11 @@ export async function zmanimQuery(derivation) {
 		return row;
 	};
 
+	let mapUrl = `/input/maps?location=${resultLatitude},${resultLongitude}`;
+	if (PUBLIC_ADAPTER === 'static') {
+		mapUrl = PUBLIC_BASE_URL + mapUrl;
+	}
+
 	// get the zmanim result
 	if (derivation.zman) {
 		// @ts-ignore - assume key exists
@@ -597,7 +675,7 @@ export async function zmanimQuery(derivation) {
 		sections.push({
 			title: INPUT_INTERPRETATION,
 			content: `Calculate ${zmanResult.name} on ${formatDateObject(dateObject)} in ${location.trim()}
-						<img class="mt-3 img-fluid d-block" src="/input/maps?location=${resultLatitude},${resultLongitude}" />`,
+						<img class="mt-3 img-fluid d-block" src="${mapUrl}" />`,
 		});
 		if (zmanimResult.durations[derivation.zman]) {
 			sections.push({ title: RESULT, content: `The ${zmanResult.name} length is ${zmanResult.time}` });
@@ -639,7 +717,7 @@ export async function zmanimQuery(derivation) {
 		sections.push({
 			title: INPUT_INTERPRETATION,
 			content: `Calculate Zmanim on ${formatDateObject(dateObject)} in ${location.trim()}
-						<img class="mt-3 img-fluid d-block" src="/input/maps?location=${resultLatitude},${resultLongitude}" />`,
+						<img class="mt-3 img-fluid d-block" src="${mapUrl}" />`,
 		});
 		sections.push({ title: RESULT, content: zmanimTables.join('') });
 	}
@@ -739,7 +817,7 @@ function moladQuery(derivation) {
 	if (derivation.month !== undefined) {
 		const molad = calculateMolad(derivation.year, derivation.month);
 
-		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the molad of <strong>${molad.monthName}</strong>` });
+		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the molad of ${molad.monthName}` });
 		sections.push({ title: RESULT, content: `<ul><li>${molad.timeFormat[timeFormat]}</li><li>${molad.dayOfWeekFormat[timeFormat]}</li><li>${molad.hebrewDateFormat[timeFormat]}</li></ul>` });
 		if (!molad.shabbosMevarchim.roshHashanah) {
 			sections.push({
@@ -852,10 +930,55 @@ function leapYearQuery(derivation) {
 
 	const result = derivation.calendar === 'hebrew' ? isHebrewLeapYear(derivation.year) : isGregorianLeapYear(derivation.year);
 
-	sections.push({ title: INPUT_INTERPRETATION, content: `Is ${derivation.year} a leap year in the ${properCase(derivation.calendar)} calendar?` });
+	sections.push({ title: INPUT_INTERPRETATION, content: `Is ${derivation.year} a leap year on the ${properCase(derivation.calendar)} calendar?` });
 	sections.push({ title: RESULT, content: result.isLeapYear ? `Yes, ${derivation.year} is a leap year` : `No, ${derivation.year} is not a leap year` });
 	sections.push({ title: 'Reason', content: result.reason });
 	sections.push({ title: 'Next Leap Year', content: result.nextLeapYearReason });
+
+	return sections;
+}
+
+/**
+ * Generate sections for a Daily Learning query
+ * @param {{ function: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } }, dailyLearningType: string }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function dailyLearningQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+
+	let date = new Date();
+	if (derivation?.date?.gregorianDate) {
+		const gregorianDate = derivation.date.gregorianDate;
+		gregorianDate.year = gregorianDate.year ?? new Date().getFullYear();
+		gregorianDate.month = gregorianDate.month ?? 1;
+		gregorianDate.day = gregorianDate.day ?? 1;
+		date = new Date(gregorianDate.year, gregorianDate.month - 1, gregorianDate.day);
+	} else if (derivation?.date?.hebrewDate) {
+		const hebrewDate = derivation.date.hebrewDate;
+		hebrewDate.year = hebrewDate.year ?? new HDate().getFullYear();
+		hebrewDate.month = hebrewDate.month ?? 1;
+		hebrewDate.day = hebrewDate.day ?? 1;
+		date = hebrewToGregorian({ year: hebrewDate.year, month: hebrewDate.month, day: hebrewDate.day }).date;
+	}
+
+	const results = calculateDailyLearning(dayjs(date).format('YYYY-MM-DD'));
+
+	/** @type {import('./dailylearning').DailyLearning | null} */
+	// @ts-ignore - assume type is DailyLearning
+	const learningResult = results[derivation.dailyLearningType];
+
+	const learningTypeName = LEARNING_TYPE_NAMES[derivation.dailyLearningType];
+
+	sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the ${learningTypeName} for ${formatDateObject(date)}` });
+	if (learningResult !== null) {
+		sections.push({ title: RESULT, content: `${learningResult.name} / ${learningResult.hebrewName}` });
+		if (learningResult.url) {
+			sections.push({ title: SOURCES, content: `Read online at <a href="${learningResult.url}" target="_blank">${learningResult.url}</a>` });
+		}
+	} else {
+		sections.push({ title: RESULT, content: `There is no ${learningTypeName} for this date` });
+	}
 
 	return sections;
 }
