@@ -78,7 +78,7 @@
 <svelte:window on:click={handleWindowClick} />
 
 <header>
-	<nav class="navbar navbar-expand-lg bg-body-tertiary">
+	<nav class="navbar navbar-expand-md bg-body-tertiary">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="/">
 				<img src={logo} alt="TorahCalc" class="logo" />
