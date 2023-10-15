@@ -313,11 +313,9 @@ describe('test leap years', () => {
 		expect(sections[1].title).toBe('Input Interpretation');
 		expect(sections[1].content).toBe('Is 5775 a leap year on the Hebrew calendar?');
 		expect(sections[2].title).toBe('Result');
-		expect(sections[2].content).toBe('No, 5775 is not a leap year');
-		expect(sections[3].title).toBe('Reason');
-		expect(sections[3].content).toBe('5775 is the 18th year of the 19-year Metonic cycle and is therefore not a leap year.');
-		expect(sections[4].title).toBe('Next Leap Year');
-		expect(sections[4].content).toContain('5776');
+		expect(sections[2].content).toBe('No, 5775 is the 18th year of the 19-year Metonic cycle and is therefore not a leap year.');
+		expect(sections[3].title).toBe('Next Leap Year');
+		expect(sections[3].content).toContain('5776');
 	});
 
 	it('Will 5790 be a leap year', async () => {
@@ -325,11 +323,9 @@ describe('test leap years', () => {
 		expect(sections[1].title).toBe('Input Interpretation');
 		expect(sections[1].content).toBe('Is 5790 a leap year on the Hebrew calendar?');
 		expect(sections[2].title).toBe('Result');
-		expect(sections[2].content).toBe('Yes, 5790 is a leap year');
-		expect(sections[3].title).toBe('Reason');
-		expect(sections[3].content).toBe('5790 is the 14th year of the 19-year Metonic cycle and is therefore a leap year.');
-		expect(sections[4].title).toBe('Next Leap Year');
-		expect(sections[4].content).toContain('5793');
+		expect(sections[2].content).toBe('Yes, 5790 is the 14th year of the 19-year Metonic cycle and is therefore a leap year.');
+		expect(sections[3].title).toBe('Next Leap Year');
+		expect(sections[3].content).toContain('5793');
 	});
 
 	it('Is Gregorian year 2023 a leap year', async () => {
