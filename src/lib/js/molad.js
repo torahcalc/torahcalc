@@ -106,8 +106,6 @@ export function calculateMolad(year, month) {
 	const zmanim = new Zmanim(newMolad.toDate(), 31.77759, 35.23564);
 	// adjust for timezone - make all times in UTC even though they are really Jerusalem time
 	const sunset = dayjs.utc(Zmanim.formatISOWithTimeZone('Asia/Jerusalem', zmanim.sunset()).replace(/\+.+$/, '')); // remove timezone offset to compare as UTC
-	// output
-	const chalakimText = `${chalakim} ${chalakim == 1 ? 'chelek' : 'chalakim'}`;
 
 	// Time format (eg. "Thursday, Oct. 3, 2024, 3:21 pm and 13 chalakim")
 	const timeFormat = {
@@ -173,32 +171,32 @@ export function calculateMolad(year, month) {
 }
 
 /**
- * Format and display day of week with chalakim text 
- * 
+ * Format and display day of week with chalakim text
+ *
  * @param {number} moladMinute
  * @param {number} chalakim
  */
 function formatDayOfWeekWithChalakimText(moladMinute, chalakim) {
-  const shouldShowMoladMinuteText = moladMinute > 0;
-  const shouldShowChalakimText = chalakim > 0;
-  const andText = shouldShowMoladMinuteText && shouldShowChalakimText ? ' and ' : '';
-  const afterText = shouldShowMoladMinuteText || shouldShowChalakimText ? ' after ' : '';
-  const moladMinuteText = shouldShowMoladMinuteText ? moladMinute + ' minutes' : '';
+	const shouldShowMoladMinuteText = moladMinute > 0;
+	const shouldShowChalakimText = chalakim > 0;
+	const andText = shouldShowMoladMinuteText && shouldShowChalakimText ? ' and ' : '';
+	const afterText = shouldShowMoladMinuteText || shouldShowChalakimText ? ' after ' : '';
+	const moladMinuteText = shouldShowMoladMinuteText ? moladMinute + ' minutes' : '';
 
-  return moladMinuteText + andText + formatChalakimText(chalakim, '') + afterText;
+	return moladMinuteText + andText + formatChalakimText(chalakim, '') + afterText;
 }
 
 /**
  * Format and display chalakim text only when chalakim is greater than 0
- * 
+ *
  * @param {number} chalakim
  * @param {string} andText - with default equal to ' and '
  */
 function formatChalakimText(chalakim, andText = ' and ') {
-  const chalakimText = `${chalakim} ${chalakim == 1 ? 'chelek' : 'chalakim'}`;
-  if (chalakim > 0) {
-    return andText + chalakimText;
-  }
+	const chalakimText = `${chalakim} ${chalakim == 1 ? 'chelek' : 'chalakim'}`;
+	if (chalakim > 0) {
+		return andText + chalakimText;
+	}
 
-  return '';
+	return '';
 }
