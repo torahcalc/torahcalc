@@ -7,6 +7,7 @@ node_modules
 !.env.example
 .vercel
 .output
+.vscode
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 android/**
