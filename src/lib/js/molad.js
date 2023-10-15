@@ -101,38 +101,24 @@ export function calculateMolad(year, month) {
 	let newMolad = dayjs.utc(timestampNewMolad);
 	//  round 666ms to 667ms and round 999ms to the next second
 	newMolad = [666, 999].includes(newMolad.millisecond()) ? newMolad.add(1, 'millisecond') : newMolad;
-	let chalakim = Math.round((newMolad.second() / 60) * 18);
-	// Determine if the molad was after sunset in Jerusalem
-	const zmanim = new Zmanim(newMolad.toDate(), 31.77759, 35.23564);
-	// adjust for timezone - make all times in UTC even though they are really Jerusalem time
-	const sunset = dayjs.utc(Zmanim.formatISOWithTimeZone('Asia/Jerusalem', zmanim.sunset()).replace(/\+.+$/, '')); // remove timezone offset to compare as UTC
+	const chalakim = Math.round((newMolad.second() / 60) * 18);
 
 	// Time format (eg. "Thursday, Oct. 3, 2024, 3:21 pm and 13 chalakim")
 	const timeFormat = {
-		'12Hr': newMolad.format('dddd, MMMM D, YYYY, h:mm a') + formatChalakimText(chalakim),
-		'24Hr': newMolad.format('dddd, MMMM D, YYYY, HH:mm') + formatChalakimText(chalakim),
+		'12Hr': formatMoladTime(newMolad, chalakim, false),
+		'24Hr': formatMoladTime(newMolad, chalakim, true),
 	};
 
 	// Hebrew date format (eg. "1st of Tishrei, 5783, 3:21 pm and 13 chalakim")
-	const hebrewDate = gregorianToHebrew({ year: newMolad.year(), month: newMolad.month() + 1, day: newMolad.date() });
 	const hebrewDateFormat = {
-		'12Hr': hebrewDate.displayEn + ', ' + newMolad.format('h:mm a') + formatChalakimText(chalakim),
-		'24Hr': hebrewDate.displayEn + ', ' + newMolad.format('HH:mm') + formatChalakimText(chalakim),
+		'12Hr': formatMoladHebrewDate(newMolad, chalakim, false),
+		'24Hr': formatMoladHebrewDate(newMolad, chalakim, true),
 	};
 
 	// Day of week format (eg. "Thursday afternoon, 21 minutes and 13 chalakim after 3:00 pm")
-	let dayOfWeekStr = dayjs(newMolad).format('dddd');
-	if (newMolad.hour() < 12) {
-		dayOfWeekStr += ' morning, ';
-	} else if (newMolad < sunset) {
-		dayOfWeekStr += ' afternoon, ';
-	} else {
-		dayOfWeekStr += ' evening, ';
-	}
-	dayOfWeekStr += formatDayOfWeekWithChalakimText(newMolad.minute(), chalakim);
 	const dayOfWeekFormat = {
-		'12Hr': dayOfWeekStr + newMolad.format('h:00 a'),
-		'24Hr': dayOfWeekStr + newMolad.format('HH:00'),
+		'12Hr': formatMoladDayOfWeek(newMolad, chalakim, false),
+		'24Hr': formatMoladDayOfWeek(newMolad, chalakim, true),
 	};
 
 	// Shabbos Mevorchim and Rosh Chodesh
@@ -171,32 +157,81 @@ export function calculateMolad(year, month) {
 }
 
 /**
- * Format and display day of week with chalakim text
+ * Format and display chalakim text (eg. '1 chelek', '2 chalakim')
  *
- * @param {number} moladMinute
- * @param {number} chalakim
+ * @param {number} chalakim - number of chalakim after the minute
  */
-function formatDayOfWeekWithChalakimText(moladMinute, chalakim) {
-	const shouldShowMoladMinuteText = moladMinute > 0;
-	const shouldShowChalakimText = chalakim > 0;
-	const andText = shouldShowMoladMinuteText && shouldShowChalakimText ? ' and ' : '';
-	const afterText = shouldShowMoladMinuteText || shouldShowChalakimText ? ' after ' : '';
-	const moladMinuteText = shouldShowMoladMinuteText ? moladMinute + ' minutes' : '';
-
-	return moladMinuteText + andText + formatChalakimText(chalakim, '') + afterText;
+function formatChalakimText(chalakim) {
+	return `${chalakim} ${chalakim == 1 ? 'chelek' : 'chalakim'}`;
 }
 
 /**
- * Format and display chalakim text only when chalakim is greater than 0
+ * Format a molad as time format (eg. "Thursday, Oct. 3, 2024, 3:21 pm and 13 chalakim")
  *
- * @param {number} chalakim
- * @param {string} andText - with default equal to ' and '
+ * @param {dayjs.Dayjs} molad - The molad date object
+ * @param {number} chalakim - number of chalakim after the minute
+ * @param {boolean} is24Hour - whether to display in 24 hour format instead of 12 hour format
  */
-function formatChalakimText(chalakim, andText = ' and ') {
-	const chalakimText = `${chalakim} ${chalakim == 1 ? 'chelek' : 'chalakim'}`;
+export function formatMoladTime(molad, chalakim, is24Hour) {
+	const timeFormat = is24Hour ? 'HH:mm' : 'h:mm a';
+	let formatted = molad.format(`dddd, MMMM D, YYYY, ${timeFormat}`);
 	if (chalakim > 0) {
-		return andText + chalakimText;
+		formatted += ' and ' + formatChalakimText(chalakim);
 	}
+	return formatted;
+}
 
-	return '';
+/**
+ * Format a molad as Hebrew date format (eg. "1st of Tishrei, 5783, 3:21 pm and 13 chalakim")
+ *
+ * @param {dayjs.Dayjs} molad - The molad date object
+ * @param {number} chalakim - number of chalakim after the minute
+ * @param {boolean} is24Hour - whether to display in 24 hour format instead of 12 hour format
+ */
+export function formatMoladHebrewDate(molad, chalakim, is24Hour) {
+	const timeFormat = is24Hour ? 'HH:mm' : 'h:mm a';
+	const hebrewDate = gregorianToHebrew({ year: molad.year(), month: molad.month() + 1, day: molad.date() });
+	let formatted = hebrewDate.displayEn + ', ' + molad.format(timeFormat);
+	if (chalakim > 0) {
+		formatted += ' and ' + formatChalakimText(chalakim);
+	}
+	return formatted;
+}
+
+/**
+ * Format a molad as day of week format (eg. "Thursday afternoon, 21 minutes and 13 chalakim after 3:00 pm")
+ *
+ * @param {dayjs.Dayjs} molad - The molad date object
+ * @param {number} chalakim - number of chalakim after the minute
+ * @param {boolean} is24Hour - whether to display in 24 hour format instead of 12 hour format
+ */
+export function formatMoladDayOfWeek(molad, chalakim, is24Hour) {
+	// Determine if the molad was after sunset in Jerusalem
+	const zmanim = new Zmanim(molad.toDate(), 31.77759, 35.23564);
+	// adjust for timezone - make all times in UTC even though they are really Jerusalem time
+	const sunset = dayjs.utc(Zmanim.formatISOWithTimeZone('Asia/Jerusalem', zmanim.sunset()).replace(/\+.+$/, '')); // remove timezone offset to compare as UTC
+
+	const timeFormat = is24Hour ? 'HH:00' : 'h:00 a';
+	let formatted = dayjs(molad).format('dddd');
+	if (molad.hour() < 12) {
+		formatted += ' morning, ';
+	} else if (molad < sunset) {
+		formatted += ' afternoon, ';
+	} else {
+		formatted += ' evening, ';
+	}
+	if (molad.minute() > 0) {
+		formatted += molad.minute() + ' ' + (molad.minute() == 1 ? 'minute' : 'minutes');
+	}
+	if (chalakim > 0 && molad.minute() > 0) {
+		formatted += ' and ';
+	}
+	if (chalakim > 0) {
+		formatted += formatChalakimText(chalakim);
+	}
+	if (molad.minute() > 0 || chalakim > 0) {
+		formatted += ' after ';
+	}
+	formatted += molad.format(timeFormat);
+	return formatted;
 }
