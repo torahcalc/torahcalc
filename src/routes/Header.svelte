@@ -80,14 +80,15 @@
 <header>
 	<nav class="navbar navbar-expand-md bg-body-tertiary">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="/">
+			<a class="navbar-brand navbar-brand-link" href="/">
 				<img src={logo} alt="TorahCalc" class="logo" />
+				<span>TorahCalc</span>
 			</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon" />
 			</button>
 			<div class="collapse navbar-collapse" id="navbarMain">
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<ul class="navbar-nav me-auto mb-2 mb-md-0">
 					{#each pages as page (page)}
 						{#if page.url}
 							<li class="nav-item">
@@ -114,7 +115,7 @@
 					</a>
 					<a class="github" href="https://github.com/torahcalc/torahcalc" target="_blank" rel="noopener noreferrer">
 						<Fa icon={faGithub} size="1.5x" />
-						<span>View on GitHub</span>
+						<span>Contribute</span>
 					</a>
 				</span>
 			</div>
@@ -134,6 +135,15 @@
 	.logo {
 		width: 2.5em;
 		height: 2.5em;
+	}
+
+	.navbar-brand-link {
+		color: var(--color-theme-1);
+		text-decoration: none;
+	}
+
+	.navbar-brand-link:hover {
+		text-decoration: none;
 	}
 
 	.navbar-text {
