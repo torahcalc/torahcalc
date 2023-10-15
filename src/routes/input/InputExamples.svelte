@@ -21,7 +21,7 @@
 	}
 </script>
 
-<div class="card flex-card">
+<div class="card flex-card examples">
 	<h4 class="mb-4">Examples of what you can enter</h4>
 
 	<div class="row g-2 categories">
@@ -204,6 +204,13 @@
 </div>
 
 <style>
+	.examples {
+		padding: 1rem;
+	}
+	.examples > h4 {
+		padding-top: 1rem;
+		padding-left: 1rem;
+	}
 	.category {
 		--category-color: 0, 0, 0;
 		border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
@@ -211,6 +218,7 @@
 		margin: 0.5rem;
 		padding: 1rem;
 		background-color: rgba(var(--category-color), 0.05);
+		height: calc(100% - 1em);
 	}
 	.category h5 {
 		color: rgba(var(--category-color), 1);
