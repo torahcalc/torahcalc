@@ -60,8 +60,8 @@ describe('test calculateMolad', () => {
 		const response = calculateMolad(5785, 6); // August 23, 2025 11:26 pm and 6 chalakim
 		expect(response).toStrictEqual({
 			dayOfWeekFormat: {
-				'12Hr': 'Saturday afternoon, 26 minutes and 6 chalakim after 11:00 pm',
-				'24Hr': 'Saturday afternoon, 26 minutes and 6 chalakim after 23:00',
+				'12Hr': 'Saturday evening, 26 minutes and 6 chalakim after 11:00 pm',
+				'24Hr': 'Saturday evening, 26 minutes and 6 chalakim after 23:00',
 			},
 			hebrewDateFormat: {
 				'12Hr': '29th of Av, 5785, 11:26 pm and 6 chalakim',
