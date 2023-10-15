@@ -220,8 +220,8 @@ moladQuery -> optionalWords[("calculate" | "compute" | "what is" | "what's" | "w
 sefirasHaOmerQuery -> optionalWords[("calculate" | "compute" | "what is" | "what's")] optionalWords["the"] ("day of omer" | "omer" | "omer count" | "sefiras haomer" | "sefirat haomer" | "sefirah" | "sefiras ha'omer" | "sefirat ha'omer") __ optionalWords[("on" | "for")] date {% data => ({function: "sefirasHaOmerQuery", date: data[5]}) %}
 
 # Leap Year queries
-leapYearQuery -> optionalWords[("is" | "was" | "will")] optionalWords[("gregorian" | "english" | "standard")] optionalWords["year"] gregorianYear __ optionalWords[("be a" | "a")] "leap year" {% data => ({function: "leapYearQuery", year: data[3], calendar: "gregorian"}) %}
-               | optionalWords[("is" | "was" | "will")] optionalWords[("hebrew" | "jewish")] optionalWords["year"] hebrewYear __ optionalWords[("be a" | "a")] "leap year" {% data => ({function: "leapYearQuery", year: data[3], calendar: "hebrew"}) %}
+leapYearQuery -> optionalWords[("is" | "was" | "will")] optionalWords[("gregorian" | "english" | "standard")] optionalWords["year"] gregorianYear __ optionalWords[("be a" | "a")] "leap year" _ optionalWords["on"] optionalWords["the"] optionalWords[("gregorian" | "english" | "standard")] optionalWordsEnd["calendar"] {% data => ({function: "leapYearQuery", year: data[3], calendar: "gregorian"}) %}
+               | optionalWords[("is" | "was" | "will")] optionalWords[("hebrew" | "jewish")] optionalWords["year"] hebrewYear __ optionalWords[("be a" | "a")] "leap year" _ optionalWords["on"] optionalWords["the"] optionalWords[("hebrew" | "jewish")] optionalWordsEnd["calendar"] {% data => ({function: "leapYearQuery", year: data[3], calendar: "hebrew"}) %}
 
 # Daily Learning queries
 dailyLearningQuery -> optionalWords[("what is" | "what was" | "what's" | "what are")] optionalWords["the"] optionalWords["daily"] dailyLearningType __ optionalWords[("for" | "on")] date {% data => ({function: "dailyLearningQuery", date: data[6], dailyLearningType: data[3]}) %}

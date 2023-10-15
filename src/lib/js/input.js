@@ -931,8 +931,7 @@ function leapYearQuery(derivation) {
 	const result = derivation.calendar === 'hebrew' ? isHebrewLeapYear(derivation.year) : isGregorianLeapYear(derivation.year);
 
 	sections.push({ title: INPUT_INTERPRETATION, content: `Is ${derivation.year} a leap year on the ${properCase(derivation.calendar)} calendar?` });
-	sections.push({ title: RESULT, content: result.isLeapYear ? `Yes, ${derivation.year} is a leap year` : `No, ${derivation.year} is not a leap year` });
-	sections.push({ title: 'Reason', content: result.reason });
+	sections.push({ title: RESULT, content: `${result.isLeapYear ? 'Yes' : 'No'}, ${result.reason}` });
 	sections.push({ title: 'Next Leap Year', content: result.nextLeapYearReason });
 
 	return sections;
