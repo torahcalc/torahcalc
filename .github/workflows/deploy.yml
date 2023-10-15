@@ -11,15 +11,6 @@ on:
       - '**.js'
       - '**.json'
       - '.github/workflows/deploy.yml'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'src/**'
-      - '**.svelte'
-      - '**.js'
-      - '**.json'
-      - '.github/workflows/deploy.yml'
 
 jobs:
   deploy:
@@ -41,5 +32,4 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          # use --prod if it is a push to main, otherwise it is a preview
-          vercel-args: ${{ github.event_name != 'pull_request' && '--prod' || '' }}
+          vercel-args: --prod
