@@ -54,7 +54,7 @@
 	 * Hide all dropdown menus in the navbar
 	 */
 	function hideDropdowns() {
-		const dropdowns = document.querySelectorAll('.navbar, .dropdown-menu.show, .navbar-collapse');
+		const dropdowns = document.querySelectorAll('.navbar, .dropdown-menu.show, .navbar-col');
 		
 		for (const dropdown of dropdowns) {
 			
