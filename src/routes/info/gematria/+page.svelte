@@ -14,66 +14,66 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ח</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td>ח</td>
 		</tr>
 		<tr>
-			<td>8</td>
-			<td>7</td>
-			<td>6</td>
-			<td>5</td>
-			<td>4</td>
-			<td>3</td>
-			<td>2</td>
 			<td>1</td>
+			<td>2</td>
+			<td>3</td>
+			<td>4</td>
+			<td>5</td>
+			<td>6</td>
+			<td>7</td>
+			<td>8</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ע</td>
-			<td>ס</td>
-			<td>נ</td>
-			<td>מ</td>
-			<td>ל</td>
-			<td>כ</td>
-			<td>י</td>
 			<td>ט</td>
+			<td>י</td>
+			<td>כ</td>
+			<td>ל</td>
+			<td>מ</td>
+			<td>נ</td>
+			<td>ס</td>
+			<td>ע</td>
 		</tr>
 		<tr>
-			<td>70</td>
-			<td>60</td>
-			<td>50</td>
-			<td>40</td>
-			<td>30</td>
-			<td>20</td>
-			<td>10</td>
 			<td>9</td>
+			<td>10</td>
+			<td>20</td>
+			<td>30</td>
+			<td>40</td>
+			<td>50</td>
+			<td>60</td>
+			<td>70</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
-			<td>ק</td>
-			<td>צ</td>
 			<td>פ</td>
+			<td>צ</td>
+			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
 		</tr>
 		<tr>
-			<td>400</td>
-			<td>300</td>
-			<td>200</td>
-			<td>100</td>
-			<td>90</td>
 			<td>80</td>
+			<td>90</td>
+			<td>100</td>
+			<td>200</td>
+			<td>300</td>
+			<td>400</td>
 		</tr>
 	</table>
 	<ul>
@@ -84,76 +84,76 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td class="highlightNum">ך</td>
-			<td>כ</td>
-			<td>י</td>
-			<td>ט</td>
-			<td>ח</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td>ח</td>
+			<td>ט</td>
+			<td>י</td>
+			<td>כ</td>
+			<td class="highlighted">ך</td>
 		</tr>
 		<tr>
-			<td class="highlightNum">500</td>
-			<td>20</td>
-			<td>10</td>
-			<td>9</td>
-			<td>8</td>
-			<td>7</td>
-			<td>6</td>
-			<td>5</td>
-			<td>4</td>
-			<td>3</td>
-			<td>2</td>
 			<td>1</td>
+			<td>2</td>
+			<td>3</td>
+			<td>4</td>
+			<td>5</td>
+			<td>6</td>
+			<td>7</td>
+			<td>8</td>
+			<td>9</td>
+			<td>10</td>
+			<td>20</td>
+			<td class="highlighted">500</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>פ</td>
-			<td>ע</td>
-			<td>ס</td>
-			<td class="highlightNum">ן</td>
-			<td>נ</td>
-			<td class="highlightNum">ם</td>
-			<td>מ</td>
 			<td>ל</td>
+			<td>מ</td>
+			<td class="highlighted">ם</td>
+			<td>נ</td>
+			<td class="highlighted">ן</td>
+			<td>ס</td>
+			<td>ע</td>
+			<td>פ</td>
 		</tr>
 		<tr>
-			<td>80</td>
-			<td>70</td>
-			<td>60</td>
-			<td class="highlightNum">700</td>
-			<td>50</td>
-			<td class="highlightNum">600</td>
-			<td>40</td>
 			<td>30</td>
+			<td>40</td>
+			<td class="highlighted">600</td>
+			<td>50</td>
+			<td class="highlighted">700</td>
+			<td>60</td>
+			<td>70</td>
+			<td>80</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
-			<td>ק</td>
-			<td class="highlightNum">ץ</td>
+			<td class="highlighted">ף</td>
 			<td>צ</td>
-			<td class="highlightNum">ף</td>
+			<td class="highlighted">ץ</td>
+			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
 		</tr>
 		<tr>
-			<td>400</td>
-			<td>300</td>
-			<td>200</td>
-			<td>100</td>
-			<td class="highlightNum">900</td>
+			<td class="highlighted">800</td>
 			<td>90</td>
-			<td class="highlightNum">800</td>
+			<td class="highlighted">900</td>
+			<td>100</td>
+			<td>200</td>
+			<td>300</td>
+			<td>400</td>
 		</tr>
 	</table>
 	<ul>
@@ -164,66 +164,66 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ח</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td>ח</td>
 		</tr>
 		<tr>
-			<td>8</td>
-			<td>7</td>
-			<td>6</td>
-			<td>5</td>
-			<td>4</td>
-			<td>3</td>
-			<td>2</td>
 			<td>1</td>
+			<td>2</td>
+			<td>3</td>
+			<td>4</td>
+			<td>5</td>
+			<td>6</td>
+			<td>7</td>
+			<td>8</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ע</td>
-			<td>ס</td>
-			<td>נ</td>
-			<td>מ</td>
-			<td>ל</td>
-			<td>כ</td>
-			<td>י</td>
 			<td>ט</td>
+			<td>י</td>
+			<td>כ</td>
+			<td>ל</td>
+			<td>מ</td>
+			<td>נ</td>
+			<td>ס</td>
+			<td>ע</td>
 		</tr>
 		<tr>
-			<td>16</td>
-			<td>15</td>
-			<td>14</td>
-			<td>13</td>
-			<td>12</td>
-			<td>11</td>
-			<td>10</td>
 			<td>9</td>
+			<td>10</td>
+			<td>11</td>
+			<td>12</td>
+			<td>13</td>
+			<td>14</td>
+			<td>15</td>
+			<td>16</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
-			<td>ק</td>
-			<td>צ</td>
 			<td>פ</td>
+			<td>צ</td>
+			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
 		</tr>
 		<tr>
-			<td>22</td>
-			<td>21</td>
-			<td>20</td>
-			<td>19</td>
-			<td>18</td>
 			<td>17</td>
+			<td>18</td>
+			<td>19</td>
+			<td>20</td>
+			<td>21</td>
+			<td>22</td>
 		</tr>
 	</table>
 	<ul>
@@ -234,66 +234,66 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ח</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td>ח</td>
 		</tr>
 		<tr>
-			<td>8</td>
-			<td>7</td>
-			<td>6</td>
-			<td>5</td>
-			<td>4</td>
-			<td>3</td>
-			<td>2</td>
 			<td>1</td>
+			<td>2</td>
+			<td>3</td>
+			<td>4</td>
+			<td>5</td>
+			<td>6</td>
+			<td>7</td>
+			<td>8</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ע</td>
-			<td>ס</td>
-			<td>נ</td>
-			<td>מ</td>
-			<td>ל</td>
-			<td>כ</td>
-			<td>י</td>
 			<td>ט</td>
+			<td>י</td>
+			<td>כ</td>
+			<td>ל</td>
+			<td>מ</td>
+			<td>נ</td>
+			<td>ס</td>
+			<td>ע</td>
 		</tr>
 		<tr>
-			<td>7</td>
-			<td>6</td>
-			<td>5</td>
-			<td>4</td>
-			<td>3</td>
-			<td>2</td>
-			<td>1</td>
 			<td>9</td>
+			<td>1</td>
+			<td>2</td>
+			<td>3</td>
+			<td>4</td>
+			<td>5</td>
+			<td>6</td>
+			<td>7</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
-			<td>ק</td>
-			<td>צ</td>
 			<td>פ</td>
+			<td>צ</td>
+			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
 		</tr>
 		<tr>
-			<td>4</td>
-			<td>3</td>
-			<td>2</td>
-			<td>1</td>
-			<td>9</td>
 			<td>8</td>
+			<td>9</td>
+			<td>1</td>
+			<td>2</td>
+			<td>3</td>
+			<td>4</td>
 		</tr>
 	</table>
 	<ul>
@@ -303,171 +303,171 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
 		</tr>
 		<tr>
-			<td>49</td>
-			<td>36</td>
-			<td>25</td>
-			<td>16</td>
-			<td>9</td>
-			<td>4</td>
 			<td>1</td>
+			<td>4</td>
+			<td>9</td>
+			<td>16</td>
+			<td>25</td>
+			<td>36</td>
+			<td>49</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>מ</td>
-			<td>ל</td>
-			<td>כ</td>
-			<td>י</td>
-			<td>ט</td>
 			<td>ח</td>
+			<td>ט</td>
+			<td>י</td>
+			<td>כ</td>
+			<td>ל</td>
+			<td>מ</td>
 		</tr>
 		<tr>
-			<td>1600</td>
-			<td>900</td>
-			<td>400</td>
-			<td>100</td>
-			<td>81</td>
 			<td>64</td>
+			<td>81</td>
+			<td>100</td>
+			<td>400</td>
+			<td>900</td>
+			<td>1600</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>צ</td>
-			<td>פ</td>
-			<td>ע</td>
-			<td>ס</td>
 			<td>נ</td>
+			<td>ס</td>
+			<td>ע</td>
+			<td>פ</td>
+			<td>צ</td>
 		</tr>
 		<tr>
-			<td>8100</td>
-			<td>6400</td>
-			<td>4900</td>
-			<td>3600</td>
 			<td>2500</td>
+			<td>3600</td>
+			<td>4900</td>
+			<td>6400</td>
+			<td>8100</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
 			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
 		</tr>
 		<tr>
-			<td>160000</td>
-			<td>90000</td>
-			<td>40000</td>
 			<td>10000</td>
+			<td>40000</td>
+			<td>90000</td>
+			<td>160000</td>
 		</tr>
 	</table>
 	<ul>
 		<li>
 			<p id="shemi">
-				<b>Mispar Shemi (Milui, full name valkue) (Heb: מספר שמי\מילוי)</b>
+				<b>Mispar Shemi (Milui, full name value) (Heb: מספר שמי\מילוי)</b>
 				values each letter as the value of the letter's name. (ex. "Aleph" = Aleph + Lamed + Fey = 1 + 30 + 80 = 111). Note: There is more than one way to spell certain letters so you will get different
 				results depending on which spelling you use.
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ח</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td>ח</td>
 		</tr>
 		<tr>
-			<td>חית</td>
-			<td>זין</td>
-			<td>וו</td>
-			<td>הא</td>
-			<td>דלת</td>
-			<td>גימל</td>
-			<td>בית</td>
 			<td>אלף</td>
+			<td>בית</td>
+			<td>גימל</td>
+			<td>דלת</td>
+			<td>הא</td>
+			<td>וו</td>
+			<td>זין</td>
+			<td>חית</td>
 		</tr>
 		<tr>
-			<td>418</td>
-			<td>67</td>
-			<td>12</td>
-			<td>6</td>
-			<td>434</td>
-			<td>83</td>
-			<td>412</td>
 			<td>111</td>
+			<td>412</td>
+			<td>83</td>
+			<td>434</td>
+			<td>6</td>
+			<td>12</td>
+			<td>67</td>
+			<td>418</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ס</td>
-			<td>נ</td>
-			<td>מ</td>
-			<td>ל</td>
-			<td>כ</td>
-			<td>י</td>
 			<td>ט</td>
+			<td>י</td>
+			<td>כ</td>
+			<td>ל</td>
+			<td>מ</td>
+			<td>נ</td>
+			<td>ס</td>
 		</tr>
 		<tr>
-			<td>סמך</td>
-			<td>נון</td>
-			<td>מם</td>
-			<td>למד</td>
-			<td>כף</td>
-			<td>יוד</td>
 			<td>טית</td>
+			<td>יוד</td>
+			<td>כף</td>
+			<td>למד</td>
+			<td>מם</td>
+			<td>נון</td>
+			<td>סמך</td>
 		</tr>
 		<tr>
-			<td>120</td>
-			<td>106</td>
-			<td>80</td>
-			<td>74</td>
-			<td>100</td>
-			<td>20</td>
 			<td>419</td>
+			<td>20</td>
+			<td>100</td>
+			<td>74</td>
+			<td>80</td>
+			<td>106</td>
+			<td>120</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
-			<td>ק</td>
-			<td>צ</td>
-			<td>פ</td>
 			<td>ע</td>
+			<td>פ</td>
+			<td>צ</td>
+			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
 		</tr>
 		<tr>
-			<td>תו</td>
-			<td>שן</td>
-			<td>ריש</td>
-			<td>קוף</td>
-			<td>צדי</td>
-			<td>פא</td>
 			<td>עין</td>
+			<td>פא</td>
+			<td>צדי</td>
+			<td>קוף</td>
+			<td>ריש</td>
+			<td>שן</td>
+			<td>תו</td>
 		</tr>
 		<tr>
-			<td>406</td>
-			<td>350</td>
-			<td>510</td>
-			<td>186</td>
-			<td>104</td>
-			<td>81</td>
 			<td>130</td>
+			<td>81</td>
+			<td>104</td>
+			<td>186</td>
+			<td>510</td>
+			<td>350</td>
+			<td>406</td>
 		</tr>
 	</table>
 	<ul>
@@ -482,32 +482,32 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>כ</td>
-			<td>י</td>
-			<td>ט</td>
-			<td>ח</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td>ח</td>
+			<td>ט</td>
+			<td>י</td>
+			<td>כ</td>
 		</tr>
 		<tr>
-			<td>ל</td>
-			<td>מ</td>
-			<td>נ</td>
-			<td>ס</td>
-			<td>ע</td>
-			<td>פ</td>
-			<td>צ</td>
-			<td>ק</td>
-			<td>ר</td>
-			<td>ש</td>
 			<td>ת</td>
+			<td>ש</td>
+			<td>ר</td>
+			<td>ק</td>
+			<td>צ</td>
+			<td>פ</td>
+			<td>ע</td>
+			<td>ס</td>
+			<td>נ</td>
+			<td>מ</td>
+			<td>ל</td>
 		</tr>
 	</table>
 	<ul>
@@ -518,32 +518,32 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>כ</td>
-			<td>י</td>
-			<td>ט</td>
-			<td>ח</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td>ח</td>
+			<td>ט</td>
+			<td>י</td>
+			<td>כ</td>
 		</tr>
 		<tr>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
-			<td>ק</td>
-			<td>צ</td>
-			<td>פ</td>
-			<td>ע</td>
-			<td>ס</td>
-			<td>נ</td>
-			<td>מ</td>
 			<td>ל</td>
+			<td>מ</td>
+			<td>נ</td>
+			<td>ס</td>
+			<td>ע</td>
+			<td>פ</td>
+			<td>צ</td>
+			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
 		</tr>
 	</table>
 	<ul>
@@ -560,66 +560,66 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>י</td>
-			<td>ט</td>
-			<td>ח</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td>ח</td>
+			<td>ט</td>
+			<td>י</td>
 		</tr>
 		<tr>
-			<td>55</td>
-			<td>45</td>
-			<td>36</td>
-			<td>28</td>
-			<td>21</td>
-			<td>15</td>
-			<td>10</td>
-			<td>6</td>
-			<td>3</td>
 			<td>1</td>
+			<td>3</td>
+			<td>6</td>
+			<td>10</td>
+			<td>15</td>
+			<td>21</td>
+			<td>28</td>
+			<td>36</td>
+			<td>45</td>
+			<td>55</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ע</td>
-			<td>ס</td>
-			<td>נ</td>
-			<td>מ</td>
-			<td>ל</td>
 			<td>כ</td>
+			<td>ל</td>
+			<td>מ</td>
+			<td>נ</td>
+			<td>ס</td>
+			<td>ע</td>
 		</tr>
 		<tr>
-			<td>325</td>
-			<td>255</td>
-			<td>195</td>
-			<td>145</td>
-			<td>105</td>
 			<td>75</td>
+			<td>105</td>
+			<td>145</td>
+			<td>195</td>
+			<td>255</td>
+			<td>325</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
-			<td>ק</td>
-			<td>צ</td>
 			<td>פ</td>
+			<td>צ</td>
+			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
 		</tr>
 		<tr>
-			<td>1495</td>
-			<td>1095</td>
-			<td>795</td>
-			<td>595</td>
-			<td>495</td>
 			<td>405</td>
+			<td>495</td>
+			<td>595</td>
+			<td>795</td>
+			<td>1095</td>
+			<td>1495</td>
 		</tr>
 	</table>
 	<ul>
@@ -630,94 +630,94 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ח</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td>ח</td>
 		</tr>
 		<tr>
-			<td>_ית</td>
-			<td>_ין</td>
-			<td>_ו</td>
-			<td>_א</td>
-			<td>_לת</td>
-			<td>_ימל</td>
-			<td>_ית</td>
 			<td>_לף</td>
-		</tr>
-		<tr>
-			<td>410</td>
-			<td>60</td>
-			<td>6</td>
-			<td>1</td>
-			<td>430</td>
-			<td>80</td>
-			<td>410</td>
-			<td>110</td>
-		</tr>
-	</table>
-	<table class="gematriaChart">
-		<tr>
-			<td>ס</td>
-			<td>נ</td>
-			<td>מ</td>
-			<td>ל</td>
-			<td>כ</td>
-			<td>י</td>
-			<td>ט</td>
-		</tr>
-		<tr>
-			<td>_מך</td>
-			<td>_ון</td>
-			<td>_ם</td>
-			<td>_מד</td>
-			<td>_ף</td>
-			<td>_וד</td>
+			<td>_ית</td>
+			<td>_ימל</td>
+			<td>_לת</td>
+			<td>_א</td>
+			<td>_ו</td>
+			<td>_ין</td>
 			<td>_ית</td>
 		</tr>
 		<tr>
-			<td>60</td>
-			<td>56</td>
-			<td>40</td>
-			<td>44</td>
+			<td>110</td>
+			<td>410</td>
 			<td>80</td>
-			<td>10</td>
+			<td>430</td>
+			<td>1</td>
+			<td>6</td>
+			<td>60</td>
 			<td>410</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
-			<td>ק</td>
-			<td>צ</td>
-			<td>פ</td>
-			<td>ע</td>
+			<td>ט</td>
+			<td>י</td>
+			<td>כ</td>
+			<td>ל</td>
+			<td>מ</td>
+			<td>נ</td>
+			<td>ס</td>
 		</tr>
 		<tr>
-			<td>_ו</td>
-			<td>_ן</td>
-			<td>_יש</td>
-			<td>_וף</td>
-			<td>_די</td>
-			<td>_א</td>
-			<td>_ין</td>
+			<td>_ית</td>
+			<td>_וד</td>
+			<td>_ף</td>
+			<td>_מד</td>
+			<td>_ם</td>
+			<td>_ון</td>
+			<td>_מך</td>
 		</tr>
 		<tr>
-			<td>6</td>
-			<td>50</td>
-			<td>310</td>
-			<td>86</td>
-			<td>14</td>
-			<td>1</td>
+			<td>410</td>
+			<td>10</td>
+			<td>80</td>
+			<td>44</td>
+			<td>40</td>
+			<td>56</td>
 			<td>60</td>
+		</tr>
+	</table>
+	<table class="chart">
+		<tr>
+			<td>ע</td>
+			<td>פ</td>
+			<td>צ</td>
+			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
+		</tr>
+		<tr>
+			<td>_ין</td>
+			<td>_א</td>
+			<td>_די</td>
+			<td>_וף</td>
+			<td>_יש</td>
+			<td>_ן</td>
+			<td>_ו</td>
+		</tr>
+		<tr>
+			<td>60</td>
+			<td>1</td>
+			<td>14</td>
+			<td>86</td>
+			<td>310</td>
+			<td>50</td>
+			<td>6</td>
 		</tr>
 	</table>
 	<ul>
@@ -732,78 +732,78 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ח</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td>ח</td>
 		</tr>
 		<tr>
-			<td>512</td>
-			<td>343</td>
-			<td>216</td>
-			<td>125</td>
-			<td>64</td>
-			<td>27</td>
-			<td>8</td>
 			<td>1</td>
+			<td>8</td>
+			<td>27</td>
+			<td>64</td>
+			<td>125</td>
+			<td>216</td>
+			<td>343</td>
+			<td>512</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>מ</td>
-			<td>ל</td>
-			<td>כ</td>
-			<td>י</td>
 			<td>ט</td>
+			<td>י</td>
+			<td>כ</td>
+			<td>ל</td>
+			<td>מ</td>
 		</tr>
 		<tr>
-			<td>64000</td>
-			<td>27000</td>
-			<td>8000</td>
-			<td>1000</td>
 			<td>729</td>
+			<td>1000</td>
+			<td>8000</td>
+			<td>27000</td>
+			<td>64000</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>פ</td>
-			<td>ע</td>
-			<td>ס</td>
 			<td>נ</td>
+			<td>ס</td>
+			<td>ע</td>
+			<td>פ</td>
 		</tr>
 		<tr>
-			<td>512000</td>
-			<td>343000</td>
-			<td>216000</td>
 			<td>125000</td>
+			<td>216000</td>
+			<td>343000</td>
+			<td>512000</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ר</td>
-			<td>ק</td>
 			<td>צ</td>
+			<td>ק</td>
+			<td>ר</td>
 		</tr>
 		<tr>
-			<td>8000000</td>
-			<td>1000000</td>
 			<td>729000</td>
+			<td>1000000</td>
+			<td>8000000</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ת</td>
 			<td>ש</td>
+			<td>ת</td>
 		</tr>
 		<tr>
-			<td>64000000</td>
 			<td>27000000</td>
+			<td>64000000</td>
 		</tr>
 	</table>
 	<ul>
@@ -818,72 +818,72 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
 		</tr>
 		<tr>
-			<td>600</td>
-			<td>348</td>
-			<td>273</td>
-			<td>636</td>
-			<td>760</td>
 			<td>13</td>
+			<td>760</td>
+			<td>636</td>
+			<td>273</td>
+			<td>348</td>
+			<td>600</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ל</td>
-			<td>כ</td>
-			<td>י</td>
-			<td>ט</td>
-			<td>ח</td>
 			<td>ז</td>
+			<td>ח</td>
+			<td>ט</td>
+			<td>י</td>
+			<td>כ</td>
+			<td>ל</td>
 		</tr>
 		<tr>
-			<td>686</td>
-			<td>620</td>
-			<td>570</td>
-			<td>770</td>
-			<td>401</td>
 			<td>372</td>
+			<td>401</td>
+			<td>770</td>
+			<td>570</td>
+			<td>620</td>
+			<td>686</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>פ</td>
-			<td>ע</td>
-			<td>ס</td>
-			<td>נ</td>
 			<td>מ</td>
+			<td>נ</td>
+			<td>ס</td>
+			<td>ע</td>
+			<td>פ</td>
 		</tr>
 		<tr>
-			<td>446</td>
-			<td>422</td>
-			<td>660</td>
-			<td>408</td>
 			<td>323</td>
+			<td>408</td>
+			<td>660</td>
+			<td>422</td>
+			<td>446</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
-			<td>ק</td>
 			<td>צ</td>
+			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
 		</tr>
 		<tr>
-			<td>720</td>
-			<td>1083</td>
-			<td>501</td>
-			<td>46</td>
 			<td>820</td>
+			<td>46</td>
+			<td>501</td>
+			<td>1083</td>
+			<td>720</td>
 		</tr>
 	</table>
 	<ul>
@@ -905,36 +905,36 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>פ</td>
-			<td>ע</td>
-			<td>ס</td>
-			<td>נ</td>
-			<td>מ</td>
-			<td>ל</td>
-			<td class="blankCell">&nbsp;</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td class="blank-cell">&nbsp;</td>
+			<td>ל</td>
+			<td>מ</td>
+			<td>נ</td>
+			<td>ס</td>
+			<td>ע</td>
+			<td>פ</td>
 		</tr>
 		<tr>
-			<td class="blankCell">&nbsp;</td>
-			<td>צ</td>
-			<td>ק</td>
-			<td>ר</td>
-			<td>ש</td>
-			<td>ת</td>
-			<td class="blankCell">&nbsp;</td>
-			<td class="blankCell">&nbsp;</td>
-			<td>ז</td>
-			<td>ח</td>
-			<td>ט</td>
-			<td>י</td>
 			<td>כ</td>
+			<td>י</td>
+			<td>ט</td>
+			<td>ח</td>
+			<td>ז</td>
+			<td class="blank-cell">&nbsp;</td>
+			<td class="blank-cell">&nbsp;</td>
+			<td>ת</td>
+			<td>ש</td>
+			<td>ר</td>
+			<td>ק</td>
+			<td>צ</td>
+			<td class="blank-cell">&nbsp;</td>
 		</tr>
 	</table>
 	<ul>
@@ -945,44 +945,44 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ך</td>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
-			<td>ק</td>
-			<td class="blankCell">&nbsp;</td>
-			<td>נ</td>
-			<td>מ</td>
-			<td>ל</td>
-			<td>כ</td>
-			<td>י</td>
-			<td class="blankCell">&nbsp;</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td class="blank-cell">&nbsp;</td>
+			<td>י</td>
+			<td>כ</td>
+			<td>ל</td>
+			<td>מ</td>
+			<td>נ</td>
+			<td class="blank-cell">&nbsp;</td>
+			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
+			<td>ך</td>
 		</tr>
 		<tr>
-			<td class="blankCell">&nbsp;</td>
-			<td>ם</td>
-			<td>ן</td>
-			<td>ף</td>
-			<td>ץ</td>
-			<td class="blankCell">&nbsp;</td>
-			<td class="blankCell">&nbsp;</td>
-			<td>ס</td>
-			<td>ע</td>
-			<td>פ</td>
-			<td>צ</td>
-			<td class="blankCell">&nbsp;</td>
-			<td class="blankCell">&nbsp;</td>
-			<td>ו</td>
-			<td>ז</td>
-			<td>ח</td>
 			<td>ט</td>
+			<td>ח</td>
+			<td>ז</td>
+			<td>ו</td>
+			<td class="blank-cell">&nbsp;</td>
+			<td class="blank-cell">&nbsp;</td>
+			<td>צ</td>
+			<td>פ</td>
+			<td>ע</td>
+			<td>ס</td>
+			<td class="blank-cell">&nbsp;</td>
+			<td class="blank-cell">&nbsp;</td>
+			<td>ץ</td>
+			<td>ף</td>
+			<td>ן</td>
+			<td>ם</td>
+			<td class="blank-cell">&nbsp;</td>
 		</tr>
 	</table>
 	<ul>
@@ -994,39 +994,39 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ט</td>
-			<td>ח</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td>ח</td>
+			<td>ט</td>
 		</tr>
 		<tr>
-			<td>צ</td>
-			<td>פ</td>
-			<td>ע</td>
-			<td>ס</td>
-			<td>נ</td>
-			<td>מ</td>
-			<td>ל</td>
-			<td>כ</td>
 			<td>י</td>
+			<td>כ</td>
+			<td>ל</td>
+			<td>מ</td>
+			<td>נ</td>
+			<td>ס</td>
+			<td>ע</td>
+			<td>פ</td>
+			<td>צ</td>
 		</tr>
 		<tr>
-			<td>ץ</td>
-			<td>ף</td>
-			<td>ן</td>
-			<td>ם</td>
-			<td>ך</td>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
 			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
+			<td>ך</td>
+			<td>ם</td>
+			<td>ן</td>
+			<td>ף</td>
+			<td>ץ</td>
 		</tr>
 	</table>
 	<ul>
@@ -1036,60 +1036,60 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>כ</td>
-			<td>י</td>
-			<td>ט</td>
-			<td>ח</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td>ח</td>
+			<td>ט</td>
+			<td>י</td>
+			<td>כ</td>
 		</tr>
 		<tr>
 			<td>ף</td>
-			<td>ד</td>
-			<td>ת</td>
-			<td>ת</td>
-			<td>ן</td>
-			<td>ו</td>
-			<td>א</td>
 			<td>ת</td>
 			<td>ל</td>
 			<td>ת</td>
+			<td>א</td>
+			<td>ו</td>
+			<td>ן</td>
+			<td>ת</td>
+			<td>ת</td>
+			<td>ד</td>
 			<td>ף</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
-			<td>ק</td>
-			<td>צ</td>
-			<td>פ</td>
-			<td>ע</td>
-			<td>ס</td>
-			<td>נ</td>
-			<td>מ</td>
 			<td>ל</td>
+			<td>מ</td>
+			<td>נ</td>
+			<td>ס</td>
+			<td>ע</td>
+			<td>פ</td>
+			<td>צ</td>
+			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
 		</tr>
 		<tr>
-			<td>ו</td>
-			<td>ן</td>
-			<td>ש</td>
-			<td>ף</td>
-			<td>י</td>
-			<td>א</td>
+			<td>ד</td>
+			<td>ם</td>
 			<td>ן</td>
 			<td>ך</td>
 			<td>ן</td>
-			<td>ם</td>
-			<td>ד</td>
+			<td>א</td>
+			<td>י</td>
+			<td>ף</td>
+			<td>ש</td>
+			<td>ן</td>
+			<td>ו</td>
 		</tr>
 	</table>
 	<ul>
@@ -1100,36 +1100,36 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td class="blankCell">&nbsp;</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td class="blank-cell">&nbsp;</td>
 		</tr>
 		<tr>
-			<td class="blankCell">&nbsp;</td>
-			<td>נ</td>
-			<td>מ</td>
-			<td>ל</td>
-			<td>כ</td>
-			<td>י</td>
-			<td>ט</td>
 			<td>ח</td>
+			<td>ט</td>
+			<td>י</td>
+			<td>כ</td>
+			<td>ל</td>
+			<td>מ</td>
+			<td>נ</td>
+			<td class="blank-cell">&nbsp;</td>
 		</tr>
 		<tr>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
-			<td>ק</td>
-			<td>צ</td>
-			<td>פ</td>
-			<td>ע</td>
 			<td>ס</td>
+			<td>ע</td>
+			<td>פ</td>
+			<td>צ</td>
+			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
 		</tr>
 	</table>
 	<ul>
@@ -1139,60 +1139,60 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>כ</td>
-			<td>י</td>
-			<td>ט</td>
-			<td>ח</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td>ח</td>
+			<td>ט</td>
+			<td>י</td>
+			<td>כ</td>
 		</tr>
 		<tr>
-			<td>ל</td>
-			<td>כ</td>
-			<td>י</td>
-			<td>ט</td>
-			<td>ח</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
 			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td>ח</td>
+			<td>ט</td>
+			<td>י</td>
+			<td>כ</td>
+			<td>ל</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
-			<td>ק</td>
-			<td>צ</td>
-			<td>פ</td>
-			<td>ע</td>
-			<td>ס</td>
-			<td>נ</td>
-			<td>מ</td>
 			<td>ל</td>
+			<td>מ</td>
+			<td>נ</td>
+			<td>ס</td>
+			<td>ע</td>
+			<td>פ</td>
+			<td>צ</td>
+			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
 		</tr>
 		<tr>
-			<td>א</td>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
-			<td>ק</td>
-			<td>צ</td>
-			<td>פ</td>
-			<td>ע</td>
-			<td>ס</td>
-			<td>נ</td>
 			<td>מ</td>
+			<td>נ</td>
+			<td>ס</td>
+			<td>ע</td>
+			<td>פ</td>
+			<td>צ</td>
+			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
+			<td>א</td>
 		</tr>
 	</table>
 	<ul>
@@ -1202,60 +1202,60 @@
 			</p>
 		</li>
 	</ul>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>כ</td>
-			<td>י</td>
-			<td>ט</td>
-			<td>ח</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
 			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td>ח</td>
+			<td>ט</td>
+			<td>י</td>
+			<td>כ</td>
 		</tr>
 		<tr>
-			<td>י</td>
-			<td>ט</td>
-			<td>ח</td>
-			<td>ז</td>
-			<td>ו</td>
-			<td>ה</td>
-			<td>ד</td>
-			<td>ג</td>
-			<td>ב</td>
-			<td>א</td>
 			<td>ת</td>
+			<td>א</td>
+			<td>ב</td>
+			<td>ג</td>
+			<td>ד</td>
+			<td>ה</td>
+			<td>ו</td>
+			<td>ז</td>
+			<td>ח</td>
+			<td>ט</td>
+			<td>י</td>
 		</tr>
 	</table>
-	<table class="gematriaChart">
+	<table class="chart">
 		<tr>
-			<td>ת</td>
-			<td>ש</td>
-			<td>ר</td>
-			<td>ק</td>
-			<td>צ</td>
-			<td>פ</td>
-			<td>ע</td>
-			<td>ס</td>
-			<td>נ</td>
-			<td>מ</td>
 			<td>ל</td>
+			<td>מ</td>
+			<td>נ</td>
+			<td>ס</td>
+			<td>ע</td>
+			<td>פ</td>
+			<td>צ</td>
+			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
+			<td>ת</td>
 		</tr>
 		<tr>
-			<td>ש</td>
-			<td>ר</td>
-			<td>ק</td>
-			<td>צ</td>
-			<td>פ</td>
-			<td>ע</td>
-			<td>ס</td>
-			<td>נ</td>
-			<td>מ</td>
-			<td>ל</td>
 			<td>כ</td>
+			<td>ל</td>
+			<td>מ</td>
+			<td>נ</td>
+			<td>ס</td>
+			<td>ע</td>
+			<td>פ</td>
+			<td>צ</td>
+			<td>ק</td>
+			<td>ר</td>
+			<td>ש</td>
 		</tr>
 	</table>
 </section>
@@ -1277,7 +1277,7 @@
 		padding: 5px;
 	}
 
-	.gematriaChart {
+	.chart {
 		width: calc(100% - 2em);
 		max-width: 600px;
 		margin: 0 0 0.5em 2em;
@@ -1285,7 +1285,7 @@
 		border-collapse: separate;
 		direction: rtl;
 	}
-	.gematriaChart td {
+	.chart td {
 		width: 3.7%;
 		text-align: center;
 		background-color: #7ac0f8;
@@ -1294,10 +1294,10 @@
 		padding: 3px;
 		margin: 0.25em;
 	}
-	td.highlightNum {
+	td.highlighted {
 		background-color: #2196f3;
 	}
-	td.blankCell {
+	td.blank-cell {
 		background: none;
 		width: 0.3%;
 	}
