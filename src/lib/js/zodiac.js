@@ -121,7 +121,7 @@ export function calculateZodiac(date) {
  * @returns {ZodiacResult} The zodiac sign for the given Hebrew date.
  */
 export function calculateZodiacHebrewDate(hDate) {
-	const monthIndex = Math.min(hDate.getMonth(), 12);  // If 13 (Adar II), use 12 (Adar)
+	const monthIndex = Math.min(hDate.getMonth(), 12); // If 13 (Adar II), use 12 (Adar)
 	return {
 		date: dayjs(hDate.greg()).format('YYYY-MM-DD'),
 		hebrewDate: formatHebrewDateEn(hDate),

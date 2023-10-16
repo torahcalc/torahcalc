@@ -544,8 +544,8 @@ describe('test jewish holidays', () => {
 });
 
 describe('test zodiac', () => {
-	it("What is the zodiac sign for March 27, 1989?", async () => {
-		const sections = await calculateQuery("What is the zodiac sign for March 27, 1989?");
+	it('What is the zodiac sign for March 27, 1989?', async () => {
+		const sections = await calculateQuery('What is the zodiac sign for March 27, 1989?');
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe('Calculate the Hebrew zodiac for Mon, March 27, 1989');
 		expect(sections[1].title).toBe('Result');
@@ -553,8 +553,8 @@ describe('test zodiac', () => {
 		expect(sections[1].content).toContain('Pisces');
 	});
 
-	it("What is the zodiac sign for 1 Teves?", async () => {
-		const sections = await calculateQuery("What is the zodiac sign for 1 Teves?");
+	it('What is the zodiac sign for 1 Teves?', async () => {
+		const sections = await calculateQuery('What is the zodiac sign for 1 Teves?');
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toContain('Calculate the Hebrew zodiac for 1st of Teves, ');
 		expect(sections[1].title).toBe('Result');

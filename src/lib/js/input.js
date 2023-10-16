@@ -1122,7 +1122,7 @@ function jewishHolidayQuery(derivation) {
 
 /**
  * Generate sections for a Zodiac query
- * 
+ *
  * @param {{ function: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } } }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
@@ -1158,4 +1158,3 @@ function zodiacQuery(derivation) {
 
 	return sections;
 }
-
