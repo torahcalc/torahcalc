@@ -39,6 +39,7 @@ main -> query[unitConversionQuery] {% data => data[0][0] %}
       | query[leapYearQuery] {% data => data[0][0] %}
       | query[dailyLearningQuery] {% data => data[0][0] %}
       | query[jewishHolidayQuery] {% data => data[0][0] %}
+      | query[zodiacQuery] {% data => data[0][0] %}
 
 # Unit Conversions
 # - Convert 10 amos to meters
@@ -180,6 +181,11 @@ jewishHolidayPastPrefix -> optionalWords[("when was" | "what was" | "what was" |
 
 jewishHolidayListPrefix -> jewishHolidaysListPrefixNoYear __ optionalWords[("in" | "for" | "of")] {% data => null %}
 jewishHolidaysListPrefixNoYear -> optionalWords[("list" | "show" | "display" | "find" | "search")] optionalWords[("the" | "of")] optionalWords["upcoming"] optionalWords[("jewish" | "hebrew calendar")] _ "holidays" {% data => null %}
+
+# zodiacQuery
+# - What is the zodiac sign for 1 Teves?
+# - What is the zodiac sign for December 25, 2023?
+zodiacQuery -> optionalWords[("what is" | "what's" | "what was")] optionalWords["the"] optionalWords[("hebrew" | "jewish")] "zodiac" __ optionalWords["sign"] optionalWords[("for" | "on")] date {% data => ({function: "zodiacQuery", date: data[7]}) %}
 
 # Date parsing
 date -> gregorianDate {% data => data[0] %}

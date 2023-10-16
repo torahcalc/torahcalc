@@ -10,6 +10,8 @@ describe('test calculateZodiac', () => {
 			latin: 'Libra',
 			hebrew: 'מאזניים',
 			hebrewTransliterated: 'Moznayim',
+			month: 'Tishrei',
+			symbol: '♎',
 		});
 	});
 });

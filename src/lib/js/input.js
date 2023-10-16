@@ -11,6 +11,7 @@ import { calculateOmerDate, calculateOmerHebrew } from './omer';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
 import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, getCurrentHebrewMonth, getNextHebrewMonth, getPrevHebrewMonth, properCase } from './utils';
 import { ZMANIM_NAMES } from './zmanim';
+import { calculateZodiac, calculateZodiacHebrewDate } from './zodiac';
 import { HDate } from '@hebcal/core';
 import DOMPurify from 'dompurify';
 import dayjs from 'dayjs';
@@ -100,6 +101,7 @@ export async function calculateQuery(search, options = {}) {
 		leapYearQuery: () => leapYearQuery(derivation),
 		dailyLearningQuery: () => dailyLearningQuery(derivation),
 		jewishHolidayQuery: () => jewishHolidayQuery(derivation),
+		zodiacQuery: () => zodiacQuery(derivation),
 	};
 
 	/** @type {Array<{ title: string, content: string }>} */
@@ -360,6 +362,8 @@ async function getValidDerivations(search, results) {
 			} else {
 				derivation.disambiguation = 'Upcoming Jewish holidays';
 			}
+		} else if (derivation.function === 'zodiacQuery') {
+			derivation.disambiguation = `Zodiac sign for ${formatParseResultDate(derivation.date)}`;
 		}
 		derivations[derivation.disambiguation] = derivation;
 	}
@@ -1115,3 +1119,43 @@ function jewishHolidayQuery(derivation) {
 
 	return sections;
 }
+
+/**
+ * Generate sections for a Zodiac query
+ * 
+ * @param {{ function: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } } }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function zodiacQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+
+	// get date in format YYYY-MM-DD
+	let zodiac = calculateZodiac(dayjs().format('YYYY-MM-DD'));
+	let response = '';
+	if (derivation?.date?.gregorianDate) {
+		const gregorianDate = derivation.date.gregorianDate;
+		gregorianDate.year = gregorianDate.year ?? new Date().getFullYear();
+		gregorianDate.month = gregorianDate.month ?? 1;
+		gregorianDate.day = gregorianDate.day ?? 1;
+		const date = new Date(gregorianDate.year, gregorianDate.month - 1, gregorianDate.day);
+		zodiac = calculateZodiac(dayjs(date).format('YYYY-MM-DD'));
+		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the Hebrew zodiac for ${formatDateObject(date)}` });
+		response += `The Hebrew date is ${zodiac.hebrewDate}<br/><br/>`;
+	} else if (derivation?.date?.hebrewDate) {
+		const hebrewDate = derivation.date.hebrewDate;
+		hebrewDate.year = hebrewDate.year ?? new HDate().getFullYear();
+		hebrewDate.month = hebrewDate.month ?? 1;
+		hebrewDate.day = hebrewDate.day ?? 1;
+		const hDate = new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year);
+		zodiac = calculateZodiacHebrewDate(hDate);
+		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the Hebrew zodiac for ${formatHebrewDateEn(hDate)}` });
+	}
+
+	response += `The Hebrew zodiac sign for ${zodiac.month} is ${zodiac.symbol} <b>${zodiac.latin} / ${zodiac.hebrewTransliterated} / ${zodiac.hebrew}</b>`;
+
+	sections.push({ title: RESULT, content: response });
+
+	return sections;
+}
+

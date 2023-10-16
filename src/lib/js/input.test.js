@@ -542,3 +542,23 @@ describe('test jewish holidays', () => {
 		expect(sections[1].content).toContain('Leil Selichos');
 	});
 });
+
+describe('test zodiac', () => {
+	it("What is the zodiac sign for March 27, 1989?", async () => {
+		const sections = await calculateQuery("What is the zodiac sign for March 27, 1989?");
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Calculate the Hebrew zodiac for Mon, March 27, 1989');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('20th of Adar II');
+		expect(sections[1].content).toContain('Pisces');
+	});
+
+	it("What is the zodiac sign for 1 Teves?", async () => {
+		const sections = await calculateQuery("What is the zodiac sign for 1 Teves?");
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('Calculate the Hebrew zodiac for 1st of Teves, ');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).not.toContain('1st of Teves');
+		expect(sections[1].content).toContain('Capricorn');
+	});
+});

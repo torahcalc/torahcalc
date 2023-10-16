@@ -1,17 +1,18 @@
 <script>
 	import Fa from 'svelte-fa/src/fa.svelte';
 	import {
-		faCalculator,
-		faSunrise,
-		faScaleBalanced,
-		faCalendarAlt,
-		faMoonOverSun,
-		faWheatAlt,
-		faCalendarPlus,
 		faBookOpenCover,
-		faListCheck,
-		faTableColumns,
+		faCalculator,
+		faCalendarAlt,
+		faCalendarPlus,
 		faCalendarStar,
+		faEclipse,
+		faListCheck,
+		faScaleBalanced,
+		faSolarSystem,
+		faSunrise,
+		faTableColumns,
+		faWheatAlt,
 	} from '@danieloi/pro-solid-svg-icons';
 	import { getConverters, getUnit, getUnits } from '$lib/js/unitconverter';
 	import { METHOD_NAMES } from '$lib/js/gematria';
@@ -158,7 +159,28 @@
 
 		<div class="col-md-6">
 			<div class="category">
-				<h5><Fa icon={faMoonOverSun} class="me-1" /> Molad</h5>
+				<h5><Fa icon={faBookOpenCover} class="me-1" /> Daily Learning / Daf Yomi</h5>
+				<ul class="list-unstyled">
+					<li><InputExample {clickFunction} query="What is today's Daf Yomi?" /></li>
+					<li><InputExample {clickFunction} query="What is the Daf Yomi for tomorrow?" /></li>
+					<li><InputExample {clickFunction} query="What is the Nach Yomi for May 12, 2023?" /></li>
+					<li><InputExample {clickFunction} query="What are the daily psalms for tomorrow?" /></li>
+					<li><InputExample {clickFunction} query="What is the Weekly Daf for 18 Iyar?" /></li>
+				</ul>
+
+				<div>
+					<details>
+						<summary>Show list of daily learning types</summary>
+
+						<AvailableOptionsList array={Object.values(LEARNING_TYPE_NAMES)} />
+					</details>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<div class="category">
+				<h5><Fa icon={faEclipse} class="me-1" /> Molad</h5>
 
 				<ul class="list-unstyled">
 					<li><InputExample {clickFunction} query="Calculate the molad of Sivan 5781." /></li>
@@ -205,22 +227,14 @@
 
 		<div class="col-md-6">
 			<div class="category">
-				<h5><Fa icon={faBookOpenCover} class="me-1" /> Daily Learning / Daf Yomi</h5>
+				<h5><Fa icon={faSolarSystem} class="me-1" /> Hebrew Zodiac Signs</h5>
+
 				<ul class="list-unstyled">
-					<li><InputExample {clickFunction} query="What is today's Daf Yomi?" /></li>
-					<li><InputExample {clickFunction} query="What is the Daf Yomi for tomorrow?" /></li>
-					<li><InputExample {clickFunction} query="What is the Nach Yomi for May 12, 2023?" /></li>
-					<li><InputExample {clickFunction} query="What are the daily psalms for tomorrow?" /></li>
-					<li><InputExample {clickFunction} query="What is the Weekly Daf for 18 Iyar?" /></li>
+					<li><InputExample {clickFunction} query="What is the zodiac sign for March 27, 1989?" /></li>
+					<li><InputExample {clickFunction} query="What is the zodiac sign for 1 Teves?" /></li>
+					<li><InputExample {clickFunction} query="What is the zodiac sign for December 1, 1979?" /></li>
+					<li><InputExample {clickFunction} query="What is the zodiac sign for 11 Nissan?" /></li>
 				</ul>
-
-				<div>
-					<details>
-						<summary>Show list of daily learning types</summary>
-
-						<AvailableOptionsList array={Object.values(LEARNING_TYPE_NAMES)} />
-					</details>
-				</div>
 			</div>
 		</div>
 
@@ -272,18 +286,18 @@
 		--category-color: 244, 67, 54; /* red */
 	}
 	.categories > :nth-child(12n + 8) .category {
-		--category-color: 0, 150, 136; /* teal */
-	}
-	.categories > :nth-child(12n + 9) .category {
-		--category-color: 121, 85, 72; /* brown */
-	}
-	.categories > :nth-child(12n + 10) .category {
-		--category-color: 255, 152, 0; /* orange */
-	}
-	.categories > :nth-child(12n + 11) .category {
 		--category-color: 96, 125, 139; /* blue-grey */
 	}
+	.categories > :nth-child(12n + 9) .category {
+		--category-color: 0, 150, 136; /* teal */
+	}
+	.categories > :nth-child(12n + 10) .category {
+		--category-color: 121, 85, 72; /* brown */
+	}
+	.categories > :nth-child(12n + 11) .category {
+		--category-color: 255, 152, 0; /* orange */
+	}
 	.categories > :nth-child(12n + 12) .category {
-		--category-color: 158, 158, 158; /* grey */
+		--category-color: 102, 51, 153; /* purple */
 	}
 </style>
