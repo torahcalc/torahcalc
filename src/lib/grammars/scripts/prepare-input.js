@@ -17,22 +17,25 @@ generateGrammar('holiday', holidays, 'holiday-inputs.js', './src/lib/grammars/ge
 
 /**
  * Convert a one-level deep object mapping to a grammar rule and return the result
- * 
+ *
  * @param {string} nonTerminal - The non-terminal to use for the rule
  * @param {Record<string, string[]>} mapping - The mapping of input to output
  * @returns {string} The grammar rule
  */
 function convertMappingToGrammarRule(nonTerminal, mapping) {
-	return `\n\n${nonTerminal} -> ` + Object.keys(mapping)
-		.map((input) => {
-			return mapping[input].map((value) => `"${input.replace(/"/g, '\\"')}" {% d => '${value}' %}`).join('\n | ');
-		})
-		.join('\n | ');
+	return (
+		`\n\n${nonTerminal} -> ` +
+		Object.keys(mapping)
+			.map((input) => {
+				return mapping[input].map((value) => `"${input.replace(/"/g, '\\"')}" {% d => '${value}' %}`).join('\n | ');
+			})
+			.join('\n | ')
+	);
 }
 
 /**
  * Generic function to generate a grammar from a one-level deep object mapping
- * 
+ *
  * @param {string} nonTerminal - The non-terminal to use for the rule
  * @param {Record<string, string[]>} mapping - The mapping of input to output
  * @param {string} inputPath - The path to the input file

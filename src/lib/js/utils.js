@@ -56,34 +56,34 @@ export function getNextHebrewMonth() {
 	const monthsInYear = today.isLeapYear() ? 13 : 12;
 	const nextHebrewMonth = (today.getMonth() + 1) % monthsInYear || monthsInYear;
 	return {
-		  month: nextHebrewMonth,
-		  year: nextHebrewMonth === 1 ? today.getFullYear() + 1 : today.getFullYear(),
+		month: nextHebrewMonth,
+		year: nextHebrewMonth === 1 ? today.getFullYear() + 1 : today.getFullYear(),
 	};
 }
 
 /**
-* Returns the previous Hebrew month
-* @returns {{month: number, year: number}}
-*/
+ * Returns the previous Hebrew month
+ * @returns {{month: number, year: number}}
+ */
 export function getPrevHebrewMonth() {
 	const today = new HDate();
 	const monthsInPrevYear = (7 * today.getFullYear()) % 19 < 7 ? 13 : 12;
-	const prevHebrewMonth = (today.getMonth() - 1) || monthsInPrevYear;
+	const prevHebrewMonth = today.getMonth() - 1 || monthsInPrevYear;
 	return {
-		  month: prevHebrewMonth,
-		  year: prevHebrewMonth === monthsInPrevYear ? today.getFullYear() - 1 : today.getFullYear(),
+		month: prevHebrewMonth,
+		year: prevHebrewMonth === monthsInPrevYear ? today.getFullYear() - 1 : today.getFullYear(),
 	};
 }
 
 /**
-* Returns the current Hebrew month
-* @returns {{month: number, year: number}}
-*/
+ * Returns the current Hebrew month
+ * @returns {{month: number, year: number}}
+ */
 export function getCurrentHebrewMonth() {
 	const today = new HDate();
 	return {
-		  month: today.getMonth(),
-		  year: today.getFullYear(),
+		month: today.getMonth(),
+		year: today.getFullYear(),
 	};
 }
 

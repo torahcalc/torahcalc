@@ -159,7 +159,9 @@ async function getValidDerivations(search, results) {
 	const derivations = {};
 	// determine disambiguations and skip invalid derivations
 	for (const derivation of results) {
-		derivation.disambiguation = Object.values(derivation).map((value) => value.toString() === '[object Object]' ? JSON.stringify(value) : value.toString()).join(', ');
+		derivation.disambiguation = Object.values(derivation)
+			.map((value) => (value.toString() === '[object Object]' ? JSON.stringify(value) : value.toString()))
+			.join(', ');
 		derivation.disambiguationScore = 0;
 		if (derivation.function === 'unitConversionQuery') {
 			// skip derivation if unit types do not match
@@ -356,7 +358,7 @@ async function getValidDerivations(search, results) {
 					derivation.disambiguationScore += 1;
 				}
 			} else {
-				derivation.disambiguation = "Upcoming Jewish holidays";
+				derivation.disambiguation = 'Upcoming Jewish holidays';
 			}
 		}
 		derivations[derivation.disambiguation] = derivation;
@@ -366,26 +368,26 @@ async function getValidDerivations(search, results) {
 
 /**
  * Get the id of the upcoming or last rosh chodesh
- * 
+ *
  * @param {number} direction - The direction to search for the rosh chodesh (1 for upcoming, 0 for current, -1 for last)
  * @returns {string} The id of the rosh chodesh
  */
 function getRoshChodeshId(direction) {
 	const roshChodeshIds = {
-		1: "rosh_chodesh_nissan",
-		2: "rosh_chodesh_iyar",
-		3: "rosh_chodesh_sivan",
-		4: "rosh_chodesh_tammuz",
-		5: "rosh_chodesh_av",
-		6: "rosh_chodesh_elul",
-		7: "rosh_hashanah",
-		8: "rosh_chodesh_cheshvan",
-		9: "rosh_chodesh_kislev",
-		10: "rosh_chodesh_teves",
-		11: "rosh_chodesh_shevat",
-		12: "rosh_chodesh_adar_i",
-		13: "rosh_chodesh_adar_ii",
-	}
+		1: 'rosh_chodesh_nissan',
+		2: 'rosh_chodesh_iyar',
+		3: 'rosh_chodesh_sivan',
+		4: 'rosh_chodesh_tammuz',
+		5: 'rosh_chodesh_av',
+		6: 'rosh_chodesh_elul',
+		7: 'rosh_hashanah',
+		8: 'rosh_chodesh_cheshvan',
+		9: 'rosh_chodesh_kislev',
+		10: 'rosh_chodesh_teves',
+		11: 'rosh_chodesh_shevat',
+		12: 'rosh_chodesh_adar_i',
+		13: 'rosh_chodesh_adar_ii',
+	};
 	let month;
 	if (direction === 1) {
 		month = getNextHebrewMonth();
@@ -396,7 +398,7 @@ function getRoshChodeshId(direction) {
 	}
 	// if it's not a leap year, return regular adar
 	if (month.month === 12 && !isHebrewLeapYear(month.year).isLeapYear) {
-		return "rosh_chodesh_adar";
+		return 'rosh_chodesh_adar';
 	}
 	// @ts-ignore - assume key exists
 	return roshChodeshIds[month.month];
@@ -1064,9 +1066,9 @@ function jewishHolidayQuery(derivation) {
 	let hebrewYear;
 	let startDate;
 
-	if (derivation.year?.calendar === "hebrew") {
+	if (derivation.year?.calendar === 'hebrew') {
 		hebrewYear = derivation.year.value;
-	} else if (derivation.year?.calendar === "gregorian") {
+	} else if (derivation.year?.calendar === 'gregorian') {
 		gregorianYear = derivation.year.value;
 	} else if (derivation.upcoming === true) {
 		startDate = new HDate();
@@ -1088,11 +1090,14 @@ function jewishHolidayQuery(derivation) {
 		if (!holidayResult) {
 			throw new InputError(`The holiday "${holidayName}" was not found.`, JSON.stringify({ gregorianYear, hebrewYear, startDate, holidays }, null, 2));
 		}
-		sections.push({ title: INPUT_INTERPRETATION, content: `When ${derivation.upcoming ? "is" : "was"} ${holidayName} ${holidayResult.gregorianYear} / ${holidayResult.hebrewYear}?` });
+		sections.push({ title: INPUT_INTERPRETATION, content: `When ${derivation.upcoming ? 'is' : 'was'} ${holidayName} ${holidayResult.gregorianYear} / ${holidayResult.hebrewYear}?` });
 		sections.push({ title: RESULT, content: `<h6>On the Gregorian calendar</h6>${holidayResult.gregorianDateHTML}<br /><br /><h6>On the Hebrew calendar</h6>${holidayResult.hebrewDateHTML}` });
 	} else {
 		if (derivation.year) {
-			sections.push({ title: INPUT_INTERPRETATION, content: `Calculate Jewish holidays for ${derivation.year?.calendar === "hebrew" ? 'Hebrew year ' + hebrewYear : 'Gregorian year ' + gregorianYear}` });
+			sections.push({
+				title: INPUT_INTERPRETATION,
+				content: `Calculate Jewish holidays for ${derivation.year?.calendar === 'hebrew' ? 'Hebrew year ' + hebrewYear : 'Gregorian year ' + gregorianYear}`,
+			});
 		} else {
 			sections.push({ title: INPUT_INTERPRETATION, content: 'Calculate Jewish holidays for the upcoming year' });
 		}
@@ -1100,10 +1105,13 @@ function jewishHolidayQuery(derivation) {
 		const holidayData = holidays.map((holiday) => {
 			return { Holiday: holiday.titleHTML, 'Gregorian Date': holiday.gregorianDateHTML, 'Hebrew Date': holiday.hebrewDateHTML };
 		});
-		const holidayTable = dataToHtmlTable(holidayData, { headers: ['Holiday', 'Gregorian Date', 'Hebrew Date'], class: 'table table-striped table-bordered', thStyles: ["width: 200px", "min-width: 200px", "min-width: 200px"] });
+		const holidayTable = dataToHtmlTable(holidayData, {
+			headers: ['Holiday', 'Gregorian Date', 'Hebrew Date'],
+			class: 'table table-striped table-bordered',
+			thStyles: ['width: 200px', 'min-width: 200px', 'min-width: 200px'],
+		});
 		sections.push({ title: RESULT, content: `${holidayTable}` });
 	}
 
 	return sections;
 }
-

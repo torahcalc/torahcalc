@@ -1,6 +1,18 @@
 <script>
 	import Fa from 'svelte-fa/src/fa.svelte';
-	import { faCalculator, faSunrise, faScaleBalanced, faCalendarAlt, faMoonOverSun, faWheatAlt, faCalendarPlus, faBookOpenCover, faListCheck, faTableColumns, faCalendarStar } from '@danieloi/pro-solid-svg-icons';
+	import {
+		faCalculator,
+		faSunrise,
+		faScaleBalanced,
+		faCalendarAlt,
+		faMoonOverSun,
+		faWheatAlt,
+		faCalendarPlus,
+		faBookOpenCover,
+		faListCheck,
+		faTableColumns,
+		faCalendarStar,
+	} from '@danieloi/pro-solid-svg-icons';
 	import { getConverters, getUnit, getUnits } from '$lib/js/unitconverter';
 	import { METHOD_NAMES } from '$lib/js/gematria';
 	import { ZMANIM_NAMES } from '$lib/js/zmanim';
