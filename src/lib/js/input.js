@@ -1180,7 +1180,7 @@ function zodiacQuery(derivation) {
 
 /**
  * Generate sections for a Birkas HaChama query
- * 
+ *
  * @param {{ function: string, direction: 1 | -1, year?: { value: number, calendar: "hebrew" | "gregorian" } }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
@@ -1192,10 +1192,20 @@ function birkasHachamaQuery(derivation) {
 	if (derivation.year?.calendar === 'hebrew') {
 		const gregorianDate = hebrewToGregorian({ year: derivation.year.value, month: 1, day: 1 }).date;
 		gregorianYear = gregorianDate.getFullYear() + derivation.direction;
-		sections.push({ title: INPUT_INTERPRETATION, content: derivation.direction === 1 ? `When is the next Birkas HaChama after Hebrew year ${derivation.year.value}?` : `When was the last Birkas HaChama before Hebrew year ${derivation.year.value}?` });
+		sections.push({
+			title: INPUT_INTERPRETATION,
+			content:
+				derivation.direction === 1 ? `When is the next Birkas HaChama after Hebrew year ${derivation.year.value}?` : `When was the last Birkas HaChama before Hebrew year ${derivation.year.value}?`,
+		});
 	} else if (derivation.year?.calendar === 'gregorian') {
 		gregorianYear = derivation.year.value + derivation.direction;
-		sections.push({ title: INPUT_INTERPRETATION, content: derivation.direction === 1 ? `When is the next Birkas HaChama after Gregorian year ${derivation.year.value}?` : `When was the last Birkas HaChama before Gregorian year ${derivation.year.value}?` });
+		sections.push({
+			title: INPUT_INTERPRETATION,
+			content:
+				derivation.direction === 1
+					? `When is the next Birkas HaChama after Gregorian year ${derivation.year.value}?`
+					: `When was the last Birkas HaChama before Gregorian year ${derivation.year.value}?`,
+		});
 	} else if (derivation.direction === 1) {
 		sections.push({ title: INPUT_INTERPRETATION, content: 'When is the next Birkas HaChama?' });
 	} else {
@@ -1208,4 +1218,3 @@ function birkasHachamaQuery(derivation) {
 
 	return sections;
 }
-

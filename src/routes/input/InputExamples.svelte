@@ -239,7 +239,7 @@
 			</div>
 		</div>
 
-       <div class="col-md-6">
+		<div class="col-md-6">
 			<div class="category">
 				<h5><Fa icon={faSunBright} class="me-1" /> Birkas Hachama</h5>
 
@@ -250,7 +250,7 @@
 					<li><InputExample {clickFunction} query="When was Birkas Hachama before 2009?" /></li>
 				</ul>
 			</div>
-	   </div>
+		</div>
 
 		<div class="col-12 px-3 pt-3">
 			<h6>More input types coming soon!</h6>

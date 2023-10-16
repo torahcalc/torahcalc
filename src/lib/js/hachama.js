@@ -70,7 +70,7 @@ export function nextBirkasHachama(year) {
 
 /**
  * Calculate the previous birkas hachama date
- * 
+ *
  * @param {number} year Gregorian year
  * @returns {{ gregorianDate: { date: string, display: string, year: number, month: number, day: number }, hebrewDate: { year: number, month: number, day: number, monthName: string, displayEn: string, displayHe: string, displayGematriya: string, warning?: string } }} The previous birkas hachama date
  */
