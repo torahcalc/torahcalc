@@ -562,3 +562,41 @@ describe('test zodiac', () => {
 		expect(sections[1].content).toContain('Capricorn');
 	});
 });
+
+describe('test birkas hachama', () => {
+	it('When will Birkas Hachama be after 2037?', async () => {
+		const sections = await calculateQuery('When will Birkas Hachama be after 2037?');
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toContain('When is the next Birkas HaChama after Gregorian year 2037?');
+		expect(sections[2].title).toBe('Result');
+		expect(sections[2].content).toContain('Wed, April 8, 2065');
+		expect(sections[2].content).toContain('2nd of Nissan, 5825');
+	});
+
+	it('When was Birkas Hachama before 2009?', async () => {
+		const sections = await calculateQuery('When was Birkas Hachama before 2009?');
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toContain('When was the last Birkas HaChama before Gregorian year 2009?');
+		expect(sections[2].title).toBe('Result');
+		expect(sections[2].content).toContain('Wed, April 8, 1981');
+		expect(sections[2].content).toContain('4th of Nissan, 5741');
+	});
+
+	it('When is the next Birkas Hachama?', async () => {
+		const sections = await calculateQuery('When is the next Birkas Hachama?');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('When is the next Birkas HaChama?');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('April');
+		expect(sections[1].content).toContain('Nissan');
+	});
+
+	it('When was the last Birkas Hachama?', async () => {
+		const sections = await calculateQuery('When was the last Birkas Hachama?');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('When was the last Birkas HaChama?');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('April');
+		expect(sections[1].content).toContain('Nissan');
+	});
+});

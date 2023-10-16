@@ -4,6 +4,7 @@ import grammar from '$lib/grammars/generated/main.cjs';
 import { LEARNING_TYPE_NAMES, calculateDailyLearning } from './dailylearning';
 import { formatHebrewDateEn, gregorianToHebrew, hebrewToGregorian } from './dateconverter';
 import { METHOD_NAMES, WORD_LIST_NAMES, calculateGematria, getListOfGematriasInCommon, searchGematria } from './gematria';
+import { nextBirkasHachama, previousBirkasHachama } from './hachama';
 import { HOLIDAY_DETAILS, getHolidays } from './holidays';
 import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears';
 import { calculateMolad } from './molad';
@@ -102,6 +103,7 @@ export async function calculateQuery(search, options = {}) {
 		dailyLearningQuery: () => dailyLearningQuery(derivation),
 		jewishHolidayQuery: () => jewishHolidayQuery(derivation),
 		zodiacQuery: () => zodiacQuery(derivation),
+		birkasHachamaQuery: () => birkasHachamaQuery(derivation),
 	};
 
 	/** @type {Array<{ title: string, content: string }>} */
@@ -364,6 +366,23 @@ async function getValidDerivations(search, results) {
 			}
 		} else if (derivation.function === 'zodiacQuery') {
 			derivation.disambiguation = `Zodiac sign for ${formatParseResultDate(derivation.date)}`;
+		} else if (derivation.function === 'birkasHachamaQuery') {
+			let disambiguation = derivation.direction === 1 ? 'Next' : 'Last';
+			disambiguation += ' Birkas Hachama';
+			if (derivation.year?.calendar === 'hebrew') {
+				disambiguation += derivation.direction === 1 ? ' after' : ' before';
+				disambiguation += ` Hebrew year ${derivation.year.value}`;
+				if (derivation.year.value > 4000 && derivation.year.value < 7000) {
+					derivation.disambiguationScore += 1;
+				}
+			} else if (derivation.year?.calendar === 'gregorian') {
+				disambiguation += derivation.direction === 1 ? ' after' : ' before';
+				disambiguation += ` Gregorian year ${derivation.year.value}`;
+				if (derivation.year.value < 4000) {
+					derivation.disambiguationScore += 1;
+				}
+			}
+			derivation.disambiguation = disambiguation;
 		}
 		derivations[derivation.disambiguation] = derivation;
 	}
@@ -1158,3 +1177,35 @@ function zodiacQuery(derivation) {
 
 	return sections;
 }
+
+/**
+ * Generate sections for a Birkas HaChama query
+ * 
+ * @param {{ function: string, direction: 1 | -1, year?: { value: number, calendar: "hebrew" | "gregorian" } }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function birkasHachamaQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+
+	let gregorianYear = new Date().getFullYear();
+	if (derivation.year?.calendar === 'hebrew') {
+		const gregorianDate = hebrewToGregorian({ year: derivation.year.value, month: 1, day: 1 }).date;
+		gregorianYear = gregorianDate.getFullYear() + derivation.direction;
+		sections.push({ title: INPUT_INTERPRETATION, content: derivation.direction === 1 ? `When is the next Birkas HaChama after Hebrew year ${derivation.year.value}?` : `When was the last Birkas HaChama before Hebrew year ${derivation.year.value}?` });
+	} else if (derivation.year?.calendar === 'gregorian') {
+		gregorianYear = derivation.year.value + derivation.direction;
+		sections.push({ title: INPUT_INTERPRETATION, content: derivation.direction === 1 ? `When is the next Birkas HaChama after Gregorian year ${derivation.year.value}?` : `When was the last Birkas HaChama before Gregorian year ${derivation.year.value}?` });
+	} else if (derivation.direction === 1) {
+		sections.push({ title: INPUT_INTERPRETATION, content: 'When is the next Birkas HaChama?' });
+	} else {
+		sections.push({ title: INPUT_INTERPRETATION, content: 'When was the last Birkas HaChama?' });
+	}
+
+	const hachama = derivation.direction === 1 ? nextBirkasHachama(gregorianYear) : previousBirkasHachama(gregorianYear);
+
+	sections.push({ title: RESULT, content: `${hachama.gregorianDate.display} / ${hachama.hebrewDate.displayEn}` });
+
+	return sections;
+}
+

@@ -67,3 +67,19 @@ export function nextBirkasHachama(year) {
 		hebrewDate: hebrewDate,
 	};
 }
+
+/**
+ * Calculate the previous birkas hachama date
+ * 
+ * @param {number} year Gregorian year
+ * @returns {{ gregorianDate: { date: string, display: string, year: number, month: number, day: number }, hebrewDate: { year: number, month: number, day: number, monthName: string, displayEn: string, displayHe: string, displayGematriya: string, warning?: string } }} The previous birkas hachama date
+ */
+export function previousBirkasHachama(year) {
+	const nextBirkasHachamaDate = nextBirkasHachama(year).gregorianDate.date;
+	let currentUpcomingBirkasHachamaDate = nextBirkasHachamaDate;
+	while (currentUpcomingBirkasHachamaDate === nextBirkasHachamaDate && year >= -3761) {
+		year--;
+		currentUpcomingBirkasHachamaDate = nextBirkasHachama(year).gregorianDate.date;
+	}
+	return nextBirkasHachama(year);
+}

@@ -40,6 +40,7 @@ main -> query[unitConversionQuery] {% data => data[0][0] %}
       | query[dailyLearningQuery] {% data => data[0][0] %}
       | query[jewishHolidayQuery] {% data => data[0][0] %}
       | query[zodiacQuery] {% data => data[0][0] %}
+      | query[birkasHachamaQuery] {% data => data[0][0] %}
 
 # Unit Conversions
 # - Convert 10 amos to meters
@@ -157,7 +158,7 @@ dailyLearningQuery -> optionalWords[("what is" | "what was" | "what's" | "what a
                     | optionalWords[("what is" | "what was" | "what's" | "what are")] "tomorrow's" optionalWords["daily"] dailyLearningType {% data => ({function: "dailyLearningQuery", date: { gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() + 1}}, dailyLearningType: data[3]}) %}
                     | optionalWords[("what is" | "what was" | "what's" | "what are")] "yesterday's" optionalWords["daily"] dailyLearningType {% data => ({function: "dailyLearningQuery", date: { gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() - 1}}, dailyLearningType: data[3]}) %}
 
-# Jewish Holiday queries
+# Jewish Holidays
 # - When is Rosh Hashana?
 # - When did Pesach fall last year?
 # - When is the next Rosh Chodesh?
@@ -182,10 +183,22 @@ jewishHolidayPastPrefix -> optionalWords[("when was" | "what was" | "what was" |
 jewishHolidayListPrefix -> jewishHolidaysListPrefixNoYear __ optionalWords[("in" | "for" | "of")] {% data => null %}
 jewishHolidaysListPrefixNoYear -> optionalWords[("list" | "show" | "display" | "find" | "search")] optionalWords[("the" | "of")] optionalWords["upcoming"] optionalWords[("jewish" | "hebrew calendar")] _ "holidays" {% data => null %}
 
-# zodiacQuery
+# Zodiac Signs
 # - What is the zodiac sign for 1 Teves?
 # - What is the zodiac sign for December 25, 2023?
 zodiacQuery -> optionalWords[("what is" | "what's" | "what was")] optionalWords["the"] optionalWords[("hebrew" | "jewish")] "zodiac" __ optionalWords["sign"] optionalWords[("for" | "on")] date {% data => ({function: "zodiacQuery", date: data[7]}) %}
+
+# Birkas Hachama
+# - When is the next Birkas Hachama?
+# - When was the last Birkas Hachama?
+# - When will Birkas Hachama be after 2037?
+# - When was Birkas Hachama before 2009?
+birkasHachamaQuery -> optionalWords[("when's" | "when is" | "when will")] optionalWords["the"] _ "next" __ birkasHachama optionalWordsEnd[("be" | "land" | "fall" | "occur")] {% data => ({function: "birkasHachamaQuery", direction: 1}) %}
+                    | optionalWords[("when was" | "when did")] optionalWords["the"] _ "last" __ birkasHachama optionalWordsEnd[("happen" | "land" | "fall" | "occur")] {% data => ({function: "birkasHachamaQuery", direction: -1}) %}
+                    | optionalWords[("when's" | "when is" | "when will")] optionalWords["the"] _ birkasHachama __ optionalWords[("be" | "land" | "fall" | "occur")] _ "after" __ calendarAwareYear {% data => ({function: "birkasHachamaQuery", direction: 1, year: data[9]}) %}
+                    | optionalWords[("when was" | "when did")] optionalWords["the"] _ birkasHachama __ optionalWords[("happen" | "land" | "fall" | "occur")] _ "before" __ calendarAwareYear {% data => ({function: "birkasHachamaQuery", direction: -1, year: data[9]}) %}
+
+birkasHachama -> ("birkas hachama" | "birkat hachama" | "blessing of the sun" | "birchas hachama" | "birchat hachama" | "ברכת החמה") {% data => null %}
 
 # Date parsing
 date -> gregorianDate {% data => data[0] %}

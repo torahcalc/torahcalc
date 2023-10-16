@@ -10,6 +10,7 @@
 		faListCheck,
 		faScaleBalanced,
 		faSolarSystem,
+		faSunBright,
 		faSunrise,
 		faTableColumns,
 		faWheatAlt,
@@ -237,6 +238,19 @@
 				</ul>
 			</div>
 		</div>
+
+       <div class="col-md-6">
+			<div class="category">
+				<h5><Fa icon={faSunBright} class="me-1" /> Birkas Hachama</h5>
+
+				<ul class="list-unstyled">
+					<li><InputExample {clickFunction} query="When is the next Birkas Hachama?" /></li>
+					<li><InputExample {clickFunction} query="When was the last Birkas Hachama?" /></li>
+					<li><InputExample {clickFunction} query="When will Birkas Hachama be after 2037?" /></li>
+					<li><InputExample {clickFunction} query="When was Birkas Hachama before 2009?" /></li>
+				</ul>
+			</div>
+	   </div>
 
 		<div class="col-12 px-3 pt-3">
 			<h6>More input types coming soon!</h6>
