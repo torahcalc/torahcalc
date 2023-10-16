@@ -7,11 +7,44 @@ import { units } from '../inputs/unit-inputs.js';
 import { gematriaMethods } from '../inputs/gematria-inputs.js';
 import { zmanimInputs } from '../inputs/zmanim-inputs.js';
 import { dailyLearningTypes } from '../inputs/daily-learning-inputs.js';
+import { holidays } from '../inputs/holiday-inputs.js';
 
 generateUnitsGrammar('./src/lib/grammars/generated/units.ne');
-generateGematriaGrammar('./src/lib/grammars/generated/gematria.ne');
 generateZmanimGrammar('./src/lib/grammars/generated/zmanim.ne');
-generateDailyLearningGrammar('./src/lib/grammars/generated/daily-learning.ne');
+generateGrammar('gematriaMethod', gematriaMethods, 'gematria-methods.js', './src/lib/grammars/generated/gematria.ne');
+generateGrammar('dailyLearningType', dailyLearningTypes, 'daily-learning-inputs.js', './src/lib/grammars/generated/daily-learning.ne');
+generateGrammar('holiday', holidays, 'holiday-inputs.js', './src/lib/grammars/generated/holidays.ne');
+
+/**
+ * Convert a one-level deep object mapping to a grammar rule and return the result
+ * 
+ * @param {string} nonTerminal - The non-terminal to use for the rule
+ * @param {Record<string, string[]>} mapping - The mapping of input to output
+ * @returns {string} The grammar rule
+ */
+function convertMappingToGrammarRule(nonTerminal, mapping) {
+	return `\n\n${nonTerminal} -> ` + Object.keys(mapping)
+		.map((input) => {
+			return mapping[input].map((value) => `"${input.replace(/"/g, '\\"')}" {% d => '${value}' %}`).join('\n | ');
+		})
+		.join('\n | ');
+}
+
+/**
+ * Generic function to generate a grammar from a one-level deep object mapping
+ * 
+ * @param {string} nonTerminal - The non-terminal to use for the rule
+ * @param {Record<string, string[]>} mapping - The mapping of input to output
+ * @param {string} inputPath - The path to the input file
+ * @param {string} outputPath - The path to the output file with .ne extension
+ */
+function generateGrammar(nonTerminal, mapping, inputPath, outputPath) {
+	let grammar = `# Grammar of ${nonTerminal}\n# Generated automatically from ${inputPath} in src/lib/grammars/scripts/prepare-input.js`;
+
+	grammar += convertMappingToGrammarRule(nonTerminal, mapping);
+
+	writeFileSync(outputPath, grammar);
+}
 
 /**
  * Generates the units grammar
@@ -39,24 +72,6 @@ function generateUnitsGrammar(outputPath) {
 }
 
 /**
- * Generates the gematria grammar
- *
- * @param {string} outputPath - The path to the output file with .ne extension
- */
-function generateGematriaGrammar(outputPath) {
-	let grammar = '# Grammar of gematria\n# Generated automatically from gematria-methods.js in src/lib/grammars/scripts/prepare-input.js';
-
-	grammar += '\n\ngematriaMethod -> ';
-	grammar += Object.keys(gematriaMethods)
-		.map((methodInput) => {
-			return gematriaMethods[methodInput].map((value) => `"${methodInput.replace(/"/g, '\\"')}" {% d => '${value}' %}`).join('\n | ');
-		})
-		.join('\n | ');
-
-	writeFileSync(outputPath, grammar);
-}
-
-/**
  * Generates the zmanim grammar
  *
  * @param {string} outputPath - The path to the output file with .ne extension
@@ -64,40 +79,8 @@ function generateGematriaGrammar(outputPath) {
 function generateZmanimGrammar(outputPath) {
 	let grammar = '# Grammar of zmanim\n# Generated automatically from zmanim-inputs.js in src/lib/grammars/scripts/prepare-input.js';
 
-	const zmanim = { ...zmanimInputs.zmanim, ...zmanimInputs.events };
-	const durations = zmanimInputs.durations;
-
-	grammar += '\n\nzman -> ';
-	grammar += Object.keys(zmanim)
-		.map((zmanInput) => {
-			return zmanim[zmanInput].map((value) => `"${zmanInput.replace(/"/g, '\\"')}" {% d => '${value}' %}`).join('\n | ');
-		})
-		.join('\n | ');
-
-	grammar += '\n\nduration -> ';
-	grammar += Object.keys(durations)
-		.map((durationInput) => {
-			return durations[durationInput].map((value) => `"${durationInput.replace(/"/g, '\\"')}" {% d => '${value}' %}`).join('\n | ');
-		})
-		.join('\n | ');
-
-	writeFileSync(outputPath, grammar);
-}
-
-/**
- * Generates the daily learning grammar
- *
- * @param {string} outputPath - The path to the output file with .ne extension
- */
-function generateDailyLearningGrammar(outputPath) {
-	let grammar = '# Grammar of daily learning\n# Generated automatically from daily-learning-inputs.js in src/lib/grammars/scripts/prepare-input.js';
-
-	grammar += '\n\ndailyLearningType -> ';
-	grammar += Object.keys(dailyLearningTypes)
-		.map((typeInput) => {
-			return dailyLearningTypes[typeInput].map((value) => `"${typeInput.replace(/"/g, '\\"')}" {% d => '${value}' %}`).join('\n | ');
-		})
-		.join('\n | ');
+	grammar += convertMappingToGrammarRule('zman', { ...zmanimInputs.zmanim, ...zmanimInputs.events });
+	grammar += convertMappingToGrammarRule('duration', zmanimInputs.durations);
 
 	writeFileSync(outputPath, grammar);
 }

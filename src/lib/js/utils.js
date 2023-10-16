@@ -48,6 +48,46 @@ export const dateToHDate = (date) => {
 };
 
 /**
+ * Returns the next Hebrew month
+ * @returns {{month: number, year: number}}
+ */
+export function getNextHebrewMonth() {
+	const today = new HDate();
+	const monthsInYear = today.isLeapYear() ? 13 : 12;
+	const nextHebrewMonth = (today.getMonth() + 1) % monthsInYear || monthsInYear;
+	return {
+		  month: nextHebrewMonth,
+		  year: nextHebrewMonth === 1 ? today.getFullYear() + 1 : today.getFullYear(),
+	};
+}
+
+/**
+* Returns the previous Hebrew month
+* @returns {{month: number, year: number}}
+*/
+export function getPrevHebrewMonth() {
+	const today = new HDate();
+	const monthsInPrevYear = (7 * today.getFullYear()) % 19 < 7 ? 13 : 12;
+	const prevHebrewMonth = (today.getMonth() - 1) || monthsInPrevYear;
+	return {
+		  month: prevHebrewMonth,
+		  year: prevHebrewMonth === monthsInPrevYear ? today.getFullYear() - 1 : today.getFullYear(),
+	};
+}
+
+/**
+* Returns the current Hebrew month
+* @returns {{month: number, year: number}}
+*/
+export function getCurrentHebrewMonth() {
+	const today = new HDate();
+	return {
+		  month: today.getMonth(),
+		  year: today.getFullYear(),
+	};
+}
+
+/**
  * Returns true if daylight saving time is in effect for a given date
  * @param {Date} date - The date to check
  * @returns {boolean} True if daylight saving time is in effect for the given date
@@ -200,6 +240,7 @@ export async function getTimezone(latitude, longitude, apiKey) {
  * @property {string} [class] - The class of the table.
  * @property {Object} [attributes] - Additional attributes to add to the table.
  * @property {string} [caption] - The caption for the table.
+ * @property {Array<string|undefined>} [thStyles] - The styles for the table headers.
  * @property {boolean} [html=false] - Whether to treat values as HTML instead of sanitizing them.
  */
 
@@ -210,7 +251,7 @@ export async function getTimezone(latitude, longitude, apiKey) {
  * @param {TableBuilderOptions} options - Options for the table.
  */
 export function dataToHtmlTable(data, options) {
-	let table = '<table';
+	let table = '<div class="table-responsive"><table';
 	if (options.id) {
 		table += ` id="${options.id}"`;
 	}
@@ -233,8 +274,9 @@ export function dataToHtmlTable(data, options) {
 	const headers = options.headers.map((header) => (typeof header === 'string' ? { key: header, display: header } : header));
 	table += '<thead>';
 	table += '<tr>';
-	for (const header of headers) {
-		table += `<th>${options.html ? header.display : DOMPurify.sanitize(header.display)}</th>`;
+	for (const [index, header] of headers.entries()) {
+		const thStyle = options.thStyles?.[index] || '';
+		table += `<th style="${thStyle}">${options.html ? header.display : DOMPurify.sanitize(header.display)}</th>`;
 	}
 	table += '</tr>';
 	table += '</thead>';
@@ -247,6 +289,6 @@ export function dataToHtmlTable(data, options) {
 		table += '</tr>';
 	}
 	table += '</tbody>';
-	table += '</table>';
+	table += '</table></div>';
 	return table;
 }

@@ -1,4 +1,4 @@
-# Grammar of gematria
+# Grammar of gematriaMethod
 # Generated automatically from gematria-methods.js in src/lib/grammars/scripts/prepare-input.js
 
 gematriaMethod -> "standard" {% d => 'standard' %}

@@ -1,4 +1,4 @@
-# Grammar of daily learning
+# Grammar of dailyLearningType
 # Generated automatically from daily-learning-inputs.js in src/lib/grammars/scripts/prepare-input.js
 
 dailyLearningType -> "daf yomi" {% d => 'dafYomi' %}

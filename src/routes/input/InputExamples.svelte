@@ -1,6 +1,6 @@
 <script>
 	import Fa from 'svelte-fa/src/fa.svelte';
-	import { faCalculator, faSunrise, faScaleBalanced, faCalendarAlt, faMoonOverSun, faWheatAlt, faCalendarPlus, faBookOpenCover, faListCheck, faTableColumns } from '@danieloi/pro-solid-svg-icons';
+	import { faCalculator, faSunrise, faScaleBalanced, faCalendarAlt, faMoonOverSun, faWheatAlt, faCalendarPlus, faBookOpenCover, faListCheck, faTableColumns, faCalendarStar } from '@danieloi/pro-solid-svg-icons';
 	import { getConverters, getUnit, getUnits } from '$lib/js/unitconverter';
 	import { METHOD_NAMES } from '$lib/js/gematria';
 	import { ZMANIM_NAMES } from '$lib/js/zmanim';
@@ -116,6 +116,21 @@
 
 		<div class="col-md-6">
 			<div class="category">
+				<h5><Fa icon={faCalendarStar} class="me-1" /> Jewish holidays</h5>
+
+				<ul class="list-unstyled">
+					<li><InputExample {clickFunction} query="When is Rosh Hashana?" /></li>
+					<li><InputExample {clickFunction} query="When did Pesach fall last year?" /></li>
+					<li><InputExample {clickFunction} query="When is the next Rosh Chodesh?" /></li>
+					<li><InputExample {clickFunction} query="List Jewish holidays in Hebrew year 5784." /></li>
+					<li><InputExample {clickFunction} query="List Jewish holidays in Gregorian year 2023." /></li>
+					<li><InputExample {clickFunction} query="List upcoming Jewish holidays." /></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<div class="category">
 				<h5><Fa icon={faCalendarPlus} class="me-1" /> Leap Years</h5>
 
 				<ul class="list-unstyled">
@@ -223,34 +238,40 @@
 	.category h5 {
 		color: rgba(var(--category-color), 1);
 	}
-	.categories > :nth-child(10n + 1) .category {
+	.categories > :nth-child(12n + 1) .category {
 		--category-color: 56, 142, 60; /* green */
 	}
-	.categories > :nth-child(10n + 2) .category {
+	.categories > :nth-child(12n + 2) .category {
 		--category-color: 63, 81, 181; /* indigo */
 	}
-	.categories > :nth-child(10n + 3) .category {
+	.categories > :nth-child(12n + 3) .category {
 		--category-color: 156, 39, 176; /* purple */
 	}
-	.categories > :nth-child(10n + 4) .category {
+	.categories > :nth-child(12n + 4) .category {
 		--category-color: 33, 150, 243; /* blue */
 	}
-	.categories > :nth-child(10n + 5) .category {
+	.categories > :nth-child(12n + 5) .category {
 		--category-color: 233, 30, 99; /* magenta */
 	}
-	.categories > :nth-child(10n + 6) .category {
+	.categories > :nth-child(12n + 6) .category {
+		--category-color: 0, 188, 212; /* cyan */
+	}
+	.categories > :nth-child(12n + 7) .category {
 		--category-color: 244, 67, 54; /* red */
 	}
-	.categories > :nth-child(10n + 7) .category {
+	.categories > :nth-child(12n + 8) .category {
 		--category-color: 0, 150, 136; /* teal */
 	}
-	.categories > :nth-child(10n + 8) .category {
+	.categories > :nth-child(12n + 9) .category {
 		--category-color: 121, 85, 72; /* brown */
 	}
-	.categories > :nth-child(10n + 9) .category {
+	.categories > :nth-child(12n + 10) .category {
 		--category-color: 255, 152, 0; /* orange */
 	}
-	.categories > :nth-child(10n + 10) .category {
+	.categories > :nth-child(12n + 11) .category {
 		--category-color: 96, 125, 139; /* blue-grey */
+	}
+	.categories > :nth-child(12n + 12) .category {
+		--category-color: 158, 158, 158; /* grey */
 	}
 </style>

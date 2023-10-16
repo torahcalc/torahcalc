@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { calculateQuery } from './input';
 import { formatNumberHTML } from './utils';
+import { formatHtmlBold } from './holidays';
 
 describe('test unit conversions', () => {
 	it('convert 3.5 amah to meter', async () => {
@@ -468,5 +469,76 @@ describe('test daily learning', () => {
 		expect(sections[1].title).toBe('Result');
 		expect(sections[1].content).toContain('Ketubot 90');
 		expect(sections[1].content).toContain('כתובות דף צ׳');
+	});
+});
+
+describe('test jewish holidays', () => {
+	it("When was Rosh Hashana 5784?", async () => {
+		const sections = await calculateQuery("When was Rosh Hashana 5784?");
+		expect(sections[0].title).toBe('');
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toContain('When was Rosh Hashanah 2023 / 5784?');
+		expect(sections[2].title).toBe('Result');
+		expect(sections[2].content).toContain('On the Gregorian calendar');
+		expect(sections[2].content).toContain(`Begins in the evening of ${formatHtmlBold('Fri, Sep 15')}`);
+		expect(sections[2].content).toContain(`Ends in the evening of ${formatHtmlBold('Sun, Sep 17')}`);
+		expect(sections[2].content).toContain('On the Hebrew calendar');
+		expect(sections[2].content).toContain(`Begins on ${formatHtmlBold('1st of Tishrei')}`);
+		expect(sections[2].content).toContain(`Ends on ${formatHtmlBold('2nd of Tishrei')}`);
+	});
+
+	it("When is Rosh Hashana?", async () => {
+		const sections = await calculateQuery("When is Rosh Hashana?");
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('When is Rosh Hashanah ');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('Begins in the evening of ');
+		expect(sections[1].content).toContain('Ends in the evening of ');
+	});
+
+	it("When did Pesach fall last year?", async () => {
+		const sections = await calculateQuery("When did Pesach fall last year?");
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('When was Pesach ');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('Begins in the evening of ');
+		expect(sections[1].content).toContain('Ends in the evening of ');
+	});
+
+	it("When is the next Rosh Chodesh?", async () => {
+		const sections = await calculateQuery("When is the next Rosh Chodesh?");
+		expect(sections[0].title).toBe('');
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toContain('When is Rosh Chodesh ');
+	});
+
+	it("List Jewish holidays in Hebrew year 5784.", async () => {
+		const sections = await calculateQuery("List Jewish holidays in Hebrew year 5784.");
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('Calculate Jewish holidays for Hebrew year 5784');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('Rosh Hashanah');
+		expect(sections[1].content).toContain('Yom Kippur');
+		expect(sections[1].content).toContain('Leil Selichos');
+	});
+
+	it("List Jewish holidays in Gregorian year 2023.", async () => {
+		const sections = await calculateQuery("List Jewish holidays in Gregorian year 2023.");
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('Calculate Jewish holidays for Gregorian year 2023');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('Rosh Hashanah');
+		expect(sections[1].content).toContain('Yom Kippur');
+		expect(sections[1].content).toContain('Leil Selichos');
+	});
+
+	it("List upcoming Jewish holidays.", async () => {
+		const sections = await calculateQuery("List upcoming Jewish holidays.");
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('Calculate Jewish holidays for ');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('Rosh Hashanah');
+		expect(sections[1].content).toContain('Yom Kippur');
+		expect(sections[1].content).toContain('Leil Selichos');
 	});
 });
