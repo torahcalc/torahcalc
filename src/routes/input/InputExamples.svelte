@@ -41,7 +41,7 @@
 	<div class="row g-2 categories">
 		<div class="col-md-6">
 			<div class="category">
-				<h5><Fa icon={faScaleBalanced} class="me-1" /> Unit conversions</h5>
+				<h5><Fa icon={faScaleBalanced} class="me-1" /> Unit Conversions</h5>
 
 				<ul class="list-unstyled">
 					<li><InputExample {clickFunction} query="Convert 3 Tefachim to inches." /></li>
@@ -115,7 +115,7 @@
 
 		<div class="col-md-6">
 			<div class="category">
-				<h5><Fa icon={faCalendarAlt} class="me-1" /> Hebrew calendar</h5>
+				<h5><Fa icon={faCalendarAlt} class="me-1" /> Hebrew Calendar</h5>
 
 				<ul class="list-unstyled">
 					<li><InputExample {clickFunction} query="Convert 21 Kislev, 5730 to Gregorian calendar." /></li>
@@ -130,7 +130,7 @@
 
 		<div class="col-md-6">
 			<div class="category">
-				<h5><Fa icon={faCalendarStar} class="me-1" /> Jewish holidays</h5>
+				<h5><Fa icon={faCalendarStar} class="me-1" /> Jewish Holidays</h5>
 
 				<ul class="list-unstyled">
 					<li><InputExample {clickFunction} query="When is Rosh Hashana?" /></li>
