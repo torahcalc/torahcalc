@@ -26,11 +26,11 @@
 		"@hebcal/learning": "^1.5.1",
 		"cross-env": "^7.0.3",
 		"dayjs": "^1.11.10",
-		"dompurify": "^3.0.6",
 		"dotenv": "^16.3.1",
 		"nearley": "^2.20.1",
 		"svelte-fa": "^3.0.4",
-		"svelte-toc": "^0.5.6"
+		"svelte-toc": "^0.5.6",
+		"xss": "^1.0.14"
 	},
 	"devDependencies": {
 		"@capacitor/android": "^5.3.0",

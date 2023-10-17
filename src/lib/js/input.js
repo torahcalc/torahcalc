@@ -10,11 +10,10 @@ import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears';
 import { calculateMolad } from './molad';
 import { calculateOmerDate, calculateOmerHebrew } from './omer';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
-import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, getCurrentHebrewMonth, getNextHebrewMonth, getPrevHebrewMonth, properCase } from './utils';
+import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, getCurrentHebrewMonth, getNextHebrewMonth, getPrevHebrewMonth, properCase, sanitize } from './utils';
 import { ZMANIM_NAMES } from './zmanim';
 import { calculateZodiac, calculateZodiacHebrewDate } from './zodiac';
 import { HDate } from '@hebcal/core';
-import DOMPurify from 'dompurify';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
@@ -118,9 +117,9 @@ export async function calculateQuery(search, options = {}) {
 		calculatedSections = retval instanceof Promise ? await retval : retval;
 	} catch (e) {
 		if (e instanceof InputError) {
-			let errorHTML = DOMPurify.sanitize(e.message);
+			let errorHTML = sanitize(e.message);
 			if (e.details) {
-				errorHTML += `<br /><details><summary>Details</summary><code><pre>${DOMPurify.sanitize(e.details)}</pre></code></details>`;
+				errorHTML += `<br /><details><summary>Details</summary><code><pre>${sanitize(e.details)}</pre></code></details>`;
 			}
 			calculatedSections.push({ title: 'Error', content: errorHTML });
 		} else {

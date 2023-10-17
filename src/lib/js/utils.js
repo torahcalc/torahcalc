@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { gregorianToHebrew } from './dateconverter';
 import { HDate } from '@hebcal/core';
-import DOMPurify from 'dompurify';
+import xss from 'xss';
 
 /**
  * Format a date as Mon, January 11, 2023. This method is modified to work with 2-digit years and years before year 1.
@@ -148,6 +148,28 @@ export function formatNumber(number, precision = 8) {
 }
 
 /**
+ * Sanitize a string for use in HTML.
+ *
+ * @param {string} string - The string to sanitize.
+ * @returns {string} The sanitized string.
+ */
+export function sanitize(string) {
+	const options = {
+		whiteList: {
+			a: ['href', 'target', 'rel'],
+			br: [],
+			span: ['class'],
+			b: ['class'],
+			div: ['class'],
+			img: ['src', 'alt', 'class'],
+			svg: ['xmlns', 'viewBox', 'fill', 'stroke', 'stroke-linecap', 'stroke-linejoin', 'stroke-width', 'class', 'height', 'width'],
+			path: ['d'],
+		},
+	};
+	return xss(string, options);
+}
+
+/**
  * Format text or a number and place it in a span with the class 'number'.
  *
  * @param {number|string} text - The text or number to format.
@@ -158,7 +180,7 @@ export function formatNumberHTML(text, precision = 8) {
 	if (!isNaN(Number(text)) && precision >= 0) {
 		text = formatNumber(Number(text), precision);
 	}
-	return `<span class="number">${DOMPurify.sanitize(text.toString())}</span>`;
+	return `<span class="number">${sanitize(text.toString())}</span>`;
 }
 
 /**
@@ -276,7 +298,7 @@ export function dataToHtmlTable(data, options) {
 	table += '<tr>';
 	for (const [index, header] of headers.entries()) {
 		const thStyle = options.thStyles?.[index] || '';
-		table += `<th style="${thStyle}">${options.html ? header.display : DOMPurify.sanitize(header.display)}</th>`;
+		table += `<th style="${thStyle}">${options.html ? header.display : sanitize(header.display)}</th>`;
 	}
 	table += '</tr>';
 	table += '</thead>';
@@ -284,7 +306,7 @@ export function dataToHtmlTable(data, options) {
 	for (const row of data) {
 		table += '<tr>';
 		for (const header of headers) {
-			table += `<td>${options.html ? row[header.key] : DOMPurify.sanitize(row[header.key])}</td>`;
+			table += `<td>${options.html ? row[header.key] : sanitize(row[header.key])}</td>`;
 		}
 		table += '</tr>';
 	}
