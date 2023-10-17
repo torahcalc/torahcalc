@@ -40,14 +40,13 @@ jobs:
         run: npm run lint
 
       - name: Prettify code
-        run: |
-          npm run format
-          git diff
+        run: npm run format
 
       - name: Add and commit changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          git diff
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add .
