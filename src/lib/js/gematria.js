@@ -1,10 +1,10 @@
 import { COMMON_WORDS } from './words/commonwords';
-import { TORAH_WORDS } from './words/torahwords';
 import { BEREISHIS_PESUKIM } from './words/pesukim1';
 import { SHEMOS_PESUKIM } from './words/pesukim2';
 import { VAYIKRA_PESUKIM } from './words/pesukim3';
 import { BAMIDBAR_PESUKIM } from './words/pesukim4';
 import { DEVARIM_PESUKIM } from './words/pesukim5';
+import { TORAH_WORDS } from './words/torahwords';
 
 /**
  * Gematria methods

@@ -1,5 +1,5 @@
 import { faCandleHolder, faClockTwelve, faSparkles, faStar, faStars, faSunrise, faSunset, faWineGlass } from '@danieloi/pro-solid-svg-icons';
-import { Zmanim, HebrewCalendar, Location, TimedEvent } from '@hebcal/core';
+import { HebrewCalendar, Location, TimedEvent, Zmanim } from '@hebcal/core';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 

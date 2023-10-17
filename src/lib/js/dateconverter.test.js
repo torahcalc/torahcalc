@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { gregorianToHebrew, hebrewToGregorian } from './dateconverter';
 
 describe('test gregorian to hebrew date conversion', () => {

@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest';
 import { units } from '$lib/grammars/inputs/unit-inputs';
 import { getUnit } from '$lib/js/unitconverter';
+import { describe, expect, it } from 'vitest';
 
 describe('test units are valid', () => {
 	it('test units are valid', async () => {

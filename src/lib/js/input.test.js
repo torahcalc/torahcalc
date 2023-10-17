@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import { formatHtmlBold } from './holidays';
 import { calculateQuery } from './input';
 import { formatNumberHTML } from './utils';
-import { formatHtmlBold } from './holidays';
 
 describe('test unit conversions', () => {
 	it('convert 3.5 amah to meter', async () => {

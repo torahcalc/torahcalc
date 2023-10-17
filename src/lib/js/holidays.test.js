@@ -1,6 +1,6 @@
+import { HDate } from '@hebcal/core';
 import { describe, expect, it } from 'vitest';
 import { getHolidays } from './holidays';
-import { HDate } from '@hebcal/core';
 
 describe('test getHolidays', () => {
 	it('gets holidays from a start date', async () => {

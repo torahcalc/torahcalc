@@ -1,5 +1,5 @@
-import { formatDate } from './utils';
 import { gregorianToHebrew } from './dateconverter';
+import { formatDate } from './utils';
 
 /** Interval between every two birkas hachama dates in JD */
 const JULIAN_DATE_INTERVAL = 10227;

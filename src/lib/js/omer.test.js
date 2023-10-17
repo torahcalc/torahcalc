@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { calculateOmerYear, calculateOmerDate, calculateOmerHebrew } from './omer';
+import { calculateOmerDate, calculateOmerHebrew, calculateOmerYear } from './omer';
 
 describe('test calculateOmer', () => {
 	it('calculates omer year', async () => {

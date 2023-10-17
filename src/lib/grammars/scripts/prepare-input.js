@@ -3,11 +3,11 @@
  */
 
 import { writeFileSync } from 'fs';
-import { units } from '../inputs/unit-inputs.js';
-import { gematriaMethods } from '../inputs/gematria-inputs.js';
-import { zmanimInputs } from '../inputs/zmanim-inputs.js';
 import { dailyLearningTypes } from '../inputs/daily-learning-inputs.js';
+import { gematriaMethods } from '../inputs/gematria-inputs.js';
 import { holidays } from '../inputs/holiday-inputs.js';
+import { units } from '../inputs/unit-inputs.js';
+import { zmanimInputs } from '../inputs/zmanim-inputs.js';
 
 generateUnitsGrammar('./src/lib/grammars/generated/units.ne');
 generateZmanimGrammar('./src/lib/grammars/generated/zmanim.ne');

@@ -1,4 +1,4 @@
-import { createResponse, createErrorResponse } from '$lib/js/api/response.js';
+import { createErrorResponse, createResponse } from '$lib/js/api/response.js';
 import { getHolidays } from '$lib/js/holidays';
 import { readTypes } from '../utils';
 

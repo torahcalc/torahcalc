@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { calculateGematria, getNumberOfWords, METHODS } from './gematria';
+import { describe, expect, it } from 'vitest';
+import { METHODS, calculateGematria, getNumberOfWords } from './gematria';
 
 describe('test METHODS', () => {
 	it('has 27 numbers in each method', () => {

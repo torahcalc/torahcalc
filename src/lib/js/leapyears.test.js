@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { isHebrewLeapYear, isGregorianLeapYear } from './leapyears.js';
+import { describe, expect, it } from 'vitest';
+import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears.js';
 
 describe('test hebrew leap years', () => {
 	it('test non-leap year', () => {
