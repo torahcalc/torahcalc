@@ -153,7 +153,7 @@ export async function getConverters(fetchExchangeRates = true) {
 				us_liquid_gallon: { name: 'US liquid gallon', value: 248832 / 3785.411784, type: 'STANDARD', display: 'US liquid gallon', displayPlural: 'US liquid gallons' },
 				us_liquid_quart: { name: 'US liquid quart ', value: (248832 / 3785.411784) * 4, type: 'STANDARD', display: 'US liquid quart ', displayPlural: 'US liquid quarts' },
 				us_liquid_pint: { name: 'US liquid pint', value: (248832 / 3785.411784) * 8, type: 'STANDARD', display: 'US liquid pint', displayPlural: 'US liquid pints' },
-				us_cup: { name: 'US cup', value: (248832 / 3785.411784) * 16, type: 'STANDARD', display: 'US legal cup', displayPlural: 'US legal cups' },
+				us_cup: { name: 'US cup', value: (248832 / 3785.411784) * 16, type: 'STANDARD', display: 'US cup', displayPlural: 'US cups' },
 				us_fluid_ounce: { name: 'US fluid ounce', value: (248832 / 3785.411784) * 128, type: 'STANDARD', display: 'US fluid ounce', displayPlural: 'US fluid ounces' },
 				us_tablespoon: { name: 'US tablespoon', value: (248832 / 3785.411784) * 256, type: 'STANDARD', display: 'US tablespoon', displayPlural: 'US tablespoons' },
 				us_teaspoon: { name: 'US teaspoon', value: (248832 / 3785.411784) * 768, type: 'STANDARD', display: 'US teaspoon', displayPlural: 'US teaspoons' },
