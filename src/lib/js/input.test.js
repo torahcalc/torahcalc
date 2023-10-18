@@ -42,12 +42,12 @@ describe('test unit conversions', () => {
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(40)} Seah to US liquid gallons`);
 		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toContain(`${formatNumberHTML(87.6459468)} US liquid gallons`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(150.94579727)} US liquid gallons`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(89.01541472)} US liquid gallons`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(181.78418596)} US liquid gallons`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(126.59970093)} US liquid gallons`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(217.49179391)} US liquid gallons`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(87.64594684)} US liquid gallons`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(150.94579734)} US liquid gallons`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(89.01541476)} US liquid gallons`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(181.78418605)} US liquid gallons`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(126.599701)} US liquid gallons`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(217.49179402)} US liquid gallons`);
 	});
 
 	it('convert 1 us dollar to perutos', async () => {

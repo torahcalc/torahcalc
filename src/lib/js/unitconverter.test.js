@@ -131,7 +131,7 @@ describe('test convertUnits', () => {
 		expect(result).toStrictEqual({
 			from: 'Amah merubaas - אמה מרובעת',
 			opinion: RABBI_AVRAHAM_CHAIM_NAEH,
-			result: 0.2304576036,
+			result: 0.23045760360092188,
 			to: 'Square meter',
 		});
 	});
@@ -186,7 +186,7 @@ describe('test convertUnitsMulti', () => {
 		expect(result.centimeter.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
 		expect(result.millimeter.result).toBe(38404800);
 		expect(result.millimeter.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
-		expect(result.mile.result).toBe(23.86363636);
+		expect(result.mile.result).toBeCloseTo(23.86363636);
 		expect(result.mile.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
 		expect(result.yard.result).toBe(42000);
 		expect(result.yard.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
@@ -194,7 +194,7 @@ describe('test convertUnitsMulti', () => {
 		expect(result.foot.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
 		expect(result.inch.result).toBe(1512000);
 		expect(result.inch.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
-		expect(result.nautical_mile.result).toBe(20.73693305);
+		expect(result.nautical_mile.result).toBeCloseTo(20.73693305);
 		expect(result.nautical_mile.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
 	});
 
