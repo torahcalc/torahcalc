@@ -181,6 +181,7 @@
 		<li>"Rashi" on Shemos 21:32.</li>
 		<li>"Rambam" on Mishnah Bechoros 88:46.</li>
 		<li>Karo, Yosef. Shulchan Aruch. OC 368, OC 486, OC 612:1, OC 612:3, CM 88:1. 1565.</li>
+		<li><a href="https://www.dafyomi.co.il/general/info/units-of-measurement.pdf">Biblical and Talmudic Units of Measurement</a> by Ronnie Figdor, 2012.</li>
 	</ul>
 	<br />
 </section>
