@@ -153,9 +153,10 @@ leapYearQuery -> optionalWords[("is" | "was" | "will")] optionalWords[("gregoria
 # - What is the Nach Yomi for May 12, 2023?
 # - What are the daily psalms for tomorrow?
 # - What is the Weekly Daf for 18 Iyar?
-dailyLearningQuery -> optionalWords[("what is" | "what was" | "what's" | "what are")] optionalWords["the"] optionalWords["daily"] dailyLearningType __ optionalWords[("for" | "on")] date {% data => ({function: "dailyLearningQuery", date: data[6], dailyLearningType: data[3]}) %}
-                    | optionalWords[("what is" | "what was" | "what's" | "what are")] ("today's" | "this week's") optionalWords["daily"] dailyLearningType {% data => ({function: "dailyLearningQuery", date: { gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate()}}, dailyLearningType: data[3]}) %}
-                    | optionalWords[("what is" | "what was" | "what's" | "what are")] "tomorrow's" optionalWords["daily"] dailyLearningType {% data => ({function: "dailyLearningQuery", date: { gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() + 1}}, dailyLearningType: data[3]}) %}
+# - What will the daf yomi for december 31
+dailyLearningQuery -> optionalWords[("what is" | "what was" | "what's" | "what are" | "what will")] optionalWords["the"] optionalWords["daily"] dailyLearningType __ optionalWords["be"] optionalWords[("for" | "on")] date {% data => ({function: "dailyLearningQuery", date: data[7], dailyLearningType: data[3]}) %}
+                    | optionalWords[("what is" | "what was" | "what's" | "what are" | "what will")] ("today's" | "this week's") optionalWords["daily"] dailyLearningType {% data => ({function: "dailyLearningQuery", date: { gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate()}}, dailyLearningType: data[3]}) %}
+                    | optionalWords[("what is" | "what's" | "what are" | "what will")] "tomorrow's" optionalWords["daily"] dailyLearningType {% data => ({function: "dailyLearningQuery", date: { gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() + 1}}, dailyLearningType: data[3]}) %}
                     | optionalWords[("what is" | "what was" | "what's" | "what are")] "yesterday's" optionalWords["daily"] dailyLearningType {% data => ({function: "dailyLearningQuery", date: { gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() - 1}}, dailyLearningType: data[3]}) %}
 
 # Jewish Holidays
