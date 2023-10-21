@@ -1261,13 +1261,6 @@
 </section>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		flex: 0.6;
-	}
-
 	ul {
 		margin-top: 1em;
 		margin-bottom: 0;

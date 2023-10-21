@@ -187,13 +187,6 @@
 </section>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		flex: 0.6;
-	}
-
 	h3 {
 		margin-top: 0.5em;
 		margin-bottom: 0.5em;

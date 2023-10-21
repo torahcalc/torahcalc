@@ -14,12 +14,3 @@
 
 	<DateConverter />
 </section>
-
-<style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		flex: 0.6;
-	}
-</style>

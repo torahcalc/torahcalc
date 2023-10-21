@@ -1,5 +1,16 @@
 <script>
+	import { onMount } from 'svelte';
 	import InputCalculator from './InputCalculator.svelte';
+	import InputExamples from './InputExamples.svelte';
+
+	/** @type {InputCalculator} */
+	let inputCalculator;
+
+	/** @type {(query: string) => any} The function to call when the button is clicked */
+	let clickFunction;
+	onMount(() => {
+		clickFunction = inputCalculator.setSections;
+	});
 </script>
 
 <svelte:head>
@@ -10,17 +21,12 @@
 <section>
 	<h1 class="heading">English Text Input Calculator <span class="experimental">Experimental</span></h1>
 
-	<InputCalculator />
+	<InputCalculator bind:this={inputCalculator} />
+
+	<InputExamples {clickFunction} />
 </section>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		flex: 0.6;
-	}
-
 	.experimental {
 		font-size: 0.5em;
 		color: #999;

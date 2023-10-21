@@ -718,13 +718,6 @@
 <Toc activeHeadingScrollOffset={200} blurParams={{ duration: 400 }} breakpoint={1200} title="" />
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		flex: 0.6;
-	}
-
 	@media screen and (min-width: 1200px) {
 		section {
 			max-width: calc(100vw - 30em);
