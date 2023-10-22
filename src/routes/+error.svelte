@@ -7,6 +7,7 @@
 
 	// redirect pages from the old site to the new urls if a 404 is encountered
 	const redirectPath = {
+		'/app': 'https://play.google.com/store/apps/details?id=com.freshidea.newtorahcalc&hl=en_US&gl=US',
 		'/daf-yomi': '/tools/daily-learning',
 		'/dateconverter': '/tools/date-converter',
 		'/gematria-match': '/tools/gematria-match',
