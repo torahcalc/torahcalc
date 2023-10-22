@@ -22,7 +22,7 @@
 		'/pesach': '/info/pesach',
 		'/privacy': '/terms/privacy',
 		'/privacy/terms-and-conditions.html': '/terms/tos',
-		'/unitcharts': '/tools/multi-unit-converter',
+		'/unitcharts': '/tools/unit-converter',
 		'/unitconverter': '/tools/unit-converter',
 		'/zmanim': '/tools/zmanim',
 		'/zodiac': '/tools/hebrew-zodiac-signs',

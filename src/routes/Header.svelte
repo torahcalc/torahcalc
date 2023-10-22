@@ -12,7 +12,6 @@
 			name: 'More Tools',
 			children: [
 				{ name: 'Biblical Unit Converter', url: '/tools/unit-converter' },
-				{ name: 'Multi-Unit Converter', url: '/tools/multi-unit-converter' },
 				{ name: 'dropdown-divider' },
 				{ name: 'Gematria Calculator', url: '/tools/gematria' },
 				{ name: 'Gematria Search', url: '/tools/gematria-search' },
@@ -20,7 +19,7 @@
 				{ name: 'dropdown-divider' },
 				{ name: 'Date Converter', url: '/tools/date-converter' },
 				{ name: 'Leap Years', url: '/tools/leap-years' },
-				{ name: 'Jewish Holidays', url: '/jewish-holidays' },
+				{ name: 'Jewish Holidays', url: '/tools/jewish-holidays' },
 				{ name: 'Daily Learning / Daf Yomi', url: '/tools/daily-learning' },
 				{ name: 'Molad', url: '/tools/molad' },
 				{ name: 'Sefiras HaOmer', url: '/tools/sefiras-haomer' },

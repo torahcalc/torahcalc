@@ -1,5 +1,4 @@
 <script>
-	import { onMount } from 'svelte';
 	import InputCalculator from '../../input/InputCalculator.svelte';
 	import BirkasHachamaExamples from '../../input/examples/BirkasHachamaExamples.svelte';
 
@@ -7,21 +6,20 @@
 	let inputCalculator;
 
 	/** @type {(query: string) => any} The function to call when the button is clicked */
-	let clickFunction;
-	onMount(() => {
-		clickFunction = inputCalculator.setSections;
-	});
+	$: clickFunction = inputCalculator?.setSections;
+
+	const description = 'Calculate when Birkas Hachama will occur and when it has occurred in the past.';
 </script>
 
 <svelte:head>
 	<title>TorahCalc | Birkas Hachama</title>
-	<meta name="description" content="Calculate the dates of Birkas Hachama." />
+	<meta name="description" content={description} />
 </svelte:head>
 
 <section>
 	<h1 class="heading">Birkas Hachama</h1>
 
-	<p class="center">Calculate when Birkas Hachama will occur and when it has occurred in the past.</p>
+	<p class="center">{description}</p>
 
 	<InputCalculator bind:this={inputCalculator} queryInput="When is the next Birkas Hachama?" />
 
