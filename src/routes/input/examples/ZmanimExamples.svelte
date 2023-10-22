@@ -13,11 +13,9 @@
 		// @ts-ignore - assume key exists
 		zmanimList.push(...Object.values(ZMANIM_NAMES[zmanimType]).map((zmanim) => zmanim.name));
 	}
-
 </script>
 
 <InputExampleCategory
-	
 	title="Zmanim"
 	icon={faSunrise}
 	color="orange"

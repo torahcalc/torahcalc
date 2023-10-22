@@ -4,11 +4,9 @@
 
 	/** @type {(query: string) => any} The function to call when the button is clicked */
 	export let clickFunction;
-
 </script>
 
 <InputExampleCategory
-	
 	title="Sefiras HaOmer"
 	icon={faWheatAlt}
 	color="brown"

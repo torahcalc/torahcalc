@@ -4,11 +4,9 @@
 
 	/** @type {(query: string) => any} The function to call when the button is clicked */
 	export let clickFunction;
-
 </script>
 
 <InputExampleCategory
-	
 	title="Leap Years"
 	icon={faCalendarPlus}
 	color="red"
