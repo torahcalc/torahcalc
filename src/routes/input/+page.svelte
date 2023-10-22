@@ -1,5 +1,4 @@
 <script>
-	import { onMount } from 'svelte';
 	import InputCalculator from './InputCalculator.svelte';
 	import InputExamples from './InputExamples.svelte';
 
