@@ -7,44 +7,39 @@
 	import { PUBLIC_ADAPTER } from '$env/static/public';
 
 	const pages = [
-		{
-			name: 'Home',
-			url: '/',
-		},
+		{ name: 'Home', url: '/' },
 		{
 			name: 'More Tools',
 			children: [
-				{
-					name: 'Date Converter',
-					url: '/dateconverter',
-				},
-				{
-					name: 'Leap Years',
-					url: '/leapyears',
-				},
+				{ name: 'Biblical Unit Converter', url: '/tools/unit-converter' },
+				{ name: 'dropdown-divider' },
+				{ name: 'Gematria Calculator', url: '/tools/gematria' },
+				{ name: 'Gematria Search', url: '/tools/gematria-search' },
+				{ name: 'Gematria Two-Word Match', url: '/tools/gematria-match' },
+				{ name: 'dropdown-divider' },
+				{ name: 'Date Converter', url: '/tools/date-converter' },
+				{ name: 'Leap Years', url: '/tools/leap-years' },
+				{ name: 'Jewish Holidays', url: '/tools/jewish-holidays' },
+				{ name: 'Daily Learning / Daf Yomi', url: '/tools/daily-learning' },
+				{ name: 'Molad', url: '/tools/molad' },
+				{ name: 'Sefiras HaOmer', url: '/tools/sefiras-haomer' },
+				{ name: 'Zmanim', url: '/tools/zmanim' },
+				{ name: 'Hebrew Zodiac Signs', url: '/tools/hebrew-zodiac-signs' },
+				{ name: 'Birkas Hachama', url: '/tools/birkas-hachama' },
 			],
 		},
 		{
 			name: 'Information',
 			children: [
-				{
-					name: 'Gematria Methods',
-					url: '/info/gematria',
-				},
-				{
-					name: 'Biblical Units',
-					url: '/info/biblical-units',
-				},
+				{ name: 'Gematria Methods', url: '/info/gematria' },
+				{ name: 'Biblical Units', url: '/info/biblical-units' },
 			],
 		},
 	];
 
 	// only show the API page on the full site and not on the static site
 	if (PUBLIC_ADAPTER !== 'static') {
-		pages.push({
-			name: 'API',
-			url: '/api',
-		});
+		pages.push({ name: 'API', url: '/api' });
 	}
 
 	// current page
@@ -101,7 +96,11 @@
 								</a>
 								<ul class="dropdown-menu">
 									{#each page.children as subpage (subpage)}
-										<li><a class="dropdown-item {current == subpage.url ? 'active' : ''}" aria-current={current == subpage.url && 'page'} href={subpage.url}>{subpage.name}</a></li>
+										{#if subpage.name == 'dropdown-divider'}
+											<li class="dropdown-divider" />
+										{:else}
+											<li><a class="dropdown-item {current == subpage.url ? 'active' : ''}" aria-current={current == subpage.url && 'page'} href={subpage.url}>{subpage.name}</a></li>
+										{/if}
 									{/each}
 								</ul>
 							</li>

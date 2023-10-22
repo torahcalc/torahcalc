@@ -1,10 +1,9 @@
 <script>
 	import { page } from '$app/stores';
 	import { calculateQuery } from '$lib/js/input';
-	import InputExamples from './InputExamples.svelte';
 
 	/** @type {string} The current query in the input box (not yet submitted) */
-	let queryInput = $page.url.searchParams.get('q') ?? '';
+	export let queryInput = $page.url.searchParams.get('q') ?? '';
 
 	/** @type {string} The disambiguation to use for the result */
 	$: disambiguation = $page.url.searchParams.get('disambiguation') ?? '';
@@ -15,7 +14,7 @@
 	/**
 	 * Set the query to calculate and update the URL
 	 */
-	async function setSections(newQuery = queryInput) {
+	export async function setSections(newQuery = queryInput) {
 		queryInput = newQuery;
 		query = queryInput;
 		// update the URL
@@ -89,8 +88,3 @@
 		</div>
 	{/await}
 {/if}
-
-<InputExamples clickFunction={setSections} />
-
-<style>
-</style>
