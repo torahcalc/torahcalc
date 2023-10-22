@@ -695,7 +695,7 @@
 	<Endpoint
 		method="GET"
 		endpoint="/api/gematriamatch"
-		description="Find pairs of gematria methods where the given words have the same gematria value\n\nFor example, 53 = Mispar Siduri of &quot;תורה&quot; = AtBach of &quot;עבודה&quot;"
+		description="Find pairs of gematria methods where the given words have the same gematria value. For example, 53 = Mispar Siduri of &quot;תורה&quot; = AtBach of &quot;עבודה&quot;"
 		parameters={[
 			{
 				name: 'word1',
