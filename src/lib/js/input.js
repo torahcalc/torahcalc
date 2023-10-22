@@ -1157,8 +1157,13 @@ function zodiacQuery(derivation) {
 		gregorianDate.month = gregorianDate.month ?? 1;
 		gregorianDate.day = gregorianDate.day ?? 1;
 		const date = new Date(gregorianDate.year, gregorianDate.month - 1, gregorianDate.day);
+		let formattedDate = formatDateObject(date);
+		if (gregorianDate.afterSunset) {
+			formattedDate += ' (after sunset)';
+			date.setDate(date.getDate() + 1);
+		}
 		zodiac = calculateZodiac(dayjs(date).format('YYYY-MM-DD'));
-		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the Hebrew zodiac for ${formatDateObject(date)}` });
+		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the Hebrew zodiac for ${formattedDate}` });
 		response += `The Hebrew date is ${zodiac.hebrewDate}<br/><br/>`;
 	} else if (derivation?.date?.hebrewDate) {
 		const hebrewDate = derivation.date.hebrewDate;
