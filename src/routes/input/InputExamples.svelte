@@ -34,9 +34,6 @@
 		<div class="col-md-6"><ZmanimExamples {clickFunction} /></div>
 		<div class="col-md-6"><ZodiacExamples {clickFunction} /></div>
 		<div class="col-md-6"><BirkasHachamaExamples {clickFunction} /></div>
-		<div class="col-12 px-3 pt-3">
-			<h6>More input types coming soon!</h6>
-		</div>
 	</div>
 </div>
 

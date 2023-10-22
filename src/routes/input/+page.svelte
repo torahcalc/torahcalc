@@ -7,24 +7,21 @@
 
 	/** @type {(query: string) => any} The function to call when the button is clicked */
 	$: clickFunction = inputCalculator?.setSections;
+
+	const description = 'Use natural words to input what you want to calculate.';
 </script>
 
 <svelte:head>
-	<title>TorahCalc | English Text Input Calculator</title>
-	<meta name="description" content="Use natural words to input what you want to calculate." />
+	<title>TorahCalc | English Text Input Calculator for Torah Study</title>
+	<meta name="description" content={description} />
 </svelte:head>
 
 <section>
-	<h1 class="heading">English Text Input Calculator <span class="experimental">Experimental</span></h1>
+	<h1 class="heading">TorahCalc English Input Calculator</h1>
+
+	<p class="center">{description}</p>
 
 	<InputCalculator bind:this={inputCalculator} />
 
 	<InputExamples {clickFunction} />
 </section>
-
-<style>
-	.experimental {
-		font-size: 0.5em;
-		color: #999;
-	}
-</style>
