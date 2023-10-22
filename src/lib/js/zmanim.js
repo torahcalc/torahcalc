@@ -2,11 +2,12 @@ import { faCandleHolder, faClockTwelve, faSparkles, faStar, faStars, faSunrise, 
 import { HebrewCalendar, Location, TimedEvent, Zmanim } from '@hebcal/core';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import { iconToSvg } from './utils';
 
 dayjs.extend(duration);
 
 /**
- * @typedef {{ name: string, hebrewName: string, time: string, description: string, icon?: import('@danieloi/pro-solid-svg-icons').IconDefinition }} Zman - Details about a zman or timed event
+ * @typedef {{ name: string, hebrewName: string, time: string, description: string, icon?: string }} Zman - Details about a zman or timed event
  */
 
 /**
@@ -41,7 +42,7 @@ export const ZMANIM_NAMES = {
 			name: 'Sunrise',
 			hebrewName: 'נץ החמה',
 			description: 'Upper edge of the sun appears over the eastern horizon in the morning (0.833° above horizon)',
-			icon: faSunrise,
+			icon: iconToSvg(faSunrise),
 		},
 		sofZmanShmaMGA: {
 			name: 'Sof Zman Shma (MGA)',
@@ -67,7 +68,7 @@ export const ZMANIM_NAMES = {
 			name: 'Chatzos',
 			hebrewName: 'חצות',
 			description: 'Midday - 6 halachic hours after sunrise',
-			icon: faClockTwelve,
+			icon: iconToSvg(faClockTwelve),
 		},
 		minchaGedola: {
 			name: 'Mincha Gedola',
@@ -88,25 +89,25 @@ export const ZMANIM_NAMES = {
 			name: 'Sunset',
 			hebrewName: 'שקיעת החמה',
 			description: 'When the upper edge of the sun disappears below the horizon (0.833° below horizon)',
-			icon: faSunset,
+			icon: iconToSvg(faSunset),
 		},
 		tzeis3MediumStars: {
 			name: 'Tzeis (3 medium stars)',
 			hebrewName: 'צאת הכוכבים (3 כוכבים בינוניים)',
 			description: 'When 3 medium-sized stars are visible in the sky (sun is 7.083° below horizon)',
-			icon: faStar,
+			icon: iconToSvg(faStar),
 		},
 		tzeis3Stars: {
 			name: 'Tzeis (3 stars)',
 			hebrewName: 'צאת הכוכבים (3 כוכבים)',
 			description: 'When 3 small-sized stars are visible in the sky (sun is 8.5° below horizon)',
-			icon: faStars,
+			icon: iconToSvg(faStars),
 		},
 		tzeis72: {
 			name: 'Tzeis (72 minutes)',
 			hebrewName: 'צאת הכוכבים (72 דקות)',
 			description: '72 minutes after sunset',
-			icon: faSparkles,
+			icon: iconToSvg(faSparkles),
 		},
 	},
 	events: {
@@ -114,13 +115,13 @@ export const ZMANIM_NAMES = {
 			name: 'Candle Lighting',
 			hebrewName: 'הדלקת נרות',
 			description: 'Candle lighting time - 18 or 40 minutes before sunset',
-			icon: faCandleHolder,
+			icon: iconToSvg(faCandleHolder),
 		},
 		havdalah: {
 			name: 'Havdalah',
 			hebrewName: 'הבדלה',
 			description: 'Havdalah time - 3 small stars visible, sun is 8.5° below horizon',
-			icon: faWineGlass,
+			icon: iconToSvg(faWineGlass),
 		},
 		fastBegins: {
 			name: 'Fast Begins',

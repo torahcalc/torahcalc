@@ -314,3 +314,14 @@ export function dataToHtmlTable(data, options) {
 	table += '</table></div>';
 	return table;
 }
+
+/**
+ * Font Awesome icon to SVG
+ * @param {import('@danieloi/pro-solid-svg-icons').IconDefinition} icon - The icon to convert
+ * @param {string} [color] - The color of the icon
+ * @returns {string} - The SVG icon
+ */
+export function iconToSvg(icon, color) {
+	const [width, height, , , svgPathData] = icon.icon;
+	return `<svg fill="${color || 'currentColor'}" height="1em" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg"><path d="${svgPathData}" /></svg>`;
+}

@@ -743,8 +743,7 @@ export async function zmanimQuery(derivation) {
 	const formatZmanCell = (zman) => {
 		let row = `<div class="d-flex align-items-center gap-2 justify-content-start">`;
 		if (zman.icon) {
-			const [width, height, , , svgPathData] = zman.icon.icon;
-			row += `<svg fill="currentColor" height="1em" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg"><path d="${svgPathData}" /></svg>`;
+			row += zman.icon;
 		}
 		row += `<span class="fw-bold">${zman.name}</span></div>`;
 		if (zman.description && zman.name !== zman.description) {
