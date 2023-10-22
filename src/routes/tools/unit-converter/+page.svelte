@@ -1,12 +1,5 @@
 <script>
-	import InputCalculator from '../../input/InputCalculator.svelte';
-	import UnitConversionExamples from '../../input/examples/UnitConversionExamples.svelte';
-
-	/** @type {InputCalculator} */
-	let inputCalculator;
-
-	/** @type {(query: string) => any} The function to call when the button is clicked */
-	$: clickFunction = inputCalculator?.setSections;
+	import UnitConverter from './UnitConverter.svelte';
 
 	const description = 'Convert between any Biblical and modern units of length, area, volume, mass (weight), coins, and time.';
 </script>
@@ -21,11 +14,7 @@
 
 	<p class="center">{description}</p>
 
-	<InputCalculator bind:this={inputCalculator} queryInput="Convert 3 Tefachim to inches" />
-
-	<div class="examples">
-		<UnitConversionExamples {clickFunction} />
-	</div>
+	<UnitConverter />
 </section>
 
 <style>
