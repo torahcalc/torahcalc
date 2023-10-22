@@ -7,10 +7,7 @@
 	let inputCalculator;
 
 	/** @type {(query: string) => any} The function to call when the button is clicked */
-	let clickFunction;
-	onMount(() => {
-		clickFunction = inputCalculator.setSections;
-	});
+	$: clickFunction = inputCalculator?.setSections;
 </script>
 
 <svelte:head>
