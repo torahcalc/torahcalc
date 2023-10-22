@@ -8,8 +8,7 @@
 	/** @type {(query: string) => any} The function to call when the button is clicked */
 	$: clickFunction = inputCalculator?.setSections;
 
-	const description =
-		'Enter two words and the calculator will calculate the gematria of each according to 25 methods and a list of methods where the words have an equivalent value will be displayed.';
+	const description = 'Enter two words and the gematria of each will be calculated according to 25 methods and a list of methods where the words have an equivalent value will be displayed.';
 </script>
 
 <svelte:head>
