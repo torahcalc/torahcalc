@@ -9,6 +9,7 @@
 	const redirectPath = {
 		'/app': 'https://play.google.com/store/apps/details?id=com.freshidea.newtorahcalc&hl=en_US&gl=US',
 		'/github': 'https://github.com/torahcalc/torahcalc',
+		'/contact': 'https://github.com/torahcalc/torahcalc/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc',
 		'/daf-yomi': '/tools/daily-learning',
 		'/dateconverter': '/tools/date-converter',
 		'/gematria-match': '/tools/gematria-match',
