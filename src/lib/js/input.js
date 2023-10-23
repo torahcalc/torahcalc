@@ -427,6 +427,29 @@ function getRoshChodeshId(direction) {
 }
 
 /**
+ * Format a unit conversion result
+ * @param {import('./unitconverter').ConversionResult|import('./unitconverter').MultiConversionUnit} result - The result to format
+ * @param {import('./unitconverter').Unit} unitTo - The unit to convert to
+ */
+const formatUnitResult = (result, unitTo) => {
+	// set the precision and remove trailing zeroes
+	const amount = formatNumberHTML(result.result);
+	let resultAmountAndUnit = `${amount} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}`;
+	if (result.min || result.max) {
+		resultAmountAndUnit += ' (';
+		if (result.min) {
+			resultAmountAndUnit += `${formatNumberHTML(result.min)}`;
+		}
+		resultAmountAndUnit += ' &ndash; ';
+		if (result.max) {
+			resultAmountAndUnit += `${formatNumberHTML(result.max)}`;
+		}
+		resultAmountAndUnit += `)`;
+	}
+	return resultAmountAndUnit;
+};
+
+/**
  * Generate sections for a unit conversion query
  *
  * @param {{ function: string, unitFrom: { type: string, unitId: string }, unitTo: { type: string, unitId: string }, amount: number }} derivation
@@ -435,24 +458,6 @@ function getRoshChodeshId(direction) {
 async function unitConversionQuery(derivation) {
 	/** @type {Array<{ title: string, content: string }>} */
 	const sections = [];
-	/** @param {import('./unitconverter').ConversionResult} result */
-	const formatResult = (result) => {
-		// set the precision and remove trailing zeroes
-		const amount = formatNumberHTML(result.result);
-		let resultAmountAndUnit = `${amount} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}`;
-		if (result.min || result.max) {
-			resultAmountAndUnit += ' (';
-			if (result.min) {
-				resultAmountAndUnit += `${formatNumberHTML(result.min)}`;
-			}
-			resultAmountAndUnit += ' &ndash; ';
-			if (result.max) {
-				resultAmountAndUnit += `${formatNumberHTML(result.max)}`;
-			}
-			resultAmountAndUnit += `)`;
-		}
-		return resultAmountAndUnit;
-	};
 
 	let resultValue = '';
 	const unitType = derivation.unitFrom.type;
@@ -469,7 +474,7 @@ async function unitConversionQuery(derivation) {
 	const toUnitOpinionIds = Object.keys(unitOpinionsForType[derivation.unitTo.unitId] ?? {}).map((opinionId) => `${derivation.unitTo.unitId}.${opinionId}`);
 	const params = { type: unitType, unitFromId: derivation.unitFrom.unitId, unitToId: derivation.unitTo.unitId, amount: derivation.amount };
 	const conversionResult = await convertUnits(params);
-	resultValue = formatResult(conversionResult);
+	resultValue = formatUnitResult(conversionResult, unitTo);
 	// if there are multiple opinions, show all of them
 	/** @type Array<import('./unitconverter').ConversionResult>*/
 	if (conversionResult.opinion || conversionResult.unitOpinions) {
@@ -490,7 +495,7 @@ async function unitConversionQuery(derivation) {
 		}
 		const data = conversionResults.map((result) => {
 			const opinion = result.opinion || Object.values(result.unitOpinions ?? {}).join(', ');
-			return { Opinion: opinion, Result: formatResult(result) };
+			return { Opinion: opinion, Result: formatUnitResult(result, unitTo) };
 		});
 		resultValue = dataToHtmlTable(data, { headers: ['Opinion', 'Result'], class: 'table table-striped table-bordered' });
 	}
@@ -538,7 +543,7 @@ async function conversionChartQuery(derivation) {
 			let results = '<ul>';
 			for (const [unitId, result] of Object.entries(opinionResults)) {
 				const unitTo = await getUnit(unitType, unitId);
-				results += `<li>${formatNumberHTML(result.result)} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}</li>`;
+				results += `<li>${formatUnitResult(result, unitTo)}</li>`;
 				updatedDate = unitTo.updated ?? updatedDate;
 			}
 			results += '</ul>';

@@ -45,7 +45,7 @@
 			<li>
 				Rabbi Avraham Chaim Naeh<Ref id="1" />:
 				<blockquote>
-					[Standard] 0.787 in (2.000 cm)<br />
+					[Standard] 0.787 in (2 cm)<br />
 					[Stringent] 0.804 in (2.042 cm)
 				</blockquote>
 			</li>
@@ -86,26 +86,26 @@
 				<li>
 					Rabbi Avraham Chaim Naeh<Ref id="1" />:
 					<blockquote>
-						[Standard] 0.014 in<sup>2</sup> (0.090 cm<sup>2</sup>)<br />
-						[Stringent] 0.015 in<sup>2</sup> (0.094 cm<sup>2</sup>)
+						[Standard] 0.014 in<sup>2</sup> (9 mm<sup>2</sup>)<br />
+						[Stringent] 0.015 in<sup>2</sup> (9.379 mm<sup>2</sup>)
 					</blockquote>
 				</li>
 				<li>
 					Aruch Hashulchan / Mishna Brurah<Ref id="2" />:
-					<blockquote>0.017 in<sup>2</sup> (0.111 cm<sup>2</sup>)</blockquote>
+					<blockquote>0.017 in<sup>2</sup> (11.114 mm<sup>2</sup>)</blockquote>
 				</li>
 				<li>
 					Rabbi Moshe Feinstein<Ref id="3" />:
 					<blockquote>
-						[Standard] 0.018 in<sup>2</sup> (0.114 cm<sup>2</sup>)<br />
-						[Stringent] 0.021 in<sup>2</sup> (0.133 cm<sup>2</sup>)
+						[Standard] 0.018 in<sup>2</sup> (11.380 mm<sup>2</sup>)<br />
+						[Stringent] 0.021 in<sup>2</sup> (13.332 mm<sup>2</sup>)
 					</blockquote>
 				</li>
 				<li>
 					Chazon Ish<Ref id="4" />:
 					<blockquote>
-						[Standard] 0.020 in<sup>2</sup> (0.130 cm<sup>2</sup>)<br />
-						[Stringent] 0.021 in<sup>2</sup> (0.137 cm<sup>2</sup>)
+						[Standard] 0.020 in<sup>2</sup> (13.014 mm<sup>2</sup>)<br />
+						[Stringent] 0.021 in<sup>2</sup> (13.561 mm<sup>2</sup>)
 					</blockquote>
 				</li>
 			</ul>
@@ -127,40 +127,61 @@
 			<b>Kortov (Hebrew: קורטוב): </b>Equal to 1/64 Log.
 			<ul>
 				<li>
-					Desert/Wilderness (מידות מדבריות):
+					Minimum for Mitzvos De'oraisa:
 					<ul>
 						<li>
-							Rabbi Avraham Chaim Naeh<Ref id="1" />:
+							Rabbi Mordechai Willig:<Ref id="12" />
+							<blockquote>0.143 fl oz. (4.219 ml)</blockquote>
+						</li>
+						<li>
+							Rabbi Avraham Chaim Naeh:<Ref id="13" />
+							<blockquote>0.171 fl oz. (5.063 ml)</blockquote>
+						</li>
+						<li>
+							Rabbi Moshe Feinstein:
+							<blockquote>0.198 fl oz. (5.85 ml)</blockquote>
+						</li>
+						<li>
+							Chazon Ish:
+							<blockquote>0.211 fl oz. (6.25 ml)</blockquote>
+						</li>
+					</ul>
+				</li>
+				<li>
+					Sinai Desert Measurements (מידות מדבריות):<Ref id="16" />
+					<ul>
+						<li>
+							Rabbi Avraham Chaim Naeh:
 							<blockquote>0.183 fl oz. (5.4 ml)</blockquote>
 						</li>
 						<li>
-							Chazon Ish<Ref id="4" />:
+							Chazon Ish:
 							<blockquote>0.314 fl oz. (9.3 ml)</blockquote>
 						</li>
 					</ul>
 				</li>
 				<li>
-					Jerusalem (מידות ירושלמיות):
+					Jerusalem Measurements (מידות ירושלמיות): (⅕ larger than Desert measurements)<Ref id="16" />
 					<ul>
 						<li>
-							Rabbi Avraham Chaim Naeh<Ref id="1" />:
+							Rabbi Avraham Chaim Naeh:
 							<blockquote>0.220 fl oz. (6.5 ml)</blockquote>
 						</li>
 						<li>
-							Chazon Ish<Ref id="4" />:
+							Chazon Ish:
 							<blockquote>0.379 fl oz. (11.2 ml)</blockquote>
 						</li>
 					</ul>
 				</li>
 				<li>
-					Tzipori (מידות ציפוריות):
+					Tzipori Measurements (מידות ציפוריות): (⅕ larger than Jerusalem measurements)<Ref id="16" />
 					<ul>
 						<li>
-							Rabbi Avraham Chaim Naeh<Ref id="1" />:
+							Rabbi Avraham Chaim Naeh:
 							<blockquote>0.264 fl oz. (7.8 ml)</blockquote>
 						</li>
 						<li>
-							Chazon Ish<Ref id="4" />:
+							Chazon Ish:
 							<blockquote>0.453 fl oz. (13.4 ml)</blockquote>
 						</li>
 					</ul>
@@ -268,8 +289,9 @@
 	<h3 id="sources">Sources</h3>
 	<ul>
 		<li>
-			<Anchor id="1" />Naeh, Rabbi Avraham Chaim. 3:25. <a href="https://hebrewbooks.org/20888">Shiurei Torah</a>. 1947. pp. 249-250. writes that the <i>etzba</i> is 2 cm, making an <i>amah</i> equal 48
-			cm. When measuring an upper or lower bound, it is best to be stringent and use 47 cm or 49 cm, depending on which direction you are measuring.
+			<Anchor id="1" />Naeh, Rabbi Avraham Chaim, 1947. <a href="https://www.hebrewbooks.org/pdfpager.aspx?req=20888&pgnum=326">Shiurei Torah 3:25 pp. 249-250</a> writes that the <i>etzba</i> is 2 cm,
+			making an <i>amah</i> equal 48 cm and when measuring an upper or lower bound, it is best to be stringent and use 47 cm or 49 cm per <i>amah</i>, depending on which direction you are measuring.
+			Since an <i>etzbah</i> is 2 cm, this makes an <i>etzbah meruba'as</i> (square etzbah) equal to 4 cm<sup>2</sup>.
 		</li>
 		<li>
 			<Anchor id="2" />The Aruch Hashulchan <a href="https://www.sefaria.org/Arukh_HaShulchan%2C_Yoreh_De'ah.286.21">YD 286:21</a> sets 4 amot as one Russian <i>sazhen</i> (7 feet). Dr. Gideon
@@ -278,7 +300,10 @@
 			<i>arshin</i>, while Mishna Brurah correlates 53 Russian <i>arshins</i> with 70.83 amot.
 			<a target="_blank" href="https://halachipedia.com/index.php?title=Reference_of_Measurements_in_Halacha#cite_note-20">Source</a>.
 		</li>
-		<li><Anchor id="3" />Feinstein, Rabbi Moshe. Iggerot Moshe. OC 1:136; YD 1:107; YD 1:190; YD 3:46:2; YD 3:66:1.</li>
+		<li>
+			<Anchor id="3" />Feinstein, Rabbi Moshe. Iggerot Moshe, 1964. <a href="https://hebrewbooks.org/916">OC 1:136 p. 228</a> writes that the <i>amah</i> is 21.25 inches and one can be stringent and use
+			23 inches.
+		</li>
 		<li><Anchor id="4" />Kanievsky, Rabbi Yaakov Y. quoting Chazon Ish (Avrohom Yeshaya Karelitz). Shiurin Shel Torah. p. 3.</li>
 		<li>
 			<Anchor id="5" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.368.3">OC 368</a> states the opinions that 18 grogeros equals 6 or 8
@@ -303,6 +328,34 @@
 			according to the correct weight of Cologne.
 		</li>
 		<li>
+			<Anchor id="12" />Rabbi Mordechai I. Willig, 2011. <a href="https://www.yutorah.org/lectures/760487/">Pesach To-Go, How Much Matzah Do You Need to Eat?</a>, p. 60, writes that the <i>kezayis</i>
+			is 22.5 cm<sup>3</sup>. His calculations are primarily based on Rabbi Hadar Margolin.
+			<a target="_blank" href="https://halachipedia.com/index.php?title=Reference_of_Measurements_in_Halacha#cite_note-20">Source</a>.
+		</li>
+		<li>
+			<Anchor id="13" />Naeh, Rabbi Avraham Chaim, 1947. <a href="https://www.hebrewbooks.org/pdfpager.aspx?req=20888&pgnum=270">Shiurei Torah 3:11 pp. 193</a> writes that a
+			<i>kezayis</i> for mitvos de'oraisa is 28.8 cm<sup>3</sup>, however, in <a href="https://www.hebrewbooks.org/pdfpager.aspx?req=35168&pgnum=69">Shiurei Tzion, 1949. p. 70</a>
+			he writes that it is 27 cm<sup>3</sup>. Vezos HaBracha (Birur Halacha 1) explains that he retracted from his original ruling.
+			<a target="_blank" href="https://halachipedia.com/index.php?title=Reference_of_Measurements_in_Halacha#cite_note-20">Source</a>.
+		</li>
+		<li>
+			<Anchor id="14" />Vezot HaBracha (Birur Halacha 1) quotes Haggadat Kol Dodi which quotes Rav Moshe Feinstein as saying that a Kezayit is 31.2 cm<sup>3</sup>.
+			<a target="_blank" href="https://halachipedia.com/index.php?title=Reference_of_Measurements_in_Halacha#cite_note-20">Source</a>.
+		</li>
+		<li>
+			<Anchor id="15" />Kanievsky, Rabbi Yaakov Y. quoting Chazon Ish (Avrohom Yeshaya Karelitz). Shiurin Shel Torah. second ed, pp. 65-66. He writes that the <i>kezayis</i> is 2/3 of a modern egg
+			which today measures 45-50 grams. The <i>kezayis</i> would therefore be 30-33.333 grams. Vezot HaBracha (Birur Halacha 1:3) records this opinion of the Chazon Ish as 33.3 cm<sup>3</sup>.
+			<a target="_blank" href="https://halachipedia.com/index.php?title=Reference_of_Measurements_in_Halacha#cite_note-20">Source</a>.
+		</li>
+		<li><Anchor id="16" /><a href="https://www.dafyomi.co.il/general/info/units-of-measurement.pdf">Biblical and Talmudic Units of Measurement</a> by Ronnie Figdor, 2012.</li>
+		<li>
+			Feinstein, Rabbi Moshe. Iggerot Moshe, 1964.
+			<a href="https://hebrewbooks.org/14674">YD 1:107 p. 198</a>;
+			<a href="https://hebrewbooks.org/14674">YD 1:190 pp. 380-381</a>;
+			<a href="https://hebrewbooks.org/920">YD 3:46:2 p. 281</a>;
+			<a href="https://hebrewbooks.org/920">YD 3:66:1 p. 314</a>.
+		</li>
+		<li>
 			Steinsaltz, Adin. "Talmudic Weights and Measures." The Talmud, the Steinsaltz Edition. Random House, 1989. pp. 279-93.<br />
 			<a
 				target="_blank"
@@ -318,7 +371,6 @@
 				>Buy on Amazon</a
 			><img src="//ir-na.amazon-adsystem.com/e/ir?t=jelawrence-20&l=am2&o=1&a=1592644511" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
 		</li>
-		<li><a href="https://www.dafyomi.co.il/general/info/units-of-measurement.pdf">Biblical and Talmudic Units of Measurement</a> by Ronnie Figdor, 2012.</li>
 	</ul>
 	<br />
 </section>

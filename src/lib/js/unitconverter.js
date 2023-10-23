@@ -47,7 +47,7 @@ async function getExchangeRates() {
 
 /**
  * @typedef {{ name: string, value: number, type: "BIBLICAL"|"STANDARD", updated?: string, display: string, displayPlural: string }} Unit
- * @typedef {{ name: string, factor: number, minFactor?: number, maxFactor?: number }} Opinion
+ * @typedef {{ name: string, factor: number, stringent?: number }} Opinion
  * @typedef {{ name: string, icon: string, units: { [key: string]: Unit }, opinions?: { [key: string]: Opinion }, unitOpinions?: { [key: string]: { [key: string]: Opinion } } }} Converter
  * @typedef {{[key: string]: Converter}} Converters
  */
@@ -93,10 +93,10 @@ export async function getConverters(fetchExchangeRates = true) {
 				nautical_mile: { name: 'Nautical mile', value: 38400 / 1852, type: 'STANDARD', display: 'nautical mile', displayPlural: 'nautical miles' },
 			},
 			opinions: {
-				rabbi_avraham_chaim_naeh: { name: "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה", factor: 1, minFactor: 47 / 48, maxFactor: 49 / 48 },
+				rabbi_avraham_chaim_naeh: { name: "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה", factor: 1, stringent: 49 / 48 },
 				aruch_hashulchan: { name: 'Aruch Hashulchan - ערוך השולחן', factor: (21 * 2.54) / 48 },
-				rabbi_moshe_feinstein: { name: "Rabbi Moshe Feinstein - ר' משה פיינשטיין", factor: (21.25 * 2.54) / 48, maxFactor: (23 * 2.54) / 48 },
-				chazon_ish: { name: 'Chazon Ish - חזון איש', factor: 57.72 / 48, maxFactor: 58.92 / 48 },
+				rabbi_moshe_feinstein: { name: "Rabbi Moshe Feinstein - ר' משה פיינשטיין", factor: (21.25 * 2.54) / 48, stringent: (23 * 2.54) / 48 },
+				chazon_ish: { name: 'Chazon Ish - חזון איש', factor: 9.62 / 8, stringent: 9.82 / 8 },
 			},
 		},
 		area: {
@@ -126,10 +126,10 @@ export async function getConverters(fetchExchangeRates = true) {
 				square_inch: { name: 'Square inch', value: 172800000 / (2.54 * 2.54), type: 'STANDARD', display: 'square inch', displayPlural: 'square inches' },
 			},
 			opinions: {
-				rabbi_avraham_chaim_naeh: { name: "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה", factor: 1, minFactor: (47 * 47) / (48 * 48), maxFactor: (49 * 49) / (48 * 48) },
+				rabbi_avraham_chaim_naeh: { name: "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה", factor: 1, stringent: (49 * 49) / (48 * 48) },
 				aruch_hashulchan: { name: 'Aruch Hashulchan - ערוך השולחן', factor: (53.34 * 53.34) / (48 * 48) },
-				rabbi_moshe_feinstein: { name: "Rabbi Moshe Feinstein - ר' משה פיינשטיין", factor: (53.975 * 53.975) / (48 * 48), maxFactor: (58.42 * 58.42) / (48 * 48) },
-				chazon_ish: { name: 'Chazon Ish - חזון איש', factor: (57.72 * 57.72) / (48 * 48), maxFactor: (58.92 * 58.92) / (48 * 48) },
+				rabbi_moshe_feinstein: { name: "Rabbi Moshe Feinstein - ר' משה פיינשטיין", factor: (53.975 * 53.975) / (48 * 48), stringent: (58.42 * 58.42) / (48 * 48) },
+				chazon_ish: { name: 'Chazon Ish - חזון איש', factor: (9.62 * 9.62) / (8 * 8), stringent: (9.82 * 9.82) / (8 * 8) },
 			},
 		},
 		volume: {
@@ -152,33 +152,38 @@ export async function getConverters(fetchExchangeRates = true) {
 				grogeres: { name: 'Grogeres - גרוגרת', value: 14400, type: 'BIBLICAL', display: 'Grogeres', displayPlural: 'Grogaros' },
 				mesurah: { name: 'Mesurah - משורה', value: 25920, type: 'BIBLICAL', display: 'Mesurah', displayPlural: 'Mesuros' },
 				kortov: { name: 'Kortov - קורטוב', value: 46080, type: 'BIBLICAL', display: 'Kortov', displayPlural: 'Kortov' },
-				us_liquid_gallon: { name: 'US liquid gallon', value: 248832 / 3785.411784, type: 'STANDARD', display: 'US liquid gallon', displayPlural: 'US liquid gallons' },
-				us_liquid_quart: { name: 'US liquid quart ', value: (248832 / 3785.411784) * 4, type: 'STANDARD', display: 'US liquid quart ', displayPlural: 'US liquid quarts' },
-				us_liquid_pint: { name: 'US liquid pint', value: (248832 / 3785.411784) * 8, type: 'STANDARD', display: 'US liquid pint', displayPlural: 'US liquid pints' },
-				us_cup: { name: 'US cup', value: (248832 / 3785.411784) * 16, type: 'STANDARD', display: 'US cup', displayPlural: 'US cups' },
-				us_fluid_ounce: { name: 'US fluid ounce', value: (248832 / 3785.411784) * 128, type: 'STANDARD', display: 'US fluid ounce', displayPlural: 'US fluid ounces' },
-				us_tablespoon: { name: 'US tablespoon', value: (248832 / 3785.411784) * 256, type: 'STANDARD', display: 'US tablespoon', displayPlural: 'US tablespoons' },
-				us_teaspoon: { name: 'US teaspoon', value: (248832 / 3785.411784) * 768, type: 'STANDARD', display: 'US teaspoon', displayPlural: 'US teaspoons' },
-				cubic_meter: { name: 'Cubic meter', value: 0.248832, type: 'STANDARD', display: 'cubic meter', displayPlural: 'cubic meters' },
-				liter: { name: 'Liter', value: 248.832, type: 'STANDARD', display: 'liter', displayPlural: 'liters' },
-				milliliter: { name: 'Milliliter', value: 248832, type: 'STANDARD', display: 'milliliter', displayPlural: 'milliliters' },
-				imperial_gallon: { name: 'Imperial gallon', value: 248832 / 4546.09, type: 'STANDARD', display: 'Imperial gallon', displayPlural: 'Imperial gallons' },
-				imperial_quart: { name: 'Imperial quart', value: (248832 / 4546.09) * 4, type: 'STANDARD', display: 'Imperial quart', displayPlural: 'Imperial quarts' },
-				imperial_pint: { name: 'Imperial pint', value: (248832 / 4546.09) * 8, type: 'STANDARD', display: 'Imperial pint', displayPlural: 'Imperial pints' },
-				imperial_cup: { name: 'Imperial cup', value: (248832 / 4546.09) * 16, type: 'STANDARD', display: 'Imperial cup', displayPlural: 'Imperial cups' },
-				imperial_fluid_ounce: { name: 'Imperial fluid ounce', value: (248832 / 4546.09) * 160, type: 'STANDARD', display: 'Imperial fluid ounce', displayPlural: 'Imperial fluid ounces' },
-				imperial_tablespoon: { name: 'Imperial tablespoon', value: (248832 / 4546.09) * 256, type: 'STANDARD', display: 'Imperial tablespoon', displayPlural: 'Imperial tablespoons' },
+				us_liquid_gallon: { name: 'US liquid gallon', value: 194400 / 3785.411784, type: 'STANDARD', display: 'US liquid gallon', displayPlural: 'US liquid gallons' },
+				us_liquid_quart: { name: 'US liquid quart ', value: (194400 / 3785.411784) * 4, type: 'STANDARD', display: 'US liquid quart ', displayPlural: 'US liquid quarts' },
+				us_liquid_pint: { name: 'US liquid pint', value: (194400 / 3785.411784) * 8, type: 'STANDARD', display: 'US liquid pint', displayPlural: 'US liquid pints' },
+				us_cup: { name: 'US cup', value: (194400 / 3785.411784) * 16, type: 'STANDARD', display: 'US cup', displayPlural: 'US cups' },
+				us_fluid_ounce: { name: 'US fluid ounce', value: (194400 / 3785.411784) * 128, type: 'STANDARD', display: 'US fluid ounce', displayPlural: 'US fluid ounces' },
+				us_tablespoon: { name: 'US tablespoon', value: (194400 / 3785.411784) * 256, type: 'STANDARD', display: 'US tablespoon', displayPlural: 'US tablespoons' },
+				us_teaspoon: { name: 'US teaspoon', value: (194400 / 3785.411784) * 768, type: 'STANDARD', display: 'US teaspoon', displayPlural: 'US teaspoons' },
+				cubic_meter: { name: 'Cubic meter', value: 0.1944, type: 'STANDARD', display: 'cubic meter', displayPlural: 'cubic meters' },
+				cubic_centimeter: { name: 'Cubic centimeter', value: 194400, type: 'STANDARD', display: 'cubic centimeter', displayPlural: 'cubic centimeters' },
+				liter: { name: 'Liter', value: 194400 / 1000, type: 'STANDARD', display: 'liter', displayPlural: 'liters' },
+				milliliter: { name: 'Milliliter', value: 194400, type: 'STANDARD', display: 'milliliter', displayPlural: 'milliliters' },
+				imperial_gallon: { name: 'Imperial gallon', value: 194400 / 4546.09, type: 'STANDARD', display: 'Imperial gallon', displayPlural: 'Imperial gallons' },
+				imperial_quart: { name: 'Imperial quart', value: (194400 / 4546.09) * 4, type: 'STANDARD', display: 'Imperial quart', displayPlural: 'Imperial quarts' },
+				imperial_pint: { name: 'Imperial pint', value: (194400 / 4546.09) * 8, type: 'STANDARD', display: 'Imperial pint', displayPlural: 'Imperial pints' },
+				imperial_cup: { name: 'Imperial cup', value: (194400 / 4546.09) * 16, type: 'STANDARD', display: 'Imperial cup', displayPlural: 'Imperial cups' },
+				imperial_fluid_ounce: { name: 'Imperial fluid ounce', value: (194400 / 4546.09) * 160, type: 'STANDARD', display: 'Imperial fluid ounce', displayPlural: 'Imperial fluid ounces' },
+				imperial_tablespoon: { name: 'Imperial tablespoon', value: (194400 / 4546.09) * 256, type: 'STANDARD', display: 'Imperial tablespoon', displayPlural: 'Imperial tablespoons' },
 				imperial_teaspoon: { name: 'Imperial teaspoon', value: 42036.7606, type: 'STANDARD', display: 'Imperial teaspoon', displayPlural: 'Imperial teaspoons' },
-				cubic_foot: { name: 'Cubic foot', value: ((248832 / 3785.411784) * 231) / 1728, type: 'STANDARD', display: 'cubic foot', displayPlural: 'cubic feet' },
-				cubic_inch: { name: 'Cubic inch', value: (248832 / 3785.411784) * 231, type: 'STANDARD', display: 'cubic inch', displayPlural: 'cubic inches' },
+				cubic_foot: { name: 'Cubic foot', value: ((194400 / 3785.411784) * 231) / 1728, type: 'STANDARD', display: 'cubic foot', displayPlural: 'cubic feet' },
+				cubic_inch: { name: 'Cubic inch', value: (194400 / 3785.411784) * 231, type: 'STANDARD', display: 'cubic inch', displayPlural: 'cubic inches' },
 			},
 			opinions: {
-				desert_rabbi_avraham_chaim_naeh: { name: "Desert (Rabbi Avraham Chaim Naeh) - (מדבריות (ר' אברהם חיים נאה", factor: 1 },
-				desert_chazon_ish: { name: 'Desert (Chazon Ish) - (מדבריות (חזון איש', factor: 31 / 18 },
-				jerusalem_rabbi_avraham_chaim_naeh: { name: "Jerusalem (Rabbi Avraham Chaim Naeh) - (ירושלמיות (ר' אברהם חיים נאה", factor: 65 / 64 },
-				jerusalem_chazon_ish: { name: 'Jerusalem (Chazon Ish) - (ירושלמיות (חזון איש', factor: 56 / 27 },
-				tzipori_rabbi_avraham_chaim_naeh: { name: "Tzipori (Rabbi Avraham Chaim Naeh) - (ציפוריות (ר' אברהם חיים נאה", factor: 13 / 9 },
-				tzipori_chazon_ish: { name: 'Tzipori (Chazon Ish) - (ציפוריות (חזון איש', factor: 67 / 27 },
+				rabbi_mordechai_willig: { name: "Rabbi Mordechai Willig - ר' מרדכי ויליג", factor: 1 },
+				rabbi_avraham_chaim_naeh: { name: "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה", factor: 27 / 22.5 },
+				rabbi_moshe_feinstein: { name: "Rabbi Moshe Feinstein - ר' משה פיינשטיין", factor: 31.2 / 22.5 },
+				chazon_ish: { name: 'Chazon Ish - חזון איש', factor: 100 / 3 / 22.5 },
+				desert_rabbi_avraham_chaim_naeh: { name: "Desert (Rabbi Avraham Chaim Naeh) - (מדבריות (ר' אברהם חיים נאה", factor: 28.8 / 22.5 },
+				desert_chazon_ish: { name: 'Desert (Chazon Ish) - (מדבריות (חזון איש', factor: 49.6 / 22.5 },
+				jerusalem_rabbi_avraham_chaim_naeh: { name: "Jerusalem (Rabbi Avraham Chaim Naeh) - (ירושלמיות (ר' אברהם חיים נאה", factor: (28.8 / 22.5) * (6 / 5) },
+				jerusalem_chazon_ish: { name: 'Jerusalem (Chazon Ish) - (ירושלמיות (חזון איש', factor: (49.6 / 22.5) * (6 / 5) },
+				tzipori_rabbi_avraham_chaim_naeh: { name: "Tzipori (Rabbi Avraham Chaim Naeh) - (ציפוריות (ר' אברהם חיים נאה", factor: (28.8 / 22.5) * (36 / 25) },
+				tzipori_chazon_ish: { name: 'Tzipori (Chazon Ish) - (ציפוריות (חזון איש', factor: (49.6 / 22.5) * (36 / 25) },
 			},
 		},
 		weight: {
@@ -445,9 +450,11 @@ function getOpinionFactors(opinion, unitFrom, result) {
 	let factor = opinion.factor;
 	const isConvertingFromStandard = unitFrom.type === 'STANDARD';
 	const resultIsNegative = result < 0;
+	// calculate the inverse of the stringent factor to get a lower bound for stringent conversions
+	const stringentInverse = opinion.stringent ? 2 * opinion.factor - opinion.stringent : undefined;
 	// swap the min and max factors if the result is negative or converting from standard to biblical but not both
-	let minFactor = isConvertingFromStandard !== resultIsNegative ? opinion.maxFactor : opinion.minFactor;
-	let maxFactor = isConvertingFromStandard !== resultIsNegative ? opinion.minFactor : opinion.maxFactor;
+	let minFactor = isConvertingFromStandard !== resultIsNegative ? opinion.stringent : stringentInverse;
+	let maxFactor = isConvertingFromStandard !== resultIsNegative ? stringentInverse : opinion.stringent;
 	// take the inverse of the factors if converting from standard to biblical
 	if (isConvertingFromStandard) {
 		factor = 1 / factor;
@@ -498,13 +505,14 @@ export async function convertUnits({ type, unitFromId, unitToId, amount, opinion
 		const opinion = opinionId ? await getOpinion(type, opinionId) : defaultOpinion;
 		if (opinion) {
 			outputs.opinion = opinion.name;
-			const factors = getOpinionFactors(opinion, unitFrom, outputs.result);
-			outputs.result *= factors.factor;
+			const resultAmount = outputs.result;
+			const factors = getOpinionFactors(opinion, unitFrom, resultAmount);
+			outputs.result = resultAmount * factors.factor;
 			if (factors.minFactor) {
-				outputs.min = outputs.result * factors.minFactor;
+				outputs.min = resultAmount * factors.minFactor;
 			}
 			if (factors.maxFactor) {
-				outputs.max = outputs.result * factors.maxFactor;
+				outputs.max = resultAmount * factors.maxFactor;
 			}
 		}
 	}
@@ -542,7 +550,7 @@ export async function convertUnits({ type, unitFromId, unitToId, amount, opinion
  * @property {string} [opinionId] - The opinion to use for the converting between standard and biblical units.
  * @property {string[]} [unitOpinionIds] - The unit opinions to use for the conversion (unitId.opinionId)
  *
- * @typedef {{ name: string, result: number, opinion?: string, unitOpinions?: string[] }} MultiConversionUnit
+ * @typedef {{ name: string, result: number, min?: number, max?: number, opinion?: string, unitOpinions?: string[] }} MultiConversionUnit
  *
  * @typedef {{ [key: string]: MultiConversionUnit }} MultiConversionResult
  *
@@ -568,6 +576,8 @@ export async function convertUnitsMulti({ type, unitFromId, amount, opinionId, u
 		outputs[unitToId] = {
 			name: result.to,
 			result: result.result,
+			min: result.min,
+			max: result.max,
 		};
 		if (result.opinion) outputs[unitToId].opinion = result.opinion;
 		if (result.unitOpinions) outputs[unitToId].unitOpinions = result.unitOpinions;
