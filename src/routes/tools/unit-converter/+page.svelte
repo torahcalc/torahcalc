@@ -15,10 +15,8 @@
 	<p class="center">{description}</p>
 
 	<UnitConverter />
-</section>
 
-<style>
-	.examples {
-		margin: 0.5rem;
-	}
-</style>
+	<div class="card flex-card center">
+		<a href="/info/biblical-units">Information about Biblical Units and Sources</a>
+	</div>
+</section>

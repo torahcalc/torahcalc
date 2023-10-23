@@ -112,9 +112,9 @@
 			</div>
 		</div>
 		{#if getOpinions(converters)[unitType] && converters[unitType].units[leftUnitId]?.type !== converters[unitType].units[rightUnitId]?.type}
-			<div class="row g-2 my-1">
-				<div class="col-sm-2">Opinion:</div>
-				<div class="col-sm-10">
+			<div class="opinion-container my-1">
+				<div>Opinion:</div>
+				<div>
 					<select bind:value={opinionId} class="form-select" on:change={handleConvertLeftToRight}>
 						{#each getOpinions(converters)[unitType] as opinion}
 							<option value={opinion}>{converters[unitType]?.opinions?.[opinion]?.name}</option>
@@ -141,12 +141,6 @@
 		width: 100%;
 	}
 
-	@media (max-width: 476px) {
-		.unit-converter-container {
-			grid-template-columns: 1fr;
-		}
-	}
-
 	.unit-type-container {
 		display: grid;
 		grid-template-columns: 38px 1fr;
@@ -171,9 +165,29 @@
 		color: white;
 	}
 
+	.opinion-container {
+		display: grid;
+		grid-template-columns: 70px 1fr;
+		grid-gap: 0.5rem;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+	}
+
 	.equals {
 		width: 1.5em;
 		font-size: 2.25em;
 		text-align: center;
+	}
+
+	@media (max-width: 476px) {
+		.unit-converter-container {
+			grid-template-columns: 1fr;
+		}
+
+		.opinion-container {
+			margin-top: 1rem !important;
+			grid-template-columns: 1fr;
+		}
 	}
 </style>
