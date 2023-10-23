@@ -28,8 +28,12 @@ describe('test formatNumber', () => {
 		expect(formatNumber(1234567890)).toBe('1 234 567 890');
 	});
 
-	it('formats 1234567890.12345678', () => {
-		expect(formatNumber(1234567890.1234567)).toBe('1 234 567 890.1234567');
+	it('formats 1234567890.12345678 with standard precision', () => {
+		expect(formatNumber(1234567890.1234567)).toBe('1 234 567 890.1235');
+	});
+
+	it('formats 1234567890.12345678 with full precision', () => {
+		expect(formatNumber(1234567890.1234567, 8)).toBe('1 234 567 890.1234567');
 	});
 
 	it('formats 8000', () => {
@@ -38,6 +42,10 @@ describe('test formatNumber', () => {
 
 	it('formats 8000.12300000001', () => {
 		expect(formatNumber(8000.12300000001)).toBe('8 000.123');
+	});
+
+	it('formats 0.000000512 with make non-zero', () => {
+		expect(formatNumber(0.000000412)).toBe('0.0000004');
 	});
 });
 

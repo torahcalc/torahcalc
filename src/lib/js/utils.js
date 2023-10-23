@@ -133,18 +133,43 @@ export function getLastSaturday(date) {
  * Format a number as a string with thin spaces for commas, maximum precision, and no trailing zeros.
  *
  * @param {number} number - The number to format.
- * @param {number} [precision=8] - The maximum number of digits after the decimal point.
+ * @param {number} [precision=4] - The maximum number of digits after the decimal point.
+ * @param {boolean} [makeNonZero=true] - Whether to increase precision until the number is non-zero.
  * @returns {string} The formatted number.
  */
-export function formatNumber(number, precision = 8) {
+export function formatNumber(number, precision = 4, makeNonZero = true) {
 	// set precision and add commas
-	let localeNum = number.toLocaleString(undefined, { maximumFractionDigits: precision });
+	let localeNum = number.toLocaleString('fullwide', { maximumFractionDigits: precision });
+	// increase precision until the number is non-zero
+	if (number !== 0 && makeNonZero) {
+		for (let i = precision; i < 20; i++) {
+			if (localeNum !== '0') {
+				break;
+			}
+			localeNum = number.toLocaleString('fullwide', { maximumFractionDigits: i });
+		}
+	}
 	// remove trailing zeros if there is a decimal point
 	localeNum = localeNum.includes('.') ? localeNum.replace(/\.?0+$/, '') : localeNum;
 	// replace commas with thin spaces
 	localeNum = localeNum.replace(/,/g, '\u2009');
 	// return the formatted number
 	return localeNum;
+}
+
+/**
+ * Format text or a number and place it in a span with the class 'number'.
+ *
+ * @param {number|string} text - The text or number to format.
+ * @param {number} [precision=4] - The maximum number of digits after the decimal point, use -1 to disable formatting as a number.
+ * @param {boolean} [makeNonZero=true] - Whether to increase precision until the number is non-zero.
+ * @returns {string} The formatted number.
+ */
+export function formatNumberHTML(text, precision = 4, makeNonZero = true) {
+	if (!isNaN(Number(text)) && precision >= 0) {
+		text = formatNumber(Number(text), precision, makeNonZero);
+	}
+	return `<span class="number">${sanitize(text.toString())}</span>`;
 }
 
 /**
@@ -167,20 +192,6 @@ export function sanitize(string) {
 		},
 	};
 	return xss(string, options);
-}
-
-/**
- * Format text or a number and place it in a span with the class 'number'.
- *
- * @param {number|string} text - The text or number to format.
- * @param {number} [precision=8] - The maximum number of digits after the decimal point, use -1 to disable formatting as a number.
- * @returns {string} The formatted number.
- */
-export function formatNumberHTML(text, precision = 8) {
-	if (!isNaN(Number(text)) && precision >= 0) {
-		text = formatNumber(Number(text), precision);
-	}
-	return `<span class="number">${sanitize(text.toString())}</span>`;
 }
 
 /**
