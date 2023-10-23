@@ -1,15 +1,29 @@
 <script>
-	import { convertUnits, getConverters, getOpinions, getUnit, getUnits } from '$lib/js/unitconverter.js';
-
-	const converters = getConverters(false);
+	import { convertUnits, getConverters, getOpinions } from '$lib/js/unitconverter.js';
+	import { formatNumberHTML } from '$lib/js/utils';
+	import { faExchange } from '@danieloi/pro-solid-svg-icons';
+	import Fa from 'svelte-fa/src/fa.svelte';
 
 	let unitType = 'length';
 	let leftValue = '1';
 	let rightValue = '6';
 	let leftUnitId = 'amah';
 	let rightUnitId = 'tefach';
+
 	/** @type {string|undefined} The opinion to use for the conversion */
 	let opinionId;
+
+	/**
+	 * @typedef {Object} OpinionResult
+	 * @property {string} name - the name of the opinion
+	 * @property {number} result - the result of the opinion
+	 * @property {import('$lib/js/unitconverter.js').Unit} unit - the unit of the opinion
+	 * @property {number|undefined} min - the minimum result of the opinion
+	 * @property {number|undefined} max - the maximum result of the opinion
+	 */
+
+	/** @type {OpinionResult[]} The results of the opinions */
+	let opinionResults;
 
 	/**
 	 * Format the given number as a string
@@ -20,14 +34,82 @@
 		return number.toLocaleString('fullwide', { useGrouping: false, maximumFractionDigits: 12 });
 	}
 
+	/**
+	 * Build the table of opinion results
+	 * @param {string} unitType - the type of unit
+	 * @param {string} unitFromId - the ID of the unit to convert from
+	 * @param {string} unitToId - the ID of the unit to convert to
+	 * @param {number} value - the amount of the unit
+	 */
+	async function buildOpinionsTable(unitType, unitFromId, unitToId, value) {
+		const converters = await getConverters();
+		const tempOpinionResults = [];
+		if (getOpinions(converters)[unitType] && converters[unitType].units[leftUnitId]?.type !== converters[unitType].units[rightUnitId]?.type) {
+			for (const opinionId of getOpinions(converters)[unitType]) {
+				const opinion = converters[unitType]?.opinions?.[opinionId];
+				const toUnit = converters[unitType]?.units?.[unitToId];
+				if (!opinion || !toUnit) {
+					continue;
+				}
+				const result = await convertUnits({ type: unitType, unitFromId: unitFromId, unitToId: unitToId, amount: value, opinionId });
+				tempOpinionResults.push({
+					name: opinion.name,
+					result: result.result,
+					min: result.min,
+					max: result.max,
+					unit: toUnit,
+				});
+			}
+		}
+		return tempOpinionResults;
+	}
+
+	/**
+	 * Convert the left value to the right unit
+	 */
 	async function handleConvertLeftToRight() {
 		const result = await convertUnits({ type: unitType, unitFromId: leftUnitId, unitToId: rightUnitId, amount: Number(leftValue), opinionId });
 		rightValue = formatDecimalNumber(result.result);
+		opinionResults = await buildOpinionsTable(unitType, leftUnitId, rightUnitId, Number(leftValue));
 	}
 
+	/**
+	 * Convert the right value to the left unit
+	 */
 	async function handleConvertRightToLeft() {
 		const result = await convertUnits({ type: unitType, unitFromId: rightUnitId, unitToId: leftUnitId, amount: Number(rightValue), opinionId });
 		leftValue = formatDecimalNumber(result.result);
+		opinionResults = await buildOpinionsTable(unitType, rightUnitId, leftUnitId, Number(rightValue));
+	}
+
+	/**
+	 * Swap the left and right units
+	 */
+	function swapUnits() {
+		// swap the units but keep the values
+		[leftUnitId, rightUnitId] = [rightUnitId, leftUnitId];
+		handleConvertLeftToRight();
+	}
+
+	/**
+	 * Format the result of the given opinion
+	 * @param {OpinionResult} opinion - the opinion details
+	 * @returns {string} the formatted result
+	 */
+	function formatOpinionResult(opinion) {
+		let result = `${formatNumberHTML(opinion.result, 3)} ${opinion.result === 1 ? opinion.unit.display : opinion.unit.displayPlural}`;
+		if (opinion.min || opinion.max) {
+			result += ' (';
+			if (opinion.min) {
+				result += `${formatNumberHTML(opinion.min, 3)}`;
+			}
+			result += ' &ndash; ';
+			if (opinion.max) {
+				result += `${formatNumberHTML(opinion.max, 3)}`;
+			}
+			result += `)`;
+		}
+		return result;
 	}
 
 	async function handleUnitTypeChange() {
@@ -76,7 +158,7 @@
 	}
 </script>
 
-{#await converters then converters}
+{#await getConverters() then converters}
 	<div class="card flex-card my-1 pb-3">
 		<div class="unit-type-container mb-1">
 			<div class="unit-type-icon">{@html converters[unitType]?.icon}</div>
@@ -99,7 +181,9 @@
 					{/each}
 				</select>
 			</div>
-			<div class="equals">=</div>
+			<div class="center">
+				<button class="swap-button" on:click={swapUnits}><Fa icon={faExchange} /></button>
+			</div>
 			<div>
 				<input type="number" bind:value={rightValue} class="form-control mb-2" on:input={handleConvertRightToLeft} />
 				<select bind:value={rightUnitId} class="form-select" on:change={handleConvertLeftToRight}>
@@ -111,16 +195,24 @@
 				</select>
 			</div>
 		</div>
-		{#if getOpinions(converters)[unitType] && converters[unitType].units[leftUnitId]?.type !== converters[unitType].units[rightUnitId]?.type}
-			<div class="opinion-container my-1">
-				<div>Opinion:</div>
-				<div>
-					<select bind:value={opinionId} class="form-select" on:change={handleConvertLeftToRight}>
-						{#each getOpinions(converters)[unitType] as opinion}
-							<option value={opinion}>{converters[unitType]?.opinions?.[opinion]?.name}</option>
+		{#if opinionResults && opinionResults.length > 0}
+			<div class="table-responsive">
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>Opinion</th>
+							<th>Result</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each opinionResults as opinionResult}
+							<tr>
+								<td>{opinionResult.name}</td>
+								<td>{@html formatOpinionResult(opinionResult)}</td>
+							</tr>
 						{/each}
-					</select>
-				</div>
+					</tbody>
+				</table>
 			</div>
 		{/if}
 	</div>
@@ -165,28 +257,20 @@
 		color: white;
 	}
 
-	.opinion-container {
-		display: grid;
-		grid-template-columns: 70px 1fr;
-		grid-gap: 0.5rem;
-		align-items: center;
-		justify-content: space-between;
-		width: 100%;
+	.swap-button {
+		background: none;
+		border: none;
+		border-radius: 50%;
+		width: 2em;
+		height: 2em;
 	}
 
-	.equals {
-		width: 1.5em;
-		font-size: 2.25em;
-		text-align: center;
+	.swap-button:hover {
+		background: #eee;
 	}
 
 	@media (max-width: 476px) {
 		.unit-converter-container {
-			grid-template-columns: 1fr;
-		}
-
-		.opinion-container {
-			margin-top: 1rem !important;
 			grid-template-columns: 1fr;
 		}
 	}

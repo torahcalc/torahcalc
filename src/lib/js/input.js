@@ -439,7 +439,18 @@ async function unitConversionQuery(derivation) {
 	const formatResult = (result) => {
 		// set the precision and remove trailing zeroes
 		const amount = formatNumberHTML(result.result);
-		const resultAmountAndUnit = `${amount} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}`;
+		let resultAmountAndUnit = `${amount} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}`;
+		if (result.min || result.max) {
+			resultAmountAndUnit += ' (';
+			if (result.min) {
+				resultAmountAndUnit += `${formatNumberHTML(result.min)}`;
+			}
+			resultAmountAndUnit += ' &ndash; ';
+			if (result.max) {
+				resultAmountAndUnit += `${formatNumberHTML(result.max)}`;
+			}
+			resultAmountAndUnit += `)`;
+		}
 		return resultAmountAndUnit;
 	};
 

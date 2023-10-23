@@ -47,7 +47,7 @@ async function getExchangeRates() {
 
 /**
  * @typedef {{ name: string, value: number, type: "BIBLICAL"|"STANDARD", updated?: string, display: string, displayPlural: string }} Unit
- * @typedef {{ name: string, factor: number }} Opinion
+ * @typedef {{ name: string, factor: number, minFactor?: number, maxFactor?: number }} Opinion
  * @typedef {{ name: string, icon: string, units: { [key: string]: Unit }, opinions?: { [key: string]: Opinion }, unitOpinions?: { [key: string]: { [key: string]: Opinion } } }} Converter
  * @typedef {{[key: string]: Converter}} Converters
  */
@@ -93,13 +93,10 @@ export async function getConverters(fetchExchangeRates = true) {
 				nautical_mile: { name: 'Nautical mile', value: 38400 / 1852, type: 'STANDARD', display: 'nautical mile', displayPlural: 'nautical miles' },
 			},
 			opinions: {
-				rabbi_avraham_chaim_naeh_standard: { name: "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה (Standard)", factor: 1 },
-				rabbi_avraham_chaim_naeh_stringent: { name: "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה (Stringent)", factor: 49 / 48 },
+				rabbi_avraham_chaim_naeh: { name: "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה", factor: 1, minFactor: 47 / 48, maxFactor: 49 / 48 },
 				aruch_hashulchan: { name: 'Aruch Hashulchan - ערוך השולחן', factor: (21 * 2.54) / 48 },
-				rabbi_moshe_feinstein_standard: { name: "Rabbi Moshe Feinstein - ר' משה פיינשטיין (Standard)", factor: (21.25 * 2.54) / 48 },
-				rabbi_moshe_feinstein_stringent: { name: "Rabbi Moshe Feinstein - ר' משה פיינשטיין (Stringent)", factor: (23 * 2.54) / 48 },
-				chazon_ish_standard: { name: 'Chazon Ish - חזון איש (Standard)', factor: 57.72 / 48 },
-				chazon_ish_stringent: { name: 'Chazon Ish - חזון איש (Stringent)', factor: 58.92 / 48 },
+				rabbi_moshe_feinstein: { name: "Rabbi Moshe Feinstein - ר' משה פיינשטיין", factor: (21.25 * 2.54) / 48, maxFactor: (23 * 2.54) / 48 },
+				chazon_ish: { name: 'Chazon Ish - חזון איש', factor: 57.72 / 48, maxFactor: 58.92 / 48 },
 			},
 		},
 		area: {
@@ -129,13 +126,10 @@ export async function getConverters(fetchExchangeRates = true) {
 				square_inch: { name: 'Square inch', value: 172800000 / (2.54 * 2.54), type: 'STANDARD', display: 'square inch', displayPlural: 'square inches' },
 			},
 			opinions: {
-				rabbi_avraham_chaim_naeh_standard: { name: "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה (Standard)", factor: 1 },
-				rabbi_avraham_chaim_naeh_stringent: { name: "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה (Stringent)", factor: (49 * 49) / (48 * 48) },
+				rabbi_avraham_chaim_naeh: { name: "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה", factor: 1, minFactor: (47 * 47) / (48 * 48), maxFactor: (49 * 49) / (48 * 48) },
 				aruch_hashulchan: { name: 'Aruch Hashulchan - ערוך השולחן', factor: (53.34 * 53.34) / (48 * 48) },
-				rabbi_moshe_feinstein_standard: { name: "Rabbi Moshe Feinstein - ר' משה פיינשטיין (Standard)", factor: (53.975 * 53.975) / (48 * 48) },
-				rabbi_moshe_feinstein_stringent: { name: "Rabbi Moshe Feinstein - ר' משה פיינשטיין (Stringent)", factor: (58.42 * 58.42) / (48 * 48) },
-				chazon_ish_standard: { name: 'Chazon Ish - חזון איש (Standard)', factor: (57.72 * 57.72) / (48 * 48) },
-				chazon_ish_stringent: { name: 'Chazon Ish - חזון איש (Stringent)', factor: (58.92 * 58.92) / (48 * 48) },
+				rabbi_moshe_feinstein: { name: "Rabbi Moshe Feinstein - ר' משה פיינשטיין", factor: (53.975 * 53.975) / (48 * 48), maxFactor: (58.42 * 58.42) / (48 * 48) },
+				chazon_ish: { name: 'Chazon Ish - חזון איש', factor: (57.72 * 57.72) / (48 * 48), maxFactor: (58.92 * 58.92) / (48 * 48) },
 			},
 		},
 		volume: {
@@ -441,6 +435,29 @@ export async function getDefaultUnitOpinion(type, unitId) {
 }
 
 /**
+ * Get the opinion factor for converting between standard and biblical units.
+ * @param {Opinion} opinion - The opinion to get the factor for.
+ * @param {Unit} unitFrom - The unit to convert from.
+ * @param {number} result - The result of the conversion so far.
+ * @returns {{ factor: number, minFactor?: number, maxFactor?: number }} - The factors to apply to the conversion.
+ */
+function getOpinionFactors(opinion, unitFrom, result) {
+	let factor = opinion.factor;
+	const isConvertingFromStandard = unitFrom.type === 'STANDARD';
+	const resultIsNegative = result < 0;
+	// swap the min and max factors if the result is negative or converting from standard to biblical but not both
+	let minFactor = isConvertingFromStandard !== resultIsNegative ? opinion.maxFactor : opinion.minFactor;
+	let maxFactor = isConvertingFromStandard !== resultIsNegative ? opinion.minFactor : opinion.maxFactor;
+	// take the inverse of the factors if converting from standard to biblical
+	if (isConvertingFromStandard) {
+		factor = 1 / factor;
+		minFactor = minFactor ? 1 / minFactor : undefined;
+		maxFactor = maxFactor ? 1 / maxFactor : undefined;
+	}
+	return { factor, minFactor, maxFactor };
+}
+
+/**
  * @typedef {object} ConversionOptions
  * @property {string} type - The type of unit to convert.
  * @property {string} unitFromId - The unit to convert from.
@@ -449,7 +466,7 @@ export async function getDefaultUnitOpinion(type, unitId) {
  * @property {string} [opinionId] - The opinion to use for the conversion (only when converting between standard and biblical units)
  * @property {string[]} [unitOpinionIds] - The unit opinions to use for the conversion (unitId.opinionId)
  *
- * @typedef {{ from: string, to: string, result: number, opinion?: string, unitOpinions?: string[] }} ConversionResult
+ * @typedef {{ from: string, to: string, result: number, min?: number, max?: number, opinion?: string, unitOpinions?: string[] }} ConversionResult
  */
 
 /**
@@ -480,10 +497,15 @@ export async function convertUnits({ type, unitFromId, unitToId, amount, opinion
 	if (unitFrom.type !== unitTo.type && defaultOpinion) {
 		const opinion = opinionId ? await getOpinion(type, opinionId) : defaultOpinion;
 		if (opinion) {
-			// if converting from standard to biblical, apply the inverse
-			const factor = unitFrom.type === 'BIBLICAL' ? opinion.factor : 1 / opinion.factor;
-			outputs.result *= factor;
 			outputs.opinion = opinion.name;
+			const factors = getOpinionFactors(opinion, unitFrom, outputs.result);
+			outputs.result *= factors.factor;
+			if (factors.minFactor) {
+				outputs.min = outputs.result * factors.minFactor;
+			}
+			if (factors.maxFactor) {
+				outputs.max = outputs.result * factors.maxFactor;
+			}
 		}
 	}
 	// if the 'from' unit is in the unitOpinions, apply the opinion

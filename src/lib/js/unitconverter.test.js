@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { convertUnits, convertUnitsMulti, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnits } from './unitconverter';
 
-const RABBI_AVRAHAM_CHAIM_NAEH = "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה (Standard)";
+const RABBI_AVRAHAM_CHAIM_NAEH = "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה";
 const ARUCH_HASHULCHAN = 'Aruch Hashulchan - ערוך השולחן';
 
 describe('test getConverters', () => {
@@ -84,74 +84,90 @@ describe('test getOpinion and getDefaultOpinion', () => {
 
 describe('test convertUnits', () => {
 	it('converts length units', async () => {
-		const result = await convertUnits({ type: 'length', unitFromId: 'meter', unitToId: 'amah', amount: 1 });
-		expect(result).toStrictEqual({
-			from: 'Meter',
-			opinion: RABBI_AVRAHAM_CHAIM_NAEH,
-			result: 2.0833333333333335,
-			to: 'Amah - אמה',
-		});
+		let result = await convertUnits({ type: 'length', unitFromId: 'meter', unitToId: 'amah', amount: 1 });
+		expect(result.from).toBe('Meter');
+		expect(result.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
+		expect(result.result).toBeCloseTo(2.0833333333333335);
+		expect(result.to).toBe('Amah - אמה');
+		expect(result.min).toBeCloseTo(2.0408163265306127);
+		expect(result.max).toBeCloseTo(2.1276595744680855);
 
-		const result2 = await convertUnits({ type: 'length', unitFromId: 'amah', unitToId: 'meter', amount: 1, opinionId: 'aruch_hashulchan' });
-		expect(result2).toStrictEqual({
-			from: 'Amah - אמה',
-			opinion: ARUCH_HASHULCHAN,
-			result: 0.5334,
-			to: 'Meter',
-		});
+		result = await convertUnits({ type: 'length', unitFromId: 'meter', unitToId: 'amah', amount: -1 });
+		expect(result.from).toBe('Meter');
+		expect(result.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
+		expect(result.result).toBeCloseTo(-2.0833333333333335);
+		expect(result.to).toBe('Amah - אמה');
+		expect(result.min).toBeCloseTo(-2.1276595744680855);
+		expect(result.max).toBeCloseTo(-2.0408163265306127);
 
-		const result3 = await convertUnits({ type: 'length', unitFromId: 'amah', unitToId: 'tefach', amount: 3.5 });
-		expect(result3).toStrictEqual({
-			from: 'Amah - אמה',
-			result: 3.5 * 6,
-			to: 'Tefach - טפח',
-		});
+		result = await convertUnits({ type: 'length', unitFromId: 'amah', unitToId: 'centimeter', amount: 1 });
+		expect(result.from).toBe('Amah - אמה');
+		expect(result.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
+		expect(result.result).toBeCloseTo(48);
+		expect(result.to).toBe('Centimeter');
+		expect(result.min).toBeCloseTo(47);
+		expect(result.max).toBeCloseTo(49);
 
-		const result4 = await convertUnits({ type: 'length', unitFromId: 'foot', unitToId: 'amah', amount: 1, opinionId: 'aruch_hashulchan' });
-		expect(result4).toStrictEqual({
-			from: 'Foot',
-			opinion: ARUCH_HASHULCHAN,
-			result: 0.5714285714285714,
-			to: 'Amah - אמה',
-		});
+		result = await convertUnits({ type: 'length', unitFromId: 'amah', unitToId: 'centimeter', amount: -1 });
+		expect(result.from).toBe('Amah - אמה');
+		expect(result.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
+		expect(result.result).toBeCloseTo(-48);
+		expect(result.to).toBe('Centimeter');
+		expect(result.min).toBeCloseTo(-49);
+		expect(result.max).toBeCloseTo(-47);
+
+		result = await convertUnits({ type: 'length', unitFromId: 'amah', unitToId: 'meter', amount: 1, opinionId: 'aruch_hashulchan' });
+		expect(result.from).toBe('Amah - אמה');
+		expect(result.opinion).toBe(ARUCH_HASHULCHAN);
+		expect(result.result).toBeCloseTo(0.5334);
+		expect(result.to).toBe('Meter');
+		expect(result.min).not.toBeDefined();
+		expect(result.max).not.toBeDefined();
+
+		result = await convertUnits({ type: 'length', unitFromId: 'amah', unitToId: 'tefach', amount: 3.5 });
+		expect(result.from).toBe('Amah - אמה');
+		expect(result.result).toBeCloseTo(21);
+		expect(result.to).toBe('Tefach - טפח');
+		expect(result.min).not.toBeDefined();
+		expect(result.max).not.toBeDefined();
+
+		result = await convertUnits({ type: 'length', unitFromId: 'foot', unitToId: 'amah', amount: 1, opinionId: 'aruch_hashulchan' });
+		expect(result.from).toBe('Foot');
+		expect(result.opinion).toBe(ARUCH_HASHULCHAN);
+		expect(result.result).toBeCloseTo(0.5714285714285714);
+		expect(result.to).toBe('Amah - אמה');
+		expect(result.min).not.toBeDefined();
+		expect(result.max).not.toBeDefined();
 	});
 
 	it('converts volume units', async () => {
 		const result = await convertUnits({ type: 'volume', unitFromId: 'liter', unitToId: 'reviis', amount: 1 });
-		expect(result).toStrictEqual({
-			from: 'Liter',
-			opinion: "Desert (Rabbi Avraham Chaim Naeh) - (מדבריות (ר' אברהם חיים נאה",
-			result: 11.574074074074074,
-			to: "Revi'is - רביעית",
-		});
+		expect(result.from).toBe('Liter');
+		expect(result.opinion).toBe("Desert (Rabbi Avraham Chaim Naeh) - (מדבריות (ר' אברהם חיים נאה");
+		expect(result.result).toBeCloseTo(11.574074074074074);
+		expect(result.to).toBe("Revi'is - רביעית");
 	});
 
 	it('converts area units', async () => {
 		const result = await convertUnits({ type: 'area', unitFromId: 'amah_merubaas', unitToId: 'square_meter', amount: 1 });
-		expect(result).toStrictEqual({
-			from: 'Amah merubaas - אמה מרובעת',
-			opinion: RABBI_AVRAHAM_CHAIM_NAEH,
-			result: 0.2304,
-			to: 'Square meter',
-		});
+		expect(result.from).toBe('Amah merubaas - אמה מרובעת');
+		expect(result.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
+		expect(result.result).toBeCloseTo(0.2304);
+		expect(result.to).toBe('Square meter');
 	});
 
 	it('converts coins units', async () => {
 		const result = await convertUnits({ type: 'coins', unitFromId: 'shekel', unitToId: 'dinar', amount: 1 });
-		expect(result).toStrictEqual({
-			from: 'Shekel - שקל',
-			result: 2,
-			to: 'Dinar / Zuz - דינר / זוז',
-		});
+		expect(result.from).toBe('Shekel - שקל');
+		expect(result.result).toBe(2);
+		expect(result.to).toBe('Dinar / Zuz - דינר / זוז');
 	});
 
 	it('converts time units', async () => {
 		const result = await convertUnits({ type: 'time', unitFromId: 'hour', unitToId: 'minute', amount: 1 });
-		expect(result).toStrictEqual({
-			from: 'Hour',
-			result: 60,
-			to: 'Minute',
-		});
+		expect(result.from).toBe('Hour');
+		expect(result.result).toBe(60);
+		expect(result.to).toBe('Minute');
 	});
 });
 
