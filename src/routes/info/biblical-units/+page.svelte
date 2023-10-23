@@ -168,14 +168,14 @@
 			</ul>
 		</li>
 		<li><b>Mesurah (Hebrew: משורה): </b>Equal to 1/32 Log. <i>= 1 7/9 Kortov.</i></li>
-		<li><b>Grogeres (Hebrew: גרוגרת, pl. grogaros): </b>A dried fig's bulk. 3/10 of a Beitzah.<Ref id="8" /> <i>= 1.8 Mesuros.</i></li>
-		<li><b>Kezayis (Hebrew: כזית, pl. kezaysim): </b>An olive's bulk. 1/2 of a Beitzah<Ref id="9" /> <i>= 5/3 Grogeres.</i></li>
-		<li><b>(Koseves HaGasah (Hebrew: כותבת הגסה): </b>A large date's bulk. Slightly less than a Beitzah.<Ref id="10" />)</li>
+		<li><b>Grogeres (Hebrew: גרוגרת, pl. grogaros): </b>A dried fig's bulk. 3/10 of a Beitzah.<Ref id="5" /> <i>= 1.8 Mesuros.</i></li>
+		<li><b>Kezayis (Hebrew: כזית, pl. kezaysim): </b>An olive's bulk. 1/2 of a Beitzah<Ref id="6" /> <i>= 5/3 Grogeres.</i></li>
+		<li><b>(Koseves HaGasah (Hebrew: כותבת הגסה): </b>A large date's bulk. Slightly less than a Beitzah.<Ref id="7" />)</li>
 		<li><b>Beitzah (Hebrew: ביצה, pl. Beitzim): </b>An egg's bulk. <i>= 2 Kezaysim.</i></li>
 		<li><b>Uchlah / K'lah (Hebrew: עוכלא \ כלה): </b>Equal to 1/20 Kav. <i>= 1 1/5 Beitzim.</i></li>
 		<li><b>Revi'is (Hebrew: רביעית): </b>A quarter of a Log. <i>= 1 1/4 Uchlah / K'lah.</i></li>
 		<li><b>Tomen (Hebrew: תומן): </b>Equal to 1/8 Kav. <i>= 2 Revi'is.</i></li>
-		<li><b>(Pras (Hebrew: פרס): </b>Rashi: 4 Beitzim. Rambam: 3 Beitzim.<Ref id="11" />)</li>
+		<li><b>(Pras (Hebrew: פרס): </b>Rashi: 4 Beitzim. Rambam: 3 Beitzim.<Ref id="8" />)</li>
 		<li><b>Rova / Log (Hebrew: רובע \ לוג): </b>A quarter of a Kav. <i>= 2 Tomen.</i></li>
 		<li><b>Kav (Hebrew: קב): </b>Equal to 1/6 Seah. <i>= 4 Rova / Log.</i></li>
 		<li><b>Issaron / Omer (Hebrew: עשרון \ עומר): </b>Equal to 1/10 Ephah. <i>= 1 4/5 Kav.</i></li>
@@ -204,7 +204,7 @@
 			<b>Perutah (Hebrew: פרוטה) </b>
 			<ul>
 				<li>
-					Shulchan Aruch / Rambam<Ref id="5" /><Ref id="6" />:
+					Shulchan Aruch / Rambam<Ref id="9" /><Ref id="10" />:
 					<blockquote>
 						0.024 g of silver (0.00077 troy oz.)
 						{#await getPerutahValue() then values}
@@ -213,7 +213,7 @@
 					</blockquote>
 				</li>
 				<li>
-					Rashi<Ref id="7" />:
+					Rashi<Ref id="11" />:
 					<blockquote>
 						0.02 g of silver (0.00064 troy oz.)
 						{#await getPerutahValue() then values}
@@ -235,7 +235,7 @@
 		<li><b>Mesimas (Hebrew: מסימס) </b> <i>Equals 4 Perutos.</i></li>
 		<li><b>Issar (Hebrew: איסר) </b> <i>Equals 8 Perutos.</i></li>
 		<li><b>Pundyon (Hebrew: פונדיון) </b> <i>Equals 2 Issar.</i></li>
-		<li><b>Ma'ah (Hebrew: מעה) </b> <i>Equals 2 Pundyon.</i><Ref id="5" /></li>
+		<li><b>Ma'ah (Hebrew: מעה) </b> <i>Equals 2 Pundyon.</i><Ref id="9" /></li>
 		<li><b>Istera / Tarpik (Hebrew: אסתרא \ טרפעיק) </b> <i>Equals 3 Ma'ah.</i></li>
 		<li><b>Dinar / Zuz (Hebrew: דינר \ זוז) </b> <i>Equals 2 Istera.</i></li>
 		<li><b>Shekel (Hebrew: שקל) </b> <i>Equals 2 Dinar.</i></li>
@@ -267,37 +267,40 @@
 	</ul>
 	<h3 id="sources">Sources</h3>
 	<ul>
-		<li><Anchor id="1" />Naeh, Rabbi Avraham Chaim. 3:25. Shiurei Torah. 1947. p. 249. writes that the <i>etzba</i> is 2 cm, making a 48 cm (18.9 in) <i>amah</i>.</li>
+		<li>
+			<Anchor id="1" />Naeh, Rabbi Avraham Chaim. 3:25. <a href="https://hebrewbooks.org/20888">Shiurei Torah</a>. 1947. pp. 249-250. writes that the <i>etzba</i> is 2 cm, making an <i>amah</i> equal 48
+			cm. When measuring an upper or lower bound, it is best to be stringent and use 47 cm or 49 cm, depending on which direction you are measuring.
+		</li>
 		<li>
 			<Anchor id="2" />The Aruch Hashulchan <a href="https://www.sefaria.org/Arukh_HaShulchan%2C_Yoreh_De'ah.286.21">YD 286:21</a> sets 4 amot as one Russian <i>sazhen</i> (7 feet). Dr. Gideon
 			Freedman proves Aruch Hashulchan <a href="https://www.sefaria.org/Arukh_HaShulchan%2C_Yoreh_De'ah.201.3">YD 201:3</a> and
-			<a href="https://www.sefaria.org/Mishnah_Berurah.358.7">Mishna Brurah 358:7</a> hold that the amah is 21 inches. The Aruch Hashulchan defines the amah as three-quarters of a 71.12 cm arshin,
-			while Mishna Brurah correlates 53 Russian <i>arshins</i> with 70.83 amot.
+			<a href="https://www.sefaria.org/Mishnah_Berurah.358.7">Mishna Brurah 358:7</a> hold that the amah is 21 inches. The Aruch Hashulchan defines the amah as three-quarters of a 71.12 cm
+			<i>arshin</i>, while Mishna Brurah correlates 53 Russian <i>arshins</i> with 70.83 amot.
 			<a target="_blank" href="https://halachipedia.com/index.php?title=Reference_of_Measurements_in_Halacha#cite_note-20">Source</a>.
 		</li>
 		<li><Anchor id="3" />Feinstein, Rabbi Moshe. Iggerot Moshe. OC 1:136; YD 1:107; YD 1:190; YD 3:46:2; YD 3:66:1.</li>
 		<li><Anchor id="4" />Kanievsky, Rabbi Yaakov Y. quoting Chazon Ish (Avrohom Yeshaya Karelitz). Shiurin Shel Torah. p. 3.</li>
 		<li>
-			<Anchor id="5" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Choshen_Mishpat.88">CM 88:1</a> states that the calculation of a perutah is the weight
-			of half a barley of clean silver and the calculation of two ma'ah is the weight of 32 barleys of clean silver.
-		</li>
-		<li><Anchor id="6" />"Rambam" on Mishnah Bechoros 88:46.</li>
-		<li>
-			<Anchor id="7" />"Rashi" on <a target="_blank" href="https://www.sefaria.org/Rashi_on_Exodus.21.32.2">Shemos 21:32</a> states the shekel is weighed as four gold dinar coins, which is half an ounce
-			according to the correct weight of Cologne.
-		</li>
-		<li>
-			<Anchor id="8" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.368.3">OC 368</a> states the opinions that 18 grogeros equals 6 or 8
+			<Anchor id="5" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.368.3">OC 368</a> states the opinions that 18 grogeros equals 6 or 8
 			beitzim.
 		</li>
-		<li><Anchor id="9" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.486.1">OC 486:1</a> states that 2 kezaysim is like 1 beitzah.</li>
+		<li><Anchor id="6" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.486.1">OC 486:1</a> states that 2 kezaysim is like 1 beitzah.</li>
 		<li>
-			<Anchor id="10" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.612.1">OC 612:1</a> states that a Koseves HaGasah (large date) is a
-			little less than a beitzah.
+			<Anchor id="7" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.612.1">OC 612:1</a> states that a Koseves HaGasah (large date) is a little
+			less than a beitzah.
 		</li>
 		<li>
-			<Anchor id="11" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.612.4">OC 612:4</a> states that some say a pras is 4 beitzim, while
-			others say it is 3 beitzim.
+			<Anchor id="8" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.612.4">OC 612:4</a> states that some say a pras is 4 beitzim, while others
+			say it is 3 beitzim.
+		</li>
+		<li>
+			<Anchor id="9" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Choshen_Mishpat.88">CM 88:1</a> states that the calculation of a perutah is the weight
+			of half a barley of clean silver and the calculation of two ma'ah is the weight of 32 barleys of clean silver.
+		</li>
+		<li><Anchor id="10" />"Rambam" on Mishnah Bechoros 88:46.</li>
+		<li>
+			<Anchor id="11" />"Rashi" on <a target="_blank" href="https://www.sefaria.org/Rashi_on_Exodus.21.32.2">Shemos 21:32</a> states the shekel is weighed as four gold dinar coins, which is half an ounce
+			according to the correct weight of Cologne.
 		</li>
 		<li>
 			Steinsaltz, Adin. "Talmudic Weights and Measures." The Talmud, the Steinsaltz Edition. Random House, 1989. pp. 279-93.<br />
