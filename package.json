@@ -22,7 +22,7 @@
 	"dependencies": {
 		"@danieloi/pro-solid-svg-icons": "6.2.1",
 		"@fortawesome/free-brands-svg-icons": "^6.4.2",
-		"@hebcal/core": "^4.3.3",
+		"@hebcal/core": "^4.4.1",
 		"@hebcal/learning": "^1.5.1",
 		"cross-env": "^7.0.3",
 		"dayjs": "^1.11.10",
