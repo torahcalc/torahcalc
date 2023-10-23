@@ -9,15 +9,11 @@ describe('test unit conversions', () => {
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(3.5)} Amos to meters`);
 		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toContain(`${formatNumberHTML(1.68021)} meters`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(1.68)} meters`);
 		expect(sections[1].content).toContain('Rabbi Avraham Chaim Naeh');
 		expect(sections[1].content).toContain(`${formatNumberHTML(1.8669)} meters`);
-		expect(sections[1].content).toContain('Rabbi Yaakov Kamenetsky');
-		expect(sections[1].content).toContain(`${formatNumberHTML(1.889125)} meters`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(2.0447)} meters`);
+		expect(sections[1].content).toContain('Aruch Hashulchan');
 		expect(sections[1].content).toContain('Rabbi Moshe Feinstein');
-		expect(sections[1].content).toContain(`${formatNumberHTML(2.02019996)} meters`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(2.1)} meters`);
 		expect(sections[1].content).toContain('Chazon Ish');
 	});
 
@@ -102,15 +98,11 @@ describe('test unit conversion charts', () => {
 		expect(sections[1].content).toContain(`${formatNumberHTML(10)} Parsa'os`);
 		expect(sections[1].content).toContain(`${formatNumberHTML(40)} Milin`);
 		expect(sections[1].content).toContain('Rabbi Avraham Chaim Naeh');
-		expect(sections[1].content).toContain(`${formatNumberHTML(38.4048)} kilometers`);
-		expect(sections[1].content).toContain('Rabbi Yaakov Kamenetsky');
+		expect(sections[1].content).toContain(`${formatNumberHTML(38.4)} kilometers`);
+		expect(sections[1].content).toContain('Aruch Hashulchan');
 		expect(sections[1].content).toContain(`${formatNumberHTML(42.672)} kilometers`);
 		expect(sections[1].content).toContain('Rabbi Moshe Feinstein');
-		expect(sections[1].content).toContain(`${formatNumberHTML(43.18)} kilometers`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(46.736)} kilometers`);
 		expect(sections[1].content).toContain('Chazon Ish');
-		expect(sections[1].content).toContain(`${formatNumberHTML(46.17599909)} kilometers`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(47.99999991)} kilometers`);
 	});
 
 	it('chart for hiluch mil', async () => {

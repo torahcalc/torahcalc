@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { convertUnits, convertUnitsMulti, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnits } from './unitconverter';
 
-const RABBI_AVRAHAM_CHAIM_NAEH = "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה";
-const RABBI_YAAKOV_KAMENETSKY = 'Rabbi Yaakov Kamenetsky - הרב יעקב קמנצקי';
+const RABBI_AVRAHAM_CHAIM_NAEH = "Rabbi Avraham Chaim Naeh - ר' אברהם חיים נאה (Standard)";
+const ARUCH_HASHULCHAN = 'Aruch Hashulchan - ערוך השולחן';
 
 describe('test getConverters', () => {
 	it('returns all converters', async () => {
@@ -48,7 +48,7 @@ describe('test getUnit', () => {
 		const unit = await getUnit('length', 'meter');
 		expect(unit.name).toBe('Meter');
 		expect(unit.type).toBe('STANDARD');
-		expect(unit.value).toBe(38404.8);
+		expect(unit.value).toBe(38400);
 
 		const unit2 = await getUnit('coins', 'usd');
 		expect(unit2.name).toBe('US Dollars (USD)');
@@ -65,9 +65,9 @@ describe('test getUnit', () => {
 
 describe('test getOpinion and getDefaultOpinion', () => {
 	it('returns opinion', async () => {
-		const opinion = await getOpinion('length', 'rabbi_yaakov_kamenetsky');
-		expect(opinion.name).toBe(RABBI_YAAKOV_KAMENETSKY);
-		expect(opinion.factor).toBe(10 / 9);
+		const opinion = await getOpinion('length', 'aruch_hashulchan');
+		expect(opinion.name).toBe(ARUCH_HASHULCHAN);
+		expect(opinion.factor).toBeCloseTo(10 / 9);
 
 		const opinion2 = await getDefaultOpinion('length');
 		if (opinion2 === null) {
@@ -88,15 +88,15 @@ describe('test convertUnits', () => {
 		expect(result).toStrictEqual({
 			from: 'Meter',
 			opinion: RABBI_AVRAHAM_CHAIM_NAEH,
-			result: 2.0830729492146816,
+			result: 2.0833333333333335,
 			to: 'Amah - אמה',
 		});
 
-		const result2 = await convertUnits({ type: 'length', unitFromId: 'amah', unitToId: 'meter', amount: 1, opinionId: 'rabbi_yaakov_kamenetsky' });
+		const result2 = await convertUnits({ type: 'length', unitFromId: 'amah', unitToId: 'meter', amount: 1, opinionId: 'aruch_hashulchan' });
 		expect(result2).toStrictEqual({
 			from: 'Amah - אמה',
-			opinion: RABBI_YAAKOV_KAMENETSKY,
-			result: 0.5334000000000001,
+			opinion: ARUCH_HASHULCHAN,
+			result: 0.5334,
 			to: 'Meter',
 		});
 
@@ -107,11 +107,11 @@ describe('test convertUnits', () => {
 			to: 'Tefach - טפח',
 		});
 
-		const result4 = await convertUnits({ type: 'length', unitFromId: 'foot', unitToId: 'amah', amount: 1, opinionId: 'rabbi_yaakov_kamenetsky' });
+		const result4 = await convertUnits({ type: 'length', unitFromId: 'foot', unitToId: 'amah', amount: 1, opinionId: 'aruch_hashulchan' });
 		expect(result4).toStrictEqual({
 			from: 'Foot',
-			opinion: RABBI_YAAKOV_KAMENETSKY,
-			result: 0.5714285714285713,
+			opinion: ARUCH_HASHULCHAN,
+			result: 0.5714285714285714,
 			to: 'Amah - אמה',
 		});
 	});
@@ -131,7 +131,7 @@ describe('test convertUnits', () => {
 		expect(result).toStrictEqual({
 			from: 'Amah merubaas - אמה מרובעת',
 			opinion: RABBI_AVRAHAM_CHAIM_NAEH,
-			result: 0.23045760360092188,
+			result: 0.2304,
 			to: 'Square meter',
 		});
 	});
@@ -178,48 +178,48 @@ describe('test convertUnitsMulti', () => {
 		expect(result.tefach.opinion).toBe(undefined);
 		expect(result.etzbah.result).toBe(1920000);
 		expect(result.etzbah.opinion).toBe(undefined);
-		expect(result.kilometer.result).toBe(38.4048);
+		expect(result.kilometer.result).toBe(38.4);
 		expect(result.kilometer.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
-		expect(result.meter.result).toBe(38404.8);
+		expect(result.meter.result).toBe(38400);
 		expect(result.meter.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
-		expect(result.centimeter.result).toBe(3840480);
+		expect(result.centimeter.result).toBe(3840000);
 		expect(result.centimeter.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
-		expect(result.millimeter.result).toBe(38404800);
+		expect(result.millimeter.result).toBe(38400000);
 		expect(result.millimeter.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
 		expect(result.mile.result).toBeCloseTo(23.86363636);
 		expect(result.mile.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
-		expect(result.yard.result).toBe(42000);
+		expect(result.yard.result).toBe(41994.75065616798);
 		expect(result.yard.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
-		expect(result.foot.result).toBe(126000);
+		expect(result.foot.result).toBe(125984.25196850393);
 		expect(result.foot.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
-		expect(result.inch.result).toBe(1512000);
+		expect(result.inch.result).toBe(1511811.0236220472);
 		expect(result.inch.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
 		expect(result.nautical_mile.result).toBeCloseTo(20.73693305);
 		expect(result.nautical_mile.opinion).toBe(RABBI_AVRAHAM_CHAIM_NAEH);
 	});
 
 	it('converts length units with opinion from standard', async () => {
-		const result = await convertUnitsMulti({ type: 'length', unitFromId: 'kilometer', amount: 3, opinionId: 'rabbi_yaakov_kamenetsky' });
+		const result = await convertUnitsMulti({ type: 'length', unitFromId: 'kilometer', amount: 3, opinionId: 'aruch_hashulchan' });
 		expect(result.derech_yom.result).toBeCloseTo((3 / 38.4048 / 10) * 9);
-		expect(result.derech_yom.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
+		expect(result.derech_yom.opinion).toBe(ARUCH_HASHULCHAN);
 		expect(result.parsah.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 10);
-		expect(result.parsah.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
+		expect(result.parsah.opinion).toBe(ARUCH_HASHULCHAN);
 		expect(result.mil.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 40);
-		expect(result.mil.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
+		expect(result.mil.opinion).toBe(ARUCH_HASHULCHAN);
 		expect(result.ris.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 300);
-		expect(result.ris.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
+		expect(result.ris.opinion).toBe(ARUCH_HASHULCHAN);
 		expect(result.kaneh.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 13333.333333333334);
-		expect(result.kaneh.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
+		expect(result.kaneh.opinion).toBe(ARUCH_HASHULCHAN);
 		expect(result.amah.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 80000);
-		expect(result.amah.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
+		expect(result.amah.opinion).toBe(ARUCH_HASHULCHAN);
 		expect(result.short_amah.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 96000);
-		expect(result.short_amah.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
+		expect(result.short_amah.opinion).toBe(ARUCH_HASHULCHAN);
 		expect(result.zeret.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 160000);
-		expect(result.zeret.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
+		expect(result.zeret.opinion).toBe(ARUCH_HASHULCHAN);
 		expect(result.tefach.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 480000);
-		expect(result.tefach.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
+		expect(result.tefach.opinion).toBe(ARUCH_HASHULCHAN);
 		expect(result.etzbah.result).toBeCloseTo((3 / 38.4048 / 10) * 9 * 1920000);
-		expect(result.etzbah.opinion).toBe(RABBI_YAAKOV_KAMENETSKY);
+		expect(result.etzbah.opinion).toBe(ARUCH_HASHULCHAN);
 		expect(result.kilometer.result).toBeCloseTo(3);
 		expect(result.kilometer.opinion).toBe(undefined);
 		expect(result.meter.result).toBeCloseTo(3000);
