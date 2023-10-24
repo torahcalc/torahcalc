@@ -143,8 +143,8 @@ describe('test convertUnits', () => {
 	it('converts volume units', async () => {
 		const result = await convertUnits({ type: 'volume', unitFromId: 'liter', unitToId: 'reviis', amount: 1 });
 		expect(result.from).toBe('Liter');
-		expect(result.opinion).toBe("Desert (Rabbi Avraham Chaim Naeh) - (מדבריות (ר' אברהם חיים נאה");
-		expect(result.result).toBeCloseTo(11.574074074074074);
+		expect(result.opinion).toBe("Rabbi Mordechai Willig - ר' מרדכי ויליג");
+		expect(result.result).toBeCloseTo(14.8148);
 		expect(result.to).toBe("Revi'is - רביעית");
 	});
 
