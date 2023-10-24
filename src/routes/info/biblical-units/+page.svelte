@@ -142,11 +142,11 @@
 							<blockquote>0.171 fl oz. (5.063 ml)</blockquote>
 						</li>
 						<li>
-							Rabbi Moshe Feinstein:
+							Rabbi Moshe Feinstein:<Ref id="14" />
 							<blockquote>0.198 fl oz. (5.85 ml)</blockquote>
 						</li>
 						<li>
-							Chazon Ish:
+							Chazon Ish:<Ref id="15" />
 							<blockquote>0.211 fl oz. (6.25 ml)</blockquote>
 						</li>
 					</ul>
