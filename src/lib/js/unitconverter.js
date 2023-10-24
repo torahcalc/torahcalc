@@ -253,7 +253,7 @@ export async function getConverters(fetchExchangeRates = true) {
 				onah: { name: 'Onah - עונה', value: 35400, type: 'BIBLICAL', display: 'Onah', displayPlural: 'Onos' },
 				shaah: { name: 'Shaah - שעה', value: 424800, type: 'BIBLICAL', display: 'Shaah', displayPlural: 'Shaos' },
 				hiluch_mil: { name: 'Hiluch Mil - הילוך מיל', value: 1416e3, type: 'BIBLICAL', display: 'Hiluch Mil', displayPlural: 'Hiluch Mil' },
-				kdei_achilas_pras: { name: "K'dei Achilas Pras - כדי אכילת פרס", value: 12744e3, type: 'BIBLICAL', display: "K'dei Achilas Peras", displayPlural: "K'dei Achilas Peras" },
+				kdei_achilas_pras: { name: "K'dei Achilas Pras - כדי אכילת פרס", value: 12744e3, type: 'BIBLICAL', display: "K'dei Achilas Pras", displayPlural: "K'dei Achilas Pras" },
 				small_onah: { name: 'Small Onah - עונה', value: 10195200, type: 'BIBLICAL', display: 'Small Onah', displayPlural: 'Small Onos' },
 				et: { name: 'Et - עת', value: 244684800, type: 'BIBLICAL', display: 'Et', displayPlural: 'Et' },
 				chelek: { name: 'Chelek - חלק', value: 458784e3, type: 'BIBLICAL', display: 'Chelek', displayPlural: 'Chalakim' },

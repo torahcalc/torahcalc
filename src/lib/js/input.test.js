@@ -65,25 +65,25 @@ describe('test unit conversions', () => {
 		expect(sections[1].content).toBe(`${formatNumberHTML(1080)} Chalakim`);
 	});
 
-	it('1 min to kdei achilas peras', async () => {
-		const sections = await calculateQuery('1 min to kdei achilas peras');
+	it('1 min to kdei achilas pras', async () => {
+		const sections = await calculateQuery('1 min to kdei achilas pras');
 		expect(sections[0].title).toBe('Input Interpretation');
-		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(1)} minute to K'dei Achilas Peras`);
+		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(1)} minute to K'dei Achilas Pras`);
 		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toContain(`${formatNumberHTML(0.5)} K'dei Achilas Peras`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(0.5)} K'dei Achilas Pras`);
 		expect(sections[1].content).toContain(`Chasam Sofer (K'dei Achilas Pras = 2 minutes)`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(0.0896861)} K'dei Achilas Peras`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(0.0896861)} K'dei Achilas Pras`);
 		expect(sections[1].content).toContain(`Darkei Hora'ah (K'dei Achilas Pras = 11 minutes and 9 seconds)`);
 	});
 
-	it('1 hiluch mil to kdei achilas peras', async () => {
-		const sections = await calculateQuery('1 hiluch mil to kdei achilas peras');
+	it('1 hiluch mil to kdei achilas pras', async () => {
+		const sections = await calculateQuery('1 hiluch mil to kdei achilas pras');
 		expect(sections[0].title).toBe('Input Interpretation');
-		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(1)} Hiluch Mil to K'dei Achilas Peras`);
+		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(1)} Hiluch Mil to K'dei Achilas Pras`);
 		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toContain(`${formatNumberHTML(9)} K'dei Achilas Peras`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(9)} K'dei Achilas Pras`);
 		expect(sections[1].content).toContain("Shulchan Aruch Harav (Hiluch Mil = 18 minutes), Chasam Sofer (K'dei Achilas Pras = 2 minutes)");
-		expect(sections[1].content).toContain(`${formatNumberHTML(2.15246637)} K'dei Achilas Peras`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(2.15246637)} K'dei Achilas Pras`);
 		expect(sections[1].content).toContain("Shulchan Aruch Harav (Hiluch Mil = 18 minutes), Darkei Hora'ah (K'dei Achilas Pras = 11 minutes and 9 seconds)");
 	});
 });
