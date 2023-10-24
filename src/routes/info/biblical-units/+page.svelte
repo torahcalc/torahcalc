@@ -76,16 +76,16 @@
 		<li><b>Zeres (Hebrew: זרת, pl. Zaros): </b>Spans. <i>= 3 Tefachim.</i></li>
 		<li><b>Amah (Hebrew: אמה, pl. Amos): </b>Cubits, Arm-lengths, Ells <i>= 2 Zaros.</i></li>
 		<li><b>Short Amah (Hebrew: אמה בת חמשה): </b>Short cubit of five handbreadths instead of six. <i>= 5/6 Amah.</i></li>
-		<li><b>Kaneh (Hebrew: קנה): </b>Reed <i>= 6 Amos.</i></li>
-		<li><b>Ris (Hebrew: ריס): </b>Greek stadium. <i>= 44.4444 Kaneh.</i></li>
-		<li><b>Mil (Hebrew: מיל): </b>Talmudic miles. <i>= 7 ½ Ris.</i></li>
+		<li><b>Kaneh (Hebrew: קנה, pl. Kanim): </b>Reed <i>= 6 Amos.</i></li>
+		<li><b>Ris (Hebrew: ריס, pl. Risim): </b>Greek stadium. <i>= 44.4444 Kaneh.</i></li>
+		<li><b>Mil (Hebrew: מיל, pl. Milim): </b>Talmudic miles. <i>= 7 ½ Ris.</i></li>
 		<li><b>Parsah (Hebrew: פרסה, pl. Parsaos): </b>Parasangs, Persian miles. <i>= 4 Mil.</i></li>
 		<li><b>Derech Yom / Mahalach Yom (Hebrew: דרך יום \ מהלך יום): </b>A day's journey. <i>= 10 Parsaos.</i></li>
 	</ul>
 	<h3 id="area">Area</h3>
 	<ul>
 		<li>
-			<b>Se'aros (Hebrew: שערות): </b>Hairbreadths (space between two adjacent hairs).
+			<b>Se'arah (Hebrew: שערות, pl. Se'aros): </b>Hairbreadths (space between two adjacent hairs).
 			<ul>
 				<li>
 					Rabbi Avraham Chaim Naeh<Ref id="1" />:
@@ -115,7 +115,7 @@
 			</ul>
 		</li>
 		<li><b>Adashah (Hebrew: עדשה, pl. Adashos): </b>Area of a lentil. <i>= 4 sq. Se'aros.</i></li>
-		<li><b>Gris (Hebrew: גריס): </b>Area of a split bean. <i>= 9 Adashos.</i></li>
+		<li><b>Gris (Hebrew: גריס, pl. Grisim): </b>Area of a split bean. <i>= 9 Adashos.</i></li>
 		<li><b>Etzbah Meruba'as (Hebrew: אצבע מרובעת): </b>Square Fingerbreadths. <i>= 1 19/81 Gris.</i></li>
 		<li><b>Tefach Merubah (Hebrew: טפח מרובע): </b>Square Handbreadths. <i>= 16 Etzbaos Meruba'as.</i></li>
 		<li><b>Amah Meruba'as (Hebrew: אמה מרובעת): </b>Square Cubits. <i>= 36 Tefachim Merubah.</i></li>
@@ -193,8 +193,8 @@
 			</ul>
 		</li>
 		<li><b>Mesurah (Hebrew: משורה): </b>Equal to 1/32 Log. <i>= 1 7/9 Kortov.</i></li>
-		<li><b>Grogeres (Hebrew: גרוגרת, pl. grogaros): </b>A dried fig's bulk. 3/10 of a Beitzah.<Ref id="10" /> <i>= 1.8 Mesuros.</i></li>
-		<li><b>Kezayis (Hebrew: כזית, pl. kezaysim): </b>An olive's bulk. 1/2 of a Beitzah<Ref id="11" /> <i>= 5/3 Grogeres.</i></li>
+		<li><b>Grogeres (Hebrew: גרוגרת, pl. Grogaros): </b>A dried fig's bulk. 3/10 of a Beitzah.<Ref id="10" /> <i>= 1.8 Mesuros.</i></li>
+		<li><b>Kezayis (Hebrew: כזית, pl. Kezaysim): </b>An olive's bulk. 1/2 of a Beitzah<Ref id="11" /> <i>= 5/3 Grogeres.</i></li>
 		<li><b>(Koseves HaGasah (Hebrew: כותבת הגסה): </b>A large date's bulk. Slightly less than a Beitzah.<Ref id="12" />)</li>
 		<li><b>Beitzah (Hebrew: ביצה, pl. Beitzim): </b>An egg's bulk. <i>= 2 Kezaysim.</i></li>
 		<li><b>Uchlah / K'lah (Hebrew: עוכלא \ כלה): </b>Equal to 1/20 Kav. <i>= 1 1/5 Beitzim.</i></li>
@@ -257,6 +257,7 @@
 				</li>
 			</ul>
 		</li>
+		<li><b>Kontrank (Hebrew: קונטרנק) </b> <i>Equals 2 Perutos.</i></li>
 		<li><b>Mesimas (Hebrew: מסימס) </b> <i>Equals 4 Perutos.</i></li>
 		<li><b>Issar (Hebrew: איסר) </b> <i>Equals 8 Perutos.</i></li>
 		<li><b>Pundyon (Hebrew: פונדיון) </b> <i>Equals 2 Issar.</i></li>
@@ -280,6 +281,8 @@
 		<li><b>Chelek (Hebrew חלק): </b>"Part." 1/1080 of Sha'ah. <i>= 76 Rega.</i></li>
 		<li><b>Et (Hebrew עת, pl. Etim): </b>"Times." 1/24 Onah. <i>= 1 7/8 Chelek.</i></li>
 		<li><b>Small Onah (Hebrew עונה, pl. Onos): </b>"Period" of 1/24 of Sha'ah. <i>= 24 Etim.</i></li>
+		<li><b>K'dei Achilas Pras (Hebrew כדי אכילת פרס): </b>Time to eat 3/4 of a loaf of bread. Opinions range from 2 minutes to 11 minutes and 9 seconds.</li>
+		<li><b>Hiluch Mil (Hebrew הלוך מיל): </b>Time to walk 1 Mil. Opinions range from 18 minutes to 24 minutes.</li>
 		<li><b>Sha'ah (Hebrew שעה, pl. Sha'os): </b>An hour. <i>= 24 Small Ona'os.</i></li>
 		<li><b>Onah (Hebrew עונה, pl. Onos): </b>"Period" of daytime or nightime. 1/2 of a day. <i>About 12 Sha'os.</i></li>
 		<li><b>Yom (Hebrew יום, pl. Yamim): </b>A day. <i>= 2 Ona'os</i></li>
