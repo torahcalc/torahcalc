@@ -778,11 +778,7 @@ export async function zmanimQuery(derivation) {
 	 * @returns {string} The formatted time
 	 */
 	const formatZmanCell = (zman) => {
-		let row = `<div class="d-flex align-items-center gap-2 justify-content-start">`;
-		if (zman.icon) {
-			row += zman.icon;
-		}
-		row += `<span class="fw-bold">${zman.name}</span></div>`;
+		let row = `<span class="fw-bold d-inline-flex align-items-center gap-2" style="font-size: 1.25em">${zman.icon || ''} ${zman.name}</span>`;
 		if (zman.description && zman.name !== zman.description) {
 			row += `<div class="small text-muted">${zman.description}</div>`;
 		}
@@ -821,7 +817,7 @@ export async function zmanimQuery(derivation) {
 		});
 		if (eventsData.length > 0) {
 			let eventsSection = "<div class='border rounded px-3 my-3'><ul class='list-unstyled'>";
-			eventsSection += eventsData.map((event) => `<li class="my-3">${event.Event}${event.Time}</li>`).join('');
+			eventsSection += eventsData.map((event) => `<li class="my-3 d-flex flex-column gap-1">${event.Event}${event.Time}</li>`).join('');
 			eventsSection += '</ul></div>';
 			zmanimTables.push(eventsSection);
 		}
