@@ -1,7 +1,9 @@
 <script>
 	import { convertUnits, getConverters, getOpinions } from '$lib/js/unitconverter';
+	import Fa from 'svelte-fa/src/fa.svelte';
 	import Anchor from './Anchor.svelte';
 	import Ref from './Ref.svelte';
+	import { faExternalLink } from '@danieloi/pro-solid-svg-icons';
 
 	async function getPerutahValue() {
 		const converters = await getConverters();
@@ -23,6 +25,8 @@
 
 <section>
 	<h1 class="heading">Biblical / Talmudic Units of Measure</h1>
+
+	<a href="/tools/unit-converter"><Fa icon={faExternalLink} size=".9x" /> Biblical and Talmudic Unit Converter</a>
 
 	<h3>Contents</h3>
 	<ul>
