@@ -134,25 +134,25 @@
 					Minimum for Mitzvos De'oraisa:
 					<ul>
 						<li>
-							Rabbi Mordechai Willig:<Ref id="12" />
+							Rabbi Mordechai Willig:<Ref id="5" />
 							<blockquote>0.143 fl oz. (4.219 ml)</blockquote>
 						</li>
 						<li>
-							Rabbi Avraham Chaim Naeh:<Ref id="13" />
+							Rabbi Avraham Chaim Naeh:<Ref id="6" />
 							<blockquote>0.171 fl oz. (5.063 ml)</blockquote>
 						</li>
 						<li>
-							Rabbi Moshe Feinstein:<Ref id="14" />
+							Rabbi Moshe Feinstein:<Ref id="7" />
 							<blockquote>0.198 fl oz. (5.85 ml)</blockquote>
 						</li>
 						<li>
-							Chazon Ish:<Ref id="15" />
+							Chazon Ish:<Ref id="8" />
 							<blockquote>0.211 fl oz. (6.25 ml)</blockquote>
 						</li>
 					</ul>
 				</li>
 				<li>
-					Sinai Desert Measurements (מידות מדבריות):<Ref id="16" />
+					Sinai Desert Measurements (מידות מדבריות):<Ref id="9" />
 					<ul>
 						<li>
 							Rabbi Avraham Chaim Naeh:
@@ -165,7 +165,7 @@
 					</ul>
 				</li>
 				<li>
-					Jerusalem Measurements (מידות ירושלמיות): (⅕ larger than Desert measurements)<Ref id="16" />
+					Jerusalem Measurements (מידות ירושלמיות): (⅕ larger than Desert measurements)<Ref id="9" />
 					<ul>
 						<li>
 							Rabbi Avraham Chaim Naeh:
@@ -178,7 +178,7 @@
 					</ul>
 				</li>
 				<li>
-					Tzipori Measurements (מידות ציפוריות): (⅕ larger than Jerusalem measurements)<Ref id="16" />
+					Tzipori Measurements (מידות ציפוריות): (⅕ larger than Jerusalem measurements)<Ref id="9" />
 					<ul>
 						<li>
 							Rabbi Avraham Chaim Naeh:
@@ -193,14 +193,14 @@
 			</ul>
 		</li>
 		<li><b>Mesurah (Hebrew: משורה): </b>Equal to 1/32 Log. <i>= 1 7/9 Kortov.</i></li>
-		<li><b>Grogeres (Hebrew: גרוגרת, pl. grogaros): </b>A dried fig's bulk. 3/10 of a Beitzah.<Ref id="5" /> <i>= 1.8 Mesuros.</i></li>
-		<li><b>Kezayis (Hebrew: כזית, pl. kezaysim): </b>An olive's bulk. 1/2 of a Beitzah<Ref id="6" /> <i>= 5/3 Grogeres.</i></li>
-		<li><b>(Koseves HaGasah (Hebrew: כותבת הגסה): </b>A large date's bulk. Slightly less than a Beitzah.<Ref id="7" />)</li>
+		<li><b>Grogeres (Hebrew: גרוגרת, pl. grogaros): </b>A dried fig's bulk. 3/10 of a Beitzah.<Ref id="10" /> <i>= 1.8 Mesuros.</i></li>
+		<li><b>Kezayis (Hebrew: כזית, pl. kezaysim): </b>An olive's bulk. 1/2 of a Beitzah<Ref id="11" /> <i>= 5/3 Grogeres.</i></li>
+		<li><b>(Koseves HaGasah (Hebrew: כותבת הגסה): </b>A large date's bulk. Slightly less than a Beitzah.<Ref id="12" />)</li>
 		<li><b>Beitzah (Hebrew: ביצה, pl. Beitzim): </b>An egg's bulk. <i>= 2 Kezaysim.</i></li>
 		<li><b>Uchlah / K'lah (Hebrew: עוכלא \ כלה): </b>Equal to 1/20 Kav. <i>= 1 1/5 Beitzim.</i></li>
 		<li><b>Revi'is (Hebrew: רביעית): </b>A quarter of a Log. <i>= 1 1/4 Uchlah / K'lah.</i></li>
 		<li><b>Tomen (Hebrew: תומן): </b>Equal to 1/8 Kav. <i>= 2 Revi'is.</i></li>
-		<li><b>(Pras (Hebrew: פרס): </b>Rashi: 4 Beitzim. Rambam: 3 Beitzim.<Ref id="8" />)</li>
+		<li><b>(Pras (Hebrew: פרס): </b>Rashi: 4 Beitzim. Rambam: 3 Beitzim.<Ref id="13" />)</li>
 		<li><b>Rova / Log (Hebrew: רובע \ לוג): </b>A quarter of a Kav. <i>= 2 Tomen.</i></li>
 		<li><b>Kav (Hebrew: קב): </b>Equal to 1/6 Seah. <i>= 4 Rova / Log.</i></li>
 		<li><b>Issaron / Omer (Hebrew: עשרון \ עומר): </b>Equal to 1/10 Ephah. <i>= 1 4/5 Kav.</i></li>
@@ -229,7 +229,7 @@
 			<b>Perutah (Hebrew: פרוטה) </b>
 			<ul>
 				<li>
-					Shulchan Aruch / Rambam<Ref id="9" /><Ref id="10" />:
+					Shulchan Aruch / Rambam<Ref id="14" /><Ref id="15" />:
 					<blockquote>
 						0.024 g of silver (0.00077 troy oz.)
 						{#await getPerutahValue() then values}
@@ -238,7 +238,7 @@
 					</blockquote>
 				</li>
 				<li>
-					Rashi<Ref id="11" />:
+					Rashi<Ref id="16" />:
 					<blockquote>
 						0.02 g of silver (0.00064 troy oz.)
 						{#await getPerutahValue() then values}
@@ -260,7 +260,7 @@
 		<li><b>Mesimas (Hebrew: מסימס) </b> <i>Equals 4 Perutos.</i></li>
 		<li><b>Issar (Hebrew: איסר) </b> <i>Equals 8 Perutos.</i></li>
 		<li><b>Pundyon (Hebrew: פונדיון) </b> <i>Equals 2 Issar.</i></li>
-		<li><b>Ma'ah (Hebrew: מעה) </b> <i>Equals 2 Pundyon.</i><Ref id="9" /></li>
+		<li><b>Ma'ah (Hebrew: מעה) </b> <i>Equals 2 Pundyon.</i><Ref id="14" /></li>
 		<li><b>Istera / Tarpik (Hebrew: אסתרא \ טרפעיק) </b> <i>Equals 3 Ma'ah.</i></li>
 		<li><b>Dinar / Zuz (Hebrew: דינר \ זוז) </b> <i>Equals 2 Istera.</i></li>
 		<li><b>Shekel (Hebrew: שקל) </b> <i>Equals 2 Dinar.</i></li>
@@ -310,48 +310,50 @@
 		</li>
 		<li><Anchor id="4" />Kanievsky, Rabbi Yaakov Y. quoting Chazon Ish (Avrohom Yeshaya Karelitz). Shiurin Shel Torah. p. 3.</li>
 		<li>
-			<Anchor id="5" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.368.3">OC 368</a> states the opinions that 18 grogeros equals 6 or 8
-			beitzim.
-		</li>
-		<li><Anchor id="6" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.486.1">OC 486:1</a> states that 2 kezaysim is like 1 beitzah.</li>
-		<li>
-			<Anchor id="7" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.612.1">OC 612:1</a> states that a Koseves HaGasah (large date) is a little
-			less than a beitzah.
-		</li>
-		<li>
-			<Anchor id="8" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.612.4">OC 612:4</a> states that some say a pras is 4 beitzim, while others
-			say it is 3 beitzim.
-		</li>
-		<li>
-			<Anchor id="9" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Choshen_Mishpat.88">CM 88:1</a> states that the calculation of a perutah is the weight
-			of half a barley of clean silver and the calculation of two ma'ah is the weight of 32 barleys of clean silver.
-		</li>
-		<li><Anchor id="10" />"Rambam" on Mishnah Bechoros 88:46.</li>
-		<li>
-			<Anchor id="11" />"Rashi" on <a target="_blank" href="https://www.sefaria.org/Rashi_on_Exodus.21.32.2">Shemos 21:32</a> states the shekel is weighed as four gold dinar coins, which is half an ounce
-			according to the correct weight of Cologne.
-		</li>
-		<li>
-			<Anchor id="12" />Rabbi Mordechai I. Willig, 2011. <a href="https://www.yutorah.org/lectures/760487/">Pesach To-Go, How Much Matzah Do You Need to Eat?</a>, p. 60, writes that the <i>kezayis</i>
+			<Anchor id="5" />Rabbi Mordechai I. Willig, 2011. <a href="https://www.yutorah.org/lectures/760487/">Pesach To-Go, How Much Matzah Do You Need to Eat?</a>, p. 60, writes that the <i>kezayis</i>
 			is 22.5 cm<sup>3</sup>. His calculations are primarily based on Rabbi Hadar Margolin.
 			<a target="_blank" href="https://halachipedia.com/index.php?title=Reference_of_Measurements_in_Halacha#cite_note-20">Source</a>.
 		</li>
 		<li>
-			<Anchor id="13" />Naeh, Rabbi Avraham Chaim, 1947. <a href="https://www.hebrewbooks.org/pdfpager.aspx?req=20888&pgnum=270">Shiurei Torah 3:11 pp. 193</a> writes that a
+			<Anchor id="6" />Naeh, Rabbi Avraham Chaim, 1947. <a href="https://www.hebrewbooks.org/pdfpager.aspx?req=20888&pgnum=270">Shiurei Torah 3:11 pp. 193</a> writes that a
 			<i>kezayis</i> for mitvos de'oraisa is 28.8 cm<sup>3</sup>, however, in <a href="https://www.hebrewbooks.org/pdfpager.aspx?req=35168&pgnum=69">Shiurei Tzion, 1949. p. 70</a>
 			he writes that it is 27 cm<sup>3</sup>. Vezos HaBracha (Birur Halacha 1) explains that he retracted from his original ruling.
 			<a target="_blank" href="https://halachipedia.com/index.php?title=Reference_of_Measurements_in_Halacha#cite_note-20">Source</a>.
 		</li>
 		<li>
-			<Anchor id="14" />Vezot HaBracha (Birur Halacha 1) quotes Haggadat Kol Dodi which quotes Rav Moshe Feinstein as saying that a Kezayit is 31.2 cm<sup>3</sup>.
+			<Anchor id="7" />Vezot HaBracha (Birur Halacha 1) quotes Haggadat Kol Dodi which quotes Rav Moshe Feinstein as saying that a Kezayit is 31.2 cm<sup>3</sup>.
 			<a target="_blank" href="https://halachipedia.com/index.php?title=Reference_of_Measurements_in_Halacha#cite_note-20">Source</a>.
 		</li>
 		<li>
-			<Anchor id="15" />Kanievsky, Rabbi Yaakov Y. quoting Chazon Ish (Avrohom Yeshaya Karelitz). Shiurin Shel Torah. second ed, pp. 65-66. He writes that the <i>kezayis</i> is 2/3 of a modern egg
+			<Anchor id="8" />Kanievsky, Rabbi Yaakov Y. quoting Chazon Ish (Avrohom Yeshaya Karelitz). Shiurin Shel Torah. second ed, pp. 65-66. He writes that the <i>kezayis</i> is 2/3 of a modern egg
 			which today measures 45-50 grams. The <i>kezayis</i> would therefore be 30-33.333 grams. Vezot HaBracha (Birur Halacha 1:3) records this opinion of the Chazon Ish as 33.3 cm<sup>3</sup>.
 			<a target="_blank" href="https://halachipedia.com/index.php?title=Reference_of_Measurements_in_Halacha#cite_note-20">Source</a>.
 		</li>
-		<li><Anchor id="16" /><a href="https://www.dafyomi.co.il/general/info/units-of-measurement.pdf">Biblical and Talmudic Units of Measurement</a> by Ronnie Figdor, 2012.</li>
+		<li><Anchor id="9" /><a href="https://www.dafyomi.co.il/general/info/units-of-measurement.pdf">Biblical and Talmudic Units of Measurement</a> by Ronnie Figdor, 2012.</li>
+		<li>
+			<Anchor id="10" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.368.3">OC 368</a> states the opinions that 18 grogeros equals 6 or 8
+			beitzim.
+		</li>
+		<li>
+			<Anchor id="11" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.486.1">OC 486:1</a> states that 2 kezaysim is like 1 beitzah.
+		</li>
+		<li>
+			<Anchor id="12" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.612.1">OC 612:1</a> states that a Koseves HaGasah (large date) is a
+			little less than a beitzah.
+		</li>
+		<li>
+			<Anchor id="13" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.612.4">OC 612:4</a> states that some say a pras is 4 beitzim, while
+			others say it is 3 beitzim.
+		</li>
+		<li>
+			<Anchor id="14" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Choshen_Mishpat.88">CM 88:1</a> states that the calculation of a perutah is the weight
+			of half a barley of clean silver and the calculation of two ma'ah is the weight of 32 barleys of clean silver.
+		</li>
+		<li><Anchor id="15" />"Rambam" on Mishnah Bechoros 88:46.</li>
+		<li>
+			<Anchor id="16" />"Rashi" on <a target="_blank" href="https://www.sefaria.org/Rashi_on_Exodus.21.32.2">Shemos 21:32</a> states the shekel is weighed as four gold dinar coins, which is half an ounce
+			according to the correct weight of Cologne.
+		</li>
 		<li>
 			Feinstein, Rabbi Moshe. Iggerot Moshe, 1964.
 			<a href="https://hebrewbooks.org/14674">YD 1:107 p. 198</a>;
