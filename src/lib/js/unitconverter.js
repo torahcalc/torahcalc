@@ -3,9 +3,6 @@ import dayjs from 'dayjs';
 import FALLBACK_EXCHANGE_RATES from './../data/exchange-rates.json';
 import { iconToSvg } from './utils';
 
-export const STRINGENCY_NOTE =
-	'* The ranges in parentheses denote values for stringencies. For opinion sources where only a larger number was provided for stringencies, a lower value was inferred by reflecting the number around the standard value. In all situations, the stricter of the two values should be used.';
-
 /**
  * @typedef {{ success: boolean, timestamp: number, base: string, date: string, rates: { CAD: number, EUR: number, GBP: number, ILS: number, XAG: number }}} ExchangeRates
  */

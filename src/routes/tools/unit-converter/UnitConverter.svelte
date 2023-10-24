@@ -1,5 +1,6 @@
 <script>
-	import { STRINGENCY_NOTE, convertUnits, getConverters, getOpinions } from '$lib/js/unitconverter.js';
+	import { RESULT, unitConversionQuery } from '$lib/js/input';
+	import { convertUnits, getConverters } from '$lib/js/unitconverter.js';
 	import { formatNumberHTML } from '$lib/js/utils';
 	import { faExchange } from '@danieloi/pro-solid-svg-icons';
 	import Fa from 'svelte-fa/src/fa.svelte';
@@ -22,8 +23,8 @@
 	 * @property {number|undefined} max - the maximum result of the opinion
 	 */
 
-	/** @type {OpinionResult[]} The results of the opinions */
-	let opinionResults;
+	/** @type {string} The HTML of the results table */
+	let opinionResults = '';
 
 	/**
 	 * Format the given number as a string
@@ -40,28 +41,16 @@
 	 * @param {string} unitFromId - the ID of the unit to convert from
 	 * @param {string} unitToId - the ID of the unit to convert to
 	 * @param {number} value - the amount of the unit
+	 * @returns {Promise<string>} the HTML of the table
 	 */
 	async function buildOpinionsTable(unitType, unitFromId, unitToId, value) {
-		const converters = await getConverters();
-		const tempOpinionResults = [];
-		if (getOpinions(converters)[unitType] && converters[unitType].units[leftUnitId]?.type !== converters[unitType].units[rightUnitId]?.type) {
-			for (const opinionId of getOpinions(converters)[unitType]) {
-				const opinion = converters[unitType]?.opinions?.[opinionId];
-				const toUnit = converters[unitType]?.units?.[unitToId];
-				if (!opinion || !toUnit) {
-					continue;
-				}
-				const result = await convertUnits({ type: unitType, unitFromId: unitFromId, unitToId: unitToId, amount: value, opinionId });
-				tempOpinionResults.push({
-					name: opinion.name,
-					result: result.result,
-					min: result.min,
-					max: result.max,
-					unit: toUnit,
-				});
-			}
+		const inputResultsSections = await unitConversionQuery({ unitFrom: { type: unitType, unitId: unitFromId }, unitTo: { type: unitType, unitId: unitToId }, amount: value });
+		const resultSection = inputResultsSections.find((section) => section.title === RESULT)?.content;
+		// only return the result section if it contains a table
+		if (!resultSection?.includes('<table')) {
+			return '';
 		}
-		return tempOpinionResults;
+		return resultSection;
 	}
 
 	/**
@@ -195,28 +184,10 @@
 				</select>
 			</div>
 		</div>
-		{#if opinionResults && opinionResults.length > 0}
-			<div class="table-responsive my-1">
-				<table class="table table-striped table-bordered">
-					<thead>
-						<tr>
-							<th>Opinion</th>
-							<th>Result</th>
-						</tr>
-					</thead>
-					<tbody>
-						{#each opinionResults as opinionResult}
-							<tr>
-								<td>{opinionResult.name}</td>
-								<td>{@html formatOpinionResult(opinionResult)}</td>
-							</tr>
-						{/each}
-					</tbody>
-				</table>
+		{#if opinionResults}
+			<div class="my-1">
+				{@html opinionResults}
 			</div>
-			{#if Object.values(converters[unitType].opinions || {}).some((opinion) => opinion.stringent)}
-				{STRINGENCY_NOTE}
-			{/if}
 		{/if}
 	</div>
 {:catch}

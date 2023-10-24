@@ -13,16 +13,18 @@ import { HOLIDAY_DETAILS, getHolidays } from './holidays';
 import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears';
 import { calculateMolad } from './molad';
 import { calculateOmerDate, calculateOmerHebrew } from './omer';
-import { STRINGENCY_NOTE, convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
+import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
 import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, getCurrentHebrewMonth, getNextHebrewMonth, getPrevHebrewMonth, properCase, sanitize } from './utils';
 import { ZMANIM_NAMES } from './zmanim';
 import { calculateZodiac, calculateZodiacHebrewDate } from './zodiac';
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
-const INPUT_INTERPRETATION = 'Input Interpretation';
-const RESULT = 'Result';
-const SOURCES = 'Sources';
+export const INPUT_INTERPRETATION = 'Input Interpretation';
+export const RESULT = 'Result';
+export const SOURCES = 'Sources';
+export const STRINGENCY_NOTE =
+	'* The ranges in parentheses denote values for stringencies. For opinion sources where only a larger number was provided for stringencies, a lower value was inferred by reflecting the number around the standard value. In all situations, the stricter of the two values should be used.';
 
 /**
  * Custom Error class for input errors
@@ -452,10 +454,10 @@ const formatUnitResult = (result, unitTo) => {
 /**
  * Generate sections for a unit conversion query
  *
- * @param {{ function: string, unitFrom: { type: string, unitId: string }, unitTo: { type: string, unitId: string }, amount: number }} derivation
+ * @param {{ function?: string, unitFrom: { type: string, unitId: string }, unitTo: { type: string, unitId: string }, amount: number }} derivation
  * @returns {Promise<{ title: string, content: string }[]>} The response.
  */
-async function unitConversionQuery(derivation) {
+export async function unitConversionQuery(derivation) {
 	/** @type {Array<{ title: string, content: string }>} */
 	const sections = [];
 
@@ -515,7 +517,7 @@ async function unitConversionQuery(derivation) {
 /**
  * Generate sections for a conversion chart query
  *
- * @param {{ function: string, unit: { type: string, unitId: string }, amount: number }} derivation
+ * @param {{ function?: string, unit: { type: string, unitId: string }, amount: number }} derivation
  * @returns {Promise<{ title: string, content: string }[]>} The response.
  */
 async function conversionChartQuery(derivation) {
@@ -575,7 +577,7 @@ async function conversionChartQuery(derivation) {
 /**
  * Generate sections for a gematria query
  *
- * @param {{ function: string, gematriaMethod: string, text: string }} derivation
+ * @param {{ function?: string, gematriaMethod: string, text: string }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function gematriaQuery(derivation) {
@@ -598,7 +600,7 @@ function gematriaQuery(derivation) {
 
 /**
  * Generate sections for a gematria search query
- * @param {{ function: string, gematriaMethod: string, value?: number, text?: string }} derivation
+ * @param {{ function?: string, gematriaMethod: string, value?: number, text?: string }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function gematriaSearchQuery(derivation) {
@@ -643,7 +645,7 @@ function gematriaSearchQuery(derivation) {
 
 /**
  * Generate sections for a gematria two-word match query
- * @param {{ function: string, gematriaMethod?: string, word1: string, word2: string, sameMethod?: boolean }} derivation
+ * @param {{ function?: string, gematriaMethod?: string, word1: string, word2: string, sameMethod?: boolean }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function gematriaTwoWordMatchQuery(derivation) {
@@ -696,7 +698,7 @@ function gematriaTwoWordMatchQuery(derivation) {
 /**
  * Generate sections for a zmanim query
  *
- * @param {{ function: string, zman?: string, date?: { gregorianDate?: { year: number, month: number, day: number }, hebrewDate?: { year: number, month: number, day: number } }, location?: string }} derivation
+ * @param {{ function?: string, zman?: string, date?: { gregorianDate?: { year: number, month: number, day: number }, hebrewDate?: { year: number, month: number, day: number } }, location?: string }} derivation
  * @returns {Promise<{ title: string, content: string }[]>} The response.
  */
 export async function zmanimQuery(derivation) {
@@ -858,7 +860,7 @@ export async function zmanimQuery(derivation) {
 /**
  * Generate sections for a Hebrew calendar query
  *
- * @param {{ function: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } }, year?: number }} derivation
+ * @param {{ function?: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } }, year?: number }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function hebrewCalendarQuery(derivation) {
@@ -927,7 +929,7 @@ function hebrewCalendarQuery(derivation) {
 
 /**
  * Generate sections for a Molad query
- * @param {{ function: string, month?: number, year: number }} derivation
+ * @param {{ function?: string, month?: number, year: number }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function moladQuery(derivation) {
@@ -963,7 +965,7 @@ function moladQuery(derivation) {
 
 /**
  * Generate sections for a Sefiras HaOmer query
- * @param {{ function: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } } }} derivation
+ * @param {{ function?: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } } }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function sefirasHaOmerQuery(derivation) {
@@ -1043,7 +1045,7 @@ function sefirasHaOmerQuery(derivation) {
 
 /**
  * Generate sections for a Leap Year query
- * @param {{ function: string, year: number, calendar: "hebrew" | "gregorian" }} derivation
+ * @param {{ function?: string, year: number, calendar: "hebrew" | "gregorian" }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function leapYearQuery(derivation) {
@@ -1061,7 +1063,7 @@ function leapYearQuery(derivation) {
 
 /**
  * Generate sections for a Daily Learning query
- * @param {{ function: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } }, dailyLearningType: string }} derivation
+ * @param {{ function?: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } }, dailyLearningType: string }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function dailyLearningQuery(derivation) {
@@ -1106,7 +1108,7 @@ function dailyLearningQuery(derivation) {
 
 /**
  * Generate sections for a Jewish Holiday query
- * @param {{ function: string, holiday: string, upcoming?: boolean, year?: { value: number, calendar: "hebrew" | "gregorian" } }} derivation
+ * @param {{ function?: string, holiday: string, upcoming?: boolean, year?: { value: number, calendar: "hebrew" | "gregorian" } }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function jewishHolidayQuery(derivation) {
@@ -1170,7 +1172,7 @@ function jewishHolidayQuery(derivation) {
 /**
  * Generate sections for a Zodiac query
  *
- * @param {{ function: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } } }} derivation
+ * @param {{ function?: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } } }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function zodiacQuery(derivation) {
@@ -1214,7 +1216,7 @@ function zodiacQuery(derivation) {
 /**
  * Generate sections for a Birkas HaChama query
  *
- * @param {{ function: string, direction: 1 | -1, year?: { value: number, calendar: "hebrew" | "gregorian" } }} derivation
+ * @param {{ function?: string, direction: 1 | -1, year?: { value: number, calendar: "hebrew" | "gregorian" } }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function birkasHachamaQuery(derivation) {
