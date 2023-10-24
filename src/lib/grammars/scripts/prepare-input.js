@@ -27,7 +27,7 @@ function convertMappingToGrammarRule(nonTerminal, mapping) {
 		`\n\n${nonTerminal} -> ` +
 		Object.keys(mapping)
 			.map((input) => {
-				return mapping[input].map((value) => `"${input.replace(/"/g, '\\"')}" {% d => '${value}' %}`).join('\n | ');
+				return mapping[input].map((value) => `"${input.replaceAll(/"/g, '\\"')}" {% d => '${value}' %}`).join('\n | ');
 			})
 			.join('\n | ')
 	);
@@ -64,7 +64,7 @@ function generateUnitsGrammar(outputPath) {
 		const unitMapping = units[unitType];
 		grammar += Object.keys(unitMapping)
 			.map((unitInput) => {
-				return unitMapping[unitInput].map((unitId) => `"${unitInput}" {% d => ({ type: '${unitType}', unitId: '${unitId}' }) %}`).join('\n | ');
+				return unitMapping[unitInput].map((unitId) => `"${unitInput.replaceAll(/"/g, '\\"')}" {% d => ({ type: '${unitType}', unitId: '${unitId}' }) %}`).join('\n | ');
 			})
 			.join('\n | ');
 	}
