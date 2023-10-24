@@ -452,6 +452,19 @@ const formatUnitResult = (result, unitTo) => {
 };
 
 /**
+ * Format unit sources
+ * @param {string} [updatedDate] - The date the exchange rates were updated
+ * @returns {string} The formatted sources
+ */
+const formatUnitSources = (updatedDate) => {
+	let sources = `<a href="/info/biblical-units">Information about Biblical Units and Sources</a>`;
+	if (updatedDate) {
+		sources += `<br /><br />Using <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${updatedDate}`;
+	}
+	return sources;
+};
+
+/**
  * Generate sections for a unit conversion query
  *
  * @param {{ function?: string, unitFrom: { type: string, unitId: string }, unitTo: { type: string, unitId: string }, amount: number }} derivation
@@ -505,12 +518,8 @@ export async function unitConversionQuery(derivation) {
 		}
 	}
 	sections.push({ title: RESULT, content: resultValue });
-	const updatedDate = unitTo.updated ?? unitFrom.updated ?? null;
-	let sources = `<a href="/info/biblical-units">Information about Biblical Units and Sources</a>`;
-	if (updatedDate) {
-		sources += `<br /><br />Using <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${updatedDate}`;
-	}
-	sections.push({ title: SOURCES, content: sources });
+	const updatedDate = unitTo.updated ?? unitFrom.updated;
+	sections.push({ title: SOURCES, content: formatUnitSources(updatedDate) });
 	return sections;
 }
 
@@ -530,7 +539,7 @@ async function conversionChartQuery(derivation) {
 	const conversionResults = await convertUnitsMultiAll(params);
 	// output no-opinion results first
 	let content = '';
-	let updatedDate = null;
+	let updatedDate;
 	const noOpinionResults = conversionResults['no-opinion'];
 	if (noOpinionResults) {
 		content += '<ul>';
@@ -566,11 +575,7 @@ async function conversionChartQuery(derivation) {
 		content += STRINGENCY_NOTE;
 	}
 	sections.push({ title: RESULT, content });
-	let sources = `<a href="/info/biblical-units">Information about Biblical Units and Sources</a>`;
-	if (updatedDate) {
-		sources += `<br /><br />Using <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${updatedDate}`;
-	}
-	sections.push({ title: SOURCES, content: sources });
+	sections.push({ title: SOURCES, content: formatUnitSources(updatedDate) });
 	return sections;
 }
 

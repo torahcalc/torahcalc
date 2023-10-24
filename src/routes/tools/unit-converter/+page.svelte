@@ -2,7 +2,7 @@
 	import { getConverters } from '$lib/js/unitconverter';
 	import Fa from 'svelte-fa/src/fa.svelte';
 	import UnitConverter from './UnitConverter.svelte';
-	import { faExternalLink, faInfoCircle } from '@danieloi/pro-solid-svg-icons';
+	import { faExternalLink } from '@danieloi/pro-solid-svg-icons';
 
 	const description = 'Convert between any Biblical and modern units of length, area, volume, mass (weight), coins, and time.';
 </script>

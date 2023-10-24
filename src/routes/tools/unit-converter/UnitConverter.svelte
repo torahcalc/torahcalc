@@ -80,27 +80,6 @@
 		handleConvertLeftToRight();
 	}
 
-	/**
-	 * Format the result of the given opinion
-	 * @param {OpinionResult} opinion - the opinion details
-	 * @returns {string} the formatted result
-	 */
-	function formatOpinionResult(opinion) {
-		let result = `${formatNumberHTML(opinion.result, 3)} ${opinion.result === 1 ? opinion.unit.display : opinion.unit.displayPlural}`;
-		if (opinion.min || opinion.max) {
-			result += ' (';
-			if (opinion.min) {
-				result += `${formatNumberHTML(opinion.min, 3)}`;
-			}
-			result += ' &ndash; ';
-			if (opinion.max) {
-				result += `${formatNumberHTML(opinion.max, 3)}`;
-			}
-			result += `)`;
-		}
-		return result;
-	}
-
 	async function handleUnitTypeChange() {
 		const defaultSelections = defaultSelection(unitType);
 		if (defaultSelections) {
@@ -184,11 +163,9 @@
 				</select>
 			</div>
 		</div>
-		{#if opinionResults}
-			<div class="my-1">
-				{@html opinionResults}
-			</div>
-		{/if}
+		<div class="my-1">
+			{@html opinionResults}
+		</div>
 	</div>
 {:catch}
 	<div>An error occurred while loading the list of units.</div>
