@@ -1,7 +1,6 @@
 <script>
 	import { RESULT, unitConversionQuery } from '$lib/js/input';
 	import { convertUnits, getConverters } from '$lib/js/unitconverter.js';
-	import { formatNumberHTML } from '$lib/js/utils';
 	import { faExchange } from '@danieloi/pro-solid-svg-icons';
 	import Fa from 'svelte-fa/src/fa.svelte';
 
@@ -13,15 +12,6 @@
 
 	/** @type {string|undefined} The opinion to use for the conversion */
 	let opinionId;
-
-	/**
-	 * @typedef {Object} OpinionResult
-	 * @property {string} name - the name of the opinion
-	 * @property {number} result - the result of the opinion
-	 * @property {import('$lib/js/unitconverter.js').Unit} unit - the unit of the opinion
-	 * @property {number|undefined} min - the minimum result of the opinion
-	 * @property {number|undefined} max - the maximum result of the opinion
-	 */
 
 	/** @type {string} The HTML of the results table */
 	let opinionResults = '';
