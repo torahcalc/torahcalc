@@ -1,4 +1,5 @@
-import { faCandleHolder, faClockTwelve, faSparkles, faStar, faStars, faSunrise, faSunset, faWineGlass } from '@danieloi/pro-solid-svg-icons';
+import { faHavdalahCandle, faShabbosCandles } from '$lib/icons/custom-fontawesome-icons';
+import { faClockTwelve, faPlateUtensils, faSparkles, faStar, faStars, faSunrise, faSunset, faUtensilsSlash } from '@danieloi/pro-solid-svg-icons';
 import { HebrewCalendar, Location, TimedEvent, Zmanim } from '@hebcal/core';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
@@ -115,23 +116,25 @@ export const ZMANIM_NAMES = {
 			name: 'Candle Lighting',
 			hebrewName: 'הדלקת נרות',
 			description: 'Candle lighting time - 18 or 40 minutes before sunset',
-			icon: iconToSvg(faCandleHolder),
+			icon: iconToSvg(faShabbosCandles),
 		},
 		havdalah: {
 			name: 'Havdalah',
 			hebrewName: 'הבדלה',
 			description: 'Havdalah time - 3 small stars visible, sun is 8.5° below horizon',
-			icon: iconToSvg(faWineGlass),
+			icon: iconToSvg(faHavdalahCandle),
 		},
 		fastBegins: {
 			name: 'Fast Begins',
 			hebrewName: 'תחילת הצום',
 			description: 'Beginning of the fast',
+			icon: iconToSvg(faUtensilsSlash),
 		},
 		fastEnds: {
 			name: 'Fast Ends',
 			hebrewName: 'סוף הצום',
 			description: 'End of the fast',
+			icon: iconToSvg(faPlateUtensils),
 		},
 	},
 	durations: {
