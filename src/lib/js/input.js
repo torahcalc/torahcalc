@@ -444,7 +444,7 @@ const formatUnitResult = (result, unitTo) => {
 		if (result.max) {
 			resultAmountAndUnit += `${formatNumberHTML(result.max)}`;
 		}
-		resultAmountAndUnit += `)`;
+		resultAmountAndUnit += `)*`;
 	}
 	return resultAmountAndUnit;
 };
@@ -498,6 +498,10 @@ async function unitConversionQuery(derivation) {
 			return { Opinion: opinion, Result: formatUnitResult(result, unitTo) };
 		});
 		resultValue = dataToHtmlTable(data, { headers: ['Opinion', 'Result'], class: 'table table-striped table-bordered' });
+		if (Object.values(converters[unitType].opinions || {}).some((opinion) => opinion.stringent)) {
+			resultValue +=
+				'* The ranges in parentheses represent values for stringencies. For sources where only a larger number is given for stringency, a lower bound was calculated by mirroring the number around the standard value.';
+		}
 	}
 	sections.push({ title: RESULT, content: resultValue });
 	const updatedDate = unitTo.updated ?? unitFrom.updated ?? null;
@@ -538,6 +542,7 @@ async function conversionChartQuery(derivation) {
 	}
 	// output opinion results as a table where the first column is the opinion and the second column is the results for that opinion separated by newlines
 	delete conversionResults['no-opinion'];
+	let hasStringencyFactors = false;
 	if (Object.keys(conversionResults).length > 0) {
 		const data = [];
 		for (const [opinionId, opinionResults] of Object.entries(conversionResults)) {
@@ -547,11 +552,18 @@ async function conversionChartQuery(derivation) {
 				const unitTo = await getUnit(unitType, unitId);
 				results += `<li>${formatUnitResult(result, unitTo)}</li>`;
 				updatedDate = unitTo.updated ?? updatedDate;
+				if (result.min || result.max) {
+					hasStringencyFactors = true;
+				}
 			}
 			results += '</ul>';
 			data.push({ Opinion: opinion.name, Results: results });
 		}
 		content += dataToHtmlTable(data, { headers: ['Opinion', 'Results'], class: 'table table-striped table-bordered', html: true });
+	}
+	if (hasStringencyFactors) {
+		content +=
+			'* The ranges in parentheses represent values for stringencies. For sources where only a larger number is given for stringency, a lower bound was calculated by mirroring the number around the standard value.';
 	}
 	sections.push({ title: RESULT, content });
 	let sources = `<a href="/info/biblical-units">Information about Biblical Units and Sources</a>`;

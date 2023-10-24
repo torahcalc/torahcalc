@@ -107,7 +107,7 @@
 			if (opinion.max) {
 				result += `${formatNumberHTML(opinion.max, 3)}`;
 			}
-			result += `)`;
+			result += `)*`;
 		}
 		return result;
 	}
@@ -214,6 +214,12 @@
 					</tbody>
 				</table>
 			</div>
+			{#if Object.values(converters[unitType].opinions || {}).some((opinion) => opinion.stringent)}
+				<p>
+					* The ranges in parentheses represent values for stringencies. For sources where only a larger number is given for stringency, a lower bound was calculated by mirroring the number around the
+					standard value.
+				</p>
+			{/if}
 		{/if}
 	</div>
 {:catch}
