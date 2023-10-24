@@ -135,9 +135,10 @@ export function getLastSaturday(date) {
  * @param {number} number - The number to format.
  * @param {number} [precision=4] - The maximum number of digits after the decimal point.
  * @param {boolean} [makeNonZero=true] - Whether to increase precision until the number is non-zero.
+ * @param {string} [comma='\u2009'] - The character to use for commas (defaults to a thin space).
  * @returns {string} The formatted number.
  */
-export function formatNumber(number, precision = 4, makeNonZero = true) {
+export function formatNumber(number, precision = 4, makeNonZero = true, comma = '\u2009') {
 	// set precision and add commas
 	let localeNum = number.toLocaleString('fullwide', { maximumFractionDigits: precision });
 	// increase precision until the number is non-zero
@@ -152,7 +153,7 @@ export function formatNumber(number, precision = 4, makeNonZero = true) {
 	// remove trailing zeros if there is a decimal point
 	localeNum = localeNum.includes('.') ? localeNum.replace(/\.?0+$/, '') : localeNum;
 	// replace commas with thin spaces
-	localeNum = localeNum.replace(/,/g, '\u2009');
+	localeNum = localeNum.replace(/,/g, comma);
 	// return the formatted number
 	return localeNum;
 }
@@ -199,7 +200,14 @@ export function sanitize(string) {
  * @param {string} str - the string to transform
  */
 export function properCase(str) {
-	return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+	// list of words that should not be modified
+	const WHITELIST = ['US'];
+	return str.replace(/(\w)(\S*)/g, function (txt, first, rest) {
+		if (WHITELIST.includes(txt)) {
+			return txt;
+		}
+		return first.toUpperCase() + rest.toLowerCase();
+	});
 }
 
 /** @type {Object<string, { lat: number, lng: number, formattedAddress: string }>} */
