@@ -3,6 +3,9 @@ import dayjs from 'dayjs';
 import FALLBACK_EXCHANGE_RATES from './../data/exchange-rates.json';
 import { iconToSvg } from './utils';
 
+export const STRINGENCY_NOTE =
+	'* The ranges in parentheses denote values for stringencies. For opinion sources where only a larger number was provided for stringencies, a lower value was inferred by reflecting the number around the standard value. In all situations, the stricter of the two values should be used.';
+
 /**
  * @typedef {{ success: boolean, timestamp: number, base: string, date: string, rates: { CAD: number, EUR: number, GBP: number, ILS: number, XAG: number }}} ExchangeRates
  */
@@ -448,13 +451,14 @@ export async function getDefaultUnitOpinion(type, unitId) {
  */
 function getOpinionFactors(opinion, unitFrom, result) {
 	let factor = opinion.factor;
+	const stringent = opinion.stringent;
+	// mirror the stringent factor across the standard factor to get a lower bound for stringent conversions
+	const stringentMirrored = stringent ? 2 * factor - stringent : undefined;
+	// swap the min and max factors if the result is negative or converting from standard to biblical but not both
 	const isConvertingFromStandard = unitFrom.type === 'STANDARD';
 	const resultIsNegative = result < 0;
-	// calculate the inverse of the stringent factor to get a lower bound for stringent conversions
-	const stringentInverse = opinion.stringent ? 2 * opinion.factor - opinion.stringent : undefined;
-	// swap the min and max factors if the result is negative or converting from standard to biblical but not both
-	let minFactor = isConvertingFromStandard !== resultIsNegative ? opinion.stringent : stringentInverse;
-	let maxFactor = isConvertingFromStandard !== resultIsNegative ? stringentInverse : opinion.stringent;
+	let minFactor = isConvertingFromStandard !== resultIsNegative ? stringent : stringentMirrored;
+	let maxFactor = isConvertingFromStandard !== resultIsNegative ? stringentMirrored : stringent;
 	// take the inverse of the factors if converting from standard to biblical
 	if (isConvertingFromStandard) {
 		factor = 1 / factor;

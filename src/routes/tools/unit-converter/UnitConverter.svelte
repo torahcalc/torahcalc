@@ -1,5 +1,5 @@
 <script>
-	import { convertUnits, getConverters, getOpinions } from '$lib/js/unitconverter.js';
+	import { STRINGENCY_NOTE, convertUnits, getConverters, getOpinions } from '$lib/js/unitconverter.js';
 	import { formatNumberHTML } from '$lib/js/utils';
 	import { faExchange } from '@danieloi/pro-solid-svg-icons';
 	import Fa from 'svelte-fa/src/fa.svelte';
@@ -107,7 +107,7 @@
 			if (opinion.max) {
 				result += `${formatNumberHTML(opinion.max, 3)}`;
 			}
-			result += `)*`;
+			result += `)`;
 		}
 		return result;
 	}
@@ -215,10 +215,7 @@
 				</table>
 			</div>
 			{#if Object.values(converters[unitType].opinions || {}).some((opinion) => opinion.stringent)}
-				<p>
-					* The ranges in parentheses represent values for stringencies. For sources where only a larger number is given for stringency, a lower bound was calculated by mirroring the number around the
-					standard value.
-				</p>
+				{STRINGENCY_NOTE}
 			{/if}
 		{/if}
 	</div>

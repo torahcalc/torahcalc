@@ -13,7 +13,7 @@ import { HOLIDAY_DETAILS, getHolidays } from './holidays';
 import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears';
 import { calculateMolad } from './molad';
 import { calculateOmerDate, calculateOmerHebrew } from './omer';
-import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
+import { STRINGENCY_NOTE, convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
 import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, getCurrentHebrewMonth, getNextHebrewMonth, getPrevHebrewMonth, properCase, sanitize } from './utils';
 import { ZMANIM_NAMES } from './zmanim';
 import { calculateZodiac, calculateZodiacHebrewDate } from './zodiac';
@@ -444,7 +444,7 @@ const formatUnitResult = (result, unitTo) => {
 		if (result.max) {
 			resultAmountAndUnit += `${formatNumberHTML(result.max)}`;
 		}
-		resultAmountAndUnit += `)*`;
+		resultAmountAndUnit += `)`;
 	}
 	return resultAmountAndUnit;
 };
@@ -499,8 +499,7 @@ async function unitConversionQuery(derivation) {
 		});
 		resultValue = dataToHtmlTable(data, { headers: ['Opinion', 'Result'], class: 'table table-striped table-bordered' });
 		if (Object.values(converters[unitType].opinions || {}).some((opinion) => opinion.stringent)) {
-			resultValue +=
-				'* The ranges in parentheses represent values for stringencies. For sources where only a larger number is given for stringency, a lower bound was calculated by mirroring the number around the standard value.';
+			resultValue += STRINGENCY_NOTE;
 		}
 	}
 	sections.push({ title: RESULT, content: resultValue });
@@ -562,8 +561,7 @@ async function conversionChartQuery(derivation) {
 		content += dataToHtmlTable(data, { headers: ['Opinion', 'Results'], class: 'table table-striped table-bordered', html: true });
 	}
 	if (hasStringencyFactors) {
-		content +=
-			'* The ranges in parentheses represent values for stringencies. For sources where only a larger number is given for stringency, a lower bound was calculated by mirroring the number around the standard value.';
+		content += STRINGENCY_NOTE;
 	}
 	sections.push({ title: RESULT, content });
 	let sources = `<a href="/info/biblical-units">Information about Biblical Units and Sources</a>`;
