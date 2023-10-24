@@ -165,7 +165,7 @@ async function getValidDerivations(search, results) {
 	// determine disambiguations and skip invalid derivations
 	for (const derivation of results) {
 		derivation.disambiguation = Object.values(derivation)
-			.map((value) => (value.toString() === '[object Object]' ? JSON.stringify(value) : value.toString()))
+			.map((value) => (`${value}` === '[object Object]' ? JSON.stringify(value) : `${value}`))
 			.join(', ');
 		derivation.disambiguationScore = 0;
 		if (derivation.function === 'unitConversionQuery') {
