@@ -501,9 +501,11 @@ async function unitConversionQuery(derivation) {
 	}
 	sections.push({ title: RESULT, content: resultValue });
 	const updatedDate = unitTo.updated ?? unitFrom.updated ?? null;
+	let sources = `<a href="/info/biblical-units">Information about Biblical Units and Sources</a>`;
 	if (updatedDate) {
-		sections.push({ title: SOURCES, content: `Based on <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${updatedDate}` });
+		sources += `<br /><br />Using <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${updatedDate}`;
 	}
+	sections.push({ title: SOURCES, content: sources });
 	return sections;
 }
 
@@ -552,9 +554,11 @@ async function conversionChartQuery(derivation) {
 		content += dataToHtmlTable(data, { headers: ['Opinion', 'Results'], class: 'table table-striped table-bordered', html: true });
 	}
 	sections.push({ title: RESULT, content });
+	let sources = `<a href="/info/biblical-units">Information about Biblical Units and Sources</a>`;
 	if (updatedDate) {
-		sections.push({ title: SOURCES, content: `Based on <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${updatedDate}` });
+		sources += `<br /><br />Using <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${updatedDate}`;
 	}
+	sections.push({ title: SOURCES, content: sources });
 	return sections;
 }
 

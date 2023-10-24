@@ -196,8 +196,8 @@
 			</div>
 		</div>
 		{#if opinionResults && opinionResults.length > 0}
-			<div class="table-responsive">
-				<table class="table table-striped table-hover">
+			<div class="table-responsive my-1">
+				<table class="table table-striped table-bordered">
 					<thead>
 						<tr>
 							<th>Opinion</th>
