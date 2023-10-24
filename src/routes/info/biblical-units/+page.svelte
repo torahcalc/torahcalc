@@ -1,3 +1,23 @@
+<script>
+	import { convertUnits, getConverters, getOpinions } from '$lib/js/unitconverter';
+	import Fa from 'svelte-fa/src/fa.svelte';
+	import Anchor from './Anchor.svelte';
+	import Ref from './Ref.svelte';
+	import { faExternalLink } from '@danieloi/pro-solid-svg-icons';
+
+	async function getPerutahValue() {
+		const converters = await getConverters();
+		const opinions = await getOpinions(converters)['coins'];
+		/** @type {Record<string, number>} */
+		const values = {};
+		for (const opinionId of opinions) {
+			const result = await convertUnits({ type: 'coins', unitFromId: 'perutah', unitToId: 'usd', amount: 1, opinionId: opinionId });
+			values[opinionId] = Math.round(result.result * 1000) / 1000;
+		}
+		return values;
+	}
+</script>
+
 <svelte:head>
 	<title>TorahCalc | Information on Biblical / Talmudic Units</title>
 	<meta name="description" content="Information on biblical and talmudic units of measure with conversions to modern units and sources." />
@@ -5,6 +25,8 @@
 
 <section>
 	<h1 class="heading">Biblical / Talmudic Units of Measure</h1>
+
+	<a href="/tools/unit-converter"><Fa icon={faExternalLink} size=".9x" /> Biblical and Talmudic Unit Converter</a>
 
 	<h3>Contents</h3>
 	<ul>
@@ -18,16 +40,38 @@
 	</ul>
 
 	<h3 id="length">Length</h3>
-	Opinions: A: Rabbi Avraham Chaim Naeh; B: Rabbi Yaakov Kaminetsky; C: Rabbi Moshe Feinstein; D: Chazon Ish.
 	<ul>
 		<li>
 			<b>Etzbah (Hebrew: אצבע, pl. Etzbaos): </b>Fingerbreadths.
 			<br />
-			<i> A: 0.788 in (2.000 cm); </i><br />
-			<i> B: 0.875 in (2.223 cm); </i><br />
-			<i> C: [Standard] 0.885 in (2.249 cm);<br /> &nbsp;&nbsp;&nbsp; [Stringent] 0.958 in (2.434 cm); </i><br />
-			<i> D: [Standard] 0.947 in (2.405 cm)<br /> &nbsp;&nbsp;&nbsp; [Stringent] 0.984 in (2.500 cm); </i>
 		</li>
+		<ul>
+			<li>
+				Rabbi Avraham Chaim Naeh<Ref id="1" />:
+				<blockquote>
+					[Standard] 0.787 in (2 cm)<br />
+					[Stringent] 0.804 in (2.042 cm)
+				</blockquote>
+			</li>
+			<li>
+				Aruch Hashulchan / Mishna Brurah<Ref id="2" />:
+				<blockquote>0.875 in (2.223 cm)</blockquote>
+			</li>
+			<li>
+				Rabbi Moshe Feinstein<Ref id="3" />:
+				<blockquote>
+					[Standard] 0.885 in (2.249 cm)<br />
+					[Stringent] 0.958 in (2.434 cm)
+				</blockquote>
+			</li>
+			<li>
+				Chazon Ish<Ref id="4" />:
+				<blockquote>
+					[Standard] 0.947 in (2.405 cm)<br />
+					[Stringent] 0.967 in (2.455 cm)
+				</blockquote>
+			</li>
+		</ul>
 		<li><b>Tefach (Hebrew: טפח, pl. Tefachim): </b>Handbreadths. <i>= 4 Etzbaos.</i></li>
 		<li><b>Zeres (Hebrew: זרת, pl. Zaros): </b>Spans. <i>= 3 Tefachim.</i></li>
 		<li><b>Amah (Hebrew: אמה, pl. Amos): </b>Cubits, Arm-lengths, Ells <i>= 2 Zaros.</i></li>
@@ -39,15 +83,36 @@
 		<li><b>Derech Yom / Mahalach Yom (Hebrew: דרך יום \ מהלך יום): </b>A day's journey. <i>= 10 Parsaos.</i></li>
 	</ul>
 	<h3 id="area">Area</h3>
-	Opinions: A: Rabbi Avraham Chaim Naeh; B: Rabbi Yaakov Kaminetsky; C: Rabbi Moshe Feinstein; D: Chazon Ish.
 	<ul>
 		<li>
 			<b>Se'aros (Hebrew: שערות): </b>Hairbreadths (space between two adjacent hairs).
-			<br />
-			<i> A: 0.014 in<sup>2</sup> (0.090 cm<sup>2</sup>); </i><br />
-			<i> B: 0.017 in<sup>2</sup> (0.111 cm<sup>2</sup>); </i><br />
-			<i> C: [Standard] 0.018 in<sup>2</sup> (0.114 cm<sup>2</sup>);<br /> &nbsp;&nbsp;&nbsp; [Stringent] 0.021 in<sup>2</sup> (0.133 cm<sup>2</sup>); </i><br />
-			<i> D: [Standard] 0.020 in<sup>2</sup> (0.130 cm<sup>2</sup>)<br /> &nbsp;&nbsp;&nbsp; [Stringent] 0.022 in<sup>2</sup> (0.141 cm<sup>2</sup>); </i>
+			<ul>
+				<li>
+					Rabbi Avraham Chaim Naeh<Ref id="1" />:
+					<blockquote>
+						[Standard] 0.014 in<sup>2</sup> (9 mm<sup>2</sup>)<br />
+						[Stringent] 0.015 in<sup>2</sup> (9.379 mm<sup>2</sup>)
+					</blockquote>
+				</li>
+				<li>
+					Aruch Hashulchan / Mishna Brurah<Ref id="2" />:
+					<blockquote>0.017 in<sup>2</sup> (11.114 mm<sup>2</sup>)</blockquote>
+				</li>
+				<li>
+					Rabbi Moshe Feinstein<Ref id="3" />:
+					<blockquote>
+						[Standard] 0.018 in<sup>2</sup> (11.380 mm<sup>2</sup>)<br />
+						[Stringent] 0.021 in<sup>2</sup> (13.332 mm<sup>2</sup>)
+					</blockquote>
+				</li>
+				<li>
+					Chazon Ish<Ref id="4" />:
+					<blockquote>
+						[Standard] 0.020 in<sup>2</sup> (13.014 mm<sup>2</sup>)<br />
+						[Stringent] 0.021 in<sup>2</sup> (13.561 mm<sup>2</sup>)
+					</blockquote>
+				</li>
+			</ul>
 		</li>
 		<li><b>Adashah (Hebrew: עדשה, pl. Adashos): </b>Area of a lentil. <i>= 4 sq. Se'aros.</i></li>
 		<li><b>Gris (Hebrew: גריס): </b>Area of a split bean. <i>= 9 Adashos.</i></li>
@@ -61,36 +126,81 @@
 		<li><b>Beit Kor (Hebrew: בית כור): </b>Area needed to sow 1 Kor of produce. <i>= 30 Beit Seah.</i></li>
 	</ul>
 	<h3 id="volume">Volume</h3>
-	Opinions: A: Rabbi Avraham Chaim Naeh; B: Chazon Ish.
 	<ul>
 		<li>
 			<b>Kortov (Hebrew: קורטוב): </b>Equal to 1/64 Log.
-			<br /><i>
-				<table>
-					<tr>
-						<td>Desert/Wilderness<br />(מידות מדבריות):</td>
-						<td>&nbsp;A: 0.183 fl oz. (5.4 ml);<br />&nbsp;B: 0.314 fl oz. (9.3 ml)</td>
-					</tr>
-					<tr>
-						<td>Jerusalem<br />(מידות ירושלמיות):</td>
-						<td>&nbsp;A: 0.220 fl oz. (6.5 ml);<br />&nbsp;B: 0.379 fl oz. (11.2 ml)</td>
-					</tr>
-					<tr>
-						<td>Tzipori<br />(מידות ציפוריות):</td>
-						<td>&nbsp;A: 0.264 fl oz. (7.8 ml);<br />&nbsp;B: 0.453 fl oz. (13.4 ml)</td>
-					</tr>
-				</table>
-			</i>
+			<ul>
+				<li>
+					Minimum for Mitzvos De'oraisa:
+					<ul>
+						<li>
+							Rabbi Mordechai Willig:<Ref id="12" />
+							<blockquote>0.143 fl oz. (4.219 ml)</blockquote>
+						</li>
+						<li>
+							Rabbi Avraham Chaim Naeh:<Ref id="13" />
+							<blockquote>0.171 fl oz. (5.063 ml)</blockquote>
+						</li>
+						<li>
+							Rabbi Moshe Feinstein:
+							<blockquote>0.198 fl oz. (5.85 ml)</blockquote>
+						</li>
+						<li>
+							Chazon Ish:
+							<blockquote>0.211 fl oz. (6.25 ml)</blockquote>
+						</li>
+					</ul>
+				</li>
+				<li>
+					Sinai Desert Measurements (מידות מדבריות):<Ref id="16" />
+					<ul>
+						<li>
+							Rabbi Avraham Chaim Naeh:
+							<blockquote>0.183 fl oz. (5.4 ml)</blockquote>
+						</li>
+						<li>
+							Chazon Ish:
+							<blockquote>0.314 fl oz. (9.3 ml)</blockquote>
+						</li>
+					</ul>
+				</li>
+				<li>
+					Jerusalem Measurements (מידות ירושלמיות): (⅕ larger than Desert measurements)<Ref id="16" />
+					<ul>
+						<li>
+							Rabbi Avraham Chaim Naeh:
+							<blockquote>0.220 fl oz. (6.5 ml)</blockquote>
+						</li>
+						<li>
+							Chazon Ish:
+							<blockquote>0.379 fl oz. (11.2 ml)</blockquote>
+						</li>
+					</ul>
+				</li>
+				<li>
+					Tzipori Measurements (מידות ציפוריות): (⅕ larger than Jerusalem measurements)<Ref id="16" />
+					<ul>
+						<li>
+							Rabbi Avraham Chaim Naeh:
+							<blockquote>0.264 fl oz. (7.8 ml)</blockquote>
+						</li>
+						<li>
+							Chazon Ish:
+							<blockquote>0.453 fl oz. (13.4 ml)</blockquote>
+						</li>
+					</ul>
+				</li>
+			</ul>
 		</li>
 		<li><b>Mesurah (Hebrew: משורה): </b>Equal to 1/32 Log. <i>= 1 7/9 Kortov.</i></li>
-		<li><b>Grogeres (Hebrew: גרוגרת, pl. grogaros): </b>A dried fig's bulk. 3/10 of a Beitzah. <i>= 1.8 Mesuros.</i></li>
-		<li><b>Kezayis (Hebrew: כזית, pl. kezaysim): </b>An olive's bulk. 1/2 of a Beitzah (S"A) <i>= 5/3 Grogeres.</i></li>
-		<li><b>(Koseves Gasah (Hebrew: כותבת הגסה): </b>A large date's bulk. Slightly less than a Beitzah. (OC 612:1))<i /></li>
+		<li><b>Grogeres (Hebrew: גרוגרת, pl. grogaros): </b>A dried fig's bulk. 3/10 of a Beitzah.<Ref id="5" /> <i>= 1.8 Mesuros.</i></li>
+		<li><b>Kezayis (Hebrew: כזית, pl. kezaysim): </b>An olive's bulk. 1/2 of a Beitzah<Ref id="6" /> <i>= 5/3 Grogeres.</i></li>
+		<li><b>(Koseves HaGasah (Hebrew: כותבת הגסה): </b>A large date's bulk. Slightly less than a Beitzah.<Ref id="7" />)</li>
 		<li><b>Beitzah (Hebrew: ביצה, pl. Beitzim): </b>An egg's bulk. <i>= 2 Kezaysim.</i></li>
 		<li><b>Uchlah / K'lah (Hebrew: עוכלא \ כלה): </b>Equal to 1/20 Kav. <i>= 1 1/5 Beitzim.</i></li>
 		<li><b>Revi'is (Hebrew: רביעית): </b>A quarter of a Log. <i>= 1 1/4 Uchlah / K'lah.</i></li>
 		<li><b>Tomen (Hebrew: תומן): </b>Equal to 1/8 Kav. <i>= 2 Revi'is.</i></li>
-		<li><b>(Pras (Hebrew: פרס): </b>Rashi: 4 Beitzim. Rambam: 3 Beitzim.)<i /></li>
+		<li><b>(Pras (Hebrew: פרס): </b>Rashi: 4 Beitzim. Rambam: 3 Beitzim.<Ref id="8" />)</li>
 		<li><b>Rova / Log (Hebrew: רובע \ לוג): </b>A quarter of a Kav. <i>= 2 Tomen.</i></li>
 		<li><b>Kav (Hebrew: קב): </b>Equal to 1/6 Seah. <i>= 4 Rova / Log.</i></li>
 		<li><b>Issaron / Omer (Hebrew: עשרון \ עומר): </b>Equal to 1/10 Ephah. <i>= 1 4/5 Kav.</i></li>
@@ -115,19 +225,42 @@
 	</ul>
 	<h3 id="coins">Coins</h3>
 	<ul>
-		Opinions: A: Shulchan Aruch / Rambam; B: Rashi; C: Some other authorities.
 		<li>
 			<b>Perutah (Hebrew: פרוטה) </b>
-			<br /><i
-				>A: value of 0.024 grams of silver. (0.00077 troy oz.) (Currently approx. $0.0124 USD)
-				<br />B: 0.02 g of silver (0.00064 troy oz.) (Currently approx. $0.0104 USD)
-				<br />C: 0.027 g of silver (0.00087 troy oz.) (Currently approx. $0.0140 USD)</i
-			>
+			<ul>
+				<li>
+					Shulchan Aruch / Rambam<Ref id="9" /><Ref id="10" />:
+					<blockquote>
+						0.024 g of silver (0.00077 troy oz.)
+						{#await getPerutahValue() then values}
+							(Currently approx. ${values['shulchan_aruch_rambam']} USD)
+						{/await}
+					</blockquote>
+				</li>
+				<li>
+					Rashi<Ref id="11" />:
+					<blockquote>
+						0.02 g of silver (0.00064 troy oz.)
+						{#await getPerutahValue() then values}
+							(Currently approx. ${values['rashi']} USD)
+						{/await}
+					</blockquote>
+				</li>
+				<li>
+					Some other authorities:
+					<blockquote>
+						0.027 g of silver (0.00087 troy oz.)
+						{#await getPerutahValue() then values}
+							(Currently approx. ${values['other']} USD)
+						{/await}
+					</blockquote>
+				</li>
+			</ul>
 		</li>
 		<li><b>Mesimas (Hebrew: מסימס) </b> <i>Equals 4 Perutos.</i></li>
 		<li><b>Issar (Hebrew: איסר) </b> <i>Equals 8 Perutos.</i></li>
 		<li><b>Pundyon (Hebrew: פונדיון) </b> <i>Equals 2 Issar.</i></li>
-		<li><b>Ma'ah (Hebrew: מעה) </b> <i>Equals 2 Pundyon.</i></li>
+		<li><b>Ma'ah (Hebrew: מעה) </b> <i>Equals 2 Pundyon.</i><Ref id="9" /></li>
 		<li><b>Istera / Tarpik (Hebrew: אסתרא \ טרפעיק) </b> <i>Equals 3 Ma'ah.</i></li>
 		<li><b>Dinar / Zuz (Hebrew: דינר \ זוז) </b> <i>Equals 2 Istera.</i></li>
 		<li><b>Shekel (Hebrew: שקל) </b> <i>Equals 2 Dinar.</i></li>
@@ -160,6 +293,73 @@
 	<h3 id="sources">Sources</h3>
 	<ul>
 		<li>
+			<Anchor id="1" />Naeh, Rabbi Avraham Chaim, 1947. <a href="https://www.hebrewbooks.org/pdfpager.aspx?req=20888&pgnum=326">Shiurei Torah 3:25 pp. 249-250</a> writes that the <i>etzba</i> is 2 cm,
+			making an <i>amah</i> equal 48 cm and when measuring an upper or lower bound, it is best to be stringent and use 47 cm or 49 cm per <i>amah</i>, depending on which direction you are measuring.
+			Since an <i>etzbah</i> is 2 cm, this makes an <i>etzbah meruba'as</i> (square etzbah) equal to 4 cm<sup>2</sup>.
+		</li>
+		<li>
+			<Anchor id="2" />The Aruch Hashulchan <a href="https://www.sefaria.org/Arukh_HaShulchan%2C_Yoreh_De'ah.286.21">YD 286:21</a> sets 4 amot as one Russian <i>sazhen</i> (7 feet). Dr. Gideon
+			Freedman proves Aruch Hashulchan <a href="https://www.sefaria.org/Arukh_HaShulchan%2C_Yoreh_De'ah.201.3">YD 201:3</a> and
+			<a href="https://www.sefaria.org/Mishnah_Berurah.358.7">Mishna Brurah 358:7</a> hold that the amah is 21 inches. The Aruch Hashulchan defines the amah as three-quarters of a 71.12 cm
+			<i>arshin</i>, while Mishna Brurah correlates 53 Russian <i>arshins</i> with 70.83 amot.
+			<a target="_blank" href="https://halachipedia.com/index.php?title=Reference_of_Measurements_in_Halacha#cite_note-20">Source</a>.
+		</li>
+		<li>
+			<Anchor id="3" />Feinstein, Rabbi Moshe. Iggerot Moshe, 1964. <a href="https://hebrewbooks.org/916">OC 1:136 p. 228</a> writes that the <i>amah</i> is 21.25 inches and one can be stringent and use
+			23 inches.
+		</li>
+		<li><Anchor id="4" />Kanievsky, Rabbi Yaakov Y. quoting Chazon Ish (Avrohom Yeshaya Karelitz). Shiurin Shel Torah. p. 3.</li>
+		<li>
+			<Anchor id="5" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.368.3">OC 368</a> states the opinions that 18 grogeros equals 6 or 8
+			beitzim.
+		</li>
+		<li><Anchor id="6" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.486.1">OC 486:1</a> states that 2 kezaysim is like 1 beitzah.</li>
+		<li>
+			<Anchor id="7" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.612.1">OC 612:1</a> states that a Koseves HaGasah (large date) is a little
+			less than a beitzah.
+		</li>
+		<li>
+			<Anchor id="8" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.612.4">OC 612:4</a> states that some say a pras is 4 beitzim, while others
+			say it is 3 beitzim.
+		</li>
+		<li>
+			<Anchor id="9" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Choshen_Mishpat.88">CM 88:1</a> states that the calculation of a perutah is the weight
+			of half a barley of clean silver and the calculation of two ma'ah is the weight of 32 barleys of clean silver.
+		</li>
+		<li><Anchor id="10" />"Rambam" on Mishnah Bechoros 88:46.</li>
+		<li>
+			<Anchor id="11" />"Rashi" on <a target="_blank" href="https://www.sefaria.org/Rashi_on_Exodus.21.32.2">Shemos 21:32</a> states the shekel is weighed as four gold dinar coins, which is half an ounce
+			according to the correct weight of Cologne.
+		</li>
+		<li>
+			<Anchor id="12" />Rabbi Mordechai I. Willig, 2011. <a href="https://www.yutorah.org/lectures/760487/">Pesach To-Go, How Much Matzah Do You Need to Eat?</a>, p. 60, writes that the <i>kezayis</i>
+			is 22.5 cm<sup>3</sup>. His calculations are primarily based on Rabbi Hadar Margolin.
+			<a target="_blank" href="https://halachipedia.com/index.php?title=Reference_of_Measurements_in_Halacha#cite_note-20">Source</a>.
+		</li>
+		<li>
+			<Anchor id="13" />Naeh, Rabbi Avraham Chaim, 1947. <a href="https://www.hebrewbooks.org/pdfpager.aspx?req=20888&pgnum=270">Shiurei Torah 3:11 pp. 193</a> writes that a
+			<i>kezayis</i> for mitvos de'oraisa is 28.8 cm<sup>3</sup>, however, in <a href="https://www.hebrewbooks.org/pdfpager.aspx?req=35168&pgnum=69">Shiurei Tzion, 1949. p. 70</a>
+			he writes that it is 27 cm<sup>3</sup>. Vezos HaBracha (Birur Halacha 1) explains that he retracted from his original ruling.
+			<a target="_blank" href="https://halachipedia.com/index.php?title=Reference_of_Measurements_in_Halacha#cite_note-20">Source</a>.
+		</li>
+		<li>
+			<Anchor id="14" />Vezot HaBracha (Birur Halacha 1) quotes Haggadat Kol Dodi which quotes Rav Moshe Feinstein as saying that a Kezayit is 31.2 cm<sup>3</sup>.
+			<a target="_blank" href="https://halachipedia.com/index.php?title=Reference_of_Measurements_in_Halacha#cite_note-20">Source</a>.
+		</li>
+		<li>
+			<Anchor id="15" />Kanievsky, Rabbi Yaakov Y. quoting Chazon Ish (Avrohom Yeshaya Karelitz). Shiurin Shel Torah. second ed, pp. 65-66. He writes that the <i>kezayis</i> is 2/3 of a modern egg
+			which today measures 45-50 grams. The <i>kezayis</i> would therefore be 30-33.333 grams. Vezot HaBracha (Birur Halacha 1:3) records this opinion of the Chazon Ish as 33.3 cm<sup>3</sup>.
+			<a target="_blank" href="https://halachipedia.com/index.php?title=Reference_of_Measurements_in_Halacha#cite_note-20">Source</a>.
+		</li>
+		<li><Anchor id="16" /><a href="https://www.dafyomi.co.il/general/info/units-of-measurement.pdf">Biblical and Talmudic Units of Measurement</a> by Ronnie Figdor, 2012.</li>
+		<li>
+			Feinstein, Rabbi Moshe. Iggerot Moshe, 1964.
+			<a href="https://hebrewbooks.org/14674">YD 1:107 p. 198</a>;
+			<a href="https://hebrewbooks.org/14674">YD 1:190 pp. 380-381</a>;
+			<a href="https://hebrewbooks.org/920">YD 3:46:2 p. 281</a>;
+			<a href="https://hebrewbooks.org/920">YD 3:66:1 p. 314</a>.
+		</li>
+		<li>
 			Steinsaltz, Adin. "Talmudic Weights and Measures." The Talmud, the Steinsaltz Edition. Random House, 1989. pp. 279-93.<br />
 			<a
 				target="_blank"
@@ -175,13 +375,6 @@
 				>Buy on Amazon</a
 			><img src="//ir-na.amazon-adsystem.com/e/ir?t=jelawrence-20&l=am2&o=1&a=1592644511" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
 		</li>
-		<li>Naeh, Rabbi Avraham Chaim. 3:25. Shiurei Torah. 1947. p. 249.</li>
-		<li>Feinstein, Rabbi Moshe. Iggerot Moshe. OC 1:136; YD 1:107; YD 1:190; YD 3:46:2; YD 3:66:1.</li>
-		<li>Kanievsky, Rabbi Yaakov Y. quoting Chazon Ish (Avrohom Yeshaya Karelitz). Shiurin Shel Torah. p. 3.</li>
-		<li>"Rashi" on Shemos 21:32.</li>
-		<li>"Rambam" on Mishnah Bechoros 88:46.</li>
-		<li>Karo, Yosef. Shulchan Aruch. OC 368, OC 486, OC 612:1, OC 612:3, CM 88:1. 1565.</li>
-		<li><a href="https://www.dafyomi.co.il/general/info/units-of-measurement.pdf">Biblical and Talmudic Units of Measurement</a> by Ronnie Figdor, 2012.</li>
 	</ul>
 	<br />
 </section>
@@ -190,5 +383,11 @@
 	h3 {
 		margin-top: 0.5em;
 		margin-bottom: 0.5em;
+	}
+
+	blockquote {
+		border-left: 0.25em solid #ccc;
+		padding-left: 0.5em;
+		margin-left: 0;
 	}
 </style>

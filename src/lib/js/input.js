@@ -20,9 +20,11 @@ import { calculateZodiac, calculateZodiacHebrewDate } from './zodiac';
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
-const INPUT_INTERPRETATION = 'Input Interpretation';
-const RESULT = 'Result';
-const SOURCES = 'Sources';
+export const INPUT_INTERPRETATION = 'Input Interpretation';
+export const RESULT = 'Result';
+export const SOURCES = 'Sources';
+export const STRINGENCY_NOTE =
+	'* The ranges in parentheses denote values for stringencies. For opinion sources where only a larger number was provided for stringencies, a lower value was inferred by reflecting the number around the standard value. In all situations, the stricter of the two values should be used.';
 
 /**
  * Custom Error class for input errors
@@ -427,21 +429,50 @@ function getRoshChodeshId(direction) {
 }
 
 /**
+ * Format a unit conversion result
+ * @param {import('./unitconverter').ConversionResult|import('./unitconverter').MultiConversionUnit} result - The result to format
+ * @param {import('./unitconverter').Unit} unitTo - The unit to convert to
+ */
+const formatUnitResult = (result, unitTo) => {
+	// set the precision and remove trailing zeroes
+	const amount = formatNumberHTML(result.result);
+	let resultAmountAndUnit = `${amount} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}`;
+	if (result.min || result.max) {
+		resultAmountAndUnit += ' (';
+		if (result.min) {
+			resultAmountAndUnit += `${formatNumberHTML(result.min)}`;
+		}
+		resultAmountAndUnit += ' &ndash; ';
+		if (result.max) {
+			resultAmountAndUnit += `${formatNumberHTML(result.max)}`;
+		}
+		resultAmountAndUnit += `)`;
+	}
+	return resultAmountAndUnit;
+};
+
+/**
+ * Format unit sources
+ * @param {string} [updatedDate] - The date the exchange rates were updated
+ * @returns {string} The formatted sources
+ */
+const formatUnitSources = (updatedDate) => {
+	let sources = `<a href="/info/biblical-units">Information about Biblical Units and Sources</a>`;
+	if (updatedDate) {
+		sources += `<br /><br />Using <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${updatedDate}`;
+	}
+	return sources;
+};
+
+/**
  * Generate sections for a unit conversion query
  *
- * @param {{ function: string, unitFrom: { type: string, unitId: string }, unitTo: { type: string, unitId: string }, amount: number }} derivation
+ * @param {{ function?: string, unitFrom: { type: string, unitId: string }, unitTo: { type: string, unitId: string }, amount: number }} derivation
  * @returns {Promise<{ title: string, content: string }[]>} The response.
  */
-async function unitConversionQuery(derivation) {
+export async function unitConversionQuery(derivation) {
 	/** @type {Array<{ title: string, content: string }>} */
 	const sections = [];
-	/** @param {import('./unitconverter').ConversionResult} result */
-	const formatResult = (result) => {
-		// set the precision and remove trailing zeroes
-		const amount = formatNumberHTML(result.result);
-		const resultAmountAndUnit = `${amount} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}`;
-		return resultAmountAndUnit;
-	};
 
 	let resultValue = '';
 	const unitType = derivation.unitFrom.type;
@@ -458,7 +489,7 @@ async function unitConversionQuery(derivation) {
 	const toUnitOpinionIds = Object.keys(unitOpinionsForType[derivation.unitTo.unitId] ?? {}).map((opinionId) => `${derivation.unitTo.unitId}.${opinionId}`);
 	const params = { type: unitType, unitFromId: derivation.unitFrom.unitId, unitToId: derivation.unitTo.unitId, amount: derivation.amount };
 	const conversionResult = await convertUnits(params);
-	resultValue = formatResult(conversionResult);
+	resultValue = formatUnitResult(conversionResult, unitTo);
 	// if there are multiple opinions, show all of them
 	/** @type Array<import('./unitconverter').ConversionResult>*/
 	if (conversionResult.opinion || conversionResult.unitOpinions) {
@@ -479,22 +510,23 @@ async function unitConversionQuery(derivation) {
 		}
 		const data = conversionResults.map((result) => {
 			const opinion = result.opinion || Object.values(result.unitOpinions ?? {}).join(', ');
-			return { Opinion: opinion, Result: formatResult(result) };
+			return { Opinion: opinion, Result: formatUnitResult(result, unitTo) };
 		});
 		resultValue = dataToHtmlTable(data, { headers: ['Opinion', 'Result'], class: 'table table-striped table-bordered' });
+		if (Object.values(converters[unitType].opinions || {}).some((opinion) => opinion.stringent)) {
+			resultValue += STRINGENCY_NOTE;
+		}
 	}
 	sections.push({ title: RESULT, content: resultValue });
-	const updatedDate = unitTo.updated ?? unitFrom.updated ?? null;
-	if (updatedDate) {
-		sections.push({ title: SOURCES, content: `Based on <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${updatedDate}` });
-	}
+	const updatedDate = unitTo.updated ?? unitFrom.updated;
+	sections.push({ title: SOURCES, content: formatUnitSources(updatedDate) });
 	return sections;
 }
 
 /**
  * Generate sections for a conversion chart query
  *
- * @param {{ function: string, unit: { type: string, unitId: string }, amount: number }} derivation
+ * @param {{ function?: string, unit: { type: string, unitId: string }, amount: number }} derivation
  * @returns {Promise<{ title: string, content: string }[]>} The response.
  */
 async function conversionChartQuery(derivation) {
@@ -507,7 +539,7 @@ async function conversionChartQuery(derivation) {
 	const conversionResults = await convertUnitsMultiAll(params);
 	// output no-opinion results first
 	let content = '';
-	let updatedDate = null;
+	let updatedDate;
 	const noOpinionResults = conversionResults['no-opinion'];
 	if (noOpinionResults) {
 		content += '<ul>';
@@ -520,6 +552,7 @@ async function conversionChartQuery(derivation) {
 	}
 	// output opinion results as a table where the first column is the opinion and the second column is the results for that opinion separated by newlines
 	delete conversionResults['no-opinion'];
+	let hasStringencyFactors = false;
 	if (Object.keys(conversionResults).length > 0) {
 		const data = [];
 		for (const [opinionId, opinionResults] of Object.entries(conversionResults)) {
@@ -527,25 +560,29 @@ async function conversionChartQuery(derivation) {
 			let results = '<ul>';
 			for (const [unitId, result] of Object.entries(opinionResults)) {
 				const unitTo = await getUnit(unitType, unitId);
-				results += `<li>${formatNumberHTML(result.result)} ${result.result === 1 ? unitTo.display : unitTo.displayPlural}</li>`;
+				results += `<li>${formatUnitResult(result, unitTo)}</li>`;
 				updatedDate = unitTo.updated ?? updatedDate;
+				if (result.min || result.max) {
+					hasStringencyFactors = true;
+				}
 			}
 			results += '</ul>';
 			data.push({ Opinion: opinion.name, Results: results });
 		}
 		content += dataToHtmlTable(data, { headers: ['Opinion', 'Results'], class: 'table table-striped table-bordered', html: true });
 	}
-	sections.push({ title: RESULT, content });
-	if (updatedDate) {
-		sections.push({ title: SOURCES, content: `Based on <a href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of ${updatedDate}` });
+	if (hasStringencyFactors) {
+		content += STRINGENCY_NOTE;
 	}
+	sections.push({ title: RESULT, content });
+	sections.push({ title: SOURCES, content: formatUnitSources(updatedDate) });
 	return sections;
 }
 
 /**
  * Generate sections for a gematria query
  *
- * @param {{ function: string, gematriaMethod: string, text: string }} derivation
+ * @param {{ function?: string, gematriaMethod: string, text: string }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function gematriaQuery(derivation) {
@@ -568,7 +605,7 @@ function gematriaQuery(derivation) {
 
 /**
  * Generate sections for a gematria search query
- * @param {{ function: string, gematriaMethod: string, value?: number, text?: string }} derivation
+ * @param {{ function?: string, gematriaMethod: string, value?: number, text?: string }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function gematriaSearchQuery(derivation) {
@@ -613,7 +650,7 @@ function gematriaSearchQuery(derivation) {
 
 /**
  * Generate sections for a gematria two-word match query
- * @param {{ function: string, gematriaMethod?: string, word1: string, word2: string, sameMethod?: boolean }} derivation
+ * @param {{ function?: string, gematriaMethod?: string, word1: string, word2: string, sameMethod?: boolean }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function gematriaTwoWordMatchQuery(derivation) {
@@ -666,7 +703,7 @@ function gematriaTwoWordMatchQuery(derivation) {
 /**
  * Generate sections for a zmanim query
  *
- * @param {{ function: string, zman?: string, date?: { gregorianDate?: { year: number, month: number, day: number }, hebrewDate?: { year: number, month: number, day: number } }, location?: string }} derivation
+ * @param {{ function?: string, zman?: string, date?: { gregorianDate?: { year: number, month: number, day: number }, hebrewDate?: { year: number, month: number, day: number } }, location?: string }} derivation
  * @returns {Promise<{ title: string, content: string }[]>} The response.
  */
 export async function zmanimQuery(derivation) {
@@ -828,7 +865,7 @@ export async function zmanimQuery(derivation) {
 /**
  * Generate sections for a Hebrew calendar query
  *
- * @param {{ function: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } }, year?: number }} derivation
+ * @param {{ function?: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } }, year?: number }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function hebrewCalendarQuery(derivation) {
@@ -897,7 +934,7 @@ function hebrewCalendarQuery(derivation) {
 
 /**
  * Generate sections for a Molad query
- * @param {{ function: string, month?: number, year: number }} derivation
+ * @param {{ function?: string, month?: number, year: number }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function moladQuery(derivation) {
@@ -933,7 +970,7 @@ function moladQuery(derivation) {
 
 /**
  * Generate sections for a Sefiras HaOmer query
- * @param {{ function: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } } }} derivation
+ * @param {{ function?: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } } }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function sefirasHaOmerQuery(derivation) {
@@ -1013,7 +1050,7 @@ function sefirasHaOmerQuery(derivation) {
 
 /**
  * Generate sections for a Leap Year query
- * @param {{ function: string, year: number, calendar: "hebrew" | "gregorian" }} derivation
+ * @param {{ function?: string, year: number, calendar: "hebrew" | "gregorian" }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function leapYearQuery(derivation) {
@@ -1031,7 +1068,7 @@ function leapYearQuery(derivation) {
 
 /**
  * Generate sections for a Daily Learning query
- * @param {{ function: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } }, dailyLearningType: string }} derivation
+ * @param {{ function?: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } }, dailyLearningType: string }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function dailyLearningQuery(derivation) {
@@ -1076,7 +1113,7 @@ function dailyLearningQuery(derivation) {
 
 /**
  * Generate sections for a Jewish Holiday query
- * @param {{ function: string, holiday: string, upcoming?: boolean, year?: { value: number, calendar: "hebrew" | "gregorian" } }} derivation
+ * @param {{ function?: string, holiday: string, upcoming?: boolean, year?: { value: number, calendar: "hebrew" | "gregorian" } }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function jewishHolidayQuery(derivation) {
@@ -1140,7 +1177,7 @@ function jewishHolidayQuery(derivation) {
 /**
  * Generate sections for a Zodiac query
  *
- * @param {{ function: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } } }} derivation
+ * @param {{ function?: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } } }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function zodiacQuery(derivation) {
@@ -1184,7 +1221,7 @@ function zodiacQuery(derivation) {
 /**
  * Generate sections for a Birkas HaChama query
  *
- * @param {{ function: string, direction: 1 | -1, year?: { value: number, calendar: "hebrew" | "gregorian" } }} derivation
+ * @param {{ function?: string, direction: 1 | -1, year?: { value: number, calendar: "hebrew" | "gregorian" } }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
 function birkasHachamaQuery(derivation) {

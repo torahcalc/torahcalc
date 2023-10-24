@@ -9,15 +9,11 @@ describe('test unit conversions', () => {
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(3.5)} Amos to meters`);
 		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toContain(`${formatNumberHTML(1.68021)} meters`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(1.68)} meters`);
 		expect(sections[1].content).toContain('Rabbi Avraham Chaim Naeh');
 		expect(sections[1].content).toContain(`${formatNumberHTML(1.8669)} meters`);
-		expect(sections[1].content).toContain('Rabbi Yaakov Kamenetsky');
-		expect(sections[1].content).toContain(`${formatNumberHTML(1.889125)} meters`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(2.0447)} meters`);
+		expect(sections[1].content).toContain('Aruch Hashulchan');
 		expect(sections[1].content).toContain('Rabbi Moshe Feinstein');
-		expect(sections[1].content).toContain(`${formatNumberHTML(2.02019996)} meters`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(2.1)} meters`);
 		expect(sections[1].content).toContain('Chazon Ish');
 	});
 
@@ -42,12 +38,12 @@ describe('test unit conversions', () => {
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(40)} Seah to US liquid gallons`);
 		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toContain(`${formatNumberHTML(87.64594684)} US liquid gallons`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(150.94579734)} US liquid gallons`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(89.01541476)} US liquid gallons`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(181.78418605)} US liquid gallons`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(126.599701)} US liquid gallons`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(217.49179402)} US liquid gallons`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(68.4734)} US liquid gallons`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(82.1681)} US liquid gallons`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(94.9498)} US liquid gallons`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(101.4421)} US liquid gallons`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(87.6459)} US liquid gallons`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(217.3619)} US liquid gallons`);
 	});
 
 	it('convert 1 us dollar to perutos', async () => {
@@ -69,25 +65,25 @@ describe('test unit conversions', () => {
 		expect(sections[1].content).toBe(`${formatNumberHTML(1080)} Chalakim`);
 	});
 
-	it('1 min to kdei achilas peras', async () => {
-		const sections = await calculateQuery('1 min to kdei achilas peras');
+	it('1 min to kdei achilas pras', async () => {
+		const sections = await calculateQuery('1 min to kdei achilas pras');
 		expect(sections[0].title).toBe('Input Interpretation');
-		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(1)} minute to K'dei Achilas Peras`);
+		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(1)} minute to K'dei Achilas Pras`);
 		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toContain(`${formatNumberHTML(0.5)} K'dei Achilas Peras`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(0.5)} K'dei Achilas Pras`);
 		expect(sections[1].content).toContain(`Chasam Sofer (K'dei Achilas Pras = 2 minutes)`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(0.0896861)} K'dei Achilas Peras`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(0.0896861)} K'dei Achilas Pras`);
 		expect(sections[1].content).toContain(`Darkei Hora'ah (K'dei Achilas Pras = 11 minutes and 9 seconds)`);
 	});
 
-	it('1 hiluch mil to kdei achilas peras', async () => {
-		const sections = await calculateQuery('1 hiluch mil to kdei achilas peras');
+	it('1 hiluch mil to kdei achilas pras', async () => {
+		const sections = await calculateQuery('1 hiluch mil to kdei achilas pras');
 		expect(sections[0].title).toBe('Input Interpretation');
-		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(1)} Hiluch Mil to K'dei Achilas Peras`);
+		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(1)} Hiluch Mil to K'dei Achilas Pras`);
 		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toContain(`${formatNumberHTML(9)} K'dei Achilas Peras`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(9)} K'dei Achilas Pras`);
 		expect(sections[1].content).toContain("Shulchan Aruch Harav (Hiluch Mil = 18 minutes), Chasam Sofer (K'dei Achilas Pras = 2 minutes)");
-		expect(sections[1].content).toContain(`${formatNumberHTML(2.15246637)} K'dei Achilas Peras`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(2.15246637)} K'dei Achilas Pras`);
 		expect(sections[1].content).toContain("Shulchan Aruch Harav (Hiluch Mil = 18 minutes), Darkei Hora'ah (K'dei Achilas Pras = 11 minutes and 9 seconds)");
 	});
 });
@@ -102,15 +98,11 @@ describe('test unit conversion charts', () => {
 		expect(sections[1].content).toContain(`${formatNumberHTML(10)} Parsa'os`);
 		expect(sections[1].content).toContain(`${formatNumberHTML(40)} Milin`);
 		expect(sections[1].content).toContain('Rabbi Avraham Chaim Naeh');
-		expect(sections[1].content).toContain(`${formatNumberHTML(38.4048)} kilometers`);
-		expect(sections[1].content).toContain('Rabbi Yaakov Kamenetsky');
+		expect(sections[1].content).toContain(`${formatNumberHTML(38.4)} kilometers`);
+		expect(sections[1].content).toContain('Aruch Hashulchan');
 		expect(sections[1].content).toContain(`${formatNumberHTML(42.672)} kilometers`);
 		expect(sections[1].content).toContain('Rabbi Moshe Feinstein');
-		expect(sections[1].content).toContain(`${formatNumberHTML(43.18)} kilometers`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(46.736)} kilometers`);
 		expect(sections[1].content).toContain('Chazon Ish');
-		expect(sections[1].content).toContain(`${formatNumberHTML(46.17599909)} kilometers`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(47.99999991)} kilometers`);
 	});
 
 	it('chart for hiluch mil', async () => {

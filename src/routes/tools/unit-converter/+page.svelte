@@ -1,12 +1,8 @@
 <script>
-	import InputCalculator from '../../input/InputCalculator.svelte';
-	import UnitConversionExamples from '../../input/examples/UnitConversionExamples.svelte';
-
-	/** @type {InputCalculator} */
-	let inputCalculator;
-
-	/** @type {(query: string) => any} The function to call when the button is clicked */
-	$: clickFunction = inputCalculator?.setSections;
+	import { getConverters } from '$lib/js/unitconverter';
+	import Fa from 'svelte-fa/src/fa.svelte';
+	import UnitConverter from './UnitConverter.svelte';
+	import { faExternalLink } from '@danieloi/pro-solid-svg-icons';
 
 	const description = 'Convert between any Biblical and modern units of length, area, volume, mass (weight), coins, and time.';
 </script>
@@ -21,15 +17,15 @@
 
 	<p class="center">{description}</p>
 
-	<InputCalculator bind:this={inputCalculator} queryInput="Convert 3 Tefachim to inches" />
+	<UnitConverter />
 
-	<div class="examples">
-		<UnitConversionExamples {clickFunction} />
+	<div class="card flex-card center">
+		<span>
+			<a href="/info/biblical-units"><Fa icon={faExternalLink} size=".9x" /> Information about Biblical Units and Sources</a>
+		</span>
+		{#await getConverters() then converters}
+			<br />
+			<span>Currency conversions use <a target="_blank" href="https://apilayer.com/marketplace/exchangerates_data-api">exchange rates</a> as of {converters.coins.units.usd.updated}</span>
+		{/await}
 	</div>
 </section>
-
-<style>
-	.examples {
-		margin: 0.5rem;
-	}
-</style>
