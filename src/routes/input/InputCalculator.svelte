@@ -1,6 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import { calculateQuery } from '$lib/js/input';
+	import HebrewKeyboard from './HebrewKeyboard.svelte';
 
 	/** @type {string} The current query in the input box (not yet submitted) */
 	export let queryInput = $page.url.searchParams.get('q') ?? '';
@@ -13,6 +14,7 @@
 
 	/**
 	 * Set the query to calculate and update the URL
+	 * @param {string} newQuery - the new query to set
 	 */
 	export async function setSections(newQuery = queryInput) {
 		queryInput = newQuery;
@@ -43,6 +45,18 @@
 	function nl2br(str) {
 		return str.replace(/(?:\r\n|\r|\n)/g, '<br />');
 	}
+
+	/** @type {HTMLInputElement} */
+	let inputBox;
+
+	/**
+	 * Set the query for virtual keyboard input
+	 * @param {string} newQuery - the new query to set
+	 */
+	export function setInput(newQuery) {
+		queryInput = newQuery;
+		inputBox.focus();
+	}
 </script>
 
 <!-- Update the query input when the back button is pressed or the URL is changed -->
@@ -50,9 +64,13 @@
 
 <div class="card flex-card input-control">
 	<div class="input-group">
-		<input type="text" bind:value={queryInput} class="form-control" placeholder="What do you want to calculate?" on:keyup={onQueryKeypress} />
+		<input type="text" bind:value={queryInput} bind:this={inputBox} class="form-control" placeholder="What do you want to calculate?" on:keyup={onQueryKeypress} />
 		<button class="btn btn-primary" on:click={() => setSections(queryInput)}>Go</button>
 	</div>
+	<details class="mt-2">
+		<summary>Show Hebrew Keyboard</summary>
+		<HebrewKeyboard addCharacter={(c) => setInput(queryInput + c)} backspace={() => setInput(queryInput.slice(0, -1))} clear={() => setInput('')} />
+	</details>
 </div>
 
 {#if query !== ''}
