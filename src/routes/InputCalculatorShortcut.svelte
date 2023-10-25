@@ -1,4 +1,5 @@
 <script>
+	import HebrewKeyboard from './input/HebrewKeyboard.svelte';
 	import InputExamples from './input/InputExamples.svelte';
 
 	/** @type {string} The current query in the input box (not yet submitted) */
@@ -27,15 +28,31 @@
 			openQuery();
 		}
 	}
+
+	/** @type {HTMLInputElement} */
+	let inputBox;
+
+	/**
+	 * Set the query for virtual keyboard input
+	 * @param {string} newQuery - the new query to set
+	 */
+	export function setInput(newQuery) {
+		queryInput = newQuery;
+		inputBox.focus();
+	}
 </script>
 
 <a class="d-none" href="/input?q={encodeURIComponent(queryInput)}" id="queryUrl">Open Query</a>
 
 <div class="card flex-card input-control">
 	<div class="input-group">
-		<input type="text" bind:value={queryInput} class="form-control" placeholder="What do you want to calculate?" on:keyup={onQueryKeypress} />
+		<input type="text" bind:value={queryInput} bind:this={inputBox} class="form-control" placeholder="What do you want to calculate?" on:keyup={onQueryKeypress} />
 		<button class="btn btn-primary" on:click={() => openQuery(queryInput)}>Go</button>
 	</div>
+	<details class="mt-2">
+		<summary>Show Hebrew Keyboard</summary>
+		<HebrewKeyboard addCharacter={(c) => setInput(queryInput + c)} backspace={() => setInput(queryInput.slice(0, -1))} clear={() => setInput('')} />
+	</details>
 </div>
 
 <InputExamples clickFunction={openQuery} />
