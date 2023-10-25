@@ -49,10 +49,7 @@
 		<input type="text" bind:value={queryInput} bind:this={inputBox} class="form-control" placeholder="What do you want to calculate?" on:keyup={onQueryKeypress} />
 		<button class="btn btn-primary" on:click={() => openQuery(queryInput)}>Go</button>
 	</div>
-	<details class="mt-2">
-		<summary>Show Hebrew Keyboard</summary>
-		<HebrewKeyboard addCharacter={(c) => setInput(queryInput + c)} backspace={() => setInput(queryInput.slice(0, -1))} clear={() => setInput('')} />
-	</details>
+	<HebrewKeyboard addCharacter={(c) => setInput(queryInput + c)} backspace={() => setInput(queryInput.slice(0, -1))} clear={() => setInput('')} />
 </div>
 
 <InputExamples clickFunction={openQuery} />
