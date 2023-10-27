@@ -109,7 +109,7 @@
 					{/each}
 				</ul>
 				<span class="navbar-text">
-					<a class="nav-link" href="https://torahcalc.com" target="_blank" rel="noopener noreferrer">
+					<a class="nav-link" href="https://old.torahcalc.com" target="_blank" rel="noopener noreferrer">
 						<Fa icon={faExternalLinkAlt} size="1x" />
 						<span>Visit Old Site</span>
 					</a>

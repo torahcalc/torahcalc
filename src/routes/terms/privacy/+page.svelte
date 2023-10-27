@@ -74,8 +74,8 @@
 	</p>
 	<p><strong>Data Retention</strong></p>
 	<p>
-		We do not store any of your data, although some may be used with third-party services such as Google Maps, Kontactr, and Google Analytics. If you for any reason feel we are storing personal
-		information and you would like it deleted, please contact us at jonah@freshidea.com or through the contact form on https://www.torahcalc.com.
+		We do not store any of your data, although some may be used with third-party services such as Google Maps and Google Analytics. If you for any reason feel we are storing personal information and
+		you would like it deleted, please contact us at jonah@freshidea.com.
 	</p>
 	<p>This policy is effective as of 2022-11-22</p>
 	<p><strong>Contact Us</strong></p>

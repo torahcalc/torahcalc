@@ -10,7 +10,7 @@ This project is a complete rewrite of the original site, which was built with pl
 
 New website preview: https://torahcalc.vercel.app
 
-Old website: https://www.torahcalc.com
+Old website: https://www.old.torahcalc.com
 
 ## Contributing
 
