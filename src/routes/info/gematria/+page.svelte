@@ -8,7 +8,7 @@
 
 	<ul>
 		<li>
-			<p id="hechrachi">
+			<p id="standard">
 				<b>Mispar Hechrachi (Mispar ha-Panim, absolute, standard, normative value) (Heb: מספר הכרחי)</b>
 				is the most commonly used method of calculating gematria where each of the 22 letters is assigned a basic value.
 			</p>
@@ -722,7 +722,7 @@
 	</table>
 	<ul>
 		<li>
-			<p id="hamerubahhaklali">
+			<p id="hamerubah_haklali">
 				<b>Mispar HaMerubah HaKlali (Heb: מספר המרובע הכללי)</b> is the standard value squared.
 			</p>
 		</li>
@@ -808,7 +808,7 @@
 	</table>
 	<ul>
 		<li>
-			<p id="haakhor">
+			<p id="haachor">
 				<b>Mispar Ha'achor (sometimes called Mispar Meshulash, triangular value) (Heb: מספר האחור)</b> values each letter as its value multiplied by the position of the letter in the word or phrase.
 			</p>
 		</li>
@@ -888,7 +888,7 @@
 	</table>
 	<ul>
 		<li>
-			<p id="katanmispari">
+			<p id="katan_mispari">
 				<b>Mispar Katan Mispari (integral reduced value) (Heb: מספר קטן מספרי)</b> is the digital root of the standard value which is obtained by adding all the digits in the number until the number is
 				a single digit. (ex. Echad (13) --> 1 + 3 --> 4).
 			</p>
@@ -1197,7 +1197,7 @@
 	</table>
 	<ul>
 		<li>
-			<p id="reverseavgad">
+			<p id="reverse_avgad">
 				<b>Reverse Avgad</b> replaces each letter with the previous one. (ex. "Beis" becomes "Aleph", "Gimmel" becomes "Beis", "Aleph" becomes "Tav").
 			</p>
 		</li>
