@@ -1,5 +1,5 @@
 <script>
-	import { RESULT, unitConversionQuery } from '$lib/js/input';
+	import { OPINION_DETAILS, unitConversionQuery } from '$lib/js/input';
 	import { convertUnits, getConverters } from '$lib/js/unitconverter.js';
 	import { faExchange } from '@danieloi/pro-solid-svg-icons';
 	import Fa from 'svelte-fa/src/fa.svelte';
@@ -35,12 +35,8 @@
 	 */
 	async function buildOpinionsTable(unitType, unitFromId, unitToId, value) {
 		const inputResultsSections = await unitConversionQuery({ unitFrom: { type: unitType, unitId: unitFromId }, unitTo: { type: unitType, unitId: unitToId }, amount: value });
-		const resultSection = inputResultsSections.find((section) => section.title === RESULT)?.content;
-		// only return the result section if it contains a table
-		if (!resultSection?.includes('<table')) {
-			return '';
-		}
-		return resultSection;
+		const opinionSection = inputResultsSections.find((section) => section.title === OPINION_DETAILS)?.content;
+		return opinionSection || '';
 	}
 
 	/**
