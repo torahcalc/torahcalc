@@ -78,7 +78,7 @@
 	export function setInput(newQuery) {
 		query = newQuery;
 		inputBox.focus();
-        updateResults();
+		updateResults();
 	}
 </script>
 
