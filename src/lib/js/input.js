@@ -23,6 +23,7 @@ dayjs.extend(utc);
 export const INPUT_INTERPRETATION = 'Input Interpretation';
 export const RESULT = 'Result';
 export const SOURCES = 'Sources';
+export const OPINION_DETAILS = 'Opinion Details';
 export const STRINGENCY_NOTE =
 	'* The ranges in parentheses denote values for stringencies. For opinion sources where only a larger number was provided for stringencies, a lower value was inferred by reflecting the number around the standard value. In all situations, the stricter of the two values should be used.';
 
@@ -474,7 +475,6 @@ export async function unitConversionQuery(derivation) {
 	/** @type {Array<{ title: string, content: string }>} */
 	const sections = [];
 
-	let resultValue = '';
 	const unitType = derivation.unitFrom.type;
 	const unitFrom = await getUnit(unitType, derivation.unitFrom.unitId);
 	const unitTo = await getUnit(unitType, derivation.unitTo.unitId);
@@ -489,10 +489,11 @@ export async function unitConversionQuery(derivation) {
 	const toUnitOpinionIds = Object.keys(unitOpinionsForType[derivation.unitTo.unitId] ?? {}).map((opinionId) => `${derivation.unitTo.unitId}.${opinionId}`);
 	const params = { type: unitType, unitFromId: derivation.unitFrom.unitId, unitToId: derivation.unitTo.unitId, amount: derivation.amount };
 	const conversionResult = await convertUnits(params);
-	resultValue = formatUnitResult(conversionResult, unitTo);
 	// if there are multiple opinions, show all of them
 	/** @type Array<import('./unitconverter').ConversionResult>*/
 	if (conversionResult.opinion || conversionResult.unitOpinions) {
+		let lowestOpinion = Infinity;
+		let highestOpinion = -Infinity;
 		const conversionResults = [];
 		for (const opinionId of opinions) {
 			conversionResults.push(await convertUnits({ ...params, opinionId }));
@@ -510,14 +511,26 @@ export async function unitConversionQuery(derivation) {
 		}
 		const data = conversionResults.map((result) => {
 			const opinion = result.opinion || Object.values(result.unitOpinions ?? {}).join(', ');
+			if (result.result <= lowestOpinion) {
+				lowestOpinion = result.result;
+			}
+			if (result.result >= highestOpinion) {
+				highestOpinion = result.result;
+			}
 			return { Opinion: opinion, Result: formatUnitResult(result, unitTo) };
 		});
-		resultValue = dataToHtmlTable(data, { headers: ['Opinion', 'Result'], class: 'table table-striped table-bordered' });
+		// show the lowest and highest opinions as a range for the result
+		sections.push({ title: RESULT, content: `${formatNumberHTML(lowestOpinion)} &ndash; ${formatNumberHTML(highestOpinion)} ${unitTo.displayPlural}` });
+		let opinionTable = dataToHtmlTable(data, { headers: ['Opinion', 'Result'], class: 'table table-striped table-bordered' });
 		if (Object.values(converters[unitType].opinions || {}).some((opinion) => opinion.stringent)) {
-			resultValue += STRINGENCY_NOTE;
+			opinionTable += STRINGENCY_NOTE;
 		}
+		sections.push({ title: OPINION_DETAILS, content: opinionTable });
 	}
-	sections.push({ title: RESULT, content: resultValue });
+	// otherwise, show the single result
+	else {
+		sections.push({ title: RESULT, content: formatUnitResult(conversionResult, unitTo) });
+	}
 	const updatedDate = unitTo.updated ?? unitFrom.updated;
 	sections.push({ title: SOURCES, content: formatUnitSources(updatedDate) });
 	return sections;
