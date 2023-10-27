@@ -490,9 +490,4 @@
 		color: #fff;
 		font-weight: bold;
 	}
-	tr.subheadrow > td {
-		background-color: #7ac0f8;
-		color: #111;
-		font-weight: bold;
-	}
 </style>
