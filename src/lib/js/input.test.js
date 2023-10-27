@@ -9,12 +9,14 @@ describe('test unit conversions', () => {
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(3.5)} Amos to meters`);
 		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toContain(`${formatNumberHTML(1.68)} meters`);
-		expect(sections[1].content).toContain('Rabbi Avraham Chaim Naeh');
-		expect(sections[1].content).toContain(`${formatNumberHTML(1.8669)} meters`);
-		expect(sections[1].content).toContain('Aruch Hashulchan');
-		expect(sections[1].content).toContain('Rabbi Moshe Feinstein');
-		expect(sections[1].content).toContain('Chazon Ish');
+		expect(sections[1].content).toBe(`${formatNumberHTML(1.68)} &ndash; ${formatNumberHTML(2.0202)} meters`);
+		expect(sections[2].title).toBe('Opinion Details');
+		expect(sections[2].content).toContain(`${formatNumberHTML(1.68)} meters`);
+		expect(sections[2].content).toContain('Rabbi Avraham Chaim Naeh');
+		expect(sections[2].content).toContain(`${formatNumberHTML(1.8669)} meters`);
+		expect(sections[2].content).toContain('Aruch Hashulchan');
+		expect(sections[2].content).toContain('Rabbi Moshe Feinstein');
+		expect(sections[2].content).toContain('Chazon Ish');
 	});
 
 	it('convert 1 amos to tefachim', async () => {
@@ -38,12 +40,14 @@ describe('test unit conversions', () => {
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(40)} Seah to US liquid gallons`);
 		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toContain(`${formatNumberHTML(68.4734)} US liquid gallons`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(82.1681)} US liquid gallons`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(94.9498)} US liquid gallons`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(101.4421)} US liquid gallons`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(87.6459)} US liquid gallons`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(217.3619)} US liquid gallons`);
+		expect(sections[1].content).toContain(`${formatNumberHTML(68.4734)} &ndash; ${formatNumberHTML(217.3619)} US liquid gallons`);
+		expect(sections[2].title).toBe('Opinion Details');
+		expect(sections[2].content).toContain(`${formatNumberHTML(68.4734)} US liquid gallons`);
+		expect(sections[2].content).toContain(`${formatNumberHTML(82.1681)} US liquid gallons`);
+		expect(sections[2].content).toContain(`${formatNumberHTML(94.9498)} US liquid gallons`);
+		expect(sections[2].content).toContain(`${formatNumberHTML(101.4421)} US liquid gallons`);
+		expect(sections[2].content).toContain(`${formatNumberHTML(87.6459)} US liquid gallons`);
+		expect(sections[2].content).toContain(`${formatNumberHTML(217.3619)} US liquid gallons`);
 	});
 
 	it('convert 1 us dollar to perutos', async () => {
@@ -51,10 +55,12 @@ describe('test unit conversions', () => {
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(1)} US Dollar to Perutos`);
 		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toContain(' Perutos');
-		expect(sections[1].content).toContain('Shulchan Aruch / Rambam - שולחן ערוך / רמב״ם');
-		expect(sections[1].content).toContain('Rashi - רש״י');
-		expect(sections[1].content).toContain('Other authorities - פוסקים אחרים');
+		expect(sections[1].content).toContain(`${formatNumberHTML(50.2232)} &ndash; ${formatNumberHTML(68.1026)} Perutos`);
+		expect(sections[2].title).toBe('Opinion Details');
+		expect(sections[2].content).toContain(' Perutos');
+		expect(sections[2].content).toContain('Shulchan Aruch / Rambam - שולחן ערוך / רמב״ם');
+		expect(sections[2].content).toContain('Rashi - רש״י');
+		expect(sections[2].content).toContain('Other authorities - פוסקים אחרים');
 	});
 
 	it('how many chalakim are in an hour?', async () => {
@@ -70,10 +76,12 @@ describe('test unit conversions', () => {
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(1)} minute to K'dei Achilas Pras`);
 		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toContain(`${formatNumberHTML(0.5)} K'dei Achilas Pras`);
-		expect(sections[1].content).toContain(`Chasam Sofer (K'dei Achilas Pras = 2 minutes)`);
-		expect(sections[1].content).toContain(`${formatNumberHTML(0.0896861)} K'dei Achilas Pras`);
-		expect(sections[1].content).toContain(`Darkei Hora'ah (K'dei Achilas Pras = 11 minutes and 9 seconds)`);
+		expect(sections[1].content).toBe(`${formatNumberHTML(0.0896861)} &ndash; ${formatNumberHTML(0.5)} K'dei Achilas Pras`);
+		expect(sections[2].title).toBe('Opinion Details');
+		expect(sections[2].content).toContain(`${formatNumberHTML(0.5)} K'dei Achilas Pras`);
+		expect(sections[2].content).toContain(`Chasam Sofer (K'dei Achilas Pras = 2 minutes)`);
+		expect(sections[2].content).toContain(`${formatNumberHTML(0.0896861)} K'dei Achilas Pras`);
+		expect(sections[2].content).toContain(`Darkei Hora'ah (K'dei Achilas Pras = 11 minutes and 9 seconds)`);
 	});
 
 	it('1 hiluch mil to kdei achilas pras', async () => {
@@ -81,10 +89,12 @@ describe('test unit conversions', () => {
 		expect(sections[0].title).toBe('Input Interpretation');
 		expect(sections[0].content).toBe(`Convert ${formatNumberHTML(1)} Hiluch Mil to K'dei Achilas Pras`);
 		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toContain(`${formatNumberHTML(9)} K'dei Achilas Pras`);
-		expect(sections[1].content).toContain("Shulchan Aruch Harav (Hiluch Mil = 18 minutes), Chasam Sofer (K'dei Achilas Pras = 2 minutes)");
-		expect(sections[1].content).toContain(`${formatNumberHTML(2.15246637)} K'dei Achilas Pras`);
-		expect(sections[1].content).toContain("Shulchan Aruch Harav (Hiluch Mil = 18 minutes), Darkei Hora'ah (K'dei Achilas Pras = 11 minutes and 9 seconds)");
+		expect(sections[1].content).toBe(`${formatNumberHTML(1.6143)} &ndash; ${formatNumberHTML(12)} K'dei Achilas Pras`);
+		expect(sections[2].title).toBe('Opinion Details');
+		expect(sections[2].content).toContain(`${formatNumberHTML(9)} K'dei Achilas Pras`);
+		expect(sections[2].content).toContain("Shulchan Aruch Harav (Hiluch Mil = 18 minutes), Chasam Sofer (K'dei Achilas Pras = 2 minutes)");
+		expect(sections[2].content).toContain(`${formatNumberHTML(2.15246637)} K'dei Achilas Pras`);
+		expect(sections[2].content).toContain("Shulchan Aruch Harav (Hiluch Mil = 18 minutes), Darkei Hora'ah (K'dei Achilas Pras = 11 minutes and 9 seconds)");
 	});
 });
 
