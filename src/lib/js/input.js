@@ -14,7 +14,7 @@ import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears';
 import { calculateMolad } from './molad';
 import { calculateOmerDate, calculateOmerHebrew } from './omer';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
-import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, getCurrentHebrewMonth, getNextHebrewMonth, getPrevHebrewMonth, logQuery, properCase, sanitize, translate } from './utils';
+import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, getCurrentHebrewMonth, getNextHebrewMonth, getPrevHebrewMonth, properCase, sanitize, translate } from './utils';
 import { ZMANIM_NAMES } from './zmanim';
 import { calculateZodiac, calculateZodiacHebrewDate } from './zodiac';
 dayjs.extend(timezone);
@@ -57,32 +57,26 @@ export async function calculateQuery(search, options = {}) {
 	/** @type {Array<{ title: string, content: string }>} */
 	const startSections = [];
 
-	// create the parser
-	let parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
+	let parserResults = parseQuery(search);
 
-	// convert input to lowercase
-	const searchLower = search.toLowerCase();
-
-	// run the parser
-	try {
-		parser.feed(searchLower);
-	} catch (e) {
-		// try translating the input to English and running the parser again
-		try {
-			const translation = await translate(search);
-			parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
-			parser.feed(translation.toLowerCase());
-		} catch (e) {
-			logQuery(search);
-			throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.', `${e}`);
-		}
+	// if it fails, try translating the input to English and running the parser again
+	if (parserResults.success === false) {
+		const translation = await translate(search);
+		parserResults = parseQuery(translation);
 	}
 
-	const derivations = await getValidDerivations(search, parser.results);
+	// if it still fails, throw an error
+	if (parserResults.success === false) {
+		logQuery(search);
+		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.', parserResults.data);
+	}
+
+	// @ts-ignore - The parser results are always an array at this point
+	const derivations = await getValidDerivations(search, parserResults.data);
 
 	if (Object.keys(derivations).length === 0) {
 		logQuery(search);
-		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.', JSON.stringify(parser.results, null, 2));
+		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.', JSON.stringify(parserResults.data, null, 2));
 	}
 
 	const derivation = derivations[options.disambiguation ?? ''] ?? Object.values(derivations).sort((a, b) => b.disambiguationScore - a.disambiguationScore)[0];
@@ -143,6 +137,28 @@ export async function calculateQuery(search, options = {}) {
 }
 
 /**
+ * Normalize and parse a query using the grammar
+ * @param {string} search - The search query
+ * @returns {{ success: true, data: any[] }|{ success: false, data: string }} The parsed query or an error message
+ */
+function parseQuery(search) {
+	// create the parser
+	let parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
+
+	// convert input to lowercase and add spaces at the end to make word boundaries easier to parse
+	const normalized = `${search.toLowerCase().replace(/[.?]+$/, '')} `;
+
+	// run the parser
+	try {
+		parser.feed(normalized);
+	} catch (e) {
+		return { success: false, data: `${e}` };
+	}
+
+	return { success: true, data: parser.results };
+}
+
+/**
  * Format a parse result date
  * @param {{ gregorianDate?: { year: number, month: number, day: number, format: string, afterSunset: boolean }, hebrewDate?: { year: number, month: number, day: number, format: string }}} date - The date to format
  * @returns {string} The formatted date
@@ -197,6 +213,8 @@ async function getValidDerivations(search, results) {
 			// gematria methods are disambiguated by method
 			const method = METHOD_NAMES[derivation.gematriaMethod];
 			derivation.disambiguation = `${method.name}`;
+		} else if (derivation.function === 'gematriaTwoWordMatchQuery') {
+			derivation.disambiguation = `Gematria equivalences for "${derivation.word1}" and "${derivation.word2}"`;
 		} else if (derivation.function === 'zmanimQuery') {
 			// zmanim are disambiguated by zman, date, and location
 			// @ts-ignore - assume key exists
