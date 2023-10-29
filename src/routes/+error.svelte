@@ -8,13 +8,14 @@
 	// redirect pages from the old site to the new urls if a 404 is encountered
 	const redirectPath = {
 		'/app': 'https://play.google.com/store/apps/details?id=com.freshidea.newtorahcalc&hl=en_US&gl=US',
-		'/github': 'https://github.com/torahcalc/torahcalc',
 		'/contact': 'https://github.com/torahcalc/torahcalc/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc',
 		'/daf-yomi': '/tools/daily-learning',
 		'/dateconverter': '/tools/date-converter',
+		'/dateconverter/embedA': 'https://old.torahcalc.com/dateconverter/embedA/',
 		'/gematria-match': '/tools/gematria-match',
 		'/gematria': '/tools/gematria',
 		'/gematrias': '/tools/gematria-search',
+		'/github': 'https://github.com/torahcalc/torahcalc',
 		'/hachama': '/tools/birkas-hachama',
 		'/holidays': '/tools/jewish-holidays',
 		'/info/biblical-units': '/info/biblical-units',
@@ -22,13 +23,15 @@
 		'/leapyears': '/tools/leap-years',
 		'/molad': '/tools/molad',
 		'/omer': '/tools/sefiras-haomer',
-		'/pesach': '/info/pesach',
+		'/pesach': 'https://old.torahcalc.com/pesach/', // TODO: migrate page (#45)
 		'/privacy': '/terms/privacy',
 		'/privacy/terms-and-conditions.html': '/terms/tos',
+		'/tekufos': 'https://old.torahcalc.com/tekufos/', // TODO: migrate page (#35)
 		'/unitcharts': '/tools/unit-charts',
 		'/unitconverter': '/tools/unit-converter',
 		'/zmanim': '/tools/zmanim',
 		'/zodiac': '/tools/hebrew-zodiac-signs',
+		'/zodiac/embed': 'https://old.torahcalc.com/zodiac/embed/',
 	}[$page.url.pathname.replace(/\/(index\.html)?$/, '')];
 	if ($page.status === 404 && redirectPath) {
 		throw redirect(301, redirectPath);
