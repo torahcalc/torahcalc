@@ -14,7 +14,7 @@ import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears';
 import { calculateMolad } from './molad';
 import { calculateOmerDate, calculateOmerHebrew } from './omer';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
-import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, getCurrentHebrewMonth, getNextHebrewMonth, getPrevHebrewMonth, properCase, sanitize, translate } from './utils';
+import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, getCurrentHebrewMonth, getNextHebrewMonth, getPrevHebrewMonth, logQuery, properCase, sanitize, translate } from './utils';
 import { ZMANIM_NAMES } from './zmanim';
 import { calculateZodiac, calculateZodiacHebrewDate } from './zodiac';
 dayjs.extend(timezone);
