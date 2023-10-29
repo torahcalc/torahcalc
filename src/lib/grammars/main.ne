@@ -120,9 +120,13 @@ location -> [a-zÀ-ÖØ-öø-ÿ\d\s,.'()+":;\-]:+ {% data => data[0].join("") %}
 # - When will 14 Nissan fall next year?
 # - Today's date on Hebrew calendar.
 hebrewCalendarQuery -> optionalWords[("convert" | "translate")] date _ optionalWords[("on" | "to" | "into")] _ optionalWords[("gregorian" | "english" | "standard" | "hebrew" | "jewish")] _ optionalWordsEnd[("calendar" | "date")] {% data => ({function: "hebrewCalendarQuery", date: data[1]}) %}
-                     | optionalWords[("convert" | "translate")] calendarAwareYear _ optionalWords[("on" | "to" | "into")] _ optionalWords[("gregorian" | "english" | "standard" | "hebrew" | "jewish")] _ optionalWordsEnd[("calendar" | "date")] {% data => ({function: "hebrewCalendarQuery", year: data[1]}) %}
+                     | optionalWords[("convert" | "translate")] optionalWords["year"] calendarAwareYear hebrewCalendarYearConversionSuffix {% data => ({function: "hebrewCalendarQuery", year: data[2]}) %}
                      | optionalWords["when"] optionalWords[("will" | "is" | "does" | "did")] hebrewDate __ optionalWords[("fall" | "occur" | "be" | "land")] optionalWords["in"] calendarAwareYear {% data => ({function: "hebrewCalendarQuery", date: data[2], year: data[6]}) %}
                      | optionalWords["when"] optionalWords[("will" | "is" | "does" | "did")] gregorianDate __ optionalWords[("fall" | "occur" | "be" | "land")] optionalWords["in"] calendarAwareYear {% data => ({function: "hebrewCalendarQuery", date: data[2], year: data[6]}) %}
+
+hebrewCalendarYearConversionSuffix ->  _ optionalWords[("on" | "to" | "into")] _ optionalWords[("gregorian" | "english" | "standard" | "hebrew" | "jewish")] _ optionalWordsEnd[("calendar" | "date")] {% data => null %}
+                                    | _ optionalWords[("on" | "to" | "into")] _ optionalWordsEnd[("gregorian" | "english" | "standard" | "hebrew" | "jewish")] {% data => null %}
+                                    | _ {% data => null %}
 
 # Molad
 # - Calculate the molad of Sivan 5781.
