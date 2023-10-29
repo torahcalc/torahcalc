@@ -79,6 +79,8 @@ export async function calculateQuery(search, options = {}) {
 		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.', JSON.stringify(parserResults.data, null, 2));
 	}
 
+	logQuery('✅: ' + search);
+
 	const derivation = derivations[options.disambiguation ?? ''] ?? Object.values(derivations).sort((a, b) => b.disambiguationScore - a.disambiguationScore)[0];
 
 	if (Object.keys(derivations).length > 1) {
