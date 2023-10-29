@@ -29,8 +29,8 @@
 		'/unitconverter': '/tools/unit-converter',
 		'/zmanim': '/tools/zmanim',
 		'/zodiac': '/tools/hebrew-zodiac-signs',
-		'/dateconverter/embedA/': 'https://old.torahcalc.com/dateconverter/embedA/',
-		'/zodiac/embed/': 'https://old.torahcalc.com/zodiac/embed/',
+		'/dateconverter/embedA': 'https://old.torahcalc.com/dateconverter/embedA/',
+		'/zodiac/embed': 'https://old.torahcalc.com/zodiac/embed/',
 	}[$page.url.pathname.replace(/\/(index\.html)?$/, '')];
 	if ($page.status === 404 && redirectPath) {
 		throw redirect(301, redirectPath);
