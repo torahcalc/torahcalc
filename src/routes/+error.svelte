@@ -22,13 +22,15 @@
 		'/leapyears': '/tools/leap-years',
 		'/molad': '/tools/molad',
 		'/omer': '/tools/sefiras-haomer',
-		'/pesach': '/info/pesach',
+		'/pesach': 'https://old.torahcalc.com/pesach/', // TODO: migrate this page
 		'/privacy': '/terms/privacy',
 		'/privacy/terms-and-conditions.html': '/terms/tos',
 		'/unitcharts': '/tools/unit-charts',
 		'/unitconverter': '/tools/unit-converter',
 		'/zmanim': '/tools/zmanim',
 		'/zodiac': '/tools/hebrew-zodiac-signs',
+		'/dateconverter/embedA/': 'https://old.torahcalc.com/dateconverter/embedA/',
+		'/zodiac/embed/': 'https://old.torahcalc.com/zodiac/embed/',
 	}[$page.url.pathname.replace(/\/(index\.html)?$/, '')];
 	if ($page.status === 404 && redirectPath) {
 		throw redirect(301, redirectPath);
