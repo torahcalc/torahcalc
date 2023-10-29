@@ -67,7 +67,7 @@ export async function calculateQuery(search, options = {}) {
 
 	// if it still fails, throw an error
 	if (parserResults.success === false) {
-		logQuery(search);
+		logQuery('❌: ' + search);
 		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.', parserResults.data);
 	}
 
@@ -75,7 +75,7 @@ export async function calculateQuery(search, options = {}) {
 	const derivations = await getValidDerivations(search, parserResults.data);
 
 	if (Object.keys(derivations).length === 0) {
-		logQuery(search);
+		logQuery('❌: ' + search);
 		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.', JSON.stringify(parserResults.data, null, 2));
 	}
 
