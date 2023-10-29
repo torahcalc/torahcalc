@@ -42,7 +42,7 @@
 	<h3 id="length">Length</h3>
 	<ul>
 		<li>
-			<b>Etzbah (Hebrew: אצבע, pl. Etzbaos): </b>Fingerbreadths.
+			<b>Etzbah / Agudal (Hebrew: אצבע / אגודל, pl. Etzbaos): </b>Fingerbreadths, the width of an average thumb.
 			<br />
 		</li>
 		<ul>
@@ -72,7 +72,7 @@
 				</blockquote>
 			</li>
 		</ul>
-		<li><b>Tefach (Hebrew: טפח, pl. Tefachim): </b>Handbreadths. <i>= 4 Etzbaos.</i></li>
+		<li><b>Tefach (Hebrew: טפח, pl. Tefachim): </b>Handbreadths, a fist measured from the widest part of the thumb. <i>= 4 Etzbaos.</i></li>
 		<li><b>Zeres (Hebrew: זרת, pl. Zaros): </b>Spans. <i>= 3 Tefachim.</i></li>
 		<li><b>Amah (Hebrew: אמה, pl. Amos): </b>Cubits, Arm-lengths, Ells <i>= 2 Zaros.</i></li>
 		<li><b>Short Amah (Hebrew: אמה בת חמשה): </b>Short cubit of five handbreadths instead of six. <i>= 5/6 Amah.</i></li>
@@ -80,7 +80,7 @@
 		<li><b>Ris (Hebrew: ריס, pl. Risim): </b>Greek stadium. <i>= 44.4444 Kaneh.</i></li>
 		<li><b>Mil (Hebrew: מיל, pl. Milim): </b>Talmudic miles. <i>= 7 ½ Ris.</i></li>
 		<li><b>Parsah (Hebrew: פרסה, pl. Parsaos): </b>Parasangs, Persian miles. <i>= 4 Mil.</i></li>
-		<li><b>Derech Yom / Mahalach Yom (Hebrew: דרך יום \ מהלך יום): </b>A day's journey. <i>= 10 Parsaos.</i></li>
+		<li><b>Derech Yom / Mahalach Yom (Hebrew: דרך יום / מהלך יום): </b>A day's journey. <i>= 10 Parsaos.</i></li>
 	</ul>
 	<h3 id="area">Area</h3>
 	<ul>
@@ -194,33 +194,33 @@
 		</li>
 		<li><b>Mesurah (Hebrew: משורה): </b>Equal to 1/32 Log. <i>= 1 7/9 Kortov.</i></li>
 		<li><b>Grogeres (Hebrew: גרוגרת, pl. Grogaros): </b>A dried fig's bulk. 3/10 of a Beitzah.<Ref id="10" /> <i>= 1.8 Mesuros.</i></li>
-		<li><b>Kezayis (Hebrew: כזית, pl. Kezaysim): </b>An olive's bulk. 1/2 of a Beitzah<Ref id="11" /> <i>= 5/3 Grogeres.</i></li>
+		<li><b>Kezayis (Hebrew: כזית, pl. Kezaysim): </b>An olive's bulk. 1/2 of a Beitzah<Ref id="11" /> (1/3 of a Beitzah according to others <Ref id="20" />) <i>= 5/3 Grogeres.</i></li>
 		<li><b>(Koseves HaGasah (Hebrew: כותבת הגסה): </b>A large date's bulk. Slightly less than a Beitzah.<Ref id="12" />)</li>
 		<li><b>Beitzah (Hebrew: ביצה, pl. Beitzim): </b>An egg's bulk. <i>= 2 Kezaysim.</i></li>
-		<li><b>Uchlah / K'lah (Hebrew: עוכלא \ כלה): </b>Equal to 1/20 Kav. <i>= 1 1/5 Beitzim.</i></li>
+		<li><b>Uchlah / K'lah (Hebrew: עוכלא / כלה): </b>Equal to 1/20 Kav. <i>= 1 1/5 Beitzim.</i></li>
 		<li><b>Revi'is (Hebrew: רביעית): </b>A quarter of a Log. <i>= 1 1/4 Uchlah / K'lah.</i></li>
 		<li><b>Tomen (Hebrew: תומן): </b>Equal to 1/8 Kav. <i>= 2 Revi'is.</i></li>
 		<li><b>(Pras (Hebrew: פרס): </b>Rashi: 4 Beitzim. Rambam: 3 Beitzim.<Ref id="13" />)</li>
-		<li><b>Rova / Log (Hebrew: רובע \ לוג): </b>A quarter of a Kav. <i>= 2 Tomen.</i></li>
-		<li><b>Kav (Hebrew: קב): </b>Equal to 1/6 Seah. <i>= 4 Rova / Log.</i></li>
-		<li><b>Issaron / Omer (Hebrew: עשרון \ עומר): </b>Equal to 1/10 Ephah. <i>= 1 4/5 Kav.</i></li>
-		<li><b>Tarkav / Hin (Hebrew: תרקב \ הין): </b>Equal to 1/2 Seah, 1/60 Kor. <i>= 1 2/3 Issaron / Omer.</i></li>
-		<li><b>Se'ah (Hebrew: סאה): </b>Equal to 1/30 Kor. <i>= 2 Tarkav / Hin.</i></li>
-		<li><b>Ephah / Bat (Hebrew: איפה \ בת): </b>Equal to 1/10 Kor. <i>= 3 Seah.</i></li>
-		<li><b>Letech / Adriv (Hebrew: לתך \ אדריב): </b>Equal to 1/2 Kor. <i>= 5 Ephah / Bat.</i></li>
-		<li><b>Kor / Chomer (Hebrew: כור \ חומר): </b>Equal to 30 Seah, 10 Ephah. <i>= 2 Letech / Adriv.</i></li>
+		<li><b>Rova / Log (Hebrew: רובע / לוג, pl. Lugin): </b>A quarter of a Kav. <i>= 2 Tomen.</i></li>
+		<li><b>Kav (Hebrew: קב, pl. Kabim): </b>Equal to 1/6 Se'ah. <i>= 4 Rova / Log.</i></li>
+		<li><b>Issaron / Omer (Hebrew: עשרון / עומר): </b>Equal to 1/10 Ephah. <i>= 1 4/5 Kav.</i></li>
+		<li><b>Tarkav / Hin (Hebrew: תרקב / הין): </b>Equal to 1/2 Se'ah, 1/60 Kor. <i>= 1 2/3 Issaron / Omer.</i></li>
+		<li><b>Se'ah (Hebrew: סאה, pl. Se'in): </b>Equal to 1/30 Kor. <i>= 2 Tarkav / Hin.</i></li>
+		<li><b>Ephah / Bat (Hebrew: איפה / בת, pl. Ephos): </b>Equal to 1/10 Kor. <i>= 3 Se'ah.</i></li>
+		<li><b>Lesech / Adriv (Hebrew: לתך / אדריב): </b>Equal to 1/2 Kor. <i>= 5 Ephah / Bat.</i></li>
+		<li><b>Kor / Chomer (Hebrew: כור / חומר): </b>Equal to 30 Se'ah, 10 Ephah. <i>= 2 Lesech / Adriv.</i></li>
 	</ul>
 	<h3 id="mass">Mass (Weight)</h3>
 	<ul>
 		<li>
-			<b>Dinar / Zuz / Zin (Hebrew: דינר \ זוז \ זין): </b> Equal to 1/100 Litra.
+			<b>Dinar / Zuz / Zin (Hebrew: דינר / זוז / זין): </b> Equal to 1/100 Litra.
 			<br /><i>= 0.158733 oz. (4500 mg)</i>
 		</li>
 		<li><b>Shekel (Hebrew: שקל): </b> Half a Sela. <i>= 2 Dinar.</i></li>
 		<li><b>Sela (Hebrew: סלע): </b> Half an Unkeya. <i>= 2 Shekel.</i></li>
 		<li><b>Unkeya (Hebrew: אונקיא): </b> Equal to 8/10 Maneh. <i>= 2 Sela.</i></li>
-		<li><b>Tartimar (Hebrew: תרטימר): </b> Half a Maneh. <i>= 6 1/4 Unkeya.</i></li>
-		<li><b>Maneh (Italki) / Litra (Hebrew: מנה (איטלקי) \ ליטרא): </b> Equal to 1/60 Kikar. <i>= 2 Tartimar.</i></li>
+		<li><b>Tarteimar (Hebrew: תרטימר): </b> Half a Maneh. <i>= 6 1/4 Unkeya.</i></li>
+		<li><b>Maneh (Italki) / Litra (Hebrew: מנה (איטלקי) / ליטרא): </b> Weight of an Italian Maneh. Equal to 1/60 Kikar. <i>= 2 Tarteimar.</i></li>
 		<li><b>Kikar (Hebrew: כיכר): </b> Weight of a silver Kikar. <i>= 60 Maneh.</i></li>
 	</ul>
 	<h3 id="coins">Coins</h3>
@@ -261,9 +261,9 @@
 		<li><b>Mesimas (Hebrew: מסימס) </b> <i>Equals 4 Perutos.</i></li>
 		<li><b>Issar (Hebrew: איסר) </b> <i>Equals 8 Perutos.</i></li>
 		<li><b>Pundyon (Hebrew: פונדיון) </b> <i>Equals 2 Issar.</i></li>
-		<li><b>Ma'ah (Hebrew: מעה) </b> <i>Equals 2 Pundyon.</i><Ref id="14" /></li>
-		<li><b>Istera / Tarpik (Hebrew: אסתרא \ טרפעיק) </b> <i>Equals 3 Ma'ah.</i></li>
-		<li><b>Dinar / Zuz (Hebrew: דינר \ זוז) </b> <i>Equals 2 Istera.</i></li>
+		<li><b>Me'ah (Hebrew: מעה, pl. Ma'os) </b> <i>Equals 2 Pundyon.</i><Ref id="14" /></li>
+		<li><b>Istera / Tarpik (Hebrew: אסתרא / טרפעיק) </b> <i>Equals 3 Me'ah.</i></li>
+		<li><b>Dinar / Zuz (Hebrew: דינר / זוז) </b> <i>Equals 2 Istera.</i></li>
 		<li><b>Shekel (Hebrew: שקל) </b> <i>Equals 2 Dinar.</i></li>
 		<li><b>Sela (Hebrew: סלע) </b> <i>Equals 2 Shekel.</i></li>
 		<li><b>Dinar Zahav (Hebrew: דינר זהב) </b> <i>Equals 6 1/4 Sela.</i></li>
@@ -275,10 +275,10 @@
 	<h3 id="time">Time</h3>
 	<ul>
 		<li>
-			<b>Rega (Hebrew רגע, Regaim): </b>"Moment." 1/76 of Chelek.
+			<b>Rega (Hebrew רגע, pl. Regaim): </b>"Moment." 1/76 of Chelek.
 			<br /><i>= 0.04386 seconds</i>
 		</li>
-		<li><b>Chelek (Hebrew חלק): </b>"Part." 1/1080 of Sha'ah. <i>= 76 Rega.</i></li>
+		<li><b>Chelek (Hebrew חלק, pl. Chalakim): </b>"Part." 1/1080 of Sha'ah. <i>= 76 Rega.</i></li>
 		<li><b>Et (Hebrew עת, pl. Etim): </b>"Times." 1/24 Onah. <i>= 1 7/8 Chelek.</i></li>
 		<li><b>Small Onah (Hebrew עונה, pl. Onos): </b>"Period" of 1/24 of Sha'ah. <i>= 24 Etim.</i></li>
 		<li><b>K'dei Achilas Pras (Hebrew כדי אכילת פרס): </b>Time to eat 3/4 of a loaf of bread. Opinions range from 2 minutes to 11 minutes and 9 seconds.</li>
@@ -358,14 +358,14 @@
 			according to the correct weight of Cologne.
 		</li>
 		<li>
-			Feinstein, Rabbi Moshe. Iggerot Moshe, 1964.
+			<Anchor id="17" />Feinstein, Rabbi Moshe. Iggerot Moshe, 1964.
 			<a href="https://hebrewbooks.org/14674">YD 1:107 p. 198</a>;
 			<a href="https://hebrewbooks.org/14674">YD 1:190 pp. 380-381</a>;
 			<a href="https://hebrewbooks.org/920">YD 3:46:2 p. 281</a>;
 			<a href="https://hebrewbooks.org/920">YD 3:66:1 p. 314</a>.
 		</li>
 		<li>
-			Steinsaltz, Adin. "Talmudic Weights and Measures." The Talmud, the Steinsaltz Edition. Random House, 1989. pp. 279-93.<br />
+			<Anchor id="18" />Steinsaltz, Adin. "Talmudic Weights and Measures." The Talmud, the Steinsaltz Edition. Random House, 1989. pp. 279-93.<br />
 			<a
 				target="_blank"
 				href="https://www.amazon.com/gp/product/0394576659/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0394576659&linkCode=as2&tag=jelawrence-20&linkId=92849671c76d53d6b9b24392a5113c4f"
@@ -373,12 +373,20 @@
 			><img src="//ir-na.amazon-adsystem.com/e/ir?t=jelawrence-20&l=am2&o=1&a=0394576659" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
 		</li>
 		<li>
-			Frank, Yitzḥak. "Appendix II" The Practical Talmud Dictionary. Ariel, 1991-1994. pp. 297-301.<br />
+			<Anchor id="19" />Frank, Yitzḥak. "Appendix II" The Practical Talmud Dictionary. Ariel, 1991-1994. pp. 297-301.<br />
 			<a
 				target="_blank"
 				href="https://www.amazon.com/gp/product/1592644511/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1592644511&linkCode=as2&tag=jelawrence-20&linkId=8550e305385748e21980ee2c4d3037fd"
 				>Buy on Amazon</a
 			><img src="//ir-na.amazon-adsystem.com/e/ir?t=jelawrence-20&l=am2&o=1&a=1592644511" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
+		</li>
+		<li>
+			<Anchor id="20" />Bergman, Rabbi Meir Zvi. "Chapter Twelve: Weights, Measures and Currency." The Gateway to Talmud. Mesorah Publications, 1985. pp. 117-119.<br />
+			<a
+				target="_blank"
+				href="https://www.amazon.com/Gateway-Talmud-ArtScroll-mesorah-Bergman/dp/0899062083?&_encoding=UTF8&tag=jelawrence-20&linkCode=ur2&linkId=c3d1a193ee786cb7403314bc00e8a017&camp=1789&creative=9325"
+				>Buy on Amazon</a
+			><img src="//ir-na.amazon-adsystem.com/e/ir?t=jelawrence-20&l=am2&o=1&a=0899062083" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
 		</li>
 	</ul>
 	<br />
