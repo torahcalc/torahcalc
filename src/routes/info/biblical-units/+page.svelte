@@ -291,7 +291,7 @@
 		<li><b>Tekufah (Hebrew תקופה, pl. Tekufos): </b>A quarter / season. "Turn of the sun." <i>About 3 months.</i></li>
 		<li><b>Shanah (Hebrew שנה, pl. Shanim): </b>A lunar year. <i>= 4 Tekufos.</i></li>
 		<li><b>Shmittah (Hebrew שמיטה, Shmittos): </b>Sabbatical Cycle. <i>= 7 lunar years.</i></li>
-		<li><b>Yovel (Hebrew יובל, pl. Yovelim): </b>Jubilee. <i>= 50 lunar years.</i></li>
+		<li><b>Yovel (Hebrew יובל, pl. Yovelos): </b>Jubilee. <i>= 50 lunar years.</i></li>
 	</ul>
 	<h3 id="sources">Sources</h3>
 	<ul>
