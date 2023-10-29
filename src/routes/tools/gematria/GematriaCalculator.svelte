@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { LETTER_SPELLING_VALUES, METHOD_NAMES, calculateGematria } from '$lib/js/gematria';
 	import { formatNumberHTML } from '$lib/js/utils';
-	import HebrewKeyboard from '../../input/HebrewKeyboard.svelte';
+	import HebrewKeyboard from '$lib/components/HebrewKeyboard.svelte';
 
 	onMount(updateResults);
 

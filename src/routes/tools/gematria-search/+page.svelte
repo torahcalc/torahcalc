@@ -1,14 +1,7 @@
 <script>
-	import InputCalculator from '../../input/InputCalculator.svelte';
-	import GematriaSearchExamples from '../../input/examples/GematriaSearchExamples.svelte';
+	import GematriaSearchCalculator from './GematriaSearchCalculator.svelte';
 
-	/** @type {InputCalculator} */
-	let inputCalculator;
-
-	/** @type {(query: string) => any} The function to call when the button is clicked */
-	$: clickFunction = inputCalculator?.setSections;
-
-	const description = 'Enter a number or a word to calculate its gematria (numerical value) and find common Hebrew words and words in the Torah with an equivalent gematria value.';
+	const description = 'Enter a number or a word to calculate its gematria (numerical value) and find common Hebrew words and words and verses in the Torah with an equivalent gematria value.';
 </script>
 
 <svelte:head>
@@ -21,15 +14,5 @@
 
 	<p class="center">{description}</p>
 
-	<InputCalculator bind:this={inputCalculator} queryInput="What words have a gematria of 613?" />
-
-	<div class="examples">
-		<GematriaSearchExamples {clickFunction} />
-	</div>
+	<GematriaSearchCalculator />
 </section>
-
-<style>
-	.examples {
-		margin: 0.5rem;
-	}
-</style>
