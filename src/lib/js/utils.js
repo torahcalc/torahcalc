@@ -362,3 +362,12 @@ export async function translate(text, options = {}) {
 		return text;
 	}
 }
+
+/**
+ * Log queries to the server for debugging and analytics
+ * @param {string} query - The query to log
+ */
+export async function logQuery(query) {
+	const logUrl = `https://old.torahcalc.com/logs/write.php?query=${encodeURIComponent(query)}`;
+	await fetch(logUrl);
+}
