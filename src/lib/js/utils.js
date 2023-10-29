@@ -344,3 +344,21 @@ export function iconToSvg(icon, color) {
 	const [width, height, , , svgPathData] = icon.icon;
 	return `<svg fill="${color || 'currentColor'}" height="1em" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg"><path d="${svgPathData}" /></svg>`;
 }
+
+/**
+ * Translate (default from a detected language to English)
+ * @param {string} text - The text to translate
+ * @param {{ from?: string, to?: string }} [options] - Options for the translation
+ * @returns {Promise<string>} - The translated text
+ */
+export async function translate(text, options = {}) {
+	const defaults = { from: 'auto', to: 'en' };
+	options = { ...defaults, ...options };
+	try {
+		const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${options.from}&tl=${options.to}&dt=t&q=${encodeURIComponent(text)}`);
+		const json = await response.json();
+		return json[0][0][0];
+	} catch (error) {
+		return text;
+	}
+}
