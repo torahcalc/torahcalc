@@ -1,5 +1,5 @@
 <script>
-	import HebrewKeyboard from './input/HebrewKeyboard.svelte';
+	import HebrewKeyboard from '$lib/components/HebrewKeyboard.svelte';
 	import InputExamples from './input/InputExamples.svelte';
 
 	/** @type {string} The current query in the input box (not yet submitted) */

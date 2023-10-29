@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import { calculateQuery } from '$lib/js/input';
-	import HebrewKeyboard from './HebrewKeyboard.svelte';
+	import HebrewKeyboard from '$lib/components/HebrewKeyboard.svelte';
 
 	/** @type {string} The current query in the input box (not yet submitted) */
 	export let queryInput = $page.url.searchParams.get('q') ?? '';
