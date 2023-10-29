@@ -61,6 +61,8 @@ conversionChartQuery -> optionalWords[("conversion" | "conversions" | "convert")
 # - Calculate Mispar Katan Mispari of משיח.
 # - Calculate AvGad of משה.
 gematriaQuery -> optionalWords[("calculate" | "compute" | "what is" | "what's" | "how much is" | "how many is")] optionalWords["the"] gematriaMethod _ optionalWords["of"] hebrewString {% data => ({function: "gematriaQuery", gematriaMethod: data[2], text: data[5]}) %}
+               | hebrewString __ gematriaMethod {% data => ({function: "gematriaQuery", gematriaMethod: data[2], text: data[0]}) %}
+               | hebrewString {% data => ({function: "gematriaQuery", gematriaMethod: "standard", text: data[0]}) %}
 
 # Gematria Search
 # - What words have a gematria of 613?
