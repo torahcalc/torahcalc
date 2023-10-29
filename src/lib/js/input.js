@@ -14,7 +14,7 @@ import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears';
 import { calculateMolad } from './molad';
 import { calculateOmerDate, calculateOmerHebrew } from './omer';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
-import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, getCurrentHebrewMonth, getNextHebrewMonth, getPrevHebrewMonth, properCase, sanitize, translate } from './utils';
+import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, getCurrentHebrewMonth, getNextHebrewMonth, getPrevHebrewMonth, logQuery, properCase, sanitize, translate } from './utils';
 import { ZMANIM_NAMES } from './zmanim';
 import { calculateZodiac, calculateZodiacHebrewDate } from './zodiac';
 dayjs.extend(timezone);
@@ -73,6 +73,7 @@ export async function calculateQuery(search, options = {}) {
 			parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
 			parser.feed(translation.toLowerCase());
 		} catch (e) {
+			logQuery(search);
 			throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.', `${e}`);
 		}
 	}
@@ -80,6 +81,7 @@ export async function calculateQuery(search, options = {}) {
 	const derivations = await getValidDerivations(search, parser.results);
 
 	if (Object.keys(derivations).length === 0) {
+		logQuery(search);
 		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.', JSON.stringify(parser.results, null, 2));
 	}
 
