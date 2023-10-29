@@ -5078,6 +5078,8 @@ var grammar = {
     {"name": "gematriaQuery$macrocall$5", "symbols": ["gematriaQuery$macrocall$6", "__"], "postprocess": data => data[0]},
     {"name": "gematriaQuery$macrocall$5", "symbols": ["_"], "postprocess": data => null},
     {"name": "gematriaQuery", "symbols": ["gematriaQuery$macrocall$1", "gematriaQuery$macrocall$3", "gematriaMethod", "_", "gematriaQuery$macrocall$5", "hebrewString"], "postprocess": data => ({function: "gematriaQuery", gematriaMethod: data[2], text: data[5]})},
+    {"name": "gematriaQuery", "symbols": ["hebrewString", "__", "gematriaMethod"], "postprocess": data => ({function: "gematriaQuery", gematriaMethod: data[2], text: data[0]})},
+    {"name": "gematriaQuery", "symbols": ["hebrewString"], "postprocess": data => ({function: "gematriaQuery", gematriaMethod: "standard", text: data[0]})},
     {"name": "gematriaSearchQuery", "symbols": ["gematriaSearchPrefix", "__", "hebrewString"], "postprocess": data => ({function: "gematriaSearchQuery", gematriaMethod: data[0], text: data[2] })},
     {"name": "gematriaSearchQuery", "symbols": ["gematriaSearchPrefix", "__", "int"], "postprocess": data => ({function: "gematriaSearchQuery", gematriaMethod: data[0], value: data[2] })},
     {"name": "gematriaSearchPrefix$macrocall$2$subexpression$1$string$1", "symbols": [{"literal":"c"}, {"literal":"a"}, {"literal":"l"}, {"literal":"c"}, {"literal":"u"}, {"literal":"l"}, {"literal":"a"}, {"literal":"t"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
