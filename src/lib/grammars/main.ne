@@ -37,6 +37,8 @@ main -> query[unitConversionQuery] {% data => data[0][0] %}
       | query[jewishHolidayQuery] {% data => data[0][0] %}
       | query[zodiacQuery] {% data => data[0][0] %}
       | query[birkasHachamaQuery] {% data => data[0][0] %}
+      | query[shmitaQuery] {% data => data[0][0] %}
+      | query[shmitaCheckQuery] {% data => data[0][0] %}
 
 # Unit Conversions
 # - Convert 10 amos to meters
@@ -192,12 +194,30 @@ zodiacQuery -> optionalWords[("what is" | "what's" | "what was")] optionalWords[
 # - When was the last Birkas Hachama?
 # - When will Birkas Hachama be after 2037?
 # - When was Birkas Hachama before 2009?
-birkasHachamaQuery -> optionalWords[("when's" | "when is" | "when will")] optionalWords["the"] _ "next" __ birkasHachama optionalWords[("be" | "land" | "fall" | "occur")] {% data => ({function: "birkasHachamaQuery", direction: 1}) %}
-                    | optionalWords[("when was" | "when did")] optionalWords["the"] _ "last" __ birkasHachama optionalWords[("happen" | "land" | "fall" | "occur")] {% data => ({function: "birkasHachamaQuery", direction: -1}) %}
-                    | optionalWords[("when's" | "when is" | "when will")] optionalWords["the"] _ birkasHachama __ optionalWords[("be" | "land" | "fall" | "occur")] _ "after" __ calendarAwareYear {% data => ({function: "birkasHachamaQuery", direction: 1, year: data[9]}) %}
-                    | optionalWords[("when was" | "when did")] optionalWords["the"] _ birkasHachama __ optionalWords[("happen" | "land" | "fall" | "occur")] _ "before" __ calendarAwareYear {% data => ({function: "birkasHachamaQuery", direction: -1, year: data[9]}) %}
+birkasHachamaQuery -> optionalWords[("when's" | "when was" | "when is" | "when did" | "when will")] optionalWords["the"] _ "next" __ birkasHachamaTerm optionalWords[("be" | "land" | "fall" | "occur")] {% data => ({function: "birkasHachamaQuery", direction: 1}) %}
+                    | optionalWords[("when's" | "when was" | "when is" | "when did" | "when will")] optionalWords["the"] _ "last" __ birkasHachamaTerm optionalWords[("happen" | "land" | "fall" | "occur")] {% data => ({function: "birkasHachamaQuery", direction: -1}) %}
+                    | optionalWords[("when's" | "when was" | "when is" | "when did" | "when will")] optionalWords["the"] optionalWords["next"] _ birkasHachamaTerm __ optionalWords[("be" | "land" | "fall" | "occur")] _ "after" __ calendarAwareYear {% data => ({function: "birkasHachamaQuery", direction: 1, year: data[10]}) %}
+                    | optionalWords[("when's" | "when was" | "when is" | "when did" | "when will")] optionalWords["the"] optionalWords[("last" | "previous")] _ birkasHachamaTerm __ optionalWords[("happen" | "land" | "fall" | "occur")] _ "before" __ calendarAwareYear {% data => ({function: "birkasHachamaQuery", direction: -1, year: data[10]}) %}
 
-birkasHachama -> ("birkas hachama" | "birkat hachama" | "blessing of the sun" | "birchas hachama" | "birchat hachama" | "ברכת החמה") {% data => null %}
+birkasHachamaTerm -> ("birkas hachama" | "birkat hachama" | "blessing of the sun" | "birchas hachama" | "birchat hachama" | "ברכת החמה") {% data => null %}
+
+# Shmita
+# - When is the next Shmita?
+# - When was the last Shmita?
+# - When will Shmita be after 2023?
+# - When was Shmita before 2021?
+# - Is 5782 a Shmita year?
+shmitaQuery -> optionalWords[("when's" | "when was" | "when is" | "when did" | "when will")] optionalWords["the"] _ "next" __ shmitaTerm optionalWords[("be" | "land" | "fall" | "occur")] {% data => ({function: "shmitaQuery", direction: 1}) %}
+                    | optionalWords[("when's" | "when was" | "when is" | "when did" | "when will")] optionalWords["the"] _ "last" __ shmitaTerm optionalWords[("happen" | "land" | "fall" | "occur")] {% data => ({function: "shmitaQuery", direction: -1}) %}
+                    | optionalWords[("when's" | "when was" | "when is" | "when did" | "when will")] optionalWords["the"] optionalWords["next"] _ shmitaTerm __ optionalWords[("be" | "land" | "fall" | "occur")] _ "after" __ calendarAwareYear {% data => ({function: "shmitaQuery", direction: 1, year: data[10]}) %}
+                    | optionalWords[("when's" | "when was" | "when is" | "when did" | "when will")] optionalWords["the"] optionalWords[("last" | "previous")] _ shmitaTerm __ optionalWords[("happen" | "land" | "fall" | "occur")] _ "before" __ calendarAwareYear {% data => ({function: "shmitaQuery", direction: -1, year: data[10]}) %}
+
+shmitaCheckQuery -> optionalWords[("is" | "was" | "will")] optionalWords[("hebrew" | "jewish")] optionalWords["year"] hebrewYear __ optionalWords[("be a" | "a")] shmitaTerm _ optionalWords["year"] _ optionalWords["on"] optionalWords["the"] optionalWords[("hebrew" | "jewish")] optionalWords["calendar"] {% data => ({function: "shmitaCheckQuery", year: data[3]}) %}
+
+shmitaTerm -> shmitaWord {% data => null %}
+            | shmitaWord __ "year" {% data => null %}
+
+shmitaWord -> ("shmita" | "shemita" | "shmitta" | "shemitta" | "shmitah" | "shemitah" | "shmittah" | "shemittah" | "שמיטה" | "sabbatical year" | "sabbatical") {% data => null %}
 
 # Date parsing
 date -> gregorianDate {% data => data[0] %}

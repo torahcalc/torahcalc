@@ -590,6 +590,24 @@
 		]}
 	/>
 
+	<h3>Shmita Years</h3>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/shmita"
+		description="Calculate upcoming Shmita years."
+		parameters={[
+			{
+				name: 'year',
+				type: 'Number',
+				required: false,
+				description:
+					'The Hebrew year. The Shmita year returned will be the occurrence on or after this year. Defaults to current year. If the year returned matches the inputted year, then the year is a Shmita year.',
+				example: new HDate().getFullYear(),
+			},
+		]}
+	/>
+
 	<h3>Zmanim</h3>
 
 	<Endpoint
