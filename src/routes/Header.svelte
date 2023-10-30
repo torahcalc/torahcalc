@@ -27,6 +27,7 @@
 				{ name: 'Zmanim', url: '/tools/zmanim' },
 				{ name: 'Hebrew Zodiac Signs', url: '/tools/hebrew-zodiac-signs' },
 				{ name: 'Birkas Hachama', url: '/tools/birkas-hachama' },
+				{ name: 'Shmita Years', url: '/tools/shmita' },
 			],
 		},
 		{

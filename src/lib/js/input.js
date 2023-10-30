@@ -13,6 +13,7 @@ import { HOLIDAY_DETAILS, getHolidays } from './holidays';
 import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears';
 import { calculateMolad } from './molad';
 import { calculateOmerDate, calculateOmerHebrew } from './omer';
+import { isShmitaYear, nextShmita, previousShmita } from './shmita';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
 import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, getCurrentHebrewMonth, getNextHebrewMonth, getPrevHebrewMonth, logQuery, properCase, sanitize, translate } from './utils';
 import { ZMANIM_NAMES } from './zmanim';
@@ -111,6 +112,8 @@ export async function calculateQuery(search, options = {}) {
 		jewishHolidayQuery: () => jewishHolidayQuery(derivation),
 		zodiacQuery: () => zodiacQuery(derivation),
 		birkasHachamaQuery: () => birkasHachamaQuery(derivation),
+		shmitaQuery: () => shmitaQuery(derivation),
+		shmitaCheckQuery: () => shmitaCheckQuery(derivation),
 	};
 
 	/** @type {Array<{ title: string, content: string }>} */
@@ -350,8 +353,8 @@ async function getValidDerivations(search, results) {
 					derivation.disambiguationScore += 1;
 				}
 			}
-		} else if (derivation.function === 'leapYearQuery') {
-			derivation.disambiguation = `Is ${derivation.year} a leap year`;
+		} else if (derivation.function === 'leapYearQuery' || derivation.function === 'shmitaCheckQuery') {
+			derivation.disambiguation = `Is ${derivation.year} a ${derivation.function === 'leapYearQuery' ? 'leap' : 'shmita'} year`;
 			if (derivation.calendar === 'hebrew') {
 				derivation.disambiguation += ' on the Hebrew calendar';
 				derivation.disambiguationScore += 1;
@@ -397,9 +400,9 @@ async function getValidDerivations(search, results) {
 			}
 		} else if (derivation.function === 'zodiacQuery') {
 			derivation.disambiguation = `Zodiac sign for ${formatParseResultDate(derivation.date)}`;
-		} else if (derivation.function === 'birkasHachamaQuery') {
+		} else if (derivation.function === 'birkasHachamaQuery' || derivation.function === 'shmitaQuery') {
 			let disambiguation = derivation.direction === 1 ? 'Next' : 'Last';
-			disambiguation += ' Birkas Hachama';
+			disambiguation += derivation.function === 'birkasHachamaQuery' ? ' Birkas Hachama' : ' Shmita';
 			if (derivation.year?.calendar === 'hebrew') {
 				disambiguation += derivation.direction === 1 ? ' after' : ' before';
 				disambiguation += ` Hebrew year ${derivation.year.value}`;
@@ -1257,14 +1260,16 @@ function zodiacQuery(derivation) {
 }
 
 /**
- * Generate sections for a Birkas HaChama query
+ * Generate sections for a Birkas HaChama or Shmita query
  *
  * @param {{ function?: string, direction: 1 | -1, year?: { value: number, calendar: "hebrew" | "gregorian" } }} derivation
  * @returns {{ title: string, content: string }[]} The response.
  */
-function birkasHachamaQuery(derivation) {
+function birkasHachamaShmitaEventQuery(derivation) {
 	/** @type {{ title: string, content: string }[]} */
 	const sections = [];
+
+	const event = derivation.function === 'birkasHachamaQuery' ? 'Birkas HaChama' : 'Shmita year';
 
 	let gregorianYear = new Date().getFullYear();
 	if (derivation.year?.calendar === 'hebrew') {
@@ -1272,27 +1277,67 @@ function birkasHachamaQuery(derivation) {
 		gregorianYear = gregorianDate.getFullYear() + derivation.direction;
 		sections.push({
 			title: INPUT_INTERPRETATION,
-			content:
-				derivation.direction === 1 ? `When is the next Birkas HaChama after Hebrew year ${derivation.year.value}?` : `When was the last Birkas HaChama before Hebrew year ${derivation.year.value}?`,
+			content: derivation.direction === 1 ? `When is the next ${event} after Hebrew year ${derivation.year.value}?` : `When was the last ${event} before Hebrew year ${derivation.year.value}?`,
 		});
 	} else if (derivation.year?.calendar === 'gregorian') {
 		gregorianYear = derivation.year.value + derivation.direction;
 		sections.push({
 			title: INPUT_INTERPRETATION,
-			content:
-				derivation.direction === 1
-					? `When is the next Birkas HaChama after Gregorian year ${derivation.year.value}?`
-					: `When was the last Birkas HaChama before Gregorian year ${derivation.year.value}?`,
+			content: derivation.direction === 1 ? `When is the next ${event} after Gregorian year ${derivation.year.value}?` : `When was the last ${event} before Gregorian year ${derivation.year.value}?`,
 		});
 	} else if (derivation.direction === 1) {
-		sections.push({ title: INPUT_INTERPRETATION, content: 'When is the next Birkas HaChama?' });
+		sections.push({ title: INPUT_INTERPRETATION, content: `When is the next ${event}?` });
 	} else {
-		sections.push({ title: INPUT_INTERPRETATION, content: 'When was the last Birkas HaChama?' });
+		sections.push({ title: INPUT_INTERPRETATION, content: `When was the last ${event}?` });
 	}
 
-	const hachama = derivation.direction === 1 ? nextBirkasHachama(gregorianYear) : previousBirkasHachama(gregorianYear);
+	if (derivation.function === 'birkasHachamaQuery') {
+		const hachama = derivation.direction === 1 ? nextBirkasHachama(gregorianYear) : previousBirkasHachama(gregorianYear);
+		sections.push({ title: RESULT, content: `${hachama.gregorianDate.display} / ${hachama.hebrewDate.displayEn}` });
+	} else {
+		const shmitaHebrewYear = derivation.direction === 1 ? nextShmita(gregorianYear, true) : previousShmita(gregorianYear, true);
+		const shmitaGregorianYear = hebrewToGregorian({ year: shmitaHebrewYear, month: 1, day: 1 }).date.getFullYear();
+		const gregorianRange = `${formatNumberHTML(shmitaGregorianYear - 1, -1)}&ndash;${formatNumberHTML(shmitaGregorianYear, -1)}`;
+		sections.push({ title: RESULT, content: `Hebrew year ${formatNumberHTML(shmitaHebrewYear, -1)}, which corresponds to ${gregorianRange} on the Gregorian calendar` });
+	}
 
-	sections.push({ title: RESULT, content: `${hachama.gregorianDate.display} / ${hachama.hebrewDate.displayEn}` });
+	return sections;
+}
+
+/**
+ * Generate sections for a Birkas HaChama query
+ *
+ * @param {{ function?: string, direction: 1 | -1, year?: { value: number, calendar: "hebrew" | "gregorian" } }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function birkasHachamaQuery(derivation) {
+	return birkasHachamaShmitaEventQuery(derivation);
+}
+
+/**
+ * Generate sections for a Shmita query
+ *
+ * @param {{ function?: string, direction: 1 | -1, year?: { value: number, calendar: "hebrew" | "gregorian" } }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function shmitaQuery(derivation) {
+	return birkasHachamaShmitaEventQuery(derivation);
+}
+
+/**
+ * Generate sections for a Shmita query for checking a year
+ *
+ * @param {{ function?: string, year: number }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function shmitaCheckQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+
+	const result = isShmitaYear(derivation.year);
+
+	sections.push({ title: INPUT_INTERPRETATION, content: `Is ${derivation.year} a Shmita year on the Hebrew calendar?` });
+	sections.push({ title: RESULT, content: `${result ? 'Yes' : 'No'}, Hebrew year ${formatNumberHTML(derivation.year, -1)} is ${result ? '' : 'not '}a Shmita year` });
 
 	return sections;
 }
