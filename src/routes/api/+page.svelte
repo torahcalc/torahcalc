@@ -144,7 +144,10 @@
 <section>
 	<h1 class="heading">TorahCalc API</h1>
 
-	<p>Welcome to the TorahCalc API. This API is currently in beta, and is subject to change.</p>
+	<p class="center">
+		Welcome to the TorahCalc API. To be notified of any upcoming changes, you may subscribe to <a href="https://github.com/torahcalc/torahcalc/releases">releases</a> by
+		<a href="https://github.com/torahcalc/torahcalc/wiki/How-do-I-watch-for-new-releases%3F" target="_blank">watching the repository</a>.
+	</p>
 
 	<h2 class="category">English Text Input Calculator</h2>
 
