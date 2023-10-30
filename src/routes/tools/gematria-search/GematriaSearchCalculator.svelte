@@ -45,7 +45,7 @@
 	}
 
 	const TOGGLE_MAPPING = {
-		'Common Hebrew Words': ['COMMON_WORDS'],
+		'10,000 Common Hebrew Words': ['COMMON_WORDS'],
 		'Words in the Torah': ['TORAH_WORDS'],
 		'Verses in the Torah': ['BEREISHIS_PESUKIM', 'SHEMOS_PESUKIM', 'VAYIKRA_PESUKIM', 'BAMIDBAR_PESUKIM', 'DEVARIM_PESUKIM'],
 	};
@@ -97,7 +97,7 @@
 </div>
 
 <div class="card flex-card mb-0">
-	<h4>Show Gematria matches for:</h4>
+	<h4>Show Gematria matches from:</h4>
 	{#each Object.keys(TOGGLE_MAPPING) as label}
 		<label class="d-block">
 			<input type="checkbox" checked data-label={label} on:change={() => updateResults()} />
