@@ -1295,7 +1295,7 @@ function birkasHachamaShmitaEventQuery(derivation) {
 		const hachama = derivation.direction === 1 ? nextBirkasHachama(gregorianYear) : previousBirkasHachama(gregorianYear);
 		sections.push({ title: RESULT, content: `${hachama.gregorianDate.display} / ${hachama.hebrewDate.displayEn}` });
 	} else {
-		const shmitaHebrewYear = derivation.direction === 1 ? nextShmita(gregorianYear) : previousShmita(gregorianYear);
+		const shmitaHebrewYear = derivation.direction === 1 ? nextShmita(gregorianYear, true) : previousShmita(gregorianYear, true);
 		const shmitaGregorianYear = hebrewToGregorian({ year: shmitaHebrewYear, month: 1, day: 1 }).date.getFullYear();
 		const gregorianRange = `${formatNumberHTML(shmitaGregorianYear - 1, -1)}&ndash;${formatNumberHTML(shmitaGregorianYear, -1)}`;
 		sections.push({ title: RESULT, content: `Hebrew year ${formatNumberHTML(shmitaHebrewYear, -1)}, which corresponds to ${gregorianRange} on the Gregorian calendar` });

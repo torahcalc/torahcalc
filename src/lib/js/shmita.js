@@ -11,11 +11,7 @@ export function nextShmita(year, isGregorian = true) {
 	if (isGregorian) {
 		hebrewYear = gregorianToHebrew({ year, month: 1, day: 1 }).year;
 	}
-	const remainder = hebrewYear % 7;
-	if (remainder === 0) {
-		return hebrewYear;
-	}
-	return hebrewYear + (7 - remainder);
+	return hebrewYear + (7 - (hebrewYear % 7 || 7));
 }
 
 /**
@@ -30,11 +26,7 @@ export function previousShmita(year, isGregorian = true) {
 	if (isGregorian) {
 		hebrewYear = gregorianToHebrew({ year, month: 1, day: 1 }).year;
 	}
-	const remainder = hebrewYear % 7;
-	if (remainder === 0) {
-		return hebrewYear - 7;
-	}
-	return hebrewYear - remainder;
+	return hebrewYear - (hebrewYear % 7 || 7);
 }
 
 /**
