@@ -594,15 +594,44 @@
 
 	<Endpoint
 		method="GET"
-		endpoint="/api/shmita"
-		description="Calculate upcoming Shmita years."
+		endpoint="/api/shmita/check"
+		description="Check if a given year is a Shmita year"
 		parameters={[
 			{
 				name: 'year',
 				type: 'Number',
 				required: false,
-				description:
-					'The Hebrew year. The Shmita year returned will be the occurrence on or after this year. Defaults to current year. If the year returned matches the inputted year, then the year is a Shmita year.',
+				description: 'The Hebrew year to check. Defaults to current year.',
+				example: new HDate().getFullYear(),
+			},
+		]}
+	/>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/shmita/next"
+		description="Calculate the next Shmita year from a given year"
+		parameters={[
+			{
+				name: 'year',
+				type: 'Number',
+				required: false,
+				description: 'The Hebrew year. The Shmita year returned will be the occurrence on or after this year. Defaults to current year.',
+				example: new HDate().getFullYear(),
+			},
+		]}
+	/>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/shmita/previous"
+		description="Calculate the previous Shmita year from a given year"
+		parameters={[
+			{
+				name: 'year',
+				type: 'Number',
+				required: false,
+				description: 'The Hebrew year. The Shmita year returned will be the occurrence on or before this year. Defaults to current year.',
 				example: new HDate().getFullYear(),
 			},
 		]}
