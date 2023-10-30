@@ -3,10 +3,10 @@ import { gregorianToHebrew } from './dateconverter';
 /**
  * Calculate the next shmita year (Hebrew year divisible by 7)
  * @param {number} year Gregorian or Hebrew year
- * @param {boolean} [isGregorian=true] Whether the year is Gregorian or Hebrew
+ * @param {boolean} [isGregorian=false] Whether the year is Gregorian or Hebrew
  * @returns {number} The next shmita year on the Hebrew calendar
  */
-export function nextShmita(year, isGregorian = true) {
+export function nextShmita(year, isGregorian = false) {
 	let hebrewYear = year;
 	if (isGregorian) {
 		hebrewYear = gregorianToHebrew({ year, month: 1, day: 1 }).year;
@@ -18,10 +18,10 @@ export function nextShmita(year, isGregorian = true) {
  * Calculate the previous shmita year (Hebrew year divisible by 7)
  *
  * @param {number} year Gregorian or Hebrew year
- * @param {boolean} [isGregorian=true] Whether the year is Gregorian or Hebrew
+ * @param {boolean} [isGregorian=false] Whether the year is Gregorian or Hebrew
  * @returns {number} The previous birkas hachama date
  */
-export function previousShmita(year, isGregorian = true) {
+export function previousShmita(year, isGregorian = false) {
 	let hebrewYear = year;
 	if (isGregorian) {
 		hebrewYear = gregorianToHebrew({ year, month: 1, day: 1 }).year;
