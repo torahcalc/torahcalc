@@ -187,7 +187,9 @@ jewishHolidaysListPrefixNoYear -> optionalWords[("list" | "show" | "display" | "
 # Zodiac Signs
 # - What is the zodiac sign for 1 Teves?
 # - What is the zodiac sign for December 25, 2023?
-zodiacQuery -> optionalWords[("what is" | "what's" | "what was")] optionalWords["the"] optionalWords[("hebrew" | "jewish")] "zodiac" __ optionalWords["sign"] optionalWords[("for" | "on")] date {% data => ({function: "zodiacQuery", date: data[7]}) %}
+# - March 1, 1999 zodiac sign
+zodiacQuery -> optionalWords[("what is" | "what's" | "what was")] optionalWords["the"] optionalWords[("hebrew" | "jewish")] "zodiac" __ optionalWords["sign"] optionalWords[("is" | "was")] optionalWords[("for" | "on")] date {% data => ({function: "zodiacQuery", date: data[8]}) %}
+             | date __ optionalWords[("hebrew" | "jewish")] "zodiac" _ optionalWords["sign"] {% data => ({function: "zodiacQuery", date: data[0]}) %}
 
 # Birkas Hachama
 # - When is the next Birkas Hachama?
