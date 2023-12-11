@@ -14,7 +14,7 @@ const config = {
 						fallback: undefined,
 						precompress: false,
 						strict: false,
-				  })
+					})
 				: adapterVercel(),
 	},
 };
