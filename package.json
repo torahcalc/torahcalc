@@ -26,11 +26,11 @@
 		"@hebcal/learning": "^1.5.1",
 		"cross-env": "^7.0.3",
 		"dayjs": "^1.11.10",
-		"dotenv": "^16.3.1",
+		"dotenv": "^16.4.5",
 		"nearley": "^2.20.1",
 		"prettier-plugin-organize-imports": "^3.2.4",
 		"svelte-fa": "^3.0.4",
-		"svelte-toc": "^0.5.6",
+		"svelte-toc": "^0.5.7",
 		"xss": "^1.0.14"
 	},
 	"devDependencies": {
