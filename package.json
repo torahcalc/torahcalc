@@ -21,17 +21,17 @@
 	},
 	"dependencies": {
 		"@danieloi/pro-solid-svg-icons": "6.2.1",
-		"@fortawesome/free-brands-svg-icons": "^6.5.1",
+		"@fortawesome/free-brands-svg-icons": "^6.5.2",
 		"@hebcal/core": "^4.5.1",
 		"@hebcal/learning": "^1.5.1",
 		"cross-env": "^7.0.3",
-		"dayjs": "^1.11.10",
-		"dotenv": "^16.3.1",
+		"dayjs": "^1.11.11",
+		"dotenv": "^16.4.5",
 		"nearley": "^2.20.1",
 		"prettier-plugin-organize-imports": "^3.2.4",
 		"svelte-fa": "^3.0.4",
-		"svelte-toc": "^0.5.6",
-		"xss": "^1.0.14"
+		"svelte-toc": "^0.5.8",
+		"xss": "^1.0.15"
 	},
 	"devDependencies": {
 		"@capacitor/android": "^5.5.1",
