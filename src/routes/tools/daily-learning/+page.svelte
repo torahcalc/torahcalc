@@ -11,7 +11,7 @@
 
 	const today = dayjs().format('MMMM D, YYYY');
 
-	const description = 'Calculate the Daf Yomi, Nach Yomi, Yerushalmi Yomi, Chofetz Chaim, Daily Rambam, Shemirat HaLashon, Daily Psalms, and Weekly Daf for any date.';
+	const description = 'Calculate the Daf Yomi, Nach Yomi, Yerushalmi Yomi, Chofetz Chaim, Daily Rambam, Shemirat HaLashon, Daily Psalms, Weekly Daf, and Mishnah Yomit for any date.';
 </script>
 
 <svelte:head>

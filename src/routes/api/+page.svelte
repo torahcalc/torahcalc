@@ -321,7 +321,7 @@
 	<Endpoint
 		method="GET"
 		endpoint="/api/dailylearning"
-		description="Calculate the Daf Yomi, Nach Yomi, Yerushalmi Yomi, Daily Chofetz Chaim, Daily Rambam Chapter, Daily Shemirat HaLashon, Daily Psalms, and Weekly Daf for a given date"
+		description="Calculate the Daf Yomi, Nach Yomi, Yerushalmi Yomi, Daily Chofetz Chaim, Daily Rambam Chapter, Daily Shemirat HaLashon, Daily Psalms, Weekly Daf, and Mishnah Yomit for a given date"
 		parameters={[
 			{
 				name: 'date',

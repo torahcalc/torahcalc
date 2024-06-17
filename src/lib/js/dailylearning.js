@@ -19,6 +19,8 @@ import {
 	YerushalmiYomiEvent,
 } from '@hebcal/learning';
 import dayjs from 'dayjs';
+import mishnah from 'mishnah';
+import mishnahHebrew from '../data/mishnah-hebrew.json';
 import { dateToHDate, tryOrDefault } from './utils';
 
 /**
@@ -35,6 +37,7 @@ export const LEARNING_TYPE_NAMES = {
 	shemiratHaLashon: 'Shemirat HaLashon',
 	dailyPsalms: 'Daily Psalms',
 	dafWeekly: 'Daf Weekly',
+	mishnahYomit: 'Mishnah Yomit',
 };
 
 /**
@@ -54,6 +57,7 @@ export function calculateDailyLearning(date) {
 		shemiratHaLashon: getShemiratHaLashon(date),
 		dailyPsalms: getDailyPsalms(date),
 		dafWeekly: getDafWeekly(date),
+		mishnahYomit: getMishnahYomit(date),
 	};
 }
 
@@ -195,5 +199,32 @@ export function getDafWeekly(date) {
 		name: evt.render(),
 		hebrewName: evt.render('he'),
 		url: evt.url(),
+	};
+}
+
+/**
+ * Get the Mishnah Yomit for a given date.
+ * @param {string} date - The date to calculate the Mishnah Yomit for in YYYY-MM-DD format.
+ * @returns {DailyLearning|null} - The Mishnah Yomit for the given date.
+ */
+export function getMishnahYomit(date) {
+	const mishnahYomit = mishnah.getToday(date, false);
+	if (!mishnahYomit || typeof mishnahYomit === 'string') {
+		return null;
+	}
+	const masechetName = mishnahHebrew.names[mishnahYomit.t];
+	const perekName = mishnahHebrew.values[mishnahYomit.p];
+	const mishnahHebrew = mishnahHebrew.values[mishnahYomit.m];
+	const encoded_page = encodeURI('משנה_' + masechetName + '_' + perekName + '_' + mishnahHebrew);
+	const url = 'https://www.sefaria.org/api/texts/' + encoded_page;
+	const mishnahYomitPretty = mishnah.getToday(date, true);
+	if (typeof mishnahYomitPretty !== 'string') {
+		return null;
+	}
+	const mishnahYomitHebrew = masechetName + ' ' + perekName + ':' + mishnahHebrew;
+	return {
+		name: mishnahYomitPretty,
+		hebrewName: mishnahYomitHebrew,
+		url,
 	};
 }
