@@ -6,8 +6,11 @@
 	/** @type {string} The current query in the input box (not yet submitted) */
 	export let queryInput = $page.url.searchParams.get('q') ?? '';
 
-	/** @type {string} The disambiguation to use for the result */
-	$: disambiguation = $page.url.searchParams.get('disambiguation') ?? '';
+	/** @type {string|undefined} The disambiguation to use for the result */
+	$: disambiguation = $page.url.searchParams.get('disambiguation') ?? undefined;
+
+	/** @type {string|undefined} The format specification to use for the result */
+	$: outputFormat = $page.url.searchParams.get('format') ?? undefined;
 
 	/** @type {string} The current query to calculate */
 	let query = queryInput;
@@ -71,7 +74,7 @@
 </div>
 
 {#if query !== ''}
-	{#await calculateQuery(query, { disambiguation })}
+	{#await calculateQuery(query, { disambiguation, outputFormat })}
 		<div class="card flex-card my-1">
 			<h6>Calculating...</h6>
 		</div>
