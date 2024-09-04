@@ -49,15 +49,20 @@ export const dateToHDate = (date) => {
 
 /**
  * Returns the next Hebrew month
+ * @param {HDate} [hDate] - The Hebrew date to get the next month from or today if not provided
  * @returns {{month: number, year: number}}
  */
-export function getNextHebrewMonth() {
-	const today = new HDate();
-	const monthsInYear = today.isLeapYear() ? 13 : 12;
-	const nextHebrewMonth = (today.getMonth() + 1) % monthsInYear || monthsInYear;
+export function getNextHebrewMonth(hDate) {
+	hDate = hDate === undefined ? new HDate() : hDate;
+	// Month 1 = Nissan, 7 = Tishrei, 12 = Adar I, 13 = Adar II (leap year)
+	let nextHebrewMonth = hDate.getMonth() + 1;
+	// reset to Nissan if at the end of the year, skip Adar II if it's not a leap year
+	if (nextHebrewMonth === 14 || (nextHebrewMonth === 13 && !hDate.isLeapYear())) {
+		nextHebrewMonth = 1;
+	}
 	return {
 		month: nextHebrewMonth,
-		year: nextHebrewMonth === 1 ? today.getFullYear() + 1 : today.getFullYear(),
+		year: nextHebrewMonth === 7 ? hDate.getFullYear() + 1 : hDate.getFullYear(),
 	};
 }
 
