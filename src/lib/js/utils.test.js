@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest';
-import { formatDate, formatNumber, formatNumberHTML, getPrevHebrewMonth, getNextHebrewMonth } from './utils';
 import { HDate } from '@hebcal/core';
+import { describe, expect, it } from 'vitest';
+import { formatDate, formatNumber, formatNumberHTML, getNextHebrewMonth, getPrevHebrewMonth } from './utils';
 
 describe('test format Gregorian date', () => {
 	it('formats 2023-09-12', () => {
