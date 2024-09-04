@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { formatDate, formatNumber, formatNumberHTML } from './utils';
+import { formatDate, formatNumber, formatNumberHTML, getPrevHebrewMonth, getNextHebrewMonth } from './utils';
+import { HDate } from '@hebcal/core';
 
 describe('test format Gregorian date', () => {
 	it('formats 2023-09-12', () => {
@@ -52,5 +53,35 @@ describe('test formatNumber', () => {
 describe('test formatNumberHTML', () => {
 	it('formats 1234567890.12345678', () => {
 		expect(formatNumberHTML(1234567890.1234567)).toBe(`<span class="number">${formatNumber(1234567890.1234567)}</span>`);
+	});
+});
+
+describe('test getPrevHebrewMonth', () => {
+	it('gets previous month from Tishrei', () => {
+		expect(getPrevHebrewMonth(new HDate(15, 7, 5784))).toStrictEqual({ year: 5783, month: 6 });
+	});
+	it('gets previous month from Nissan in a leap year', () => {
+		expect(getPrevHebrewMonth(new HDate(15, 1, 5784))).toStrictEqual({ year: 5784, month: 13 });
+	});
+	it('gets previous month from Nissan in a non-leap year', () => {
+		expect(getPrevHebrewMonth(new HDate(15, 1, 5783))).toStrictEqual({ year: 5783, month: 12 });
+	});
+	it('gets previous month from Adar II', () => {
+		expect(getPrevHebrewMonth(new HDate(15, 13, 5784))).toStrictEqual({ year: 5784, month: 12 });
+	});
+});
+
+describe('test getNextHebrewMonth', () => {
+	it('gets next month from Elul', () => {
+		expect(getNextHebrewMonth(new HDate(15, 6, 5784))).toStrictEqual({ year: 5785, month: 7 });
+	});
+	it('gets next month from Adar I in a leap year', () => {
+		expect(getNextHebrewMonth(new HDate(15, 12, 5784))).toStrictEqual({ year: 5784, month: 13 });
+	});
+	it('gets next month from Adar in a non-leap year', () => {
+		expect(getNextHebrewMonth(new HDate(15, 12, 5783))).toStrictEqual({ year: 5783, month: 1 });
+	});
+	it('gets next month from Adar II', () => {
+		expect(getNextHebrewMonth(new HDate(15, 13, 5784))).toStrictEqual({ year: 5784, month: 1 });
 	});
 });

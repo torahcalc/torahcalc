@@ -68,15 +68,20 @@ export function getNextHebrewMonth(hDate) {
 
 /**
  * Returns the previous Hebrew month
+ * @param {HDate} [hDate] - The Hebrew date to get the previous month from or today if not provided
  * @returns {{month: number, year: number}}
  */
-export function getPrevHebrewMonth() {
-	const today = new HDate();
-	const monthsInPrevYear = (7 * today.getFullYear()) % 19 < 7 ? 13 : 12;
-	const prevHebrewMonth = today.getMonth() - 1 || monthsInPrevYear;
+export function getPrevHebrewMonth(hDate) {
+	hDate = hDate === undefined ? new HDate() : hDate;
+	// Month 1 = Nissan, 7 = Tishrei, 12 = Adar I, 13 = Adar II (leap year)
+	let prevHebrewMonth = hDate.getMonth() - 1;
+	// reset to Adar if at the beginning of the year, Adar II if it's a leap year
+	if (prevHebrewMonth === 0) {
+		prevHebrewMonth = hDate.isLeapYear() ? 13 : 12;
+	}
 	return {
 		month: prevHebrewMonth,
-		year: prevHebrewMonth === monthsInPrevYear ? today.getFullYear() - 1 : today.getFullYear(),
+		year: prevHebrewMonth === 6 ? hDate.getFullYear() - 1 : hDate.getFullYear(),
 	};
 }
 
