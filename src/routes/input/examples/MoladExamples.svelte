@@ -11,5 +11,5 @@
 	icon={faEclipse}
 	color="teal"
 	{clickFunction}
-	queries={['Calculate the molad of Sivan 5781.', 'When will the molad of Elul be?', 'When is the next molad?', 'Calculate molados for 5781.']}
+	queries={['Calculate the molad of Sivan 5785.', 'When will the molad of Elul be?', 'When is the next molad?', 'Calculate molados for 5785.']}
 />

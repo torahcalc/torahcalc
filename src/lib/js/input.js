@@ -1001,7 +1001,7 @@ function moladQuery(derivation) {
 	else {
 		const monthsInYear = isHebrewLeapYear(derivation.year).isLeapYear ? 13 : 12;
 		const data = Array.from({ length: monthsInYear }, (_, i) => {
-			const molad = calculateMolad(derivation.year, i + 1);
+			const molad = calculateMolad(derivation.year, (i + 6) % monthsInYear + 1);
 			return { Month: molad.monthName, Molad: `<ul><li>${molad.timeFormat[timeFormat]}</li><li>${molad.dayOfWeekFormat[timeFormat]}</li><li>${molad.hebrewDateFormat[timeFormat]}</li></ul>` };
 		});
 		const moladTable = dataToHtmlTable(data, { headers: ['Month', 'Molad'], class: 'table table-striped table-bordered', html: true });
