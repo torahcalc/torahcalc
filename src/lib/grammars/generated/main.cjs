@@ -5740,6 +5740,8 @@ var grammar = {
     {"name": "moladQuery$macrocall$16$subexpression$1", "symbols": ["moladQuery$macrocall$16$subexpression$1$string$2"]},
     {"name": "moladQuery$macrocall$16$subexpression$1$string$3", "symbols": [{"literal":"i"}, {"literal":"n"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "moladQuery$macrocall$16$subexpression$1", "symbols": ["moladQuery$macrocall$16$subexpression$1$string$3"]},
+    {"name": "moladQuery$macrocall$16$subexpression$1$string$4", "symbols": [{"literal":"o"}, {"literal":"f"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "moladQuery$macrocall$16$subexpression$1", "symbols": ["moladQuery$macrocall$16$subexpression$1$string$4"]},
     {"name": "moladQuery$macrocall$16", "symbols": ["moladQuery$macrocall$16$subexpression$1"]},
     {"name": "moladQuery$macrocall$15", "symbols": ["moladQuery$macrocall$16", "__"], "postprocess": data => data[0]},
     {"name": "moladQuery$macrocall$15", "symbols": ["_"], "postprocess": data => null},

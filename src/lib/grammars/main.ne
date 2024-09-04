@@ -125,13 +125,13 @@ hebrewCalendarQuery -> optionalWords[("convert" | "translate")] date _ optionalW
                      | optionalWords["when"] optionalWords[("will" | "is" | "does" | "did")] gregorianDate __ optionalWords[("fall" | "occur" | "be" | "land")] optionalWords["in"] calendarAwareYear {% data => ({function: "hebrewCalendarQuery", date: data[2], year: data[6]}) %}
 
 # Molad
-# - Calculate the molad of Sivan 5781.
+# - Calculate the molad of Sivan 5785.
 # - When will the molad of Elul be?
 # - When is the next molad?
-# - Calculate molados for 5781.
+# - Calculate molados for 5785.
 moladQuery -> optionalWords[("calculate" | "compute" | "what is" | "what's" | "when is" | "when's" | "what time is" | "what time was")] optionalWords["the"] moladMonth {% data => ({function: "moladQuery", ...data[2]}) %}
             | optionalWords["when will"] optionalWords["the"] moladMonth _ optionalWords[("be" | "occur" | "land" | "fall")] {% data => ({function: "moladQuery", ...data[2]}) %}
-            | optionalWords[("calculate" | "compute" | "what are" | "when are")] optionalWords["the"] ("molados" | "moladot" | "moladim" | "molads" | "molad") _ optionalWords[("for" | "or" | "in")] hebrewYear {% data => ({function: "moladQuery", year: data[5]}) %}
+            | optionalWords[("calculate" | "compute" | "what are" | "when are")] optionalWords["the"] ("molados" | "moladot" | "moladim" | "molads" | "molad") _ optionalWords[("for" | "or" | "in" | "of")] hebrewYear {% data => ({function: "moladQuery", year: data[5]}) %}
 
 # Sefiras HaOmer
 # - Sefiras Haomer for tonight
