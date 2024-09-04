@@ -1,4 +1,5 @@
 <script>
+	import { page } from '$app/stores';
 	import dayjs from 'dayjs';
 	import InputCalculator from '../../input/InputCalculator.svelte';
 	import ZmanimExamples from '../../input/examples/ZmanimExamples.svelte';
@@ -12,6 +13,9 @@
 	const description = 'Calculate the halachic times of the day for any date and location.';
 
 	const today = dayjs().format('MMMM D, YYYY');
+
+	/** @type {string} The current query in the input box (not yet submitted) */
+	export let queryInput = $page.url.searchParams.get('q') ?? `Zmanim for Denver on ${today}`;
 </script>
 
 <svelte:head>
@@ -24,7 +28,7 @@
 
 	<p class="center">{description}</p>
 
-	<InputCalculator bind:this={inputCalculator} queryInput="Zmanim for Denver on {today}" />
+	<InputCalculator bind:this={inputCalculator} {queryInput} />
 
 	<div class="examples">
 		<ZmanimExamples {clickFunction} />

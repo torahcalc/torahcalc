@@ -1,4 +1,5 @@
 <script>
+	import { page } from '$app/stores';
 	import dayjs from 'dayjs';
 	import InputCalculator from '../../input/InputCalculator.svelte';
 	import SefirasHaOmerExamples from '../../input/examples/SefirasHaOmerExamples.svelte';
@@ -50,6 +51,9 @@
 		}
 		popup.document.write(html);
 	}
+
+	/** @type {string} The current query in the input box (not yet submitted) */
+	export let queryInput = $page.url.searchParams.get('q') ?? `What is the Sefiras HaOmer for ${today}?`;
 </script>
 
 <svelte:head>
@@ -67,7 +71,7 @@
 		<button class="sefirah-link" style="background-image: url({addIcal})" on:click={openAddToICal}></button>
 	</div>
 
-	<InputCalculator bind:this={inputCalculator} queryInput="What is the Sefiras HaOmer for {today}?" />
+	<InputCalculator bind:this={inputCalculator} {queryInput} />
 
 	<div class="examples">
 		<SefirasHaOmerExamples {clickFunction} />
