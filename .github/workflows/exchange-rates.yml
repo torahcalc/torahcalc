@@ -13,8 +13,8 @@ on:
     paths:
       - '.github/workflows/exchange-rates.yml'
   schedule:
-    # every day at 23:00 UTC
-    - cron: '0 23 * * *'
+    # every week, on Sunday at 23:00
+    - cron: '0 23 * * 0'
 
 jobs:
   lint:
