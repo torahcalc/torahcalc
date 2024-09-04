@@ -1,4 +1,5 @@
 <script>
+	import { page } from '$app/stores';
 	import InputCalculator from '../../input/InputCalculator.svelte';
 	import ShmitaExamples from '../../input/examples/ShmitaExamples.svelte';
 
@@ -9,6 +10,9 @@
 	$: clickFunction = inputCalculator?.setSections;
 
 	const description = 'Calculate when Shmita will occur and when it has occurred in the past.';
+
+	/** @type {string} The current query in the input box (not yet submitted) */
+	export let queryInput = $page.url.searchParams.get('q') ?? 'When is the next Shmita year?';
 </script>
 
 <svelte:head>
@@ -21,7 +25,7 @@
 
 	<p class="center">{description}</p>
 
-	<InputCalculator bind:this={inputCalculator} queryInput="When is the next Shmita year?" />
+	<InputCalculator bind:this={inputCalculator} {queryInput} />
 
 	<div class="examples">
 		<ShmitaExamples {clickFunction} />
