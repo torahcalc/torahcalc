@@ -397,6 +397,15 @@ describe('test molad', () => {
 		expect(sections[2].title).toBe('Result');
 		expect(sections[2].content).toContain('Tuesday evening, 31 minutes and 7 chalakim after 20:00');
 	});
+
+	it('Calculates molad with invalid outputFormat', async () => {
+		const sections = await calculateQuery('Calculate the molad of Sivan 5781', { outputFormat: 'invalid,invalid,invalid' });
+		expect(sections[2].content).toContain('Tuesday, May 11, 2021, 8:31 pm and 7 chalakim');
+		const sections2 = await calculateQuery('Calculate the molad of Sivan 5781', { outputFormat: 'invalid' });
+		expect(sections2[2].content).toContain('Tuesday, May 11, 2021, 8:31 pm and 7 chalakim');
+		const sections3 = await calculateQuery('Calculate the molad of Sivan 5781', { outputFormat: 'invalid,invalid' });
+		expect(sections3[2].content).toContain('Tuesday, May 11, 2021, 8:31 pm and 7 chalakim');
+	});
 });
 
 describe('test sefiras haomer', () => {

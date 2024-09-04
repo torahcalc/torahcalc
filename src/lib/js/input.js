@@ -1038,7 +1038,7 @@ function moladQuery(derivation, search, outputFormat) {
 	const HEBREW_DATE_FORMAT = 'hebrewDateFormat';
 	const DAY_OF_WEEK_FORMAT = 'dayOfWeekFormat';
 
-	let [timeFormat, resultFormat] = outputFormat && outputFormat.includes(',') ? outputFormat.split(',') : [HR_12, GREGORIAN_DATE_FORMAT];
+	let [timeFormat, resultFormat] = outputFormat && outputFormat.includes(',') ? outputFormat.split(',', 2) : [HR_12, GREGORIAN_DATE_FORMAT];
 	if (![HR_12, HR_24].includes(timeFormat)) {
 		timeFormat = HR_12;
 	}
