@@ -1,4 +1,5 @@
 <script>
+	import { page } from '$app/stores';
 	import { hebrewMonthMap } from '$lib/js/dateconverter';
 	import { getNextHebrewMonth } from '$lib/js/utils';
 	import InputCalculator from '../../input/InputCalculator.svelte';
@@ -14,6 +15,9 @@
 
 	const nextHebrewMonth = getNextHebrewMonth();
 	const monthName = `${hebrewMonthMap[nextHebrewMonth.month]} ${nextHebrewMonth.year}`;
+
+	/** @type {string} The current query in the input box (not yet submitted) */
+	export let queryInput = $page.url.searchParams.get('q') ?? `Calculate the molad of ${monthName}.`;
 </script>
 
 <svelte:head>
@@ -26,7 +30,7 @@
 
 	<p class="center">{description}</p>
 
-	<InputCalculator bind:this={inputCalculator} queryInput="Calculate the molad of {monthName}." />
+	<InputCalculator bind:this={inputCalculator} {queryInput} />
 
 	<div class="examples">
 		<MoladExamples {clickFunction} />
