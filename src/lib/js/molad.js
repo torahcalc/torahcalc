@@ -207,7 +207,7 @@ export function formatMoladHebrewDate(molad, chalakim, is24Hour) {
  */
 export function formatMoladDayOfWeek(molad, chalakim, is24Hour) {
 	// Determine if the molad was after sunset in Jerusalem
-	const zmanim = new Zmanim(new Date(molad.format("YYYY-MM-DD")), 31.77759, 35.23564);
+	const zmanim = new Zmanim(new Date(molad.format('YYYY-MM-DD')), 31.77759, 35.23564);
 	// adjust for timezone - make all times in UTC even though they are really Jerusalem time
 	const sunset = dayjs.utc(Zmanim.formatISOWithTimeZone('Asia/Jerusalem', zmanim.sunset()).replace(/\+.+$/, '')); // remove timezone offset to compare as UTC
 
