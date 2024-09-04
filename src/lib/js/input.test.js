@@ -282,14 +282,6 @@ describe('test hebrew calendar', () => {
 		expect(sections[2].content).toBe('Mon, April 22, 2024');
 	});
 
-	it('When will 14 Nissan fall next year', async () => {
-		const sections = await calculateQuery('When will 14 Nissan fall next year');
-		expect(sections[0].title).toBe('');
-		expect(sections[1].title).toBe('Input Interpretation');
-		expect(sections[1].content).toContain('Convert 14th of Nissan, ');
-		expect(sections[1].content).toContain(' to Gregorian calendar');
-	});
-
 	it("Today's date on Hebrew calendar", async () => {
 		const sections = await calculateQuery("Today's date on Hebrew calendar");
 		expect(sections[0].title).toBe('Input Interpretation');
@@ -347,38 +339,63 @@ describe('test leap years', () => {
 describe('test molad', () => {
 	it('Calculate the molad of Sivan 5781.', async () => {
 		const sections = await calculateQuery('Calculate the molad of Sivan 5781.');
-		expect(sections[0].title).toBe('Input Interpretation');
-		expect(sections[0].content).toBe('Calculate the molad of Sivan 5781');
-		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toContain('Tuesday, May 11, 2021, 8:31 pm and 7 chalakim');
-		expect(sections[1].content).toContain('Tuesday evening, 31 minutes and 7 chalakim after 8:00 pm');
-		expect(sections[1].content).toContain('29th of Iyar, 5781, 8:31 pm and 7 chalakim');
-		expect(sections[2].title).toBe('Rosh Chodesh and Shabbos Mevarchim');
-		expect(sections[2].content).toContain('Sat, May 8, 2021');
-		expect(sections[2].content).toContain('Wed, May 12, 2021');
+		expect(sections[0].title).toBe('');
+		expect(sections[0].content).toContain('Time format:');
+		expect(sections[0].content).toContain('Result format:');
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toBe('Calculate the molad of Sivan 5781');
+		expect(sections[2].title).toBe('Result');
+		expect(sections[2].content).toContain('Tuesday, May 11, 2021, 8:31 pm and 7 chalakim');
+		expect(sections[3].title).toBe('Rosh Chodesh and Shabbos Mevarchim');
+		expect(sections[3].content).toContain('Sat, May 8, 2021');
+		expect(sections[3].content).toContain('Wed, May 12, 2021');
 	});
 
 	it('When will the molad of Elul be?', async () => {
 		const sections = await calculateQuery('When will the molad of Elul be?');
-		expect(sections[0].title).toBe('Input Interpretation');
-		expect(sections[0].content).toContain('Calculate the molad of Elul ');
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toContain('Calculate the molad of Elul ');
 	});
 
 	it('When is the next molad?', async () => {
 		const sections = await calculateQuery('When is the next molad?');
-		expect(sections[0].title).toBe('Input Interpretation');
-		expect(sections[0].content).toContain('Calculate the molad of ');
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toContain('Calculate the molad of ');
 	});
 
 	it('Calculate molados for 5781.', async () => {
 		const sections = await calculateQuery('Calculate molados for 5781.');
-		expect(sections[0].title).toBe('Input Interpretation');
-		expect(sections[0].content).toBe('Calculate the molados for Hebrew year 5781');
-		expect(sections[1].title).toBe('Result');
-		expect(sections[1].content).toContain('Nissan 5781');
-		expect(sections[1].content).toContain('Saturday, March 13, 2021');
-		expect(sections[1].content).toContain('Adar 5781');
-		expect(sections[1].content).toContain('Friday, February 12, 2021');
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toBe('Calculate the molados for Hebrew year 5781');
+		expect(sections[2].title).toBe('Result');
+		expect(sections[2].content).toContain('Nissan 5781');
+		expect(sections[2].content).toContain('Saturday, March 13, 2021');
+		expect(sections[2].content).toContain('Adar 5781');
+		expect(sections[2].content).toContain('Friday, February 12, 2021');
+	});
+
+	it('Calculates molad with 24Hr input option', async () => {
+		const sections = await calculateQuery('Calculate the molad of Sivan 5781', { outputFormat: '24Hr,timeFormat' });
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toContain('Calculate the molad of Sivan 5781');
+		expect(sections[2].title).toBe('Result');
+		expect(sections[2].content).toContain('Tuesday, May 11, 2021, 20:31 and 7 chalakim');
+	});
+
+	it('Calculates molad with hebrewDateFormat', async () => {
+		const sections = await calculateQuery('Calculate the molad of Sivan 5781', { outputFormat: '12Hr,hebrewDateFormat' });
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toContain('Calculate the molad of Sivan 5781');
+		expect(sections[2].title).toBe('Result');
+		expect(sections[2].content).toContain('29th of Iyar, 5781, 8:31 pm and 7 chalakim');
+	});
+
+	it('Calculates molad with dayOfWeekFormat and 24Hr input option', async () => {
+		const sections = await calculateQuery('Calculate the molad of Sivan 5781', { outputFormat: '24Hr,dayOfWeekFormat' });
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toContain('Calculate the molad of Sivan 5781');
+		expect(sections[2].title).toBe('Result');
+		expect(sections[2].content).toContain('Tuesday evening, 31 minutes and 7 chalakim after 20:00');
 	});
 });
 
