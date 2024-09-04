@@ -44,8 +44,10 @@ export class InputError extends Error {
 }
 
 /**
+ * Input options to interpret the input for example, disambiguation and format options
  * @typedef {Object} InputOptions
  * @property {string} [disambiguation] - The disambiguation to use to interpret the input
+ * @property {string} [outputFormat] - The format to use to output the result
  */
 
 /**
@@ -91,7 +93,7 @@ export async function calculateQuery(search, options = {}) {
 		startSections.push({
 			title: '',
 			content: `Interpreting as <b>${derivation.disambiguation}</b>. Interpret instead as ${otherInterpretations
-				.map((other) => `<a href="?q=${encodeURIComponent(search)}&disambiguation=${encodeURIComponent(other)}">${other}</a>`)
+				.map((other) => getSearchLink(other, search, other, options.outputFormat))
 				.join(', ')}.`,
 		});
 	}
@@ -105,7 +107,7 @@ export async function calculateQuery(search, options = {}) {
 		gematriaTwoWordMatchQuery: () => gematriaTwoWordMatchQuery(derivation),
 		zmanimQuery: async () => await zmanimQuery(derivation),
 		hebrewCalendarQuery: () => hebrewCalendarQuery(derivation),
-		moladQuery: () => moladQuery(derivation),
+		moladQuery: () => moladQuery(derivation, search, options.outputFormat),
 		sefirasHaOmerQuery: () => sefirasHaOmerQuery(derivation),
 		leapYearQuery: () => leapYearQuery(derivation),
 		dailyLearningQuery: () => dailyLearningQuery(derivation),
@@ -181,6 +183,52 @@ function formatParseResultDate(date) {
 		return formatHebrewDateEn(new HDate(date.hebrewDate.day, date.hebrewDate.month, date.hebrewDate.year));
 	}
 	throw new Error('Invalid date');
+}
+
+/**
+ * Generate HTML for a link to search results
+ * @param {string} text - The link text
+ * @param {string} q - The search query
+ * @param {string} [disambiguation] - The disambiguation
+ * @param {string} [format] - The output format
+ * @returns {string} The search link URL
+ */
+function getSearchLinkUrl(q, disambiguation, format) {
+	let url = `?q=${encodeURIComponent(q)}`;
+	if (disambiguation) {
+		url += `&disambiguation=${encodeURIComponent(disambiguation)}`;
+	}
+	if (format) {
+		url += `&format=${encodeURIComponent(format)}`;
+	}
+	return url;
+}
+
+/**
+ * Generate HTML for a link to search results
+ * @param {string} text - The link text
+ * @param {string} q - The search query
+ * @param {string} [disambiguation] - The disambiguation
+ * @param {string} [format] - The output format
+ * @returns {string} The HTML link
+ */
+function getSearchLink(text, q, disambiguation, format) {
+	const url = getSearchLinkUrl(q, disambiguation, format);
+	return `<a href="${url}">${text}</a>`;
+}
+
+/**
+ * Generate HTML for radio button-style links to search results with a specific one selected
+ * @param {string} text - The link text
+ * @param {string} q - The search query
+ * @param {string} [disambiguation] - The disambiguation
+ * @param {string} [format] - The output format
+ * @param {boolean} [selected] - Whether the link is selected
+ * @returns {string} The HTML link
+ */
+function getRadioButtonLink(text, q, disambiguation, format, selected) {
+	const url = getSearchLinkUrl(q, disambiguation, format);
+	return `<a href="${url}" class="text-decoration-none btn btn-sm btn-outline-primary ${selected ? 'active' : ''}">${text}</a>`;
 }
 
 /**
@@ -975,21 +1023,48 @@ function hebrewCalendarQuery(derivation) {
 
 /**
  * Generate sections for a Molad query
- * @param {{ function?: string, month?: number, year: number }} derivation
+ * @param {{ function?: string, month?: number, year: number, outputFormat: string }} derivation
+ * @param {string} search - The search term
+ * @param {string} [outputFormat] - The output format
  * @returns {{ title: string, content: string }[]} The response.
  */
-function moladQuery(derivation) {
+function moladQuery(derivation, search, outputFormat) {
 	/** @type {{ title: string, content: string }[]} */
 	const sections = [];
 
-	const timeFormat = '12Hr'; // TODO: support 24Hr format
+	const HR_12 = '12Hr';
+	const HR_24 = '24Hr';
+	const GREGORIAN_DATE_FORMAT = 'timeFormat';
+	const HEBREW_DATE_FORMAT = 'hebrewDateFormat';
+	const DAY_OF_WEEK_FORMAT = 'dayOfWeekFormat';
+
+	let [timeFormat, resultFormat] = outputFormat && outputFormat.includes(',') ? outputFormat.split(',') : [HR_12, GREGORIAN_DATE_FORMAT];
+	if (![HR_12, HR_24].includes(timeFormat)) {
+		timeFormat = HR_12;
+	}
+	if (![GREGORIAN_DATE_FORMAT, HEBREW_DATE_FORMAT, DAY_OF_WEEK_FORMAT].includes(resultFormat)) {
+		resultFormat = GREGORIAN_DATE_FORMAT;
+	}
+
+	// create a section that allows toggling the time format ("12Hr", "24Hr") and result format ("Gregorian Date", "Hebrew Date", or "Day of Week")
+	const linkTo12Hr = getRadioButtonLink('12-hour', search, undefined, `${HR_12},${resultFormat}`, timeFormat === HR_12);
+	const linkTo24Hr = getRadioButtonLink('24-hour', search, undefined, `${HR_24},${resultFormat}`, timeFormat === HR_24);
+	const linkToGregorianDate = getRadioButtonLink('Gregorian Date', search, undefined, `${timeFormat},${GREGORIAN_DATE_FORMAT}`, resultFormat === GREGORIAN_DATE_FORMAT);
+	const linkToHebrewDate = getRadioButtonLink('Hebrew Date', search, undefined, `${timeFormat},${HEBREW_DATE_FORMAT}`, resultFormat === HEBREW_DATE_FORMAT);
+	const linkToDayOfWeek = getRadioButtonLink('Day of Week', search, undefined, `${timeFormat},${DAY_OF_WEEK_FORMAT}`, resultFormat === DAY_OF_WEEK_FORMAT);
+	sections.push({
+		title: '',
+		content: `<div><b>Time format:</b> &nbsp; ${linkTo12Hr} ${linkTo24Hr}</div>
+					<div><b>Result format: &nbsp; </b> ${linkToGregorianDate} ${linkToHebrewDate} ${linkToDayOfWeek}</div>`,
+	});
 
 	// month and year are specified
 	if (derivation.month !== undefined) {
 		const molad = calculateMolad(derivation.year, derivation.month);
 
 		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the molad of ${molad.monthName}` });
-		sections.push({ title: RESULT, content: `<ul><li>${molad.timeFormat[timeFormat]}</li><li>${molad.dayOfWeekFormat[timeFormat]}</li><li>${molad.hebrewDateFormat[timeFormat]}</li></ul>` });
+		// @ts-ignore - assume key exists
+		sections.push({ title: RESULT, content: molad[resultFormat][timeFormat] });
 		if (!molad.shabbosMevarchim.roshHashanah) {
 			sections.push({
 				title: 'Rosh Chodesh and Shabbos Mevarchim',
@@ -1002,7 +1077,8 @@ function moladQuery(derivation) {
 		const monthsInYear = isHebrewLeapYear(derivation.year).isLeapYear ? 13 : 12;
 		const data = Array.from({ length: monthsInYear }, (_, i) => {
 			const molad = calculateMolad(derivation.year, ((i + 6) % monthsInYear) + 1);
-			return { Month: molad.monthName, Molad: `<ul><li>${molad.timeFormat[timeFormat]}</li><li>${molad.dayOfWeekFormat[timeFormat]}</li><li>${molad.hebrewDateFormat[timeFormat]}</li></ul>` };
+			// @ts-ignore
+			return { Month: molad.monthName, Molad: molad[resultFormat][timeFormat] };
 		});
 		const moladTable = dataToHtmlTable(data, { headers: ['Month', 'Molad'], class: 'table table-striped table-bordered', html: true });
 		sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the molados for Hebrew year ${derivation.year}` });
