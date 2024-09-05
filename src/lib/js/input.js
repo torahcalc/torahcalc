@@ -15,7 +15,20 @@ import { calculateMolad } from './molad';
 import { calculateOmerDate, calculateOmerHebrew } from './omer';
 import { isShmitaYear, nextShmita, previousShmita } from './shmita';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
-import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, getCurrentHebrewMonth, getNextHebrewMonth, getPrevHebrewMonth, logQuery, properCase, sanitize, translate } from './utils';
+import {
+	dataToHtmlTable,
+	formatDate,
+	formatDateObject,
+	formatNumberHTML,
+	getCurrentHebrewMonth,
+	getNextHebrewMonth,
+	getPrevHebrewMonth,
+	getUserPosition,
+	logQuery,
+	properCase,
+	sanitize,
+	translate,
+} from './utils';
 import { ZMANIM_NAMES } from './zmanim';
 import { calculateZodiac, calculateZodiacHebrewDate } from './zodiac';
 dayjs.extend(timezone);
@@ -187,7 +200,6 @@ function formatParseResultDate(date) {
 
 /**
  * Generate HTML for a link to search results
- * @param {string} text - The link text
  * @param {string} q - The search query
  * @param {string} [disambiguation] - The disambiguation
  * @param {string} [format] - The output format
@@ -327,7 +339,7 @@ async function getValidDerivations(search, results) {
 				if (!match) {
 					// skip interpretation if the location cannot be found in the search query
 					continue;
-				} else {
+				} else if (match[0].trim() !== '') {
 					// add the location to the disambiguation using the case from the search query
 					derivation.disambiguation += ` in "${match[0]}"`;
 				}
@@ -815,9 +827,10 @@ export async function zmanimQuery(derivation) {
 
 	let location = derivation.location ?? '';
 
-	// TODO: support getting the user's location automatically
 	if (location.trim() === '') {
-		throw new InputError('Please specify a location (city or latitude, longitude).');
+		// get the user's coordinates using the Geolocation API
+		const userPosition = await getUserPosition();
+		location = `${userPosition.coords.latitude}, ${userPosition.coords.longitude}`;
 	}
 
 	/** @type {{ date: string, latitude?: string, longitude?: string, location?: string }} */

@@ -105,6 +105,7 @@ zmanimQuery -> optionalWords[("what time is" | "when is" | "what's the time of" 
              | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("on" | "for")] _ date _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[2], date: data[6], location: data[8]}) %}
              | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("in" | "at" | "for")] _ location _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", zman: data[2], date: data[8], location: data[6]}) %}
              | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[2], location: data[6]}) %}
+             | "zmanim" {% data => ({function: "zmanimQuery"}) %}
              | "zmanim" __ optionalWords[("on" | "for")] date {% data => ({function: "zmanimQuery", date: data[3]}) %}
              | "zmanim" __ optionalWords[("on" | "for")] date _ optionalWords[("for" | "in" | "at")] _ location {% data => ({function: "zmanimQuery", date: data[3], location: data[7]}) %}
              | "zmanim" __ optionalWords[("for" | "in" | "at")] location {% data => ({function: "zmanimQuery", location: data[3]}) %}

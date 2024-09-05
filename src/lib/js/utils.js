@@ -385,3 +385,16 @@ export function logQuery(query) {
 		// do nothing
 	}
 }
+
+/**
+ * Get the user's current location as a GeolocationPosition object
+ * @returns {Promise<GeolocationPosition>} - The user's current location
+ */
+export async function getUserPosition() {
+	return new Promise((resolve, reject) => {
+		if (!navigator.geolocation) {
+			reject(new Error('Geolocation is not supported by your browser.'));
+		}
+		navigator.geolocation.getCurrentPosition(resolve, reject);
+	});
+}
