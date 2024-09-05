@@ -105,10 +105,10 @@ zmanimQuery -> optionalWords[("what time is" | "when is" | "what's the time of" 
              | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("on" | "for")] _ date _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[2], date: data[6], location: data[8]}) %}
              | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("in" | "at" | "for")] _ location _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", zman: data[2], date: data[8], location: data[6]}) %}
              | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[2], location: data[6]}) %}
-             | "zmanim" __ optionalWords["for"] date {% data => ({function: "zmanimQuery", date: data[3]}) %}
-             | "zmanim" __ optionalWords["for"] date _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", date: data[3], location: data[7]}) %}
-             | "zmanim" __ optionalWords["for"] location {% data => ({function: "zmanimQuery", location: data[3]}) %}
-             | "zmanim" __ optionalWords["for"] location _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", date: data[7], location: data[3]}) %}
+             | "zmanim" __ optionalWords[("on" | "for")] date {% data => ({function: "zmanimQuery", date: data[3]}) %}
+             | "zmanim" __ optionalWords[("on" | "for")] date _ optionalWords[("for" | "in" | "at")] _ location {% data => ({function: "zmanimQuery", date: data[3], location: data[7]}) %}
+             | "zmanim" __ optionalWords[("for" | "in" | "at")] location {% data => ({function: "zmanimQuery", location: data[3]}) %}
+             | "zmanim" __ optionalWords[("for" | "in" | "at")] location _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", date: data[7], location: data[3]}) %}
 
 # Location parsing for Zmanim queries
 location -> [a-zÀ-ÖØ-öø-ÿ\d\s,.'()+":;\-]:+ {% data => data[0].join("") %}
