@@ -426,8 +426,9 @@ export function getPrevDayOfWeek(day, date = new Date()) {
 /**
  * Convert Date to { year: number, month: number, day: number } object
  * @param {Date} date - The date to convert
- * @returns {{ year: number, month: number, day: number }} - The date object
+ * @param {boolean} afterSunset - Whether to return the date after sunset
+ * @returns {{ year: number, month: number, day: number, afterSunset: boolean }} - The date object
  */
-export function dateToObject(date) {
-	return { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() };
+export function dateToObject(date, afterSunset = false) {
+	return { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate(), afterSunset };
 }
