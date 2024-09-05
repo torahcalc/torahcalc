@@ -398,3 +398,36 @@ export async function getUserPosition() {
 		navigator.geolocation.getCurrentPosition(resolve, reject);
 	});
 }
+
+/**
+ * Get the next instance of a day of the week
+ * @param {number} day - The day of the week (0-6, Sunday-Saturday)
+ * @param {Date} [date] - The date to start from (defaults to today)
+ * @returns {Date} - The next instance of the day of the week
+ */
+export function getNextDayOfWeek(day, date = new Date()) {
+	const resultDate = new Date(date);
+	resultDate.setDate(date.getDate() + ((day + 7 - date.getDay()) % 7));
+	return resultDate;
+}
+
+/**
+ * Get the previous instance of a day of the week
+ * @param {number} day - The day of the week (0-6, Sunday-Saturday)
+ * @param {Date} [date] - The date to start from (defaults to today)
+ * @returns {Date} - The previous instance of the day of the week
+ */
+export function getPrevDayOfWeek(day, date = new Date()) {
+	const resultDate = new Date(date);
+	resultDate.setDate(date.getDate() - ((date.getDay() + 7 - day) % 7));
+	return resultDate;
+}
+
+/**
+ * Convert Date to { year: number, month: number, day: number } object
+ * @param {Date} date - The date to convert
+ * @returns {{ year: number, month: number, day: number }} - The date object
+ */
+export function dateToObject(date) {
+	return { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() };
+}

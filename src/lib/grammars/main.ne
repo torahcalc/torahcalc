@@ -3,7 +3,7 @@
 @{%
 import { displayHebrew } from "$lib/js/gematria.js";
 import { HDate } from '@hebcal/core';
-import { getNextHebrewMonth, getPrevHebrewMonth, getCurrentHebrewMonth } from "$lib/js/utils.js";
+import { dateToObject, getCurrentHebrewMonth, getNextDayOfWeek, getNextHebrewMonth, getPrevDayOfWeek, getPrevHebrewMonth } from "$lib/js/utils.js";
 %}
 
 @builtin "number.ne"  # unsigned_int, int, unsigned_decimal, decimal, percentage, jsonfloat
@@ -250,6 +250,18 @@ gregorianDateInner -> dateOfMonth __ gregorianMonth (", " | __) gregorianYear {%
                     | ("last" | "previous") __ "week" {% data => ({year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() - 7}) %}
                     | ("last" | "previous") __ "month" {% data => ({year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate()}) %}
                     | ("last" | "previous") __ "year" {% data => ({year: new Date().getFullYear() - 1, month: new Date().getMonth() + 1, day: new Date().getDate()}) %}
+                    | optionalWords[("this" | "next" | "upcoming")] _ "sunday" {% data => dateToObject(getNextDayOfWeek(0)) %}
+                    | optionalWords[("this" | "next" | "upcoming")] _ "monday" {% data => dateToObject(getNextDayOfWeek(1)) %}
+                    | optionalWords[("this" | "next" | "upcoming")] _ "tuesday" {% data => dateToObject(getNextDayOfWeek(2)) %}
+                    | optionalWords[("this" | "next" | "upcoming")] _ "wednesday" {% data => dateToObject(getNextDayOfWeek(3)) %}
+                    | optionalWords[("this" | "next" | "upcoming")] _ "friday" {% data => dateToObject(getNextDayOfWeek(5)) %}
+                    | optionalWords[("this" | "next" | "upcoming")] _ ("shabbos" | "shabbat" | "sabbath" | "saturday") {% data => dateToObject(getNextDayOfWeek(6)) %}
+                    | ("last" | "previous") __ "sunday" {% data => dateToObject(getPrevDayOfWeek(0)) %}
+                    | ("last" | "previous") __ "monday" {% data => dateToObject(getPrevDayOfWeek(1)) %}
+                    | ("last" | "previous") __ "tuesday" {% data => dateToObject(getPrevDayOfWeek(2)) %}
+                    | ("last" | "previous") __ "wednesday" {% data => dateToObject(getPrevDayOfWeek(3)) %}
+                    | ("last" | "previous") __ "friday" {% data => dateToObject(getPrevDayOfWeek(5)) %}
+                    | ("last" | "previous") __ ("shabbos" | "shabbat" | "sabbath" | "saturday") {% data => dateToObject(getPrevDayOfWeek(6)) %}
 hebrewDate -> hebrewDateInner {% data => ({hebrewDate: data[0]}) %}
 hebrewDateInner -> dateOfMonth __ hebrewMonth (", " | __) hebrewYear {% data => ({year: data[4], month: data[2], day: data[0], format: "DMY"}) %}
                  | dateOfMonth __ hebrewMonth {% data => ({month: data[2], day: data[0], format: "DM"}) %}
