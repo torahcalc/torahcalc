@@ -862,8 +862,8 @@ export async function zmanimQuery(derivation) {
 	/** @type {{ timezone: string, location?: string, latitude?: number, longitude?: number, zmanim: { [key: string]: import('./zmanim').Zman }, events: { [key: string]: import('./zmanim').Zman }, durations: { [key: string]: import('./zmanim').Zman } }} */
 	const zmanimResult = zmanimResponse.data;
 
-	if (zmanimResult.location) {
-		location = `${zmanimResult.location} (${zmanimResult.latitude}, ${zmanimResult.longitude})`;
+	if (zmanimResult.location && zmanimResult.latitude && zmanimResult.longitude) {
+		location = `${zmanimResult.location} (${zmanimResult.latitude.toFixed(6)}, ${zmanimResult.longitude.toFixed(6)})`;
 	}
 
 	const resultLatitude = zmanimResult.latitude ?? params.latitude ?? '';
