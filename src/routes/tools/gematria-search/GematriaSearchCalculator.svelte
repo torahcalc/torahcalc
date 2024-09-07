@@ -47,7 +47,7 @@
 	const TOGGLE_MAPPING = {
 		'10,000 Common Hebrew Words': ['COMMON_WORDS'],
 		'Words in the Torah': ['TORAH_WORDS'],
-		'Verses in the Torah': ['BEREISHIS_PESUKIM', 'SHEMOS_PESUKIM', 'VAYIKRA_PESUKIM', 'BAMIDBAR_PESUKIM', 'DEVARIM_PESUKIM'],
+		'Verses in the Torah': ['BEREISHIS_PESUKIM', 'SHEMOS_PESUKIM', 'VAYIKRA_PESUKIM', 'BAMIDBAR_PESUKIM', 'DEVARIM_PESUKIM', 'NACH_PESUKIM'],
 	};
 
 	/**
@@ -120,7 +120,7 @@
 				<div class="translate">
 					<ul>
 						{#each words as word}
-							<li>{word}</li>
+							<li><p style="direction: rtl; margin: 0;">{word}</p></li>
 						{/each}
 					</ul>
 				</div>
