@@ -741,12 +741,15 @@ function gematriaSearchQuery(derivation) {
 		const listName = WORD_LIST_NAMES[wordListKey];
 		let wordList = '<ul>';
 		for (const word of words) {
-			wordList += `<li>${word}</li>`;
+			wordList += `<li><p style="direction: rtl; margin: 0;">${word}</p></li>`;
 		}
 		wordList += '</ul>';
 		if (words.length > 0) {
 			gematriaWordLists += `<h4>${listName}</h4>${wordList}`;
 		}
+	}
+	if (gematriaWordLists === '') {
+		gematriaWordLists = 'No words or verses were found with this Gematria value.';
 	}
 	sections.push({ title: RESULT, content: gematriaWordLists });
 
