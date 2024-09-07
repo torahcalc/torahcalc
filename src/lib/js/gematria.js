@@ -1,11 +1,12 @@
-import { COMMON_WORDS } from './words/commonwords';
+import { BEREISHIS_PESUKIM } from './words/pesukim-1-bereishis';
+import { SHEMOS_PESUKIM } from './words/pesukim-2-shemos';
+import { VAYIKRA_PESUKIM } from './words/pesukim-3-vayikra';
+import { BAMIDBAR_PESUKIM } from './words/pesukim-4-bamidbar';
+import { DEVARIM_PESUKIM } from './words/pesukim-5-devarim';
 import { NACH_PESUKIM } from './words/pesukim-nach';
-import { BEREISHIS_PESUKIM } from './words/pesukim1';
-import { SHEMOS_PESUKIM } from './words/pesukim2';
-import { VAYIKRA_PESUKIM } from './words/pesukim3';
-import { BAMIDBAR_PESUKIM } from './words/pesukim4';
-import { DEVARIM_PESUKIM } from './words/pesukim5';
-import { TORAH_WORDS } from './words/torahwords';
+import { COMMON_WORDS } from './words/words-common';
+import { NACH_WORDS } from './words/words-nach';
+import { TORAH_WORDS } from './words/words-torah';
 
 /**
  * Gematria methods
@@ -169,6 +170,7 @@ export const LETTER_SPELLING_VALUES = {
 export const WORD_LIST_NAMES = {
 	COMMON_WORDS: 'Common Hebrew Words',
 	TORAH_WORDS: 'Words in the Torah',
+	NACH_WORDS: 'Words in Nach',
 	BEREISHIS_PESUKIM: 'Pesukim (Verses) in Bereishis',
 	SHEMOS_PESUKIM: 'Pesukim (Verses) in Shemos',
 	VAYIKRA_PESUKIM: 'Pesukim (Verses) in Vayikra',
@@ -382,6 +384,7 @@ export function searchGematria(value) {
 	return {
 		COMMON_WORDS: COMMON_WORDS[value] || [],
 		TORAH_WORDS: TORAH_WORDS[value] || [],
+		NACH_WORDS: NACH_WORDS[value] || [],
 		BEREISHIS_PESUKIM: BEREISHIS_PESUKIM[value] || [],
 		SHEMOS_PESUKIM: SHEMOS_PESUKIM[value] || [],
 		VAYIKRA_PESUKIM: VAYIKRA_PESUKIM[value] || [],
