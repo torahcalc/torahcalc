@@ -260,6 +260,13 @@ describe('test hebrew calendar', () => {
 		expect(sections[1].content).toBe('22nd of Kislev, 5730 / כ״ב כִּסְלֵו תש״ל');
 	});
 
+	it('Convert Sunday night to Hebrew calendar', async () => {
+		const sections = await calculateQuery('Convert Sunday night to Hebrew calendar');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('Convert Sun, ');
+		expect(sections[0].content).toContain(' (after sunset) to Hebrew calendar');
+	});
+
 	it('Convert 5780 to Gregorian calendar', async () => {
 		const sections = await calculateQuery('Convert 5780 to Gregorian calendar');
 		expect(sections[0].title).toBe('');

@@ -15,7 +15,20 @@ import { calculateMolad } from './molad';
 import { calculateOmerDate, calculateOmerHebrew } from './omer';
 import { isShmitaYear, nextShmita, previousShmita } from './shmita';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
-import { dataToHtmlTable, formatDate, formatDateObject, formatNumberHTML, getCurrentHebrewMonth, getNextHebrewMonth, getPrevHebrewMonth, logQuery, properCase, sanitize, translate } from './utils';
+import {
+	dataToHtmlTable,
+	formatDate,
+	formatDateObject,
+	formatNumberHTML,
+	getCurrentHebrewMonth,
+	getNextHebrewMonth,
+	getPrevHebrewMonth,
+	getUserPosition,
+	logQuery,
+	properCase,
+	sanitize,
+	translate,
+} from './utils';
 import { ZMANIM_NAMES } from './zmanim';
 import { calculateZodiac, calculateZodiacHebrewDate } from './zodiac';
 dayjs.extend(timezone);
@@ -187,7 +200,6 @@ function formatParseResultDate(date) {
 
 /**
  * Generate HTML for a link to search results
- * @param {string} text - The link text
  * @param {string} q - The search query
  * @param {string} [disambiguation] - The disambiguation
  * @param {string} [format] - The output format
@@ -315,8 +327,8 @@ async function getValidDerivations(search, results) {
 			}
 			if (derivation.location) {
 				derivation.disambiguationScore += 1;
-				// skip interpretation if certain words are in the location
-				if (/\b(?:in|on|at|for|yesterday|today|tomorrow|next|last|zmanis|zmanit)\b/.test(derivation.location)) {
+				// skip interpretation if certain words are in the location or it starts with a comma
+				if (/^,|\b(?:in|on|at|for|yesterday|today|tomorrow|next|last|zmanis|zmanit)\b/.test(derivation.location)) {
 					continue;
 				}
 				// extract the location from the search query
@@ -327,7 +339,7 @@ async function getValidDerivations(search, results) {
 				if (!match) {
 					// skip interpretation if the location cannot be found in the search query
 					continue;
-				} else {
+				} else if (match[0].trim() !== '') {
 					// add the location to the disambiguation using the case from the search query
 					derivation.disambiguation += ` in "${match[0]}"`;
 				}
@@ -815,9 +827,11 @@ export async function zmanimQuery(derivation) {
 
 	let location = derivation.location ?? '';
 
-	// TODO: support getting the user's location automatically
 	if (location.trim() === '') {
-		throw new InputError('Please specify a location (city or latitude, longitude).');
+		// get the user's coordinates using the Geolocation API
+		const userPosition = await getUserPosition();
+		// round latitude and longitude to 6 decimal places
+		location = `${userPosition.coords.latitude.toFixed(6)}, ${userPosition.coords.longitude.toFixed(6)}`;
 	}
 
 	/** @type {{ date: string, latitude?: string, longitude?: string, location?: string }} */
@@ -848,8 +862,8 @@ export async function zmanimQuery(derivation) {
 	/** @type {{ timezone: string, location?: string, latitude?: number, longitude?: number, zmanim: { [key: string]: import('./zmanim').Zman }, events: { [key: string]: import('./zmanim').Zman }, durations: { [key: string]: import('./zmanim').Zman } }} */
 	const zmanimResult = zmanimResponse.data;
 
-	if (zmanimResult.location) {
-		location = `${zmanimResult.location} (${zmanimResult.latitude}, ${zmanimResult.longitude})`;
+	if (zmanimResult.location && zmanimResult.latitude && zmanimResult.longitude) {
+		location = `${zmanimResult.location} (${zmanimResult.latitude.toFixed(6)}, ${zmanimResult.longitude.toFixed(6)})`;
 	}
 
 	const resultLatitude = zmanimResult.latitude ?? params.latitude ?? '';

@@ -3,7 +3,7 @@
 @{%
 import { displayHebrew } from "$lib/js/gematria.js";
 import { HDate } from '@hebcal/core';
-import { getNextHebrewMonth, getPrevHebrewMonth, getCurrentHebrewMonth } from "$lib/js/utils.js";
+import { dateToObject, getCurrentHebrewMonth, getNextDayOfWeek, getNextHebrewMonth, getPrevDayOfWeek, getPrevHebrewMonth } from "$lib/js/utils.js";
 %}
 
 @builtin "number.ne"  # unsigned_int, int, unsigned_decimal, decimal, percentage, jsonfloat
@@ -105,10 +105,11 @@ zmanimQuery -> optionalWords[("what time is" | "when is" | "what's the time of" 
              | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("on" | "for")] _ date _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[2], date: data[6], location: data[8]}) %}
              | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("in" | "at" | "for")] _ location _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", zman: data[2], date: data[8], location: data[6]}) %}
              | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[2], location: data[6]}) %}
-             | "zmanim" __ optionalWords["for"] date {% data => ({function: "zmanimQuery", date: data[3]}) %}
-             | "zmanim" __ optionalWords["for"] date _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", date: data[3], location: data[7]}) %}
-             | "zmanim" __ optionalWords["for"] location {% data => ({function: "zmanimQuery", location: data[3]}) %}
-             | "zmanim" __ optionalWords["for"] location _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", date: data[7], location: data[3]}) %}
+             | optionalWords[("calculate" | "compute" | "list" | "show" | "display")] _ "zmanim" {% data => ({function: "zmanimQuery"}) %}
+             | optionalWords[("calculate" | "compute" | "list" | "show" | "display")] _ "zmanim" __ optionalWords[("on" | "for")] date {% data => ({function: "zmanimQuery", date: data[5]}) %}
+             | optionalWords[("calculate" | "compute" | "list" | "show" | "display")] _ "zmanim" __ optionalWords[("on" | "for")] date _ optionalWords[("for" | "in" | "at")] _ location {% data => ({function: "zmanimQuery", date: data[5], location: data[9]}) %}
+             | optionalWords[("calculate" | "compute" | "list" | "show" | "display")] _ "zmanim" __ optionalWords[("for" | "in" | "at")] location {% data => ({function: "zmanimQuery", location: data[5]}) %}
+             | optionalWords[("calculate" | "compute" | "list" | "show" | "display")] _ "zmanim" __ optionalWords[("for" | "in" | "at")] location _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", date: data[9], location: data[5]}) %}
 
 # Location parsing for Zmanim queries
 location -> [a-zÀ-ÖØ-öø-ÿ\d\s,.'()+":;\-]:+ {% data => data[0].join("") %}
@@ -225,8 +226,8 @@ shmitaWord -> ("shmita" | "shemita" | "shmitta" | "shemitta" | "shmitah" | "shem
 date -> gregorianDate {% data => data[0] %}
       | hebrewDate {% data => data[0] %}
 gregorianDate -> gregorianDateInner {% data => ({gregorianDate: data[0]}) %}
-               | gregorianDateInner __ ("(" | _) ("after sunset" | "after sundown" | "after nightfall" | "after nightfall" | "at night" | "night") (")" | _) {% data => ({gregorianDate: {afterSunset: true, ...data[0]}}) %}
-               | gregorianDateInner __ ("(" | _) ("before sunset" | "before sundown" | "before nightfall" | "before nightfall" | "before night" | "day") (")" | _) {% data => ({gregorianDate: {afterSunset: false, ...data[0]}}) %}
+               | gregorianDateInner __ ("(" | _) ("after sunset" | "after sundown" | "after nightfall" | "after nightfall" | "at night" | "night") (")" | _) {% data => ({gregorianDate: {...data[0], afterSunset: true}}) %}
+               | gregorianDateInner __ ("(" | _) ("before sunset" | "before sundown" | "before nightfall" | "before nightfall" | "before night" | "day") (")" | _) {% data => ({gregorianDate: {...data[0], afterSunset: false}}) %}
 gregorianDateInner -> dateOfMonth __ gregorianMonth (", " | __) gregorianYear {% data => ({year: data[4], month: data[2], day: data[0], format: "DMY"}) %}
                     | dateOfMonth __ gregorianMonth {% data => ({month: data[2], day: data[0], format: "DM"}) %}
                     | gregorianMonth __ dateOfMonth (", " | __) gregorianYear {% data => ({year: data[4], month: data[0], day: data[2], format: "MDY"}) %}
@@ -236,19 +237,34 @@ gregorianDateInner -> dateOfMonth __ gregorianMonth (", " | __) gregorianYear {%
                     | gregorianMonth dateSeparator dateOfMonth dateSeparator gregorianYear {% data => ({year: data[4], month: data[0], day: data[2], format: "MDY"}) %}
                     | dateOfMonth dateSeparator gregorianMonth {% data => ({month: data[2], day: data[0], format: "DM"}) %}
                     | gregorianMonth dateSeparator dateOfMonth {% data => ({month: data[0], day: data[2], format: "MD"}) %}
-                    | "today" {% data => ({year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate()}) %}
-                    | "today's" __ "date" {% data => ({year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate()}) %}
-                    | "tonight" {% data => ({year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate(), afterSunset: true }) %}
-                    | "tomorrow" {% data => ({year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() + 1}) %}
-                    | "tomorrow night" {% data => ({year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() + 1, afterSunset: true }) %}
-                    | "yesterday" {% data => ({year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() - 1}) %}
-                    | "last night" {% data => ({year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() - 1, afterSunset: true }) %}
-                    | ("next" | "upcoming") __ "week" {% data => ({year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() + 7}) %}
-                    | ("next" | "upcoming") __ "month" {% data => ({year: new Date().getFullYear(), month: new Date().getMonth() + 2, day: new Date().getDate()}) %}
-                    | ("next" | "upcoming") __ "year" {% data => ({year: new Date().getFullYear() + 1, month: new Date().getMonth() + 1, day: new Date().getDate()}) %}
-                    | ("last" | "previous") __ "week" {% data => ({year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() - 7}) %}
-                    | ("last" | "previous") __ "month" {% data => ({year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate()}) %}
-                    | ("last" | "previous") __ "year" {% data => ({year: new Date().getFullYear() - 1, month: new Date().getMonth() + 1, day: new Date().getDate()}) %}
+                    | "today" {% data => dateToObject(new Date()) %}
+                    | "today's" __ "date" {% data => dateToObject(new Date()) %}
+                    | "tonight" {% data => dateToObject(new Date(), true) %}
+                    | "tomorrow" {% data => dateToObject(new Date(new Date().setDate(new Date().getDate() + 1))) %}
+                    | "tomorrow night" {% data => dateToObject(new Date(new Date().setDate(new Date().getDate() + 1)), true) %}
+                    | "yesterday" {% data => dateToObject(new Date(new Date().setDate(new Date().getDate() - 1))) %}
+                    | "last night" {% data => dateToObject(new Date(new Date().setDate(new Date().getDate() - 1)), true) %}
+                    | ("next" | "upcoming") __ "week" {% data => dateToObject(new Date(new Date().setDate(new Date().getDate() + 7))) %}
+                    | ("next" | "upcoming") __ "month" {% data => dateToObject(new Date(new Date().setMonth(new Date().getMonth() + 1))) %}
+                    | ("next" | "upcoming") __ "year" {% data => dateToObject(new Date(new Date().setFullYear(new Date().getFullYear() + 1))) %}
+                    | ("last" | "previous") __ "week" {% data => dateToObject(new Date(new Date().setDate(new Date().getDate() - 7))) %}
+                    | ("last" | "previous") __ "month" {% data => dateToObject(new Date(new Date().setMonth(new Date().getMonth() - 1))) %}
+                    | ("last" | "previous") __ "year" {% data => dateToObject(new Date(new Date().setFullYear(new Date().getFullYear() - 1))) %}
+                    | dayOfWeekDate {% data => data[0] %}
+                    | dayOfWeekDate __ "night" {% data => ({...data[0], afterSunset: true}) %}
+                    | dayOfWeekDate ("," | ".," | ".") __ gregorianDateInner {% data => data[3] %}
+dayOfWeekDate -> optionalWords[("this" | "next" | "upcoming")] _ ("sunday" | "sun") {% data => dateToObject(getNextDayOfWeek(0)) %}
+               | optionalWords[("this" | "next" | "upcoming")] _ ("monday" | "mon") {% data => dateToObject(getNextDayOfWeek(1)) %}
+               | optionalWords[("this" | "next" | "upcoming")] _ ("tuesday" | "tue" | "tues") {% data => dateToObject(getNextDayOfWeek(2)) %}
+               | optionalWords[("this" | "next" | "upcoming")] _ ("wednesday" | "wed") {% data => dateToObject(getNextDayOfWeek(3)) %}
+               | optionalWords[("this" | "next" | "upcoming")] _ ("friday" | "fri") {% data => dateToObject(getNextDayOfWeek(5)) %}
+               | optionalWords[("this" | "next" | "upcoming")] _ ("shabbos" | "shabbat" | "sabbath" | "saturday" | "sat") {% data => dateToObject(getNextDayOfWeek(6)) %}
+               | ("last" | "previous") __ ("sunday" | "sun") {% data => dateToObject(getPrevDayOfWeek(0)) %}
+               | ("last" | "previous") __ ("monday" | "mon") {% data => dateToObject(getPrevDayOfWeek(1)) %}
+               | ("last" | "previous") __ ("tuesday" | "tue" | "tues") {% data => dateToObject(getPrevDayOfWeek(2)) %}
+               | ("last" | "previous") __ ("wednesday" | "wed") {% data => dateToObject(getPrevDayOfWeek(3)) %}
+               | ("last" | "previous") __ ("friday" | "fri") {% data => dateToObject(getPrevDayOfWeek(5)) %}
+               | ("last" | "previous") __ ("shabbos" | "shabbat" | "sabbath" | "saturday" | "sat") {% data => dateToObject(getPrevDayOfWeek(6)) %}
 hebrewDate -> hebrewDateInner {% data => ({hebrewDate: data[0]}) %}
 hebrewDateInner -> dateOfMonth __ hebrewMonth (", " | __) hebrewYear {% data => ({year: data[4], month: data[2], day: data[0], format: "DMY"}) %}
                  | dateOfMonth __ hebrewMonth {% data => ({month: data[2], day: data[0], format: "DM"}) %}

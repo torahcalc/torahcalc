@@ -15,7 +15,7 @@
 	const today = dayjs().format('MMMM D, YYYY');
 
 	/** @type {string} The current query in the input box (not yet submitted) */
-	export let queryInput = $page.url.searchParams.get('q') ?? `Zmanim for Denver on ${today}`;
+	export let queryInput = $page.url.searchParams.get('q') ?? `Zmanim on ${today}`;
 </script>
 
 <svelte:head>

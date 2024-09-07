@@ -21,9 +21,10 @@
 	color="orange"
 	{clickFunction}
 	queries={[
+		'Zmanim',
+		'Zmanim tomorrow in Denver',
 		'What time is Chatzos in New York?',
-		'Zmanim for Denver',
-		'Zmanim for 1 Teves 5784 in Jerusalem',
+		'Zmanim for 17 Tammuz, 5785 in Jerusalem',
 		'What time is sunset on 12/25/2023 in Los Angeles?',
 		'How long is a Shaah Zmanis in 31.776, 35.23?',
 	]}
