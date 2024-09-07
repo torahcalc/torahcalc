@@ -1,4 +1,5 @@
 import { COMMON_WORDS } from './words/commonwords';
+import { NACH_PESUKIM } from './words/pesukim-nach';
 import { BEREISHIS_PESUKIM } from './words/pesukim1';
 import { SHEMOS_PESUKIM } from './words/pesukim2';
 import { VAYIKRA_PESUKIM } from './words/pesukim3';
@@ -173,6 +174,7 @@ export const WORD_LIST_NAMES = {
 	VAYIKRA_PESUKIM: 'Pesukim (Verses) in Vayikra',
 	BAMIDBAR_PESUKIM: 'Pesukim (Verses) in Bamidbar',
 	DEVARIM_PESUKIM: 'Pesukim (Verses) in Devarim',
+	NACH_PESUKIM: 'Pesukim (Verses) in Nach',
 };
 
 /**
@@ -385,6 +387,7 @@ export function searchGematria(value) {
 		VAYIKRA_PESUKIM: VAYIKRA_PESUKIM[value] || [],
 		BAMIDBAR_PESUKIM: BAMIDBAR_PESUKIM[value] || [],
 		DEVARIM_PESUKIM: DEVARIM_PESUKIM[value] || [],
+		NACH_PESUKIM: NACH_PESUKIM[value] || [],
 	};
 }
 
