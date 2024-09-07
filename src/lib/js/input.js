@@ -327,8 +327,8 @@ async function getValidDerivations(search, results) {
 			}
 			if (derivation.location) {
 				derivation.disambiguationScore += 1;
-				// skip interpretation if certain words are in the location
-				if (/\b(?:in|on|at|for|yesterday|today|tomorrow|next|last|zmanis|zmanit)\b/.test(derivation.location)) {
+				// skip interpretation if certain words are in the location or it starts with a comma
+				if (/^,|\b(?:in|on|at|for|yesterday|today|tomorrow|next|last|zmanis|zmanit)\b/.test(derivation.location)) {
 					continue;
 				}
 				// extract the location from the search query
@@ -830,7 +830,8 @@ export async function zmanimQuery(derivation) {
 	if (location.trim() === '') {
 		// get the user's coordinates using the Geolocation API
 		const userPosition = await getUserPosition();
-		location = `${userPosition.coords.latitude}, ${userPosition.coords.longitude}`;
+		// round latitude and longitude to 6 decimal places
+		location = `${userPosition.coords.latitude.toFixed(6)}, ${userPosition.coords.longitude.toFixed(6)}`;
 	}
 
 	/** @type {{ date: string, latitude?: string, longitude?: string, location?: string }} */
