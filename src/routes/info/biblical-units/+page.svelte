@@ -213,9 +213,10 @@
 	<h3 id="mass">Mass (Weight)</h3>
 	<ul>
 		<li>
-			<b>Dinar / Zuz / Zin (Hebrew: דינר / זוז / זין): </b> Equal to 1/100 Litra.
-			<br /><i>= 0.158733 oz. (4500 mg)</i>
+			<b>Gerah (Hebrew: גרה): </b> Equal to 1/20 Shekel.<Ref id="14" />
+			<br /><i>= 0.0158733 oz. (450 mg)</i>
 		</li>
+		<li><b>Dinar / Zuz / Zin (Hebrew: דינר / זוז / זין): </b> Equal to 1/100 Litra or 10 Gerah.</li>
 		<li><b>Shekel (Hebrew: שקל): </b> Half a Sela. <i>= 2 Dinar.</i></li>
 		<li><b>Sela (Hebrew: סלע): </b> Half an Unkeya. <i>= 2 Shekel.</i></li>
 		<li><b>Unkeya (Hebrew: אונקיא): </b> Equal to 8/10 Maneh. <i>= 2 Sela.</i></li>
@@ -229,7 +230,7 @@
 			<b>Perutah (Hebrew: פרוטה) </b>
 			<ul>
 				<li>
-					Shulchan Aruch / Rambam<Ref id="14" /><Ref id="15" />:
+					Shulchan Aruch / Rambam<Ref id="15" /><Ref id="16" />:
 					<blockquote>
 						0.024 g of silver (0.00077 troy oz.)
 						{#await getPerutahValue() then values}
@@ -238,7 +239,7 @@
 					</blockquote>
 				</li>
 				<li>
-					Rashi<Ref id="16" />:
+					Rashi<Ref id="17" />:
 					<blockquote>
 						0.02 g of silver (0.00064 troy oz.)
 						{#await getPerutahValue() then values}
@@ -261,7 +262,8 @@
 		<li><b>Mesimas (Hebrew: מסימס) </b> <i>Equals 4 Perutos.</i></li>
 		<li><b>Issar (Hebrew: איסר) </b> <i>Equals 8 Perutos.</i></li>
 		<li><b>Pundyon (Hebrew: פונדיון) </b> <i>Equals 2 Issar.</i></li>
-		<li><b>Me'ah (Hebrew: מעה, pl. Ma'os) </b> <i>Equals 2 Pundyon.</i><Ref id="14" /></li>
+		<li><b>Gerah (Hebrew: גרה) </b> <i>Equals 1/20 Shekel<Ref id="14" />, or 19.2 Perutos.</i></li>
+		<li><b>Me'ah (Hebrew: מעה, pl. Ma'os) </b> <i>Equals 2 Pundyon.</i><Ref id="15" /></li>
 		<li><b>Istera / Tarpik (Hebrew: אסתרא / טרפעיק) </b> <i>Equals 3 Me'ah.</i></li>
 		<li><b>Dinar / Zuz (Hebrew: דינר / זוז) </b> <i>Equals 2 Istera.</i></li>
 		<li><b>Shekel (Hebrew: שקל) </b> <i>Equals 2 Dinar.</i></li>
@@ -349,28 +351,32 @@
 			others say it is 3 beitzim.
 		</li>
 		<li>
-			<Anchor id="14" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Choshen_Mishpat.88">CM 88:1</a> states that the calculation of a perutah is the weight
+			<Anchor id="14" /><a target="_blank" href="https://www.sefaria.org.il/Exodus.30.13">Exodus 30:13</a>, <a target="_blank" href="https://www.sefaria.org.il/Leviticus.27.25">Leviticus 27:25</a>,
+			<a target="_blank" href="https://www.sefaria.org.il/Numbers.3.47">Numbers 3:47</a>, <a target="_blank" href="https://www.sefaria.org.il/Numbers.18.16">18:16</a> state that the gerah is 1/20 of a shekel.
+		</li>
+		<li>
+			<Anchor id="15" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Choshen_Mishpat.88">CM 88:1</a> states that the calculation of a perutah is the weight
 			of half a barley of clean silver and the calculation of two ma'ah is the weight of 32 barleys of clean silver.
 		</li>
 		<li>
-			<Anchor id="15" />"Rambam" on <a target="_blank" href="https://www.sefaria.org.il/Rambam_on_Mishnah_Shevuot.6.1.1">Mishnah Shevuos 6:1</a>,
+			<Anchor id="16" />"Rambam" on <a target="_blank" href="https://www.sefaria.org.il/Rambam_on_Mishnah_Shevuot.6.1.1">Mishnah Shevuos 6:1</a>,
 			<a target="_blank" href="https://www.sefaria.org.il/Rambam_on_Mishnah_Bava_Metzia.4.7.1">Mishnah Bava Metzia 4:7</a>, and
 			<a target="_blank" href="https://www.sefaria.org.il/Mishneh_Torah%2C_Plaintiff_and_Defendant.3.1?vhe=Torat_Emet_363">Misneh Torah, Plaintiff and Defendant 3:1</a>
 			states that the perutah is the value of half a barley's weight of clean silver.
 		</li>
 		<li>
-			<Anchor id="16" />"Rashi" on <a target="_blank" href="https://www.sefaria.org/Rashi_on_Exodus.21.32.2">Shemos 21:32</a> states the shekel is weighed as four gold dinar coins, which is half an ounce
+			<Anchor id="17" />"Rashi" on <a target="_blank" href="https://www.sefaria.org/Rashi_on_Exodus.21.32.2">Shemos 21:32</a> states the shekel is weighed as four gold dinar coins, which is half an ounce
 			according to the correct weight of Cologne.
 		</li>
 		<li>
-			<Anchor id="17" />Feinstein, Rabbi Moshe. Iggerot Moshe, 1964.
+			<Anchor id="18" />Feinstein, Rabbi Moshe. Iggerot Moshe, 1964.
 			<a href="https://hebrewbooks.org/14674">YD 1:107 p. 198</a>;
 			<a href="https://hebrewbooks.org/14674">YD 1:190 pp. 380-381</a>;
 			<a href="https://hebrewbooks.org/920">YD 3:46:2 p. 281</a>;
 			<a href="https://hebrewbooks.org/920">YD 3:66:1 p. 314</a>.
 		</li>
 		<li>
-			<Anchor id="18" />Steinsaltz, Adin. "Talmudic Weights and Measures." The Talmud, the Steinsaltz Edition. Random House, 1989. pp. 279-93.<br />
+			<Anchor id="19" />Steinsaltz, Adin. "Talmudic Weights and Measures." The Talmud, the Steinsaltz Edition. Random House, 1989. pp. 279-93.<br />
 			<a
 				target="_blank"
 				href="https://www.amazon.com/gp/product/0394576659/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0394576659&linkCode=as2&tag=jelawrence-20&linkId=92849671c76d53d6b9b24392a5113c4f"
@@ -378,7 +384,7 @@
 			><img src="//ir-na.amazon-adsystem.com/e/ir?t=jelawrence-20&l=am2&o=1&a=0394576659" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
 		</li>
 		<li>
-			<Anchor id="19" />Frank, Yitzḥak. "Appendix II" The Practical Talmud Dictionary. Ariel, 1991-1994. pp. 297-301.<br />
+			<Anchor id="20" />Frank, Yitzḥak. "Appendix II" The Practical Talmud Dictionary. Ariel, 1991-1994. pp. 297-301.<br />
 			<a
 				target="_blank"
 				href="https://www.amazon.com/gp/product/1592644511/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1592644511&linkCode=as2&tag=jelawrence-20&linkId=8550e305385748e21980ee2c4d3037fd"
@@ -386,7 +392,7 @@
 			><img src="//ir-na.amazon-adsystem.com/e/ir?t=jelawrence-20&l=am2&o=1&a=1592644511" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
 		</li>
 		<li>
-			<Anchor id="20" />Bergman, Rabbi Meir Zvi. "Chapter Twelve: Weights, Measures and Currency." The Gateway to Talmud. Mesorah Publications, 1985. pp. 117-119.<br />
+			<Anchor id="21" />Bergman, Rabbi Meir Zvi. "Chapter Twelve: Weights, Measures and Currency." The Gateway to Talmud. Mesorah Publications, 1985. pp. 117-119.<br />
 			<a
 				target="_blank"
 				href="https://www.amazon.com/Gateway-Talmud-ArtScroll-mesorah-Bergman/dp/0899062083?&_encoding=UTF8&tag=jelawrence-20&linkCode=ur2&linkId=c3d1a193ee786cb7403314bc00e8a017&camp=1789&creative=9325"
