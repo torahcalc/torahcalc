@@ -121,7 +121,7 @@ location -> [a-zÀ-ÖØ-öø-ÿ\d\s,.'()+":;\-]:+ {% data => data[0].join("") %}
 # - When will 14 Nissan fall next year?
 # - Today's date on Hebrew calendar.
 hebrewCalendarQuery -> optionalWords[("convert" | "translate")] date _ optionalWords[("on" | "to" | "into")] _ optionalWords[("gregorian" | "english" | "standard" | "hebrew" | "jewish")] _ optionalWords[("calendar" | "date")] {% data => ({function: "hebrewCalendarQuery", date: data[1]}) %}
-                     | optionalWords[("convert" | "translate")] _ optionalWords[("gregorian" | "english" | "standard" | "hebrew" | "jewish")] _ optionalWords["year"] _ calendarAwareYear _ optionalWords[("on" | "to" | "into")] _ optionalWords[("gregorian" | "english" | "standard" | "hebrew" | "jewish")] _ optionalWords[("calendar" | "date")] {% data => ({function: "hebrewCalendarQuery", year: data[6]}) %}
+                     | optionalWords[("convert" | "translate")] _ calendarAwareYear _ optionalWords[("on" | "to" | "into")] _ optionalWords[("gregorian" | "english" | "standard" | "hebrew" | "jewish")] _ optionalWords[("calendar" | "date")] {% data => ({function: "hebrewCalendarQuery", year: data[2]}) %}
                      | optionalWords["when"] optionalWords[("will" | "is" | "does" | "did")] hebrewDate __ optionalWords[("fall" | "occur" | "be" | "land")] optionalWords["in"] calendarAwareYear {% data => ({function: "hebrewCalendarQuery", date: data[2], year: data[6]}) %}
                      | optionalWords["when"] optionalWords[("will" | "is" | "does" | "did")] gregorianDate __ optionalWords[("fall" | "occur" | "be" | "land")] optionalWords["in"] calendarAwareYear {% data => ({function: "hebrewCalendarQuery", date: data[2], year: data[6]}) %}
 
