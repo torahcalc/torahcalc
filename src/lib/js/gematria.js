@@ -288,6 +288,10 @@ export function displayHebrew(text) {
 	text = text.replace(/[\u05B0-\u05BC\u05C0\u05C3\u05C6\u05C8-\u05CF\u05EB-\u05F2\uFB1D-\uFB1E]/g, '');
 	// remove trailing punctuation
 	text = text.replace(/[.!?,;:\u05BE\u05C3\u05C6\u05F3\u05F4\u05F5\u05F6\u05F7\u05F8\u05F9\u05FA\u05FB\u05FC\u05FD\u05FE\u05FF]+$/g, '');
+	// if the text starts and ends with quotes, remove them
+	if (text.startsWith('"') && text.endsWith('"')) {
+		text = text.slice(1, -1);
+	}
 	return text;
 }
 
