@@ -43,13 +43,14 @@
 		<li>During a Hebrew calendar leap year, an additional month of Adar is added.</li>
 		<li>There are seven leap years in every 19 years.</li>
 		<li>The 3rd, 6th, 8th, 11th, 14th, 17th, and 19th years of the 19-year Metonic cycle are leap years.</li>
-		<li>{currentHebrewYearResult.reason}</li>
-		<li>{currentHebrewYearResult.nextLeapYearReason}</li>
+		<li><b>{currentHebrewYearResult.reason}</b></li>
+		<li><b>{currentHebrewYearResult.nextLeapYearReason}</b></li>
 		<li>
 			A mnemonic for remembering the years corresponding to leap years is: "גוחאדז"ט". The Hebrew letters Gimmel, Vav, Chet, Aleph, Dalet, Zayin, and Tet are used to represent the Hebrew numerals, 3,
 			6, 8, 1, 4, 7, 9.
 		</li>
 		<li>Mathematically, it can be determined if a year is a leap year by determining whether ((7*year)+1) mod 19) is less than 7.</li>
+		<li>During a leap year, there are 13 months, a total of 383, 384, or 385 days (depending on whether Cheshvan and/or Kislev have 29 or 30 days). During a non-leap year, there are 12 months, a total of 353, 354, or 355 days.</li>
 	</ul>
 	<h2>Gregorian Calendar Leap Years</h2>
 	<ul>
@@ -60,8 +61,9 @@
 				<li>It is not divisible by 100, unless it is also divisible by 400.</li>
 			</ul>
 		</li>
-		<li>{currentGregorianYearResult.reason}</li>
-		<li>{currentGregorianYearResult.nextLeapYearReason}</li>
+		<li><b>{currentGregorianYearResult.reason}</b></li>
+		<li><b>{currentGregorianYearResult.nextLeapYearReason}</b></li>
+		<li>During a leap year, there are 366 days. During a non-leap year, there are 365 days.</li>
 	</ul>
 </div>
 
