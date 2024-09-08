@@ -1276,7 +1276,7 @@ function jewishHolidayQuery(derivation) {
 	// get the holidays
 	const holidays = getHolidays({ gregorianYear, hebrewYear, startDate });
 
-	if (derivation.holiday) {
+	if (derivation.holiday && HOLIDAY_DETAILS[derivation.holiday]) {
 		/** @type {string} */
 		// @ts-ignore - assume key exists
 		const holidayName = HOLIDAY_DETAILS[derivation.holiday].name;

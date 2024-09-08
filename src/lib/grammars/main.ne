@@ -53,8 +53,8 @@ unitConversionQuery -> optionalWords[[A-Za-z\s]:*] jsonfloat _ unit __ ("to" | "
 
 # Conversion Charts
 # - Conversion chart for 1 mil
-conversionChartQuery -> optionalWords[("conversion" | "conversions" | "convert")] optionalWords["chart"] optionalWords["for"] jsonfloat _ unit {% data => ({function: "conversionChartQuery", unit: data[5], amount: data[3]}) %}
-                      | optionalWords[("conversion" | "conversions" | "convert")] optionalWords["chart"] optionalWords["for"] optionalWords[("a" | "an")] unit {% data => ({function: "conversionChartQuery", unit: data[4], amount: 1}) %}
+conversionChartQuery -> optionalWords[("show" | "display" | "list")] _ optionalWords[("conversion" | "conversions" | "convert")] _ optionalWords["chart"] _ optionalWords["for"] _ jsonfloat _ unit {% data => ({function: "conversionChartQuery", unit: data[10], amount: data[8]}) %}
+                      | optionalWords[("show" | "display" | "list")] _ optionalWords[("conversion" | "conversions" | "convert")] _ optionalWords["chart"] _ optionalWords["for"] _ optionalWords[("a" | "an")] unit {% data => ({function: "conversionChartQuery", unit: data[9], amount: 1}) %}
 
 # Gematria Calculations
 # - Calculate Gematria of תורה.
@@ -73,7 +73,7 @@ gematriaQuery -> optionalWords[("calculate" | "compute" | "what is" | "what's" |
 gematriaSearchQuery -> gematriaSearchPrefix __ hebrewString {% data => ({function: "gematriaSearchQuery", gematriaMethod: data[0], text: data[2] }) %}
                      | gematriaSearchPrefix __ int {% data => ({function: "gematriaSearchQuery", gematriaMethod: data[0], value: data[2] }) %}
 
-gematriaSearchPrefix -> optionalWords[("calculate" | "what" | "which" | "list" | "show" | "display" | "find" | "search")] ("words" | "pesukim" | "words and pesukim" | "verses" | "words and verses" | "sentences" | "phrases" | "words and phrases" | "words and sentences") __ optionalWords["have"] optionalWords[("the" | "a" | "the same")] gematriaMethod __ ("of" | "as") {% data => data[5] %}
+gematriaSearchPrefix -> optionalWords[("calculate" | "what" | "which" | "list" | "show" | "display" | "find" | "search")] ("words" | "pesukim" | "words and pesukim" | "verses" | "words and verses" | "sentences" | "phrases" | "words and phrases" | "words and sentences") __ optionalWords[("have" | "with")] optionalWords[("the" | "a" | "the same")] gematriaMethod __ ("of" | "as" | "equal to") {% data => data[5] %}
 
 # Gematria Two-Word Match Finder
 # - Calculate gematria equivalences for תורה and משנה.
@@ -94,17 +94,17 @@ hebrewString -> [\u05D0-\u05EA\u05F0\u05F1\u05F2\uFB1F\uFB2E-\uFB30\uFB4F\uFB21\
 # - Zmanim for 1 Teves 5784 in Jerusalem
 # - What time is sunset on December 25, 2023 in Los Angeles?
 # - How long is a shaah zmanis in 39.1, -107.4?
-zmanimQuery -> optionalWords[("what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman {% data => ({function: "zmanimQuery", zman: data[1]}) %}
-             | optionalWords[("what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[1], location: data[5]}) %}
-             | optionalWords[("what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", zman: data[1], date: data[5]}) %}
-             | optionalWords[("what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman _ optionalWords[("on" | "for")] _ date _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[1], date: data[5], location: data[9]}) %}
-             | optionalWords[("what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman _ optionalWords[("in" | "at" | "for")] _ location _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", zman: data[1], date: data[9], location: data[5]}) %}
-             | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration {% data => ({function: "zmanimQuery", zman: data[2]}) %}
-             | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[2], location: data[6]}) %}
-             | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", zman: data[2], date: data[6]}) %}
-             | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("on" | "for")] _ date _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[2], date: data[6], location: data[8]}) %}
-             | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("in" | "at" | "for")] _ location _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", zman: data[2], date: data[8], location: data[6]}) %}
-             | optionalWords[("how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[2], location: data[6]}) %}
+zmanimQuery -> optionalWords[("calculate" | "compute" | "what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman {% data => ({function: "zmanimQuery", zman: data[1]}) %}
+             | optionalWords[("calculate" | "compute" | "what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[1], location: data[5]}) %}
+             | optionalWords[("calculate" | "compute" | "what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", zman: data[1], date: data[5]}) %}
+             | optionalWords[("calculate" | "compute" | "what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman _ optionalWords[("on" | "for")] _ date _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[1], date: data[5], location: data[9]}) %}
+             | optionalWords[("calculate" | "compute" | "what time is" | "when is" | "what's the time of" | "what's the time for" | "what time does")] zman _ optionalWords[("in" | "at" | "for")] _ location _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", zman: data[1], date: data[9], location: data[5]}) %}
+             | optionalWords[("calculate" | "compute" | "how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration {% data => ({function: "zmanimQuery", zman: data[2]}) %}
+             | optionalWords[("calculate" | "compute" | "how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[2], location: data[6]}) %}
+             | optionalWords[("calculate" | "compute" | "how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", zman: data[2], date: data[6]}) %}
+             | optionalWords[("calculate" | "compute" | "how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("on" | "for")] _ date _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[2], date: data[6], location: data[8]}) %}
+             | optionalWords[("calculate" | "compute" | "how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("in" | "at" | "for")] _ location _ optionalWords[("on" | "for")] _ date {% data => ({function: "zmanimQuery", zman: data[2], date: data[8], location: data[6]}) %}
+             | optionalWords[("calculate" | "compute" | "how long is" | "what is the length of")] optionalWords[("a" | "an" | "the")] duration _ optionalWords[("in" | "at" | "for")] _ location {% data => ({function: "zmanimQuery", zman: data[2], location: data[6]}) %}
              | optionalWords[("calculate" | "compute" | "list" | "show" | "display")] _ "zmanim" {% data => ({function: "zmanimQuery"}) %}
              | optionalWords[("calculate" | "compute" | "list" | "show" | "display")] _ "zmanim" __ optionalWords[("on" | "for")] date {% data => ({function: "zmanimQuery", date: data[5]}) %}
              | optionalWords[("calculate" | "compute" | "list" | "show" | "display")] _ "zmanim" __ optionalWords[("on" | "for")] date _ optionalWords[("for" | "in" | "at")] _ location {% data => ({function: "zmanimQuery", date: data[5], location: data[9]}) %}
@@ -121,7 +121,7 @@ location -> [a-zÀ-ÖØ-öø-ÿ\d\s,.'()+":;\-]:+ {% data => data[0].join("") %}
 # - When will 14 Nissan fall next year?
 # - Today's date on Hebrew calendar.
 hebrewCalendarQuery -> optionalWords[("convert" | "translate")] date _ optionalWords[("on" | "to" | "into")] _ optionalWords[("gregorian" | "english" | "standard" | "hebrew" | "jewish")] _ optionalWords[("calendar" | "date")] {% data => ({function: "hebrewCalendarQuery", date: data[1]}) %}
-                     | optionalWords[("convert" | "translate")] optionalWords["year"] calendarAwareYear _ optionalWords[("on" | "to" | "into")] _ optionalWords[("gregorian" | "english" | "standard" | "hebrew" | "jewish")] _ optionalWords[("calendar" | "date")] {% data => ({function: "hebrewCalendarQuery", year: data[2]}) %}
+                     | optionalWords[("convert" | "translate")] _ optionalWords[("gregorian" | "english" | "standard" | "hebrew" | "jewish")] _ optionalWords["year"] _ calendarAwareYear _ optionalWords[("on" | "to" | "into")] _ optionalWords[("gregorian" | "english" | "standard" | "hebrew" | "jewish")] _ optionalWords[("calendar" | "date")] {% data => ({function: "hebrewCalendarQuery", year: data[6]}) %}
                      | optionalWords["when"] optionalWords[("will" | "is" | "does" | "did")] hebrewDate __ optionalWords[("fall" | "occur" | "be" | "land")] optionalWords["in"] calendarAwareYear {% data => ({function: "hebrewCalendarQuery", date: data[2], year: data[6]}) %}
                      | optionalWords["when"] optionalWords[("will" | "is" | "does" | "did")] gregorianDate __ optionalWords[("fall" | "occur" | "be" | "land")] optionalWords["in"] calendarAwareYear {% data => ({function: "hebrewCalendarQuery", date: data[2], year: data[6]}) %}
 
@@ -132,7 +132,7 @@ hebrewCalendarQuery -> optionalWords[("convert" | "translate")] date _ optionalW
 # - Calculate molados for 5785.
 moladQuery -> optionalWords[("calculate" | "compute" | "what is" | "what's" | "when is" | "when's" | "what time is" | "what time was")] optionalWords["the"] moladMonth {% data => ({function: "moladQuery", ...data[2]}) %}
             | optionalWords["when will"] optionalWords["the"] moladMonth _ optionalWords[("be" | "occur" | "land" | "fall")] {% data => ({function: "moladQuery", ...data[2]}) %}
-            | optionalWords[("calculate" | "compute" | "what are" | "when are")] optionalWords["the"] ("molados" | "moladot" | "moladim" | "molads" | "molad") _ optionalWords[("for" | "or" | "in" | "of")] hebrewYear {% data => ({function: "moladQuery", year: data[5]}) %}
+            | optionalWords[("calculate" | "compute" | "what are" | "when are")] optionalWords["the"] ("molados" | "moladot" | "moladim" | "molads" | "molad") _ optionalWords[("for" | "or" | "in" | "of")] _ optionalWords[("hebrew" | "the" | "jewish" | "hebrew calendar")] _ optionalWords["year"] _ hebrewYear {% data => ({function: "moladQuery", year: data[10]}) %}
 
 # Sefiras HaOmer
 # - Sefiras Haomer for tonight
@@ -155,10 +155,10 @@ leapYearQuery -> optionalWords[("is" | "was" | "will")] optionalWords[("gregoria
 # - What are the daily psalms for tomorrow?
 # - What is the Weekly Daf for 18 Iyar?
 # - What will the daf yomi for december 31
-dailyLearningQuery -> optionalWords[("what is" | "what was" | "what's" | "what are" | "what will")] optionalWords["the"] optionalWords["daily"] dailyLearningType __ optionalWords["be"] optionalWords[("for" | "on")] date {% data => ({function: "dailyLearningQuery", date: data[7], dailyLearningType: data[3]}) %}
-                    | optionalWords[("what is" | "what was" | "what's" | "what are" | "what will")] ("today's" | "this week's") optionalWords["daily"] dailyLearningType {% data => ({function: "dailyLearningQuery", date: { gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate()}}, dailyLearningType: data[3]}) %}
-                    | optionalWords[("what is" | "what's" | "what are" | "what will")] "tomorrow's" optionalWords["daily"] dailyLearningType {% data => ({function: "dailyLearningQuery", date: { gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() + 1}}, dailyLearningType: data[3]}) %}
-                    | optionalWords[("what is" | "what was" | "what's" | "what are")] "yesterday's" optionalWords["daily"] dailyLearningType {% data => ({function: "dailyLearningQuery", date: { gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() - 1}}, dailyLearningType: data[3]}) %}
+dailyLearningQuery -> optionalWords[("calculate" | "compute" | "what is" | "what was" | "what's" | "what are" | "what will")] optionalWords["the"] optionalWords["daily"] dailyLearningType __ optionalWords["be"] optionalWords[("for" | "on")] date {% data => ({function: "dailyLearningQuery", date: data[7], dailyLearningType: data[3]}) %}
+                    | optionalWords[("calculate" | "compute" | "what is" | "what was" | "what's" | "what are" | "what will")] ("today's" | "this week's") optionalWords["daily"] dailyLearningType {% data => ({function: "dailyLearningQuery", date: { gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate()}}, dailyLearningType: data[3]}) %}
+                    | optionalWords[("calculate" | "compute" | "what is" | "what's" | "what are" | "what will")] "tomorrow's" optionalWords["daily"] dailyLearningType {% data => ({function: "dailyLearningQuery", date: { gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() + 1}}, dailyLearningType: data[3]}) %}
+                    | optionalWords[("calculate" | "compute" | "what is" | "what was" | "what's" | "what are")] "yesterday's" optionalWords["daily"] dailyLearningType {% data => ({function: "dailyLearningQuery", date: { gregorianDate: {year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() - 1}}, dailyLearningType: data[3]}) %}
 
 # Jewish Holidays
 # - When is Rosh Hashana?
@@ -171,25 +171,26 @@ jewishHolidayQuery -> jewishHolidayUpcomingPrefix optionalWords[("next" | "upcom
                     | jewishHolidayPastPrefix optionalWords[("last" | "previous" | "the last" | "the previous")] holiday _ optionalWords[("fall" | "occur" | "land" | "happen")] optionalWords[("this year" | "last year")] {% data => ({function: "jewishHolidayQuery", holiday: data[2], upcoming: false }) %}
                     | jewishHolidayWhenPrefix _ optionalWords["the"] holiday _ optionalWords[("fall" | "occur" | "land" | "happen" | "be")] optionalWords[("in" | "for" | "of")] optionalWords["the"] ("gregorian" | "english" | "standard") __ "year" __ gregorianYear {% data => ({function: "jewishHolidayQuery", holiday: data[3], year: { value: data[12], calendar: "gregorian" } }) %}
                     | jewishHolidayWhenPrefix _ optionalWords["the"] holiday _ optionalWords[("fall" | "occur" | "land" | "happen" | "be")] optionalWords[("in" | "for" | "of")] optionalWords["the"] ("hebrew" | "jewish") __ "year" __ hebrewYear {% data => ({function: "jewishHolidayQuery", holiday: data[3], year: { value: data[12], calendar: "hebrew" } }) %}
-                    | jewishHolidayWhenPrefix _ optionalWords["the"] holiday _ optionalWords[("fall" | "occur" | "land" | "happen" | "be")] optionalWords[("in" | "for" | "of")] optionalWords["the year"] __ calendarAwareYear {% data => ({function: "jewishHolidayQuery", holiday: data[3], year: data[9] }) %}
+                    | jewishHolidayWhenPrefix _ optionalWords["the"] holiday _ optionalWords[("fall" | "occur" | "land" | "happen" | "be")] optionalWords[("in" | "for" | "of")] __ calendarAwareYear {% data => ({function: "jewishHolidayQuery", holiday: data[3], year: data[8] }) %}
+                    | jewishHolidayWhenPrefix _ optionalWords["the"] holiday _ optionalWords[("fall" | "occur" | "land" | "happen" | "be")] optionalWords[("in" | "for" | "of")] __ calendarAwareYear " / " calendarAwareYear {% data => ({function: "jewishHolidayQuery", holiday: data[3], year: data[8] }) %}
                     | jewishHolidayListPrefix _ optionalWords["the"] ("gregorian" | "english" | "standard") __ "year" __ gregorianYear {% data => ({function: "jewishHolidayQuery", year: { value: data[7], calendar: "gregorian" } }) %}
                     | jewishHolidayListPrefix _ optionalWords["the"] ("hebrew" | "jewish") __ "year" __ hebrewYear {% data => ({function: "jewishHolidayQuery", year: { value: data[7], calendar: "hebrew" } }) %}
-                    | jewishHolidayListPrefix _ optionalWords["the year"] calendarAwareYear {% data => ({function: "jewishHolidayQuery", year: data[3] }) %}
+                    | jewishHolidayListPrefix _ calendarAwareYear {% data => ({function: "jewishHolidayQuery", year: data[2] }) %}
                     | jewishHolidaysListPrefixNoYear {% data => ({function: "jewishHolidayQuery"}) %}
 
 jewishHolidayWhenPrefix -> jewishHolidayUpcomingPrefix {% data => null %}
                          | jewishHolidayPastPrefix {% data => null %}
-jewishHolidayUpcomingPrefix -> optionalWords[("when is" | "when's" | "what is" | "what's" | "what's" | "when will")] optionalWords[("the date of" | "the date for")] _ {% data => null %}
-jewishHolidayPastPrefix -> optionalWords[("when was" | "what was" | "what was" | "what was" | "when did")] optionalWords[("the date of" | "the date for")] _ {% data => null %}
+jewishHolidayUpcomingPrefix -> optionalWords[("calculate" | "compute" | "when is" | "when's" | "what is" | "what's" | "what's" | "when will")] optionalWords[("the date of" | "the date for")] _ {% data => null %}
+jewishHolidayPastPrefix -> optionalWords[("calculate" | "compute" | "when was" | "what was" | "what was" | "what was" | "when did")] optionalWords[("the date of" | "the date for")] _ {% data => null %}
 
 jewishHolidayListPrefix -> jewishHolidaysListPrefixNoYear __ optionalWords[("in" | "for" | "of")] {% data => null %}
-jewishHolidaysListPrefixNoYear -> optionalWords[("list" | "show" | "display" | "find" | "search")] optionalWords[("the" | "of")] optionalWords["upcoming"] optionalWords[("jewish" | "hebrew calendar")] _ "holidays" {% data => null %}
+jewishHolidaysListPrefixNoYear -> optionalWords[("calculate" | "compute" | "list" | "show" | "display" | "find" | "search")] optionalWords[("the" | "of")] optionalWords["upcoming"] optionalWords[("jewish" | "hebrew calendar")] _ "holidays" _ optionalWords[("for" | "in" | "of")] _ optionalWords[("the" | "a" | "the next" | "the upcoming" | "this" | "this coming")] optionalWords[("gregorian" | "english" | "standard" | "hebrew" | "jewish")] optionalWords["year"] {% data => null %}
 
 # Zodiac Signs
 # - What is the zodiac sign for 1 Teves?
 # - What is the zodiac sign for December 25, 2023?
 # - March 1, 1999 zodiac sign
-zodiacQuery -> optionalWords[("what is" | "what's" | "what was")] optionalWords["the"] optionalWords[("hebrew" | "jewish")] "zodiac" __ optionalWords["sign"] optionalWords[("is" | "was")] optionalWords[("for" | "on")] date {% data => ({function: "zodiacQuery", date: data[8]}) %}
+zodiacQuery -> optionalWords[("calculate" | "compute" | "what is" | "what's" | "what was")] optionalWords["the"] optionalWords[("hebrew" | "jewish")] "zodiac" __ optionalWords["sign"] optionalWords[("is" | "was")] optionalWords[("for" | "on")] date {% data => ({function: "zodiacQuery", date: data[8]}) %}
              | date __ optionalWords[("hebrew" | "jewish")] "zodiac" _ optionalWords["sign"] {% data => ({function: "zodiacQuery", date: data[0]}) %}
 
 # Birkas Hachama
@@ -230,6 +231,8 @@ gregorianDate -> gregorianDateInner {% data => ({gregorianDate: data[0]}) %}
                | gregorianDateInner __ ("(" | _) ("before sunset" | "before sundown" | "before nightfall" | "before nightfall" | "before night" | "day") (")" | _) {% data => ({gregorianDate: {...data[0], afterSunset: false}}) %}
 gregorianDateInner -> dateOfMonth __ gregorianMonth (", " | __) gregorianYear {% data => ({year: data[4], month: data[2], day: data[0], format: "DMY"}) %}
                     | dateOfMonth __ gregorianMonth {% data => ({month: data[2], day: data[0], format: "DM"}) %}
+                    | dateOfMonth optionalWords[("st" | "nd" | "rd" | "th")] (" of " | __) gregorianMonth {% data => ({month: data[3], day: data[0], format: "DM"}) %}
+                    | dateOfMonth optionalWords[("st" | "nd" | "rd" | "th")] (" of " | __) gregorianMonth (", " | __) gregorianYear {% data => ({year: data[5], month: data[3], day: data[0], format: "DMY"}) %}
                     | gregorianMonth __ dateOfMonth (", " | __) gregorianYear {% data => ({year: data[4], month: data[0], day: data[2], format: "MDY"}) %}
                     | gregorianMonth __ dateOfMonth {% data => ({month: data[0], day: data[2], format: "MD"}) %}
                     | dateOfMonth dateSeparator gregorianMonth dateSeparator gregorianYear {% data => ({year: data[4], month: data[2], day: data[0], format: "DMY"}) %}
@@ -268,6 +271,8 @@ dayOfWeekDate -> optionalWords[("this" | "next" | "upcoming")] _ ("sunday" | "su
 hebrewDate -> hebrewDateInner {% data => ({hebrewDate: data[0]}) %}
 hebrewDateInner -> dateOfMonth __ hebrewMonth (", " | __) hebrewYear {% data => ({year: data[4], month: data[2], day: data[0], format: "DMY"}) %}
                  | dateOfMonth __ hebrewMonth {% data => ({month: data[2], day: data[0], format: "DM"}) %}
+                 | dateOfMonth optionalWords[("st" | "nd" | "rd" | "th")] (" of " | __) hebrewMonth {% data => ({month: data[3], day: data[0], format: "DM"}) %}
+                 | dateOfMonth optionalWords[("st" | "nd" | "rd" | "th")] (" of " | __) hebrewMonth (", " | __) hebrewYear {% data => ({year: data[5], month: data[3], day: data[0], format: "DMY"}) %}
                  | hebrewMonth __ dateOfMonth (", " | __) hebrewYear {% data => ({year: data[4], month: data[0], day: data[2], format: "MDY"}) %}
                  | hebrewMonth __ dateOfMonth {% data => ({month: data[0], day: data[2], format: "MD"}) %}
                  | dateOfMonth dateSeparator hebrewMonth dateSeparator hebrewYear {% data => ({year: data[4], month: data[2], day: data[0], format: "DMY"}) %}
@@ -283,8 +288,8 @@ moladMonth -> "molad" __ optionalWords["of"] hebrewMonth __ hebrewYear {% data =
 dateSeparator -> ("-"|"/"|".") {% data => null %}
 year -> gregorianYear {% data => data[0] %}
       | hebrewYear {% data => data[0] %}
-calendarAwareYear -> gregorianYear {% data => ({ value: data[0], calendar: "gregorian" }) %}
-                   | hebrewYear {% data => ({ value: data[0], calendar: "hebrew" }) %}
+calendarAwareYear -> optionalWords["the"] _ optionalWords[("gregorian" | "english" | "standard")] _ optionalWords["calendar"] _ optionalWords["year"] _ gregorianYear {% data => ({ value: data[8], calendar: "gregorian" }) %}
+                   | optionalWords["the"] _ optionalWords[("jewish" | "hebrew")] _ optionalWords["calendar"] _ optionalWords["year"] _ hebrewYear {% data => ({ value: data[8], calendar: "hebrew" }) %}
 gregorianYear -> [0-9]:+ {% data => parseInt(data[0].join("")) %}
                | "-" [0-9]:+ {% data => parseInt(data[0] + data[1].join("")) %}
                | optionalWords["the"] ("next" | "upcoming" | "following") __ "year" {% data => new Date().getFullYear() + 1 %}
