@@ -352,7 +352,12 @@
 			<Anchor id="14" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Choshen_Mishpat.88">CM 88:1</a> states that the calculation of a perutah is the weight
 			of half a barley of clean silver and the calculation of two ma'ah is the weight of 32 barleys of clean silver.
 		</li>
-		<li><Anchor id="15" />"Rambam" on Mishnah Bechoros 88:46.</li>
+		<li>
+			<Anchor id="15" />"Rambam" on <a target="_blank" href="https://www.sefaria.org.il/Rambam_on_Mishnah_Shevuot.6.1.1">Mishnah Shevuos 6:1</a>,
+			<a target="_blank" href="https://www.sefaria.org.il/Rambam_on_Mishnah_Bava_Metzia.4.7.1">Mishnah Bava Metzia 4:7</a>, and
+			<a target="_blank" href="https://www.sefaria.org.il/Mishneh_Torah%2C_Plaintiff_and_Defendant.3.1?vhe=Torat_Emet_363">Misneh Torah, Plaintiff and Defendant 3:1</a>
+			states that the perutah is the value of half a barley's weight of clean silver.
+		</li>
 		<li>
 			<Anchor id="16" />"Rashi" on <a target="_blank" href="https://www.sefaria.org/Rashi_on_Exodus.21.32.2">Shemos 21:32</a> states the shekel is weighed as four gold dinar coins, which is half an ounce
 			according to the correct weight of Cologne.
