@@ -352,7 +352,8 @@
 		</li>
 		<li>
 			<Anchor id="14" /><a target="_blank" href="https://www.sefaria.org.il/Exodus.30.13">Exodus 30:13</a>, <a target="_blank" href="https://www.sefaria.org.il/Leviticus.27.25">Leviticus 27:25</a>,
-			<a target="_blank" href="https://www.sefaria.org.il/Numbers.3.47">Numbers 3:47</a>, <a target="_blank" href="https://www.sefaria.org.il/Numbers.18.16">18:16</a> state that the gerah is 1/20 of a shekel.
+			<a target="_blank" href="https://www.sefaria.org.il/Numbers.3.47">Numbers 3:47</a>, <a target="_blank" href="https://www.sefaria.org.il/Numbers.18.16">18:16</a> state that the gerah is 1/20 of a
+			shekel.
 		</li>
 		<li>
 			<Anchor id="15" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Choshen_Mishpat.88">CM 88:1</a> states that the calculation of a perutah is the weight
