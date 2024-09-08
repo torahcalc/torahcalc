@@ -12,7 +12,7 @@
 			name: 'More Tools',
 			children: [
 				{ name: 'Biblical Unit Converter', url: '/tools/unit-converter' },
-				{ name: 'Multi-Unit Charts', url: '/tools/unit-charts' },
+				{ name: 'Multi-Unit Converter', url: '/tools/unit-charts' },
 				{ name: 'dropdown-divider' },
 				{ name: 'Gematria Calculator', url: '/tools/gematria' },
 				{ name: 'Gematria Search', url: '/tools/gematria-search' },

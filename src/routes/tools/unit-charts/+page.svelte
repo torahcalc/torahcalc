@@ -8,12 +8,12 @@
 </script>
 
 <svelte:head>
-	<title>TorahCalc | Biblical and Talmudic Unit Charts</title>
+	<title>TorahCalc | Biblical and Talmudic Multi-Unit Converter</title>
 	<meta name="description" content={description} />
 </svelte:head>
 
 <section>
-	<h1 class="heading">Biblical and Talmudic Unit Charts</h1>
+	<h1 class="heading">Biblical and Talmudic Multi-Unit Converter</h1>
 
 	<p class="center">{description}</p>
 
