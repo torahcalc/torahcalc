@@ -50,7 +50,10 @@
 			6, 8, 1, 4, 7, 9.
 		</li>
 		<li>Mathematically, it can be determined if a year is a leap year by determining whether ((7*year)+1) mod 19) is less than 7.</li>
-		<li>During a leap year, there are 13 months, a total of 383, 384, or 385 days (depending on whether Cheshvan and/or Kislev have 29 or 30 days). During a non-leap year, there are 12 months, a total of 353, 354, or 355 days.</li>
+		<li>
+			During a leap year, there are 13 months, a total of 383, 384, or 385 days (depending on whether Cheshvan and/or Kislev have 29 or 30 days). During a non-leap year, there are 12 months, a total
+			of 353, 354, or 355 days.
+		</li>
 	</ul>
 	<h2>Gregorian Calendar Leap Years</h2>
 	<ul>
