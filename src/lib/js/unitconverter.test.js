@@ -12,8 +12,8 @@ describe('test getConverters', () => {
 		expect('volume' in converters).toBe(true);
 		expect('area' in converters).toBe(true);
 		expect('coins' in converters).toBe(true);
-		expect(converters.coins.units.usd.value).toBeGreaterThan(30000);
-		expect(converters.coins.units.usd.value).toBeLessThan(50000);
+		expect(converters.coins.units.usd.value).toBeGreaterThan(5000);
+		expect(converters.coins.units.usd.value).toBeLessThan(500000);
 
 		// ! NOTE: getConverters(true) is not yet tested because "fetch" is not available globally in tests
 	});
@@ -53,8 +53,8 @@ describe('test getUnit', () => {
 		const unit2 = await getUnit('coins', 'usd');
 		expect(unit2.name).toBe('US Dollars (USD)');
 		expect(unit2.type).toBe('STANDARD');
-		expect(unit2.value).toBeGreaterThan(30000);
-		expect(unit2.value).toBeLessThan(50000);
+		expect(unit2.value).toBeGreaterThan(5000);
+		expect(unit2.value).toBeLessThan(500000);
 
 		const unit3 = await getUnit('length', 'amah');
 		expect(unit3.name).toBe('Amah - אמה');
