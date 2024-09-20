@@ -324,7 +324,7 @@
 				<tr class="headrow">
 					<td colspan="3">Kesuvim - כְּתוּבִים</td>
 					<td>362</td>
-					<td>8,062</td>
+					<td>8,064</td>
 					<td>84,001</td>
 					<td>338,340</td>
 					<td class="empty">&nbsp;</td>
@@ -354,7 +354,7 @@
 					<td>Psalms</td>
 					<td>תְהִלִּים</td>
 					<td>150</td>
-					<td>2,525</td>
+					<td>2,527</td>
 					<td>19,583</td>
 					<td>78,822</td>
 					<td class="empty">&nbsp;</td>
