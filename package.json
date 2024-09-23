@@ -36,7 +36,7 @@
 	"devDependencies": {
 		"@capacitor/android": "^5.5.1",
 		"@capacitor/assets": "^3.0.5",
-		"@capacitor/cli": "^5.5.1",
+		"@capacitor/cli": "^6.1.2",
 		"@capacitor/core": "^5.5.1",
 		"@capacitor/ios": "^5.5.1",
 		"@fontsource/fira-mono": "^5.1.0",
