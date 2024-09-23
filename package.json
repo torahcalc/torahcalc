@@ -28,7 +28,7 @@
 		"dayjs": "^1.11.13",
 		"dotenv": "^16.4.5",
 		"nearley": "^2.20.1",
-		"prettier-plugin-organize-imports": "^4.0.0",
+		"prettier-plugin-organize-imports": "^4.1.0",
 		"svelte-fa": "^3.0.4",
 		"svelte-toc": "^0.5.9",
 		"xss": "^1.0.15"
