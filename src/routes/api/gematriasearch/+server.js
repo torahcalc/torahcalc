@@ -10,7 +10,7 @@ export async function GET({ url }) {
 
 	try {
 		if (text !== null) {
-			if (value !== null) {
+			if (value !== 0) {
 				throw new Error("Unexpected 'text' and 'value' parameters. Only one of these parameters should be provided.");
 			}
 			value = calculateGematria({ text }).standard;
