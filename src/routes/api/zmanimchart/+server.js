@@ -5,6 +5,10 @@ import { geocodeAddress, getTimezone } from '$lib/js/utils';
 import { ZMANIM_NAMES, calculateZmanim } from '$lib/js/zmanim';
 import { HDate } from '@hebcal/core';
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(timezone);
+dayjs.extend(utc);
 
 /**
  * @type {import('@sveltejs/kit').RequestHandler}
@@ -39,7 +43,7 @@ export async function GET({ url }) {
 		const endDate = new HDate(1, 7, year + 1).greg();
 		endDate.setDate(endDate.getDate() - 1);
 		let dateObj = startDate;
-		let date = dayjs(dateObj).format('YYYY-MM-DD');
+		let date = dayjs(dateObj).tz(timezone).format('YYYY-MM-DD');
 		let html = `<!DOCTYPE html>
 					<html lang="en">
 						<head>
@@ -126,7 +130,7 @@ export async function GET({ url }) {
 			const events = zmanimResponse.events;
 			// Show candle lighting time for Shabbat and Yom Tov
 			if (events.candleLighting || events.havdalah) {
-				if (dayjs(dateObj).format('MMMM YYYY') !== month) {
+				if (dayjs(dateObj).tz(timezone).format('MMMM YYYY') !== month) {
 					if (month !== '') {
 						// end the previous month
 						html += `</div>`;
@@ -135,24 +139,24 @@ export async function GET({ url }) {
 						html += `<span>${ZMANIM_NAMES.events.candleLighting.icon} ${events.candleLighting.description} &nbsp;&nbsp; ${ZMANIM_NAMES.events.havdalah.icon} Havdalah - 3 small stars visible, sun is 8.5° below horizon</span><br/><br/>
 							<div class='columns'>`;
 					}
-					month = dayjs(dateObj).format('MMMM YYYY');
+					month = dayjs(dateObj).tz(timezone).format('MMMM YYYY');
 					html += `<div class='month'><h2>${month}</h2>`;
 				}
 				html += `<div class='row'>`;
-				const formattedDate = dayjs(dateObj).format('ddd, MMM D');
+				const formattedDate = dayjs(dateObj).tz(timezone).format('ddd, MMM D');
 				html += `<span>${formattedDate}</span>`;
 				if (events.candleLighting) {
-					const candleLightingTime = dayjs(events.candleLighting.time).format('h:mm a');
+					const candleLightingTime = dayjs(events.candleLighting.time).tz(timezone).format('h:mm a');
 					html += `<span>${ZMANIM_NAMES.events.candleLighting.icon} ${candleLightingTime}</span>`;
 				}
 				if (events.havdalah) {
-					const havdalahTime = dayjs(events.havdalah.time).format('h:mm a');
+					const havdalahTime = dayjs(events.havdalah.time).tz(timezone).format('h:mm a');
 					html += `<span>${ZMANIM_NAMES.events.havdalah.icon} ${havdalahTime}</span>`;
 				}
 				html += `</div>`;
 			}
 			dateObj.setDate(dateObj.getDate() + 1);
-			date = dayjs(dateObj).format('YYYY-MM-DD');
+			date = dayjs(dateObj).tz(timezone).format('YYYY-MM-DD');
 		}
 		html += `</div></div>
 		<div class='credits'>
@@ -161,7 +165,7 @@ export async function GET({ url }) {
 				<span>TorahCalc.com</span>
 			</a>
 			<br/><br/>
-			<span class="text-muted">Zmanim for ${latitude}, ${longitude} ${formattedAddress ? `(${formattedAddress})` : ''}. Do not rely on zmanim from any source to the last minute.</span>
+			<span class="text-muted">Zmanim for ${latitude}, ${longitude} ${formattedAddress ? `(${formattedAddress})` : ''} in ${timezone}. Do not rely on zmanim from any source to the last minute.</span>
 		</div>
 		</body></html>`;
 		return createHtmlResponse(html);
