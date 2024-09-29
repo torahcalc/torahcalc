@@ -70,4 +70,15 @@ describe('test calculateZmanim', () => {
 		});
 		expect(response.events.havdalah.time).toBe('2023-09-23T19:32:00-04:00');
 	});
+
+	it('calculates with custom candle lighting minutes', async () => {
+		const response = await calculateZmanim({
+			date: '2024-09-27',
+			latitude: 40.7127753,
+			longitude: -74.0059728,
+			timezone: 'America/New_York',
+			candleLightingMins: 20,
+		});
+		expect(response.events.candleLighting.time).toBe('2024-09-27T18:23:00-04:00');
+	});
 });
