@@ -123,7 +123,7 @@ export async function GET({ url }) {
 							</style>
 						</head>
 						<body>
-							<h1>Zmanim Chart for ${location}, ${year}</h1>`;
+							<h1>Zmanim &middot; ${location} &middot; ${year}</h1>`;
 		let month = '';
 		while (dateObj < endDate) {
 			const zmanimResponse = await calculateZmanim({ date, latitude, longitude, timezone, location, candleLightingMins });

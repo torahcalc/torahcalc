@@ -673,7 +673,7 @@
 				name: 'location',
 				type: 'String',
 				required: false,
-				description: 'The name of the location to calculate zmanim for. Required if `latitude` and `longitude` are not provided.',
+				description: 'The name of the location to calculate zmanim for. Required if <code>latitude</code> and <code>longitude</code> are not provided.',
 				example: 'New York, NY',
 			},
 			{
@@ -697,7 +697,7 @@
 	<Endpoint
 		method="GET"
 		endpoint="/api/zmanimchart"
-		description="Create a candle-lighting and Havdalah Zmanim chart for any location and date"
+		description="Create a candle-lighting and Havdalah Zmanim chart for any location and year"
 		parameters={[
 			{
 				name: 'year',
@@ -724,7 +724,7 @@
 				name: 'location',
 				type: 'String',
 				required: false,
-				description: 'The name of the location to calculate zmanim for. Required if `latitude` and `longitude` are not provided.',
+				description: 'The name of the location to calculate zmanim for. Required if <code>latitude</code> and <code>longitude</code> are not provided.',
 				example: 'New York, NY',
 			},
 			{

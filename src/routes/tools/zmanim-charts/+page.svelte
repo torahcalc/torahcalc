@@ -1,12 +1,12 @@
 <script>
 	import { getNextHebrewMonth } from '$lib/js/utils';
 
-	const description = 'Create a candle-lighting and Havdalah Zmanim chart for any location and date.';
+	const description = 'Create a candle-lighting and Havdalah Zmanim chart for any location and year.';
 
 	const nextHebrewMonth = getNextHebrewMonth();
 
 	let hebYear = nextHebrewMonth.year;
-	let location = '';
+	let location = 'New York, NY';
 	let candlelightingMinutes = 18;
 </script>
 
@@ -25,15 +25,15 @@
 		<div class="card-body">
 			<div class="form-group">
 				<label for="year">Hebrew Year</label>
-				<input type="number" id="year" bind:value={hebYear} class="form-control" />
+				<input type="number" id="year" bind:value={hebYear} class="form-control" placeholder={`${nextHebrewMonth.year}`} required />
 			</div>
 			<div class="form-group mt-3">
 				<label for="location">Location <span class="text-muted small">(Enter a city, zip code, latitude/longitude, etc.)</span></label>
-				<input type="text" id="location" bind:value={location} class="form-control" required />
+				<input type="text" id="location" bind:value={location} class="form-control" placeholder="New York, NY" required />
 			</div>
 			<div class="form-group mt-3">
 				<label for="candlelightingMinutes">Minutes before sunset for candle lighting</label>
-				<input type="number" id="candlelightingMinutes" bind:value={candlelightingMinutes} class="form-control" />
+				<input type="number" id="candlelightingMinutes" bind:value={candlelightingMinutes} class="form-control" placeholder="18" required />
 			</div>
 			<button
 				class="btn btn-primary mt-3"
