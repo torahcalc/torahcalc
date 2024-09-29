@@ -1,10 +1,10 @@
 import * as env from '$env/static/private';
+import logo from '$lib/images/torahcalc.svg';
 import { createHtmlErrorResponse, createHtmlResponse } from '$lib/js/api/response.js';
 import { geocodeAddress, getTimezone } from '$lib/js/utils';
 import { ZMANIM_NAMES, calculateZmanim } from '$lib/js/zmanim';
 import { HDate } from '@hebcal/core';
 import dayjs from 'dayjs';
-import logo from '$lib/images/torahcalc.svg';
 
 /**
  * @type {import('@sveltejs/kit').RequestHandler}

@@ -35,10 +35,13 @@
 				<label for="candlelightingMinutes">Minutes before sunset for candle lighting</label>
 				<input type="number" id="candlelightingMinutes" bind:value={candlelightingMinutes} class="form-control" />
 			</div>
-			<button class="btn btn-primary mt-3" on:click={() => {
-				const url = `/api/zmanimchart?year=${hebYear}&location=${encodeURIComponent(location)}&candleLightingMinutes=${candlelightingMinutes}`;
-				window.open(url, '_blank');
-			}}>Create Zmanim Chart</button>
+			<button
+				class="btn btn-primary mt-3"
+				on:click={() => {
+					const url = `/api/zmanimchart?year=${hebYear}&location=${encodeURIComponent(location)}&candleLightingMinutes=${candlelightingMinutes}`;
+					window.open(url, '_blank');
+				}}>Create Zmanim Chart</button
+			>
 		</div>
 	</div>
 </section>
