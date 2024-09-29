@@ -2,6 +2,7 @@
 	import { LETTER_SPELLING_VALUES } from '$lib/js/gematria.js';
 	import { calculateOmerHebrew, calculateOmerYear } from '$lib/js/omer';
 	import { getConverters, getUnits, getOpinions, getUnitOpinions } from '$lib/js/unitconverter.js';
+	import { getNextHebrewMonth } from '$lib/js/utils';
 	import { HDate } from '@hebcal/core';
 	import dayjs from 'dayjs';
 	import Endpoint from './Endpoint.svelte';
@@ -657,16 +658,23 @@
 			{
 				name: 'latitude',
 				type: 'Number',
-				required: true,
-				description: 'The latitude of the location to calculate zmanim for',
+				required: false,
+				description: 'The latitude of the location to calculate zmanim for. Required if <code>location</code> is not provided.',
 				example: 40.7127753,
 			},
 			{
 				name: 'longitude',
 				type: 'Number',
-				required: true,
-				description: 'The longitude of the location to calculate zmanim for',
+				required: false,
+				description: 'The longitude of the location to calculate zmanim for. Required if <code>location</code> is not provided.',
 				example: -74.0059728,
+			},
+			{
+				name: 'location',
+				type: 'String',
+				required: false,
+				description: 'The name of the location to calculate zmanim for. Required if <code>latitude</code> and <code>longitude</code> are not provided.',
+				example: 'New York, NY',
 			},
 			{
 				name: 'timezone',
@@ -675,7 +683,66 @@
 				description: 'The timezone name of the location to calculate zmanim for (defaults to the timezone of the location)',
 				example: 'America/New_York',
 			},
+			{
+				name: 'candleLightingMinutes',
+				type: 'Number',
+				required: false,
+				description: 'The number of minutes before sunset to light candles (defaults to 18, or 40 if in the Jerusalem timezone)',
+				example: 18,
+			},
 		]}
+		examples={['/api/zmanim?latitude=40.7127753&longitude=-74.0059728', `/api/zmanim?location=Jerusalem&date=${dayjs().format('YYYY-MM-DD')}&timezone=Asia/Jerusalem&candleLightingMinutes=40`]}
+	/>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/zmanimchart"
+		description="Create a candle-lighting and Havdalah Zmanim chart for any location and year"
+		parameters={[
+			{
+				name: 'year',
+				type: 'String',
+				required: false,
+				description: 'The Hebrew year to calculate zmanim for (defaults to current year)',
+				example: getNextHebrewMonth().year,
+			},
+			{
+				name: 'latitude',
+				type: 'Number',
+				required: false,
+				description: 'The latitude of the location to calculate zmanim for. Required if <code>location</code> is not provided.',
+				example: 40.7127753,
+			},
+			{
+				name: 'longitude',
+				type: 'Number',
+				required: false,
+				description: 'The longitude of the location to calculate zmanim for. Required if <code>location</code> is not provided.',
+				example: -74.0059728,
+			},
+			{
+				name: 'location',
+				type: 'String',
+				required: false,
+				description: 'The name of the location to calculate zmanim for. Required if <code>latitude</code> and <code>longitude</code> are not provided.',
+				example: 'New York, NY',
+			},
+			{
+				name: 'timezone',
+				type: 'Number',
+				required: false,
+				description: 'The timezone name of the location to calculate zmanim for (defaults to the timezone of the location)',
+				example: 'America/New_York',
+			},
+			{
+				name: 'candleLightingMinutes',
+				type: 'Number',
+				required: false,
+				description: 'The number of minutes before sunset to light candles (defaults to 18, or 40 if in the Jerusalem timezone)',
+				example: 18,
+			},
+		]}
+		examples={[`/api/zmanimchart?latitude=40.7127753&longitude=-74.0059728`, `/api/zmanimchart?year=${getNextHebrewMonth().year}&location=Jerusalem&timezone=Asia/Jerusalem&candleLightingMinutes=40`]}
 	/>
 
 	<h3>Zodiac</h3>

@@ -158,6 +158,7 @@ export const ZMANIM_NAMES = {
  * @property {number} longitude - The longitude of the location
  * @property {string} timezone - The timezone name of the location (defaults to the timezone of the location)
  * @property {string} [location] - The location for display purposes (latitude and longitude are used if not provided)
+ * @property {number} [candleLightingMins] - The number of minutes before sunset to light candles (defaults to 18, or 40 in the Jerusalem timezone)
  */
 
 /**
@@ -166,12 +167,14 @@ export const ZMANIM_NAMES = {
  * @param {ZmanimOptions} options
  * @returns {Promise<{ timezone: string, location?: string, zmanim: { [key: string]: Zman }, events: { [key: string]: Zman }, durations: { [key: string]: Zman } }>} - The zmanim, timed events, and shaah zmanis durations
  */
-export async function calculateZmanim({ date = dayjs().format('YYYY-MM-DD'), latitude, longitude, timezone, location }) {
+export async function calculateZmanim({ date = dayjs().format('YYYY-MM-DD'), latitude, longitude, timezone, location, candleLightingMins }) {
 	const zmanim = new Zmanim(dayjs(date).toDate(), latitude, longitude);
 	const alot72 = zmanim.sunriseOffset(-72, false);
 	const tzeit72 = zmanim.sunsetOffset(72, false);
 	const inIsrael = timezone === 'Asia/Jerusalem';
-	const candleLightingMins = inIsrael ? 40 : 18;
+	if (candleLightingMins === undefined) {
+		candleLightingMins = inIsrael ? 40 : 18;
+	}
 
 	/** Format a date in the given timezone
 	 * @param {Date} date - The date to format

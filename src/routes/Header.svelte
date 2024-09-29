@@ -25,6 +25,7 @@
 				{ name: 'Molad', url: '/tools/molad' },
 				{ name: 'Sefiras HaOmer', url: '/tools/sefiras-haomer' },
 				{ name: 'Zmanim', url: '/tools/zmanim' },
+				{ name: 'Candle-lighting and Havdalah Charts', url: '/tools/zmanim-charts' },
 				{ name: 'Hebrew Zodiac Signs', url: '/tools/hebrew-zodiac-signs' },
 				{ name: 'Birkas Hachama', url: '/tools/birkas-hachama' },
 				{ name: 'Shmita Years', url: '/tools/shmita' },
