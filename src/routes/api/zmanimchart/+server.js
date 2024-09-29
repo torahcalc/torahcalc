@@ -25,8 +25,8 @@ export async function GET({ url }) {
 		let formattedAddress = location;
 		if ((isNaN(latitude) || isNaN(longitude)) && location !== '') {
 			const geocoded = await geocodeAddress(location, env.GOOGLE_MAPS_API_KEY);
-			latitude = geocoded.lat;
-			longitude = geocoded.lng;
+			latitude = Math.round(geocoded.lat * 100000) / 100000;
+			longitude = Math.round(geocoded.lng * 100000) / 100000;
 			formattedAddress = geocoded.formattedAddress;
 		} else if (location === '') {
 			location = `${latitude}, ${longitude}`;
