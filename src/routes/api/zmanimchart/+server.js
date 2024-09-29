@@ -165,7 +165,7 @@ export async function GET({ url }) {
 				<span>TorahCalc.com</span>
 			</a>
 			<br/><br/>
-			<span class="text-muted">${latitude}, ${longitude} ${formattedAddress ? `(${formattedAddress})` : ''} &middot; ${timezone} &middot; Do not rely on zmanim from any source to the last minute</span>
+			<span class="text-muted">${latitude}, ${longitude} ${formattedAddress ? `(${formattedAddress})` : ''} &middot; ${timezone} Time &middot; Do not rely on zmanim from any source to the last minute</span>
 		</div>
 		</body></html>`;
 		return createHtmlResponse(html);
