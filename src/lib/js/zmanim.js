@@ -171,9 +171,11 @@ export async function calculateZmanim({ date = dayjs().format('YYYY-MM-DD'), lat
 	const zmanim = new Zmanim(dayjs(date).toDate(), latitude, longitude);
 	const alot72 = zmanim.sunriseOffset(-72, false);
 	const tzeit72 = zmanim.sunsetOffset(72, false);
-	const inIsrael = timezone === 'Asia/Jerusalem';
+	const ISRAEL_TIMEZONES = ['Asia/Jerusalem', 'Asia/Tel_Aviv', 'Asia/Hebron', 'Israel'];
+	const inIsrael = ISRAEL_TIMEZONES.includes(timezone);
+	const inJerusalem = timezone === 'Asia/Jerusalem';
 	if (!candleLightingMins) {
-		candleLightingMins = inIsrael ? 40 : 18;
+		candleLightingMins = inJerusalem ? 40 : 18;
 	}
 
 	/** Format a date in the given timezone
