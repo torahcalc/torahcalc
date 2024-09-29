@@ -67,7 +67,7 @@ export async function GET({ url }) {
 
 								.month {
 									break-inside: avoid-column;
-									margin-bottom: 2em;
+									margin-bottom: 1em;
 								}
 
 								h2 {
