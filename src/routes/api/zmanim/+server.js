@@ -13,7 +13,7 @@ export async function GET({ url }) {
 	let longitude = Number(url.searchParams.get('longitude') || NaN);
 	let timezone = url.searchParams.get('timezone') || undefined;
 	let location = url.searchParams.get('location') || '';
-	const candleLightingMins = url.searchParams.get('candleLightingMinutes') ? Number(url.searchParams.get('candleLightingMinutes')) : undefined;
+	const candleLightingMins = Number(url.searchParams.get('candleLightingMinutes') || 0);
 
 	try {
 		if ((isNaN(latitude) || isNaN(longitude)) && location !== '') {

@@ -172,7 +172,7 @@ export async function calculateZmanim({ date = dayjs().format('YYYY-MM-DD'), lat
 	const alot72 = zmanim.sunriseOffset(-72, false);
 	const tzeit72 = zmanim.sunsetOffset(72, false);
 	const inIsrael = timezone === 'Asia/Jerusalem';
-	if (candleLightingMins === undefined) {
+	if (!candleLightingMins) {
 		candleLightingMins = inIsrael ? 40 : 18;
 	}
 
