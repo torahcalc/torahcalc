@@ -13,6 +13,7 @@ export async function GET({ url }) {
 	let longitude = Number(url.searchParams.get('longitude') || NaN);
 	let timezone = url.searchParams.get('timezone') || undefined;
 	let location = url.searchParams.get('location') || '';
+	const candleLightingMins = url.searchParams.get('candleLightingMinutes') ? Number(url.searchParams.get('candleLightingMinutes')) : undefined;
 
 	try {
 		if ((isNaN(latitude) || isNaN(longitude)) && location !== '') {
@@ -26,7 +27,7 @@ export async function GET({ url }) {
 		if (!timezone) {
 			timezone = await getTimezone(latitude, longitude, env.GOOGLE_MAPS_API_KEY);
 		}
-		return createResponse(await calculateZmanim({ date, latitude, longitude, timezone, location }));
+		return createResponse(await calculateZmanim({ date, latitude, longitude, timezone, location, candleLightingMins }));
 	} catch (error) {
 		return createErrorResponse(error);
 	}

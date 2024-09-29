@@ -10,7 +10,7 @@ import logo from '$lib/images/torahcalc.svg';
  * @type {import('@sveltejs/kit').RequestHandler}
  */
 export async function GET({ url }) {
-	const year = Number(url.searchParams.get('year') || NaN);
+	const year = Number(url.searchParams.get('year') || new HDate().getFullYear());
 	let latitude = Number(url.searchParams.get('latitude') || NaN);
 	let longitude = Number(url.searchParams.get('longitude') || NaN);
 	let timezone = url.searchParams.get('timezone') || undefined;
@@ -24,6 +24,8 @@ export async function GET({ url }) {
 			latitude = geocoded.lat;
 			longitude = geocoded.lng;
 			formattedAddress = geocoded.formattedAddress;
+		} else if (location === '') {
+			location = `${latitude}, ${longitude}`;
 		}
 		if (isNaN(latitude)) throw new Error("Missing or invalid 'latitude' parameter");
 		if (isNaN(longitude)) throw new Error("Missing or invalid 'longitude' parameter");
