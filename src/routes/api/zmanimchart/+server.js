@@ -170,6 +170,13 @@ export async function GET({ url }) {
 		</body></html>`;
 		return createHtmlResponse(html);
 	} catch (error) {
-		return createHtmlErrorResponse(`${error}`);
+		let message = `${error}`;
+		// if the error is Could not geocode address: ZERO_RESULTS, tell the user to try a different address
+		if (message.includes('ZERO_RESULTS')) {
+			message = 'Could not geocode address. Try a more specific location.';
+		}
+		// add link to zmanim charts creation page
+		message += `<br/><br/><a href="/tools/zmanim-charts">Return to Zmanim chart builder</a>`;
+		return createHtmlErrorResponse(message);
 	}
 }
