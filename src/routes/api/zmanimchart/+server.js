@@ -202,7 +202,7 @@ export async function GET({ url }) {
 							</style>
 						</head>
 						<body>
-							${logoUrl ? `<div style="display: flex;justify-content: center;"><img src="${logoUrl}" style="height: 85px;"></div>` : '<div style="height: 20px;"></div>'}
+							${logoUrl ? `<div style="display: flex;justify-content: center;"><img src="${logoUrl}" style="height: 85px;"></div>` : ''}
 							${secondaryImageUrl ? `<img src="${secondaryImageUrl}" class="secondary-image" />` : ''}
 							<h1 class="heading">Zmanim &middot; ${location} &middot; ${year}</h1>`;
 		let month = '';
