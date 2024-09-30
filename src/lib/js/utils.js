@@ -432,3 +432,12 @@ export function getPrevDayOfWeek(day, date = new Date()) {
 export function dateToObject(date, afterSunset = false) {
 	return { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate(), afterSunset };
 }
+
+/**
+ * HTML-esacpe a string for safe use in HTML
+ * @param {string} string - The string to escape
+ * @returns {string} - The escaped string
+ */
+export function escapeHtml(string) {
+	return string.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
