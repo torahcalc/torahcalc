@@ -1,7 +1,7 @@
 import * as env from '$env/static/private';
 import logo from '$lib/images/torahcalc.svg';
 import { createHtmlErrorResponse, createHtmlResponse } from '$lib/js/api/response.js';
-import { geocodeAddress, getTimezone } from '$lib/js/utils';
+import { escapeHtml, geocodeAddress, getTimezone } from '$lib/js/utils';
 import { ZMANIM_NAMES, calculateZmanim } from '$lib/js/zmanim';
 import { HDate } from '@hebcal/core';
 import dayjs from 'dayjs';
@@ -21,7 +21,38 @@ export async function GET({ url }) {
 	let location = url.searchParams.get('location') || '';
 	const candleLightingMins = Number(url.searchParams.get('candleLightingMinutes') || 0);
 
+	// TODO: add documentation for these parameters and add to builder
+	const headingColor = url.searchParams.get('headingColor') || '#000000';
+	const monthHeadingColor = url.searchParams.get('monthHeadingColor') || '#000000';
+	const rowColor1 = url.searchParams.get('rowColor1') || '#EDF7FF';
+	const rowColor2 = url.searchParams.get('rowColor2') || '#C3E3FF';
+	const textColor = url.searchParams.get('textColor') || '#000000';
+	const backgroundColor = url.searchParams.get('backgroundColor') || '#FFFFFF';
+	const logoUrl = url.searchParams.get('logoUrl');
+	const secondaryImageUrl = url.searchParams.get('secondaryImageUrl');
+	const fontSize = url.searchParams.get('fontSize') || '14px';
+	const mainFont = url.searchParams.get('mainFont') || 'Open Sans';
+	const bodyFont = url.searchParams.get('bodyFont') || 'Open Sans';
+	const footerText = escapeHtml(url.searchParams.get('footerText') || '');
+
 	try {
+		// sanitize inputs
+		const COLOR_REGEX = /^#[0-9a-f]{3,4}|#[0-9a-f]{6}|#[0-9a-f]{8}$/i;
+		const URL_REGEX = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+		const FONT_SIZE_REGEX = /^\d+(px|em|rem|%)$/;
+		const FONT_REGEX = /^[\w\s-]+$/;
+		if (!COLOR_REGEX.test(headingColor)) throw new Error('Invalid heading color parameter');
+		if (!COLOR_REGEX.test(monthHeadingColor)) throw new Error('Invalid month heading color parameter');
+		if (!COLOR_REGEX.test(rowColor1)) throw new Error('Invalid row color 1 parameter');
+		if (!COLOR_REGEX.test(rowColor2)) throw new Error('Invalid row color 2 parameter');
+		if (!COLOR_REGEX.test(textColor)) throw new Error('Invalid text color parameter');
+		if (!COLOR_REGEX.test(backgroundColor)) throw new Error('Invalid background color parameter');
+		if (logoUrl && !URL_REGEX.test(logoUrl)) throw new Error('Invalid logo URL parameter');
+		if (secondaryImageUrl && !URL_REGEX.test(secondaryImageUrl)) throw new Error('Invalid secondary image URL parameter');
+		if (!FONT_SIZE_REGEX.test(fontSize)) throw new Error('Invalid font size parameter');
+		if (!FONT_REGEX.test(mainFont)) throw new Error('Invalid main font parameter');
+		if (!FONT_REGEX.test(bodyFont)) throw new Error('Invalid body font parameter');
+
 		let formattedAddress = location;
 		if ((isNaN(latitude) || isNaN(longitude)) && location !== '') {
 			const geocoded = await geocodeAddress(location, env.GOOGLE_MAPS_API_KEY);
@@ -51,12 +82,40 @@ export async function GET({ url }) {
 							<meta name="viewport" content="width=device-width, initial-scale=1.0">
 							<title>Zmanim Chart ${location} ${year}</title>
 							<style>
-								 body {
-									font-family: "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-									font-size: 14px;
-									margin: 0 auto;
+								@import url('https://fonts.googleapis.com/css2?family=${encodeURIComponent(bodyFont)}:ital,wght@0,400&family=${encodeURIComponent(mainFont)}:ital,wght@0,700&display=swap');
+
+								:root {
+									--heading-color: ${headingColor};
+									--month-heading-color: ${monthHeadingColor};
+									--row-color-1: ${rowColor1};
+									--row-color-2: ${rowColor2};
+									--text-color: ${textColor};
+									--background-color: ${backgroundColor};
+									--font-size: ${fontSize};
+								}
+								
+								html {
+									background: var(--background-color);
+									color: var(--text-color);
+								}
+
+								body {
+									font-family: "${mainFont}", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+									font-size: var(--font-size);
+									margin: 1em auto 0 auto;
 									text-align: center;
 									width: 850px;
+									position: relative;
+								}
+
+								.body-font {
+									font-family: "${bodyFont}", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+								}
+
+								.heading {
+									color: var(--heading-color);
+									font-size: 1.8em;
+									margin: 0.6em auto;
 								}
 
 								.columns {
@@ -70,6 +129,10 @@ export async function GET({ url }) {
 									margin-bottom: 1em;
 								}
 
+								.month-heading {
+									color: var(--month-heading-color);
+								}
+
 								h2 {
 									margin: 0;
 								}
@@ -77,32 +140,40 @@ export async function GET({ url }) {
 								.row {
 									display: flex;
 									justify-content: space-between;
+									align-items: center;
+								}
+
+								.zman, .descriptions {
+								    display: flex;
+									justify-content: center;
+									align-items: center;
+									gap: 0.3em;
 								}
 
 								.month > div {
-									padding: 0.2em;
+									padding: 0.3em;
 								}
 
 								.month > div:first-of-type {
 									margin-top: 0.5em;
 								}
 
-								.month > div:nth-of-type(2n) {
-									background: #c4e3ff;
+								.month > div:nth-of-type(2n-1) {
+									background: var(--row-color-1);
 								}
 
-								.month > div:nth-of-type(2n-1) {
-									background: #edf7ff;
+								.month > div:nth-of-type(2n) {
+									background: var(--row-color-2);
 								}
 
 								.credits {
-									margin-top: 2em;
+									margin: 0.5em auto 0.25em auto;
 									text-align: center;
-									font-size: 14px;
+									font-size: 0.96em;
 								}
 
 								.text-muted {
-									color: #666;
+									opacity: 0.6;
 								}
 
 								.link {
@@ -120,10 +191,20 @@ export async function GET({ url }) {
 									height: 1.5em;
 									vertical-align: middle;
 								}
+
+								.secondary-image {
+									position: absolute;
+									top: 0;
+									right: 0;
+									max-height: 126px;
+									z-index: -1;
+								}
 							</style>
 						</head>
 						<body>
-							<h1>Zmanim &middot; ${location} &middot; ${year}</h1>`;
+							${logoUrl ? `<div style="display: flex;justify-content: center;"><img src="${logoUrl}" style="height: 85px;"></div>` : '<div style="height: 20px;"></div>'}
+							${secondaryImageUrl ? `<img src="${secondaryImageUrl}" class="secondary-image" />` : ''}
+							<h1 class="heading">Zmanim &middot; ${location} &middot; ${year}</h1>`;
 		let month = '';
 		while (dateObj < endDate) {
 			const zmanimResponse = await calculateZmanim({ date, latitude, longitude, timezone, location, candleLightingMins });
@@ -136,22 +217,23 @@ export async function GET({ url }) {
 						html += `</div>`;
 					} else {
 						// write candle lighting and havdalah descriptions and start column layout
-						html += `<span>${ZMANIM_NAMES.events.candleLighting.icon} ${events.candleLighting.description} &nbsp;&nbsp; ${ZMANIM_NAMES.events.havdalah.icon} Havdalah - 3 small stars visible, sun is 8.5° below horizon</span><br/><br/>
+						html += `<span class="descriptions body-font">${ZMANIM_NAMES.events.candleLighting.icon} <span>${events.candleLighting.description}</span> <span>&nbsp;</span> ${ZMANIM_NAMES.events.havdalah.icon} <span>Havdalah - 3 small stars visible, sun is 8.5° below horizon</span></span>
+							<br/>
 							<div class='columns'>`;
 					}
 					month = dayjs(dateObj).tz(timezone).format('MMMM YYYY');
-					html += `<div class='month'><h2>${month}</h2>`;
+					html += `<div class='month'><h2 class="month-heading">${month}</h2>`;
 				}
-				html += `<div class='row'>`;
+				html += `<div class='row body-font'>`;
 				const formattedDate = dayjs(dateObj).tz(timezone).format('ddd, MMM D');
-				html += `<span>${formattedDate}</span>`;
+				html += `<span class='date'>${formattedDate}</span>`;
 				if (events.candleLighting) {
 					const candleLightingTime = dayjs(events.candleLighting.time).tz(timezone).format('h:mm a');
-					html += `<span>${ZMANIM_NAMES.events.candleLighting.icon} ${candleLightingTime}</span>`;
+					html += `<span class='zman'>${ZMANIM_NAMES.events.candleLighting.icon} ${candleLightingTime}</span>`;
 				}
 				if (events.havdalah) {
 					const havdalahTime = dayjs(events.havdalah.time).tz(timezone).format('h:mm a');
-					html += `<span>${ZMANIM_NAMES.events.havdalah.icon} ${havdalahTime}</span>`;
+					html += `<span class='zman'>${ZMANIM_NAMES.events.havdalah.icon} ${havdalahTime}</span>`;
 				}
 				html += `</div>`;
 			}
@@ -164,8 +246,13 @@ export async function GET({ url }) {
 				<img src="${logo}" alt="TorahCalc" class="logo" />
 				<span>TorahCalc.com</span>
 			</a>
-			<br/><br/>
-			<span class="text-muted">${latitude}, ${longitude} ${formattedAddress ? `(${formattedAddress})` : ''} &middot; ${timezone} Time &middot; Do not rely on zmanim from any source to the last minute</span>
+			<br/>
+			${
+				footerText
+					? `<span class="footer text-muted body-font">${footerText}</span>`
+					: `<span class="footer text-muted body-font">${latitude}, ${longitude} ${formattedAddress ? `(${formattedAddress})` : ''} &middot; ${timezone} Time &middot; Do not rely on zmanim from any source to the last minute</span>`
+			}
+				
 		</div>
 		</body></html>`;
 		return createHtmlResponse(html);

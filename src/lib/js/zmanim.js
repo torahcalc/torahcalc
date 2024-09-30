@@ -1,4 +1,4 @@
-import { faHavdalahCandle, faShabbosCandles } from '$lib/icons/custom-fontawesome-icons';
+import { faHavdalahSpicebox, faShabbosCandles } from '$lib/icons/custom-fontawesome-icons';
 import { faClockTwelve, faPlateUtensils, faSparkles, faStar, faStars, faSunrise, faSunset, faUtensilsSlash } from '@danieloi/pro-solid-svg-icons';
 import { HebrewCalendar, Location, TimedEvent, Zmanim } from '@hebcal/core';
 import dayjs from 'dayjs';
@@ -122,7 +122,7 @@ export const ZMANIM_NAMES = {
 			name: 'Havdalah',
 			hebrewName: 'הבדלה',
 			description: 'Havdalah time - 3 small stars visible, sun is 8.5° below horizon',
-			icon: iconToSvg(faHavdalahCandle),
+			icon: iconToSvg(faHavdalahSpicebox),
 		},
 		fastBegins: {
 			name: 'Fast Begins',
