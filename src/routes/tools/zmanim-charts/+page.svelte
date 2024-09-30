@@ -63,7 +63,7 @@
 				</div>
 				<div class="form-group mt-3">
 					<label for="backgroundColor">Background Color</label>
-					<input type="color" id="backgroundColor" bind:value={backgroundColor} class="form-control"/>
+					<input type="color" id="backgroundColor" bind:value={backgroundColor} class="form-control" />
 				</div>
 				<div class="form-group mt-3">
 					<label for="rowColor1">Row Color 1</label>
