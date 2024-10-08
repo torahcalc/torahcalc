@@ -12,7 +12,11 @@
 
 	<p>{description}</p>
 
-	<p>Related: <a href="/info/parsha-stats">Parsha Stats</a> - verses, words, and letters for each portion of the Torah.</p>
+	<span>Related:</span>
+	<ul>
+		<li><a href="/info/tanach-verses-by-chapter">Tanach Verses By Chapter</a> - number of verses in each chapter of the Tanach.</li>
+		<li><a href="/info/parsha-stats">Parsha Stats</a> - verses, words, and letters for each portion of the Torah.</li>
+	</ul>
 
 	<p class="scroll-for-more">Scroll horizontally in the table to view more.</p>
 

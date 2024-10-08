@@ -36,8 +36,9 @@
 			children: [
 				{ name: 'Gematria Methods', url: '/info/gematria' },
 				{ name: 'Biblical Units', url: '/info/biblical-units' },
-				{ name: 'Tanach Stats', url: '/info/tanach-stats' },
 				{ name: 'Parsha Stats', url: '/info/parsha-stats' },
+				{ name: 'Tanach Stats', url: '/info/tanach-stats' },
+				{ name: 'Tanach Verses By Chapter', url: '/info/tanach-verses-by-chapter' },
 			],
 		},
 	];
