@@ -183,7 +183,7 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td class="headcol rotate" rowspan="5">Torah - תּוֹרָה</td>
+					<td class="headcol rotate" rowspan="5"><span>Torah - תּוֹרָה</span></td>
 					<td class="secondheadcol">בראשית</td>
 					<td class="count">31</td>
 					<td class="count">25</td>
@@ -949,7 +949,7 @@
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
-					<td class="headcol rotate" rowspan="21">Nevi'im - נְבִיאִים</td>
+					<td class="headcol rotate" rowspan="21"><span>Nevi'im - נְבִיאִים</span></td>
 					<td class="secondheadcol">יהושוע</td>
 					<td class="count">18</td>
 					<td class="count">24</td>
@@ -4163,7 +4163,7 @@
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
-					<td class="headcol rotate" rowspan="13">Kesuvim - כְּתוּבִים</td>
+					<td class="headcol rotate" rowspan="13"><span>Kesuvim - כְּתוּבִים</span></td>
 					<td class="secondheadcol">דברי הימים א</td>
 					<td class="count">54</td>
 					<td class="count">55</td>
@@ -6198,11 +6198,11 @@
 		color: #111;
 	}
 	td {
-		vertical-align: bottom;
+		vertical-align: middle;
 		text-align: center;
 		white-space: nowrap;
 	}
-	td.rotate {
+	td.rotate span {
 		-ms-writing-mode: tb-rl;
 		-webkit-writing-mode: vertical-rl;
 		writing-mode: vertical-rl;
