@@ -6170,7 +6170,6 @@
 
 <style>
 	.scroll-for-more {
-		display: none;
 		text-align: center;
 		font-size: 92%;
 		background: #fff;
