@@ -34,11 +34,11 @@
 		"xss": "^1.0.15"
 	},
 	"devDependencies": {
-		"@capacitor/android": "^5.7.8",
+		"@capacitor/android": "^6.1.2",
 		"@capacitor/assets": "^3.0.5",
 		"@capacitor/cli": "^6.1.2",
-		"@capacitor/core": "^5.7.8",
-		"@capacitor/ios": "^5.7.8",
+		"@capacitor/core": "^6.1.2",
+		"@capacitor/ios": "^6.1.2",
 		"@fontsource/fira-mono": "^5.1.0",
 		"@fontsource/roboto": "^5.1.0",
 		"@fontsource/roboto-serif": "^5.1.1",
