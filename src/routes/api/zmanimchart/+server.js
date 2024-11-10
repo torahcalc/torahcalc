@@ -2,7 +2,8 @@ import * as env from '$env/static/private';
 import logo from '$lib/images/torahcalc.svg';
 import { createHtmlErrorResponse, createHtmlResponse } from '$lib/js/api/response.js';
 import { escapeHtml, geocodeAddress, getTimezone } from '$lib/js/utils';
-import { ZMANIM_NAMES, calculateZmanim } from '$lib/js/zmanim';
+import { ZMANIM_NAMES } from '$lib/js/zmanim';
+import { calculateEvents } from '$lib/js/events';
 import { HDate } from '@hebcal/core';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -30,7 +31,7 @@ export async function GET({ url }) {
 	const backgroundColor = url.searchParams.get('backgroundColor') || '#FFFFFF';
 	const logoUrl = url.searchParams.get('logoUrl');
 	const secondaryImageUrl = url.searchParams.get('secondaryImageUrl');
-	const fontSize = url.searchParams.get('fontSize') || '14px';
+	const fontSize = url.searchParams.get('fontSize') || '13px';
 	const mainFont = url.searchParams.get('mainFont') || 'Open Sans';
 	const bodyFont = url.searchParams.get('bodyFont') || 'Open Sans';
 	const footerText = escapeHtml(url.searchParams.get('footerText') || '');
@@ -120,7 +121,7 @@ export async function GET({ url }) {
 
 								.columns {
 									column-count: 4;
-									column-gap: 1em;
+									column-gap: 0.5em;
 									margin: auto;
 								}
 
@@ -148,6 +149,10 @@ export async function GET({ url }) {
 									justify-content: center;
 									align-items: center;
 									gap: 0.3em;
+								}
+
+								.event {
+									font-size: 0.9em;
 								}
 
 								.month > div {
@@ -207,17 +212,19 @@ export async function GET({ url }) {
 							<h1 class="heading">Zmanim &middot; ${location} &middot; ${year}</h1>`;
 		let month = '';
 		while (dateObj < endDate) {
-			const zmanimResponse = await calculateZmanim({ date, latitude, longitude, timezone, location, candleLightingMins });
+			const zmanimResponse = await calculateEvents({ date, latitude, longitude, timezone, location, candleLightingMins });
+			const timedEvents = zmanimResponse.timedEvents;
 			const events = zmanimResponse.events;
 			// Show candle lighting time for Shabbat and Yom Tov
-			if (events.candleLighting || events.havdalah) {
+			if (timedEvents.candleLighting || timedEvents.havdalah) {
+				// check for parsha or holiday events
 				if (dayjs(dateObj).tz(timezone).format('MMMM YYYY') !== month) {
 					if (month !== '') {
 						// end the previous month
 						html += `</div>`;
 					} else {
 						// write candle lighting and havdalah descriptions and start column layout
-						html += `<span class="descriptions body-font">${ZMANIM_NAMES.events.candleLighting.icon} <span>${events.candleLighting.description}</span> <span>&nbsp;</span> ${ZMANIM_NAMES.events.havdalah.icon} <span>Havdalah - 3 small stars visible, sun is 8.5° below horizon</span></span>
+						html += `<span class="descriptions body-font">${ZMANIM_NAMES.events.candleLighting.icon} <span>${timedEvents.candleLighting.description}</span> <span>&nbsp;</span> ${ZMANIM_NAMES.events.havdalah.icon} <span>Havdalah - 3 small stars visible, sun is 8.5° below horizon</span></span>
 							<br/>
 							<div class='columns'>`;
 					}
@@ -225,14 +232,16 @@ export async function GET({ url }) {
 					html += `<div class='month'><h2 class="month-heading">${month}</h2>`;
 				}
 				html += `<div class='row body-font'>`;
-				const formattedDate = dayjs(dateObj).tz(timezone).format('ddd, MMM D');
+				const formattedDate = dayjs(dateObj).tz(timezone).format('ddd D');
 				html += `<span class='date'>${formattedDate}</span>`;
-				if (events.candleLighting) {
-					const candleLightingTime = dayjs(events.candleLighting.time).tz(timezone).format('h:mm a');
+				const event = events.parsha?.hebrewName || events.holiday?.hebrewName || '';
+				html += `<span class='event'>${event}</span>`;
+				if (timedEvents.candleLighting) {
+					const candleLightingTime = dayjs(timedEvents.candleLighting.time).tz(timezone).format('h:mma');
 					html += `<span class='zman'>${ZMANIM_NAMES.events.candleLighting.icon} ${candleLightingTime}</span>`;
 				}
-				if (events.havdalah) {
-					const havdalahTime = dayjs(events.havdalah.time).tz(timezone).format('h:mm a');
+				if (timedEvents.havdalah) {
+					const havdalahTime = dayjs(timedEvents.havdalah.time).tz(timezone).format('h:mma');
 					html += `<span class='zman'>${ZMANIM_NAMES.events.havdalah.icon} ${havdalahTime}</span>`;
 				}
 				html += `</div>`;
