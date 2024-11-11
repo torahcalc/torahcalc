@@ -23,7 +23,7 @@
 		"@danieloi/pro-solid-svg-icons": "6.2.1",
 		"@fortawesome/free-brands-svg-icons": "^6.6.0",
 		"@hebcal/core": "^4.5.1",
-		"@hebcal/learning": "^1.5.1",
+		"@hebcal/learning": "^5.1.2",
 		"cross-env": "^7.0.3",
 		"dayjs": "^1.11.13",
 		"dotenv": "^16.4.5",
