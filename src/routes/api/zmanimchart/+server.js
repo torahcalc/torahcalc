@@ -33,7 +33,7 @@ export async function GET({ url }) {
 	const backgroundColor = url.searchParams.get('backgroundColor') || '#FFFFFF';
 	const logoUrl = url.searchParams.get('logoUrl');
 	const secondaryImageUrl = url.searchParams.get('secondaryImageUrl');
-	const fontSize = url.searchParams.get('fontSize') || '13px';
+	const fontSize = url.searchParams.get('fontSize') || '14px';
 	const mainFont = url.searchParams.get('mainFont') || 'Open Sans';
 	const bodyFont = url.searchParams.get('bodyFont') || 'Open Sans';
 	const footerText = escapeHtml(url.searchParams.get('footerText') || '');
