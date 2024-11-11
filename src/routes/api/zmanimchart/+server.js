@@ -1,9 +1,9 @@
 import * as env from '$env/static/private';
 import logo from '$lib/images/torahcalc.svg';
 import { createHtmlErrorResponse, createHtmlResponse } from '$lib/js/api/response.js';
+import { calculateEvents } from '$lib/js/events';
 import { escapeHtml, geocodeAddress, getTimezone } from '$lib/js/utils';
 import { ZMANIM_NAMES } from '$lib/js/zmanim';
-import { calculateEvents } from '$lib/js/events';
 import { HDate } from '@hebcal/core';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -23,6 +23,8 @@ export async function GET({ url }) {
 	const candleLightingMins = Number(url.searchParams.get('candleLightingMinutes') || 0);
 
 	// TODO: add documentation for these parameters and add to builder
+	const includeEvents = (url.searchParams.get('includeEvents') || '') === 'true';
+	const includeMonth = (url.searchParams.get('includeMonth') || '') === 'true';
 	const headingColor = url.searchParams.get('headingColor') || '#000000';
 	const monthHeadingColor = url.searchParams.get('monthHeadingColor') || '#000000';
 	const rowColor1 = url.searchParams.get('rowColor1') || '#EDF7FF';
@@ -232,9 +234,10 @@ export async function GET({ url }) {
 					html += `<div class='month'><h2 class="month-heading">${month}</h2>`;
 				}
 				html += `<div class='row body-font'>`;
-				const formattedDate = dayjs(dateObj).tz(timezone).format('ddd D');
+				const dayFormat = includeMonth ? 'ddd, MMM D' : 'ddd D';
+				const formattedDate = dayjs(dateObj).tz(timezone).format(dayFormat);
 				html += `<span class='date'>${formattedDate}</span>`;
-				const event = events.parsha?.hebrewName || events.holiday?.hebrewName || '';
+				const event = includeEvents ? events.parsha?.hebrewName || events.holiday?.hebrewName || '' : '';
 				html += `<span class='event'>${event}</span>`;
 				if (timedEvents.candleLighting) {
 					const candleLightingTime = dayjs(timedEvents.candleLighting.time).tz(timezone).format('h:mma');
