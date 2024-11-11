@@ -1,4 +1,4 @@
-import { HebrewCalendar, HolidayEvent, Location, ParshaEvent, TimedEvent, Zmanim } from '@hebcal/core';
+import { flags, HebrewCalendar, HolidayEvent, Location, ParshaEvent, TimedEvent, Zmanim } from '@hebcal/core';
 import dayjs from 'dayjs';
 
 /**
@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 
 /**
  * @typedef {Object} EventOptions
- * @property {string} [date] - The date to calculate zmanim for in YYYY-MM-DD format (defaults to today)
+ * @property {string} [date] - The date to calculate events for in YYYY-MM-DD format (defaults to today)
  * @property {number} latitude - The latitude of the location
  * @property {number} longitude - The longitude of the location
  * @property {string} timezone - The timezone name of the location (defaults to the timezone of the location)
@@ -16,7 +16,7 @@ import dayjs from 'dayjs';
  */
 
 /**
- * Calculate zmanim for a given date and location
+ * Calculate events for a given date and location
  *
  * @param {EventOptions} options
  * @returns {Promise<{ timezone: string, location?: string, events: { [key: string]: Event }, timedEvents: { [key: string]: Event }}>} - The event details
@@ -87,7 +87,8 @@ export async function calculateEvents({ date = dayjs().format('YYYY-MM-DD'), lat
 			}
 			if (event instanceof HolidayEvent) {
 				const isShabbat = event.date.getDay() === 6;
-				if (!isShabbat && (hebrewName.includes('חנוכה') || hebrewName.includes('פורים') || hebrewName.includes('חוה"מ') || hebrewName.includes('ל"ג בעומר'))) {
+				const isChag = event.getFlags() & flags.CHAG;
+				if (!isShabbat && !isChag) {
 					continue;
 				}
 				if (hebrewName.includes('חוה"מ')) {
@@ -98,8 +99,6 @@ export async function calculateEvents({ date = dayjs().format('YYYY-MM-DD'), lat
 					.replace('סוכות ז', '')
 					.replace(/ ([א-ח])(\s|$)/, '$2')
 					.trim();
-				// abbreviate the holiday name
-				// hebrewName = hebrewName.replace('ראש השנה', 'ר"ה').replace('יום כפור', 'י"כ').replace('שמיני עצרת', 'שמ"ע').replace('הושענא רבה', 'ה"ר').replace('שמחת תורה', 'ש"ת');
 			}
 			// add the event to the events object
 			events[key] = {

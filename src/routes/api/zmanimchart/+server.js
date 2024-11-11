@@ -212,9 +212,9 @@ export async function GET({ url }) {
 							<h1 class="heading">Zmanim &middot; ${location} &middot; ${year}</h1>`;
 		let month = '';
 		while (dateObj < endDate) {
-			const zmanimResponse = await calculateEvents({ date, latitude, longitude, timezone, location, candleLightingMins });
-			const timedEvents = zmanimResponse.timedEvents;
-			const events = zmanimResponse.events;
+			const eventsResponse = await calculateEvents({ date, latitude, longitude, timezone, location, candleLightingMins });
+			const timedEvents = eventsResponse.timedEvents;
+			const events = eventsResponse.events;
 			// Show candle lighting time for Shabbat and Yom Tov
 			if (timedEvents.candleLighting || timedEvents.havdalah) {
 				// check for parsha or holiday events
