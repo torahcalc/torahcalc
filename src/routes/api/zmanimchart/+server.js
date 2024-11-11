@@ -23,7 +23,7 @@ export async function GET({ url }) {
 	const candleLightingMins = Number(url.searchParams.get('candleLightingMinutes') || 0);
 
 	// TODO: add documentation for these parameters and add to builder
-	const includeEvents = (url.searchParams.get('includeEvents') || '') === 'true';
+	const includeEvents = url.searchParams.get('includeEvents') === 'true';
 	const includeMonth = (url.searchParams.get('includeMonth') || '') === 'true';
 	const headingColor = url.searchParams.get('headingColor') || '#000000';
 	const monthHeadingColor = url.searchParams.get('monthHeadingColor') || '#000000';
