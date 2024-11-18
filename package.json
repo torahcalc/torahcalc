@@ -48,15 +48,15 @@
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/svelte": "^5.2.4",
 		"@types/cookie": "^0.6.0",
-		"eslint": "^9.14.0",
+		"eslint": "^9.15.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.46.0",
 		"jsdom": "^25.0.1",
 		"prettier": "^3.3.3",
-		"prettier-plugin-svelte": "^3.2.7",
+		"prettier-plugin-svelte": "^3.2.8",
 		"svelte": "^4.2.8",
-		"svelte-check": "^4.0.6",
+		"svelte-check": "^4.0.9",
 		"vite": "^4.5.0",
-		"vitest": "^2.1.4"
+		"vitest": "^2.1.5"
 	}
 }
