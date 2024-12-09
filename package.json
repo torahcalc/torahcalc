@@ -26,7 +26,7 @@
 		"@hebcal/learning": "^1.5.1",
 		"cross-env": "^7.0.3",
 		"dayjs": "^1.11.13",
-		"dotenv": "^16.4.5",
+		"dotenv": "^16.4.7",
 		"nearley": "^2.20.1",
 		"prettier-plugin-organize-imports": "^4.1.0",
 		"svelte-fa": "^3.0.4",
