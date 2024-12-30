@@ -54,7 +54,7 @@
 		"jsdom": "^25.0.1",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.2",
-		"svelte": "^4.2.8",
+		"svelte": "^5.16.0",
 		"svelte-check": "^4.1.1",
 		"vite": "^4.5.0",
 		"vitest": "^2.1.8"
