@@ -64,6 +64,10 @@ const HEBREW_DAYS_OF_WEEK = {
  * @param {number} month - The Hebrew month (1=Nisan, 7=Tishrei, 13=Adar II)
  */
 export function calculateMolad(year, month) {
+	// if month is Adar II and year is not a leap year, use Nissan instead
+	if (month === 13 && !isHebrewLeapYear(year).isLeapYear) {
+		month = 1;
+	}
 	const moladInterval = 7654330000 / 3; // milliseconds // = 765433/25920 ~ 29.53 days
 	const timestampMoladNissan5774 = 1396238070000; // Monday, March 31, 2014, 3:54:30 am UTC (note: UTC is used even though it is really Jerusalem time)
 	let timestampNewMolad = timestampMoladNissan5774;
