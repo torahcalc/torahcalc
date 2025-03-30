@@ -3,8 +3,27 @@
 	import { HDate } from '@hebcal/core';
 	import { getHolidays } from '$lib/js/holidays';
 	import { dataToHtmlTable } from '$lib/js/utils';
+	import { formatHebrewDateEn } from '$lib/js/dateconverter';
 
 	onMount(() => {
+		// get the next major holiday
+		const types = {
+			diaspora: diaspora === 'diaspora',
+			major: true,
+			minor: false,
+			fasts: false,
+			roshChodesh: false,
+			shabbosMevorchim: false,
+			specialShabbos: false,
+			modern: false,
+			chabad: false,
+		};
+		const upcoming = getHolidays({ startDate: new HDate(), types })[0];
+		const numberOfDays = Math.floor((Number(new Date(upcoming.date)) - Number(new Date())) / (1000 * 60 * 60 * 24));
+		nextMajorHoliday = `${upcoming.name} in ${numberOfDays} days`;
+		nextMajorHolidayBegins = upcoming.gregorianStart;
+
+		// get the list of upcoming holidays
 		updateResults('upcoming');
 	});
 
@@ -38,6 +57,12 @@
 
 	/** @type {string} The results of the holiday calculation */
 	let results = '';
+
+	/** @type {string} Next major Jewish holiday */
+	let nextMajorHoliday = '';
+
+	/** @type {string} Next major Jewish holiday begins */
+	let nextMajorHolidayBegins = '';
 
 	/**
 	 * Search for words with a matching gematria value
@@ -104,6 +129,15 @@
 		results = await getResults({ mode, year, types });
 	}
 </script>
+
+<div class="card flex-card mb-0 text-center">
+	<h4>Today's Date:</h4>
+	<h5>{new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} ({formatHebrewDateEn(new HDate())})</h5>
+	<br />
+	<h4>Next Major Holiday:</h4>
+	<h5>{nextMajorHoliday}</h5>
+	<h5>{nextMajorHolidayBegins}</h5>
+</div>
 
 <div class="card flex-card mb-0">
 	<div class="d-flex gap-4 mb-3 flex-wrap align-items-center justify-content-center">
