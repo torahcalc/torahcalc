@@ -61,6 +61,8 @@
 		date: new Date(),
 	};
 
+	let isLoading = false;
+
 	/**
 	 * Search for zmanim for a given date and location
 	 * @param {{ location: string, date: Date }} options - the options for the calculation
@@ -110,6 +112,7 @@
 	 */
 	async function updateResults() {
 		try {
+			isLoading = true;
 			const allResults = await getResults({ location, date });
 
 			// Save the location to localStorage
@@ -192,6 +195,8 @@
 			alert(error?.toString());
 			console.error(error);
 			return;
+		} finally {
+			isLoading = false;
 		}
 	}
 
@@ -271,8 +276,14 @@
 					on:click={async () => {
 						await updateResults();
 					}}
+					disabled={isLoading}
 				>
-					Calculate Zmanim
+					{#if isLoading}
+						<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+						<span class="ms-2">Loading...</span>
+					{:else}
+						Calculate Zmanim
+					{/if}
 				</button>
 			</div>
 		</div>
