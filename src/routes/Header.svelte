@@ -39,6 +39,7 @@
 				{ name: 'Parsha Stats', url: '/info/parsha-stats' },
 				{ name: 'Tanach Stats', url: '/info/tanach-stats' },
 				{ name: 'Tanach Verses By Chapter', url: '/info/tanach-verses-by-chapter' },
+				{ name: 'Pesach Shiur Requirements', url: '/info/pesach' },
 			],
 		},
 	];
