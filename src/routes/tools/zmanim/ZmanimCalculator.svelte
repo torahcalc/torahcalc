@@ -9,7 +9,7 @@
 	dayjs.extend(timezone);
 	dayjs.extend(utc);
 
-    onMount(updateResults);
+	onMount(updateResults);
 
 	/** @type {string} The location to calculate zmanim for */
 	let location = 'Denver';
@@ -60,15 +60,15 @@
 		}
 
 		const allResults = zmanimResponse.data;
-        
-        if (allResults.location && allResults.latitude && allResults.longitude) {
-            allResults.location = `${allResults.location} (${allResults.latitude.toFixed(6)}, ${allResults.longitude.toFixed(6)})`;
-        }
 
-        allResults.latitude = allResults.latitude ?? params.latitude ?? '';
-        allResults.longitude = allResults.longitude ?? params.longitude ?? '';
+		if (allResults.location && allResults.latitude && allResults.longitude) {
+			allResults.location = `${allResults.location} (${allResults.latitude.toFixed(6)}, ${allResults.longitude.toFixed(6)})`;
+		}
 
-        return allResults;
+		allResults.latitude = allResults.latitude ?? params.latitude ?? '';
+		allResults.longitude = allResults.longitude ?? params.longitude ?? '';
+
+		return allResults;
 	}
 
 	/**
