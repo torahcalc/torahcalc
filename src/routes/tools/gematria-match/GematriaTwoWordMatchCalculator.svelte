@@ -60,26 +60,12 @@
 	<div class="d-flex gap-4 mb-3 flex-wrap">
 		<label>
 			<span>Input Word 1:</span>
-			<input
-				type="text"
-				class="word-or-number-input form-control rtl"
-				bind:value={word1}
-				on:input={updateResults}
-				on:focus={() => (previousInput = 1)}
-				bind:this={inputBox1}
-			/>
+			<input type="text" class="word-or-number-input form-control rtl" bind:value={word1} on:input={updateResults} on:focus={() => (previousInput = 1)} bind:this={inputBox1} />
 		</label>
 
 		<label>
 			<span>Input Word 2:</span>
-			<input
-				type="text"
-				class="word-or-number-input form-control rtl"
-				bind:value={word2}
-				on:input={updateResults}
-				on:focus={() => (previousInput = 2)}
-				bind:this={inputBox2}
-			/>
+			<input type="text" class="word-or-number-input form-control rtl" bind:value={word2} on:input={updateResults} on:focus={() => (previousInput = 2)} bind:this={inputBox2} />
 		</label>
 	</div>
 
