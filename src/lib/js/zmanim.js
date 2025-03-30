@@ -162,10 +162,21 @@ export const ZMANIM_NAMES = {
  */
 
 /**
+ * @typedef {Object} ZmanimResult
+ * @property {string} timezone - The timezone name of the location
+ * @property {string} [location] - The location for display purposes
+ * @property {number} [latitude] - The latitude of the location
+ * @property {number} [longitude] - The longitude of the location
+ * @property {{ [key: string]: Zman }} zmanim - The zmanim for the given date and location
+ * @property {{ [key: string]: Zman }} events - The timed events for the given date and location
+ * @property {{ [key: string]: Zman }} durations - The shaah zmanis durations for the given date and location
+ */
+
+/**
  * Calculate zmanim for a given date and location
  *
  * @param {ZmanimOptions} options
- * @returns {Promise<{ timezone: string, location?: string, zmanim: { [key: string]: Zman }, events: { [key: string]: Zman }, durations: { [key: string]: Zman } }>} - The zmanim, timed events, and shaah zmanis durations
+ * @returns {Promise<ZmanimResult>} - The zmanim, timed events, and shaah zmanis durations for the given date and location
  */
 export async function calculateZmanim({ date = dayjs().format('YYYY-MM-DD'), latitude, longitude, timezone, location, candleLightingMins }) {
 	const zmanim = new Zmanim(dayjs(date).toDate(), latitude, longitude);
