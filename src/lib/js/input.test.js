@@ -491,7 +491,7 @@ describe('test daily learning', () => {
 	it('What are the daily psalms for May 12, 2023?', async () => {
 		const sections = await calculateQuery('What are the daily psalms for May 12, 2023?');
 		expect(sections[0].title).toBe('Input Interpretation');
-		expect(sections[0].content).toContain('Calculate the Daily Psalms for Fri, May 12, 2023');
+		expect(sections[0].content).toContain('Calculate the Daily Tehilim for Fri, May 12, 2023');
 		expect(sections[1].title).toBe('Result');
 		expect(sections[1].content).toContain('Psalms 104-105');
 		expect(sections[1].content).toContain('תְּהִלִּים ק״ד-ק״ה');
