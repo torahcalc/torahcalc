@@ -128,9 +128,7 @@
 			{/if}
 		</div>
 
-		<a href="/input?q=Calculate+the+molados+of+{hebrewYear}" class="btn btn-outline-primary mt-3 text-decoration-none" style="width: max-content;">
-			Calculate Full Year
-		</a>
+		<a href="/input?q=Calculate+the+molados+of+{hebrewYear}" class="btn btn-outline-primary mt-3 text-decoration-none" style="width: max-content;"> Calculate Full Year </a>
 	{/if}
 </div>
 
