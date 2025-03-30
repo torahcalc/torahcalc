@@ -7,13 +7,43 @@
 	import { dataToHtmlTable } from '$lib/js/utils';
 	import Fa from 'svelte-fa/src/fa.svelte';
 	import { faCalendarDay, faLocationCrosshairs } from '@danieloi/pro-solid-svg-icons';
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 	dayjs.extend(timezone);
 	dayjs.extend(utc);
 
-	onMount(useCurrentLocation);
+	onMount(() => {
+		// if the query parameters are set, use them
+		/** @type {string|null} The date to calculate zmanim for (YYYY-MM-DD) */
+		let queryDate = '';
+		/** @type {string|null} The location to calculate zmanim for */
+		let queryLocation = '';
+		page.subscribe(($page) => {
+			queryDate = $page.url.searchParams.get('date');
+			queryLocation = $page.url.searchParams.get('location');
+		});
+		if (queryDate) {
+			date = new Date(queryDate);
+			formattedDate = queryDate;
+		}
+		if (queryLocation) {
+			location = queryLocation;
+			updateResults();
+			return;
+		}
+		// otherwise, check if the user has a saved location in localStorage
+		const savedLocation = localStorage.getItem('lastLocation');
+		if (savedLocation) {
+			location = savedLocation;
+			updateResults();
+			return;
+		}
+		// if no location is found, use the user's current location
+		useCurrentLocation();
+	});
 
 	/** @type {string} The location to calculate zmanim for */
-	let location = 'Denver';
+	let location = '';
 
 	/** @type {string} The error message for geolocation or blank if there is no error */
 	let geolocationError = '';
@@ -79,76 +109,90 @@
 	 * Read the options from the UI and update the results
 	 */
 	async function updateResults() {
-		const allResults = await getResults({ location, date });
+		try {
+			const allResults = await getResults({ location, date });
 
-		let mapUrl = `/input/maps?location=${allResults.latitude},${allResults.longitude}`;
-		if (PUBLIC_ADAPTER === 'static') {
-			mapUrl = PUBLIC_BASE_URL + mapUrl;
-		}
+			// Save the location to localStorage
+			localStorage.setItem('lastLocation', location);
 
-		/**
-		 * Format a zman time
-		 * @param {string} time - The time to format
-		 * @param {string} timezone - The timezone to format the time in
-		 * @returns {string} The formatted time
-		 */
-		const formatZmanTime = (time, timezone) => {
-			return dayjs(time).tz(timezone).format('h:mm A').replace(' ', '&nbsp;');
-		};
+			// Update the URL query parameter without reloading the page
+			const url = new URL(window.location.href);
+			url.searchParams.set('location', location);
+			goto(url.pathname + url.search, { replaceState: true });
 
-		/**
-		 * Format a zman name and description in a table row
-		 * @param {import('$lib/js/zmanim').Zman} zman - The zman to format
-		 * @returns {string} The formatted time
-		 */
-		const formatZmanCell = (zman) => {
-			let row = `<span class="fw-bold d-inline-flex align-items-center gap-2" style="font-size: 1.25em">${zman.icon || ''} ${zman.name}</span>`;
-			if (zman.description && zman.name !== zman.description) {
-				row += `<div class="small text-muted">${zman.description}</div>`;
+			let mapUrl = `/input/maps?location=${allResults.latitude},${allResults.longitude}`;
+			if (PUBLIC_ADAPTER === 'static') {
+				mapUrl = PUBLIC_BASE_URL + mapUrl;
 			}
-			return row;
-		};
 
-		// show all zmanim in tables
-		const zmanimTables = [];
-		const eventsData = Object.entries(allResults.events).map(([zmanId, result]) => {
-			// @ts-ignore - assume key exists
-			const zman = allResults.events[zmanId];
-			return { Event: formatZmanCell(zman), Time: formatZmanTime(result.time, allResults.timezone) };
-		});
-		if (eventsData.length > 0) {
-			let eventsSection = "<div class='border rounded px-3 my-3'><ul class='list-unstyled'>";
-			eventsSection += eventsData.map((event) => `<li class="my-3 d-flex flex-column gap-1">${event.Event}${event.Time}</li>`).join('');
-			eventsSection += '</ul></div>';
-			zmanimTables.push(eventsSection);
-		}
-		const zmanimData = Object.entries(allResults.zmanim).map(([zmanId, result]) => {
-			// @ts-ignore - assume key exists
-			const zman = allResults.zmanim[zmanId];
-			return { Zman: formatZmanCell(zman), Time: formatZmanTime(result.time, allResults.timezone) };
-		});
-		if (zmanimData.length > 0) {
-			const zmanimTable = dataToHtmlTable(zmanimData, { headers: ['Zman', 'Time'], class: 'table table-striped table-bordered' });
-			zmanimTables.push(zmanimTable);
-		}
-		const durationsData = Object.entries(allResults.durations).map(([zmanId, result]) => {
-			// @ts-ignore - assume key exists
-			const zman = allResults.durations[zmanId];
-			return { Measurement: formatZmanCell(zman), Length: result.time };
-		});
-		if (durationsData.length > 0) {
-			const durationsTable = dataToHtmlTable(durationsData, { headers: ['Measurement', 'Length'], class: 'table table-striped table-bordered' });
-			zmanimTables.push(durationsTable);
-		}
+			/**
+			 * Format a zman time
+			 * @param {string} time - The time to format
+			 * @param {string} timezone - The timezone to format the time in
+			 * @returns {string} The formatted time
+			 */
+			const formatZmanTime = (time, timezone) => {
+				return dayjs(time).tz(timezone).format('h:mm A').replace(' ', '&nbsp;');
+			};
 
-		// update the zmanim result object
-		zmanimResult = {
-			mapUrl,
-			tablesHTML: zmanimTables.join(''),
-			timezone: allResults.timezone,
-			location: allResults.location || location,
-			date: date,
-		};
+			/**
+			 * Format a zman name and description in a table row
+			 * @param {import('$lib/js/zmanim').Zman} zman - The zman to format
+			 * @returns {string} The formatted time
+			 */
+			const formatZmanCell = (zman) => {
+				let row = `<span class="fw-bold d-inline-flex align-items-center gap-2" style="font-size: 1.25em">${zman.icon || ''} ${zman.name}</span>`;
+				if (zman.description && zman.name !== zman.description) {
+					row += `<div class="small text-muted">${zman.description}</div>`;
+				}
+				return row;
+			};
+
+			// show all zmanim in tables
+			const zmanimTables = [];
+			const eventsData = Object.entries(allResults.events).map(([zmanId, result]) => {
+				// @ts-ignore - assume key exists
+				const zman = allResults.events[zmanId];
+				return { Event: formatZmanCell(zman), Time: formatZmanTime(result.time, allResults.timezone) };
+			});
+			if (eventsData.length > 0) {
+				let eventsSection = "<div class='border rounded px-3 my-3'><ul class='list-unstyled'>";
+				eventsSection += eventsData.map((event) => `<li class="my-3 d-flex flex-column gap-1">${event.Event}${event.Time}</li>`).join('');
+				eventsSection += '</ul></div>';
+				zmanimTables.push(eventsSection);
+			}
+			const zmanimData = Object.entries(allResults.zmanim).map(([zmanId, result]) => {
+				// @ts-ignore - assume key exists
+				const zman = allResults.zmanim[zmanId];
+				return { Zman: formatZmanCell(zman), Time: formatZmanTime(result.time, allResults.timezone) };
+			});
+			if (zmanimData.length > 0) {
+				const zmanimTable = dataToHtmlTable(zmanimData, { headers: ['Zman', 'Time'], class: 'table table-striped table-bordered' });
+				zmanimTables.push(zmanimTable);
+			}
+			const durationsData = Object.entries(allResults.durations).map(([zmanId, result]) => {
+				// @ts-ignore - assume key exists
+				const zman = allResults.durations[zmanId];
+				return { Measurement: formatZmanCell(zman), Length: result.time };
+			});
+			if (durationsData.length > 0) {
+				const durationsTable = dataToHtmlTable(durationsData, { headers: ['Measurement', 'Length'], class: 'table table-striped table-bordered' });
+				zmanimTables.push(durationsTable);
+			}
+
+			// update the zmanim result object
+			zmanimResult = {
+				mapUrl,
+				tablesHTML: zmanimTables.join(''),
+				timezone: allResults.timezone,
+				location: allResults.location || location,
+				date: date,
+			};
+		} catch (error) {
+			alert(error?.toString());
+			console.error(error);
+			return;
+		}
 	}
 
 	/**
