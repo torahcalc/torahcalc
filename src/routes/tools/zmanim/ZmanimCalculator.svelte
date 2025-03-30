@@ -1,18 +1,22 @@
 <script>
 	import { PUBLIC_ADAPTER, PUBLIC_BASE_URL } from '$env/static/public';
-	import { ZMANIM_NAMES } from '$lib/js/zmanim';
 	import { onMount } from 'svelte';
 	import dayjs from 'dayjs';
 	import timezone from 'dayjs/plugin/timezone';
 	import utc from 'dayjs/plugin/utc';
 	import { dataToHtmlTable } from '$lib/js/utils';
+	import Fa from 'svelte-fa/src/fa.svelte';
+	import { faCalendarDay, faLocationCrosshairs } from '@danieloi/pro-solid-svg-icons';
 	dayjs.extend(timezone);
 	dayjs.extend(utc);
 
-	onMount(updateResults);
+	onMount(useCurrentLocation);
 
 	/** @type {string} The location to calculate zmanim for */
 	let location = 'Denver';
+
+	/** @type {string} The error message for geolocation or blank if there is no error */
+	let geolocationError = '';
 
 	/** @type {Date} The date to calculate zmanim for */
 	let date = new Date();
@@ -146,18 +150,60 @@
 			date: date,
 		};
 	}
+
+	/**
+	 * Get the user's current location and update the location input
+	 */
+	async function useCurrentLocation() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(
+				(position) => {
+					const { latitude, longitude } = position.coords;
+					location = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+					updateResults();
+				},
+				(error) => {
+					geolocationError = 'Unable to retrieve your location. Please enter a location manually.';
+					console.error(error);
+				}
+			);
+		} else {
+			geolocationError = 'Geolocation is not supported by this browser.';
+			console.error(geolocationError);
+		}
+	}
+
+	/**
+	 * Get today's date and update the date input
+	 */
+	function useToday() {
+		date = new Date();
+		formattedDate = dayjs(date).format('YYYY-MM-DD');
+		updateResults();
+	}
 </script>
 
 <div class="card flex-card mb-0">
 	<label>
 		<div class="d-flex flex-column gap-2">
 			<span>Location <span class="text-muted">(Address, City, or Zip Code)</span>:</span>
-			<div class="d-flex mb-2">
+			<div class="d-flex mb-2 align-items-center">
 				<input type="text" class="location-input form-control w-auto" bind:value={location} />
+				{#if geolocationError === ''}
+					<button class="btn btn-light btn-sm d-flex align-items-center gap-2 ms-2" on:click={useCurrentLocation} title="Use your current location">
+						<Fa icon={faLocationCrosshairs} size="1x" />
+						<span>Use Current Location</span>
+					</button>
+				{:else}
+					<button class="btn btn-light btn-sm d-flex align-items-center gap-2 ms-2" title={geolocationError} on:click={() => alert(geolocationError)}>
+						<Fa icon={faLocationCrosshairs} size="1x" class="text-danger" />
+						<span class="text-danger">Use Current Location</span>
+					</button>
+				{/if}
 			</div>
 
 			<span>Date:</span>
-			<div class="d-flex mb-2">
+			<div class="d-flex mb-2 align-items-center">
 				<input
 					type="date"
 					class="location-input form-control w-auto"
@@ -169,6 +215,10 @@
 						}
 					}}
 				/>
+				<button class="btn btn-light btn-sm d-flex align-items-center gap-2 ms-2" on:click={useToday} title="Use today's date">
+					<Fa icon={faCalendarDay} size="1x" />
+					<span>Use Today's Date</span>
+				</button>
 			</div>
 
 			<div class="d-flex">
