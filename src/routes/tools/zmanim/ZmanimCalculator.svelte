@@ -169,7 +169,7 @@
 			);
 		} else {
 			geolocationError = 'Geolocation is not supported by this browser.';
-			console.error('Geolocation is not supported by this browser.');
+			console.error(geolocationError);
 		}
 	}
 
