@@ -28,6 +28,12 @@
 	let date = new Date();
 	let formattedDate = dayjs(date).format('YYYY-MM-DD');
 
+	/** @type {number|null} Minutes before sunset to light candles */
+	let candleLightingMinutes = null;
+
+	/** @type {string} The timezone to use for zmanim */
+	let zmanimTimezone = '';
+
 	/** @type {{mapUrl: string, tablesHTML: string, timezone: string, location: string, date: Date}} The zmanim result */
 	let zmanimResult = {
 		mapUrl: '',
@@ -71,13 +77,13 @@
 
 	/**
 	 * Search for zmanim for a given date and location
-	 * @param {{ location: string, date: Date }} options - the options for the calculation
+	 * @param {{ location: string, date: Date, candleLightingMinutes: number?, zmanimTimezone: string }} options - the options for the calculation
 	 * @returns {Promise<import('$lib/js/zmanim').ZmanimResult>} The zmanim result
 	 * @throws {Error} If the location is invalid
 	 */
-	async function getResults({ location, date }) {
-		/** @type {{ date: string, latitude?: string, longitude?: string, location?: string }} */
-		const params = { date: dayjs(date).format('YYYY-MM-DD') };
+	async function getResults({ location, date, candleLightingMinutes }) {
+		/** @type {{ date: string, latitude?: string, longitude?: string, location?: string, candleLightingMinutes?: string, timezone: string }} */
+		const params = { date: dayjs(date).format('YYYY-MM-DD'), candleLightingMinutes: (candleLightingMinutes || 0).toString(), timezone: zmanimTimezone };
 		const latLongMatch = location.match(/^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/);
 		if (latLongMatch) {
 			params.latitude = latLongMatch[1];
@@ -98,7 +104,7 @@
 			});
 
 		if (zmanimResponse.success === false || !zmanimResponse.data) {
-			throw new Error(`Could not get zmanim for the provided location: "${location}".`);
+			throw new Error(`Could not get zmanim for the provided location: "${location}". ${zmanimResponse?.data?.error || ''}`);
 		}
 
 		const allResults = zmanimResponse.data;
@@ -119,7 +125,7 @@
 	async function updateResults() {
 		try {
 			isLoading = true;
-			const allResults = await getResults({ location, date });
+			const allResults = await getResults({ location, date, candleLightingMinutes, zmanimTimezone });
 
 			// Save the location to localStorage
 			localStorage.setItem('lastLocation', location);
@@ -289,11 +295,61 @@
 			</div>
 		</label>
 
-		<div class="mb-3">
-			Time format: &nbsp;
-			<button class={`btn btn-sm btn-outline-secondary ${timeFormat === HR_12 ? 'active' : ''}`} on:click={() => setTimeFormat(HR_12)}>12-hour</button>
-			<button class={`btn btn-sm btn-outline-secondary ${timeFormat === HR_24 ? 'active' : ''}`} on:click={() => setTimeFormat(HR_24)}>24-hour</button>
-		</div>
+		<details class="mb-3">
+			<summary>Advanced Options</summary>
+			<div class="mt-3">
+				<span>Time format:</span>
+				<div class="mt-1">
+					<button class={`btn btn-sm btn-outline-secondary ${timeFormat === HR_12 ? 'active' : ''}`} on:click={() => setTimeFormat(HR_12)}>12-hour</button>
+					<button class={`btn btn-sm btn-outline-secondary ${timeFormat === HR_24 ? 'active' : ''}`} on:click={() => setTimeFormat(HR_24)}>24-hour</button>
+				</div>
+			</div>
+			<div class="mt-4">
+				<label class="form-label" for="candle-lighting-minutes">
+					Candle Lighting Minutes Before Sunset <span class="text-muted">(e.g. 18)</span>:<br/>
+                    <span class="text-muted small">Set to 0 for default candle lighting time based on location</span>
+					<input
+						id="candle-lighting-minutes"
+						type="number"
+						min="0"
+						max="9999"
+                        placeholder="0"
+						bind:value={candleLightingMinutes}
+						class="form-control w-auto mt-1"
+						on:input={(e) => {
+							if (e.target) {
+								candleLightingMinutes = Number(e.target.value);
+							}
+						}}
+					/>
+				</label>
+			</div>
+			<div class="mt-3">
+				<label class="form-label" for="timezone">
+					Timezone:
+					<select
+						id="timezone"
+						class="form-select mt-1"
+						bind:value={zmanimTimezone}
+						on:change={(e) => {
+							if (e.target) {
+								zmanimTimezone = e.target.value;
+							}
+						}}
+					>
+						<option value="" selected>Default</option>
+						{#if typeof Intl !== 'undefined' && Intl.supportedValuesOf}
+							{#each Intl.supportedValuesOf('timeZone').sort() as timezone}
+								<option value={timezone}>{timezone}</option>
+							{/each}
+						{/if}
+                        {#each Array(25).fill(0).map((el, i) => 'UTC' + (i >= 12 ? '+' : '') + (i - 12)) as timezone}
+							<option value={timezone.replace("UTC", "Etc/GMT")}>{timezone}</option>
+						{/each}
+					</select>
+				</label>
+			</div>
+		</details>
 
 		<div class="d-flex">
 			<button
@@ -342,5 +398,14 @@
 			flex-direction: column;
 			align-items: flex-start !important;
 		}
+	}
+
+	details > summary {
+		width: max-content;
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.25rem;
+	}
+	details > summary:hover {
+		background-color: #eee;
 	}
 </style>
