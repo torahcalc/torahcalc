@@ -293,7 +293,7 @@
 {#if zmanimResult.mapUrl}
 	<div class="card flex-card mb-0">
 		<h5 class="mb-0">Zmanim for {zmanimResult.location} on {dayjs(zmanimResult.date).format('dddd, MMMM D, YYYY')}</h5>
-		<img src={zmanimResult.mapUrl} class="my-3" style="height: 200px; width: 400px;" alt="Map showing the location for Zmanim calculation" />
+		<img src={zmanimResult.mapUrl} class="my-3" style="height: auto; width: 400px; max-width: 100%;" alt="Map showing the location for Zmanim calculation" />
 		{@html zmanimResult.tablesHTML}
 	</div>
 
