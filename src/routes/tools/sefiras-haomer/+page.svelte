@@ -84,18 +84,19 @@
 	}
 
 	.sefirah-link {
+		background-color: #fff;
 		background-size: contain;
 		background-repeat: no-repeat;
 		background-position: center;
 		width: 200px;
 		height: 50px;
 		margin: 0.5rem;
-		border: none;
-		background-color: transparent;
+		border: 1px solid #ccc;
+		border-radius: 0.5rem;
 		transition: filter 0.2s;
 	}
 
 	.sefirah-link:hover {
-		filter: brightness(1.1);
+		filter: brightness(0.9);
 	}
 </style>
