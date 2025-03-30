@@ -93,7 +93,7 @@
 <div class="card flex-card mb-0">
 	<p><a href="/info/gematria" target="_blank"><Fa icon={faExternalLink} /> &nbsp; Click for Explanations of Gematria Methods</a></p>
 	<p class="small m-0">
-		Javascript adaptation by TorahCalc. Original code in Kotlin by <a href="ssternbach@torahdownloads.com">ssternbach@torahdownloads.com</a>. Check out
+		Javascript adaptation by TorahCalc. Original code in Kotlin by <a href="mailto:ssternbach@torahdownloads.com">ssternbach@torahdownloads.com</a>. Check out
 		<a href="https://torahdownloads.com/">TorahDownloads.com</a> to find tens of thousands of shiurim on hundreds of topics, all available for free to stream or download!
 	</p>
 </div>
