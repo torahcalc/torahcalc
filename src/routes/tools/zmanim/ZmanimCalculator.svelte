@@ -241,12 +241,12 @@
 				{#if geolocationError === ''}
 					<button class="btn btn-light btn-sm d-flex align-items-center gap-2" on:click={useCurrentLocation} title="Use your current location">
 						<Fa icon={faLocationCrosshairs} size="1x" />
-						<span>Use Current Location</span>
+						<span>Use My Location</span>
 					</button>
 				{:else}
 					<button class="btn btn-light btn-sm d-flex align-items-center gap-2" title={geolocationError} on:click={() => alert(geolocationError)}>
 						<Fa icon={faLocationCrosshairs} size="1x" class="text-danger" />
-						<span class="text-danger">Use Current Location</span>
+						<span class="text-danger">Use My Location</span>
 					</button>
 				{/if}
 			</div>
