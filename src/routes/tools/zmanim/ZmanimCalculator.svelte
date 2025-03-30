@@ -233,11 +233,11 @@
 </script>
 
 <div class="card flex-card mb-0">
-	<label>
-		<div class="d-flex flex-column gap-2">
+	<div class="d-flex flex-column gap-2">
+		<label class="form-label" for="location">
 			<span>Location <span class="text-muted">(Address, City, or Zip Code)</span>:</span>
 			<div class="input-and-button-row d-flex mb-2 align-items-center flex-wrap gap-2">
-				<input type="text" class="location-input form-control w-auto" bind:value={location} />
+				<input id="location" type="text" class="location-input form-control w-auto" bind:value={location} />
 				{#if geolocationError === ''}
 					<button class="btn btn-light btn-sm d-flex align-items-center gap-2" on:click={useCurrentLocation} title="Use your current location">
 						<Fa icon={faLocationCrosshairs} size="1x" />
@@ -250,10 +250,13 @@
 					</button>
 				{/if}
 			</div>
+		</label>
 
+		<label class="form-label" for="date">
 			<span>Date:</span>
 			<div class="input-and-button-row d-flex mb-2 align-items-center flex-wrap gap-2">
 				<input
+					id="date"
 					type="date"
 					class="location-input form-control w-auto"
 					bind:value={formattedDate}
@@ -269,25 +272,25 @@
 					<span>Use Today's Date</span>
 				</button>
 			</div>
+		</label>
 
-			<div class="d-flex">
-				<button
-					class="btn btn-primary"
-					on:click={async () => {
-						await updateResults();
-					}}
-					disabled={isLoading}
-				>
-					{#if isLoading}
-						<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-						<span class="ms-2">Loading...</span>
-					{:else}
-						Calculate Zmanim
-					{/if}
-				</button>
-			</div>
+		<div class="d-flex">
+			<button
+				class="btn btn-primary"
+				on:click={async () => {
+					await updateResults();
+				}}
+				disabled={isLoading}
+			>
+				{#if isLoading}
+					<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+					<span class="ms-2">Loading...</span>
+				{:else}
+					Calculate Zmanim
+				{/if}
+			</button>
 		</div>
-	</label>
+	</div>
 </div>
 
 {#if zmanimResult.mapUrl}
