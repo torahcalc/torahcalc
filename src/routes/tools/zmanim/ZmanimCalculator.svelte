@@ -14,22 +14,22 @@
 
 	onMount(() => {
 		// if the query parameters are set, use them
-        /** @type {string|null} The date to calculate zmanim for (YYYY-MM-DD) */
-        let queryDate = '';
+		/** @type {string|null} The date to calculate zmanim for (YYYY-MM-DD) */
+		let queryDate = '';
 		/** @type {string|null} The location to calculate zmanim for */
 		let queryLocation = '';
 		page.subscribe(($page) => {
-            queryDate = $page.url.searchParams.get('date');
+			queryDate = $page.url.searchParams.get('date');
 			queryLocation = $page.url.searchParams.get('location');
 		});
-        if (queryDate) {
-            date = new Date(queryDate);
-            formattedDate = queryDate;
-        }
-        if (queryLocation) {
+		if (queryDate) {
+			date = new Date(queryDate);
+			formattedDate = queryDate;
+		}
+		if (queryLocation) {
 			location = queryLocation;
-            updateResults();
-            return;
+			updateResults();
+			return;
 		}
 		// otherwise, check if the user has a saved location in localStorage
 		const savedLocation = localStorage.getItem('lastLocation');
