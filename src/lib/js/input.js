@@ -118,7 +118,7 @@ export async function calculateQuery(search, options = {}) {
 		gematriaQuery: () => gematriaQuery(derivation),
 		gematriaSearchQuery: () => gematriaSearchQuery(derivation),
 		gematriaTwoWordMatchQuery: () => gematriaTwoWordMatchQuery(derivation),
-		zmanimQuery: async () => await zmanimQuery(derivation),
+		zmanimQuery: async () => await zmanimQuery(derivation, search, options.outputFormat),
 		hebrewCalendarQuery: () => hebrewCalendarQuery(derivation),
 		moladQuery: () => moladQuery(derivation, search, options.outputFormat),
 		sefirasHaOmerQuery: () => sefirasHaOmerQuery(derivation),
@@ -812,11 +812,28 @@ function gematriaTwoWordMatchQuery(derivation) {
  * Generate sections for a zmanim query
  *
  * @param {{ function?: string, zman?: string, date?: { gregorianDate?: { year: number, month: number, day: number }, hebrewDate?: { year: number, month: number, day: number } }, location?: string }} derivation
+ * @param {string} search - The search query
+ * @param {string} [timeFormat] - The output format
  * @returns {Promise<{ title: string, content: string }[]>} The response.
  */
-export async function zmanimQuery(derivation) {
+export async function zmanimQuery(derivation, search, timeFormat) {
 	/** @type {{ title: string, content: string }[]} */
 	const sections = [];
+
+	const HR_12 = '12Hr';
+	const HR_24 = '24Hr';
+
+	if (![HR_12, HR_24].includes(timeFormat ?? '')) {
+		timeFormat = HR_12;
+	}
+
+	// create a section that allows toggling the time format ("12Hr", "24Hr")
+	const linkTo12Hr = getRadioButtonLink('12-hour', search, undefined, HR_12, timeFormat === HR_12);
+	const linkTo24Hr = getRadioButtonLink('24-hour', search, undefined, HR_24, timeFormat === HR_24);
+	sections.push({
+		title: '',
+		content: `<div><b>Time format:</b> &nbsp; ${linkTo12Hr} ${linkTo24Hr}</div>`,
+	});
 
 	let dateObject = new Date();
 	if (derivation?.date?.gregorianDate) {
@@ -879,7 +896,8 @@ export async function zmanimQuery(derivation) {
 	 * @returns {string} The formatted time
 	 */
 	const formatZmanTime = (time, timezone) => {
-		return dayjs(time).tz(timezone).format('h:mm A').replace(' ', '&nbsp;');
+		const format = timeFormat === HR_12 ? 'h:mm A' : 'HH:mm';
+		return dayjs(time).tz(timezone).format(format).replace(' ', '&nbsp;');
 	};
 
 	/**
