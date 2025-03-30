@@ -306,14 +306,14 @@
 			</div>
 			<div class="mt-4">
 				<label class="form-label" for="candle-lighting-minutes">
-					Candle Lighting Minutes Before Sunset <span class="text-muted">(e.g. 18)</span>:<br/>
-                    <span class="text-muted small">Set to 0 for default candle lighting time based on location</span>
+					Candle Lighting Minutes Before Sunset <span class="text-muted">(e.g. 18)</span>:<br />
+					<span class="text-muted small">Set to 0 for default candle lighting time based on location</span>
 					<input
 						id="candle-lighting-minutes"
 						type="number"
 						min="0"
 						max="9999"
-                        placeholder="0"
+						placeholder="0"
 						bind:value={candleLightingMinutes}
 						class="form-control w-auto mt-1"
 						on:input={(e) => {
@@ -343,8 +343,10 @@
 								<option value={timezone}>{timezone}</option>
 							{/each}
 						{/if}
-                        {#each Array(25).fill(0).map((el, i) => 'UTC' + (i >= 12 ? '+' : '') + (i - 12)) as timezone}
-							<option value={timezone.replace("UTC", "Etc/GMT")}>{timezone}</option>
+						{#each Array(25)
+							.fill(0)
+							.map((el, i) => 'UTC' + (i >= 12 ? '+' : '') + (i - 12)) as timezone}
+							<option value={timezone.replace('UTC', 'Etc/GMT')}>{timezone}</option>
 						{/each}
 					</select>
 				</label>
