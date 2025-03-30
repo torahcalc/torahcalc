@@ -33,7 +33,7 @@ export const LEARNING_TYPE_NAMES = {
 	chofetzChaim: 'Chofetz Chaim',
 	dailyRamban: 'Daily Rambam',
 	shemiratHaLashon: 'Shemirat HaLashon',
-	dailyPsalms: 'Daily Psalms',
+	dailyPsalms: 'Daily Tehilim',
 	dafWeekly: 'Daf Weekly',
 };
 
@@ -46,14 +46,14 @@ export function calculateDailyLearning(date) {
 	return {
 		date: dayjs(date).format('YYYY-MM-DD'),
 		dafYomi: getDafYomi(date),
+		dafWeekly: getDafWeekly(date),
+		dailyPsalms: getDailyPsalms(date),
 		nachYomi: getNachYomi(date),
 		yerushalmiYomiVilna: getYerushalmiYomi(date, vilna),
 		yerushalmiYomiSchottenstein: getYerushalmiYomi(date, schottenstein),
 		chofetzChaim: getChofetzChaim(date),
 		dailyRamban: getDailyRambam(date),
 		shemiratHaLashon: getShemiratHaLashon(date),
-		dailyPsalms: getDailyPsalms(date),
-		dafWeekly: getDafWeekly(date),
 	};
 }
 
