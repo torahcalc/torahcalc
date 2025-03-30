@@ -238,13 +238,13 @@
 		updateResults();
 	}
 
-    /**
-     * Set the time format to 12-hour or 24-hour
-     * @param {string} format - The time format to set
-     */
-    function setTimeFormat(format) {
-        timeFormat = format;
-    }
+	/**
+	 * Set the time format to 12-hour or 24-hour
+	 * @param {string} format - The time format to set
+	 */
+	function setTimeFormat(format) {
+		timeFormat = format;
+	}
 </script>
 
 <div class="card flex-card mb-0">
@@ -289,10 +289,10 @@
 			</div>
 		</label>
 
-        <div class="mb-3">
+		<div class="mb-3">
 			Time format: &nbsp;
-            <button class={`btn btn-sm btn-outline-secondary ${timeFormat === HR_12 ? 'active' : ''}`} on:click={() => setTimeFormat(HR_12)}>12-hour</button>
-            <button class={`btn btn-sm btn-outline-secondary ${timeFormat === HR_24 ? 'active' : ''}`} on:click={() => setTimeFormat(HR_24)}>24-hour</button>
+			<button class={`btn btn-sm btn-outline-secondary ${timeFormat === HR_12 ? 'active' : ''}`} on:click={() => setTimeFormat(HR_12)}>12-hour</button>
+			<button class={`btn btn-sm btn-outline-secondary ${timeFormat === HR_24 ? 'active' : ''}`} on:click={() => setTimeFormat(HR_24)}>24-hour</button>
 		</div>
 
 		<div class="d-flex">
