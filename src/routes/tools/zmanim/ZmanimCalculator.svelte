@@ -236,7 +236,7 @@
 	<label>
 		<div class="d-flex flex-column gap-2">
 			<span>Location <span class="text-muted">(Address, City, or Zip Code)</span>:</span>
-			<div class="d-flex mb-2 align-items-center flex-wrap gap-2">
+			<div class="input-and-button-row d-flex mb-2 align-items-center flex-wrap gap-2">
 				<input type="text" class="location-input form-control w-auto" bind:value={location} />
 				{#if geolocationError === ''}
 					<button class="btn btn-light btn-sm d-flex align-items-center gap-2" on:click={useCurrentLocation} title="Use your current location">
@@ -252,7 +252,7 @@
 			</div>
 
 			<span>Date:</span>
-			<div class="d-flex mb-2 align-items-center flex-wrap gap-2">
+			<div class="input-and-button-row d-flex mb-2 align-items-center flex-wrap gap-2">
 				<input
 					type="date"
 					class="location-input form-control w-auto"
@@ -310,3 +310,13 @@
 		<span>Due to imprecision and multiple algorithms, zmanim calculations can vary slightly from one source to another. Please do not rely on any calculations on any site to the last minute.</span>
 	</div>
 {/if}
+
+<style>
+	/* Make the buttons force wrap on small screens */
+	@media (max-width: 495px) {
+		.input-and-button-row {
+			flex-direction: column;
+			align-items: flex-start !important;
+		}
+	}
+</style>
