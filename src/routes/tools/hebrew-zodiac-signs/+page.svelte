@@ -1,7 +1,8 @@
 <script>
 	import ZodiacCalculator from './ZodiacCalculator.svelte';
 
-	const description = 'Enter your birthday and specify if you were born after sunset. Your full Hebrew birthday and your Hebrew astrology zodiac sign will be displayed (in Hebrew, transliterated Hebrew, and the Latin equivalent).';
+	const description =
+		'Enter your birthday and specify if you were born after sunset. Your full Hebrew birthday and your Hebrew astrology zodiac sign will be displayed (in Hebrew, transliterated Hebrew, and the Latin equivalent).';
 </script>
 
 <svelte:head>
