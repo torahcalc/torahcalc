@@ -862,7 +862,7 @@ export async function zmanimQuery(derivation) {
 		throw new InputError(`Could not get zmanim for the provided location: "${location}".`, JSON.stringify(zmanimResponse, null, 2));
 	}
 
-	/** @type {{ timezone: string, location?: string, latitude?: number, longitude?: number, zmanim: { [key: string]: import('./zmanim').Zman }, events: { [key: string]: import('./zmanim').Zman }, durations: { [key: string]: import('./zmanim').Zman } }} */
+	/** @type {import('./zmanim').ZmanimResult} */
 	const zmanimResult = zmanimResponse.data;
 
 	if (zmanimResult.location && zmanimResult.latitude && zmanimResult.longitude) {
