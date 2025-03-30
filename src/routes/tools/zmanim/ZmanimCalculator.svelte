@@ -236,15 +236,15 @@
 	<label>
 		<div class="d-flex flex-column gap-2">
 			<span>Location <span class="text-muted">(Address, City, or Zip Code)</span>:</span>
-			<div class="d-flex mb-2 align-items-center">
+			<div class="d-flex mb-2 align-items-center flex-wrap gap-2">
 				<input type="text" class="location-input form-control w-auto" bind:value={location} />
 				{#if geolocationError === ''}
-					<button class="btn btn-light btn-sm d-flex align-items-center gap-2 ms-2" on:click={useCurrentLocation} title="Use your current location">
+					<button class="btn btn-light btn-sm d-flex align-items-center gap-2" on:click={useCurrentLocation} title="Use your current location">
 						<Fa icon={faLocationCrosshairs} size="1x" />
 						<span>Use Current Location</span>
 					</button>
 				{:else}
-					<button class="btn btn-light btn-sm d-flex align-items-center gap-2 ms-2" title={geolocationError} on:click={() => alert(geolocationError)}>
+					<button class="btn btn-light btn-sm d-flex align-items-center gap-2" title={geolocationError} on:click={() => alert(geolocationError)}>
 						<Fa icon={faLocationCrosshairs} size="1x" class="text-danger" />
 						<span class="text-danger">Use Current Location</span>
 					</button>
@@ -252,7 +252,7 @@
 			</div>
 
 			<span>Date:</span>
-			<div class="d-flex mb-2 align-items-center">
+			<div class="d-flex mb-2 align-items-center flex-wrap gap-2">
 				<input
 					type="date"
 					class="location-input form-control w-auto"
@@ -264,7 +264,7 @@
 						}
 					}}
 				/>
-				<button class="btn btn-light btn-sm d-flex align-items-center gap-2 ms-2" on:click={useToday} title="Use today's date">
+				<button class="btn btn-light btn-sm d-flex align-items-center gap-2" on:click={useToday} title="Use today's date">
 					<Fa icon={faCalendarDay} size="1x" />
 					<span>Use Today's Date</span>
 				</button>
