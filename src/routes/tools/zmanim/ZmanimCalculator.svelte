@@ -12,6 +12,33 @@
 	dayjs.extend(timezone);
 	dayjs.extend(utc);
 
+	const HR_12 = '12Hr';
+	const HR_24 = '24Hr';
+
+	/** @type {string} The time format to use for zmanim */
+	let timeFormat = HR_12;
+
+	/** @type {string} The location to calculate zmanim for */
+	let location = '';
+
+	/** @type {string} The error message for geolocation or blank if there is no error */
+	let geolocationError = '';
+
+	/** @type {Date} The date to calculate zmanim for */
+	let date = new Date();
+	let formattedDate = dayjs(date).format('YYYY-MM-DD');
+
+	/** @type {{mapUrl: string, tablesHTML: string, timezone: string, location: string, date: Date}} The zmanim result */
+	let zmanimResult = {
+		mapUrl: '',
+		tablesHTML: '',
+		timezone: '',
+		location: '',
+		date: new Date(),
+	};
+
+	let isLoading = false;
+
 	onMount(() => {
 		// if the query parameters are set, use them
 		/** @type {string|null} The date to calculate zmanim for (YYYY-MM-DD) */
@@ -41,27 +68,6 @@
 		// if no location is found, use the user's current location
 		useCurrentLocation();
 	});
-
-	/** @type {string} The location to calculate zmanim for */
-	let location = '';
-
-	/** @type {string} The error message for geolocation or blank if there is no error */
-	let geolocationError = '';
-
-	/** @type {Date} The date to calculate zmanim for */
-	let date = new Date();
-	let formattedDate = dayjs(date).format('YYYY-MM-DD');
-
-	/** @type {{mapUrl: string, tablesHTML: string, timezone: string, location: string, date: Date}} The zmanim result */
-	let zmanimResult = {
-		mapUrl: '',
-		tablesHTML: '',
-		timezone: '',
-		location: '',
-		date: new Date(),
-	};
-
-	let isLoading = false;
 
 	/**
 	 * Search for zmanim for a given date and location
@@ -135,7 +141,8 @@
 			 * @returns {string} The formatted time
 			 */
 			const formatZmanTime = (time, timezone) => {
-				return dayjs(time).tz(timezone).format('h:mm A').replace(' ', '&nbsp;');
+				const format = timeFormat === HR_12 ? 'h:mm A' : 'HH:mm';
+				return dayjs(time).tz(timezone).format(format).replace(' ', '&nbsp;');
 			};
 
 			/**
@@ -230,6 +237,14 @@
 		formattedDate = dayjs(date).format('YYYY-MM-DD');
 		updateResults();
 	}
+
+	/**
+	 * Set the time format to 12-hour or 24-hour
+	 * @param {string} format - The time format to set
+	 */
+	function setTimeFormat(format) {
+		timeFormat = format;
+	}
 </script>
 
 <div class="card flex-card mb-0">
@@ -273,6 +288,12 @@
 				</button>
 			</div>
 		</label>
+
+		<div class="mb-3">
+			Time format: &nbsp;
+			<button class={`btn btn-sm btn-outline-secondary ${timeFormat === HR_12 ? 'active' : ''}`} on:click={() => setTimeFormat(HR_12)}>12-hour</button>
+			<button class={`btn btn-sm btn-outline-secondary ${timeFormat === HR_24 ? 'active' : ''}`} on:click={() => setTimeFormat(HR_24)}>24-hour</button>
+		</div>
 
 		<div class="d-flex">
 			<button
