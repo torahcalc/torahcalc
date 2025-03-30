@@ -37,7 +37,7 @@
 	let lastMode = 'upcoming';
 
 	/** @type {string} The results of the holiday calculation */
-	let results = "";
+	let results = '';
 
 	/**
 	 * Search for words with a matching gematria value
