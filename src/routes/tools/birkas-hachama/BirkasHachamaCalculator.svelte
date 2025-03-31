@@ -42,7 +42,7 @@
 	<h5 class="mb-3"><strong>{birkasHachama.gregorianDate.display}</strong></h5>
 	<h5 class="mb-4">(<strong>{birkasHachama.hebrewDate.displayEn}</strong>)</h5>
 	{#if birkasHachama.hebrewDate.warning}
-		<p class="text-danger">{birkasHachama.hebrewDate.warning}</p>
+		<p class="text-danger">{@html birkasHachama.hebrewDate.warning}</p>
 	{/if}
 
 	<div class="d-flex justify-content-center gap-2">
