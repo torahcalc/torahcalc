@@ -1,26 +1,16 @@
 <script>
-	import { page } from '$app/stores';
-	import dayjs from 'dayjs';
-	import InputCalculator from '../../input/InputCalculator.svelte';
-	import SefirasHaOmerExamples from '../../input/examples/SefirasHaOmerExamples.svelte';
-	import addIcal from './addIcal.png';
-	import addToGoogleCalendar from './addToGoogleCalendar.png';
-
-	/** @type {InputCalculator} */
-	let inputCalculator;
-
-	/** @type {(query: string) => any} The function to call when the button is clicked */
-	$: clickFunction = inputCalculator?.setSections;
+	import addIcal from './images/add-ical.png';
+	import addToGoogleCalendar from './images/add-to-google-calendar.png';
+	import SefirasHaOmerCalculator from './SefirasHaOmerCalculator.svelte';
 
 	const description = 'Calculate the day of the Omer to count and the Sefiros for any day of the Omer in any year.';
 
-	const today = dayjs().format('MMMM D, YYYY');
 
 	/**
 	 * Open the link to add the Sefiras HaOmer calendar to Google Calendar
 	 * @param {MouseEvent} event The click event
 	 */
-	function openAddToGoogleCalendarLink(event) {
+	 function openAddToGoogleCalendarLink(event) {
 		event.preventDefault();
 		window.open('http://bit.ly/omercalendar');
 	}
@@ -51,9 +41,6 @@
 		}
 		popup.document.write(html);
 	}
-
-	/** @type {string} The current query in the input box (not yet submitted) */
-	export let queryInput = $page.url.searchParams.get('q') ?? `What is the Sefiras HaOmer for ${today}?`;
 </script>
 
 <svelte:head>
@@ -71,11 +58,7 @@
 		<button class="sefirah-link" style="background-image: url({addIcal})" on:click={openAddToICal}></button>
 	</div>
 
-	<InputCalculator bind:this={inputCalculator} {queryInput} />
-
-	<div class="examples">
-		<SefirasHaOmerExamples {clickFunction} />
-	</div>
+	<SefirasHaOmerCalculator />
 </section>
 
 <style>

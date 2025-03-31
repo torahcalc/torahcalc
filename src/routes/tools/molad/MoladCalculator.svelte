@@ -10,7 +10,7 @@
 	const HR_12 = '12Hr';
 	const HR_24 = '24Hr';
 
-	/** @type {string} The time format to use for zmanim */
+	/** @type {string} The time format to use */
 	let timeFormat = HR_12;
 
 	/** @type {number} Hebrew year */
@@ -27,7 +27,7 @@
 	let results = {};
 
 	/**
-	 * Search for words with a matching gematria value
+	 * Search for the molad for a given month
 	 * @param {{ hebrewYear: number, hebrewMonth: number }} options - the options for the calculation
 	 */
 	async function getResults({ hebrewYear, hebrewMonth }) {
