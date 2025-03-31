@@ -3,6 +3,7 @@
 	import { faCheck, faX } from '@danieloi/pro-solid-svg-icons';
 	import { HDate } from '@hebcal/core';
 	import Fa from 'svelte-fa';
+	import Reason from '../Reason.svelte';
 
 	/** @type {number} The current year */
 	const currentHebrewYear = new HDate().getFullYear();
@@ -80,21 +81,10 @@
 	</label>
 
 	{#if yearToCheck > 0}
-		<div class="reason">
-			{#if isYearToCheckShmita}
-				<!-- Green checkmark -->
-				<span class="icon check">
-					<Fa icon={faCheck} />
-				</span>
-				<span class="text-success"><strong>Yes, {yearToCheck} is divisible by 7 and is therefore a Shmita year.</strong></span>
-			{:else}
-				<!-- Red X -->
-				<span class="icon x">
-					<Fa icon={faX} />
-				</span>
-				<span class="text-danger"><strong>No, {yearToCheck} is not divisible by 7 and is therefore not a Shmita year.</strong></span>
-			{/if}
-		</div>
+		<Reason
+			success={isYearToCheckShmita}
+			reason={isYearToCheckShmita ? `Yes, ${yearToCheck} is divisible by 7 and is therefore a Shmita year.` : `No, ${yearToCheck} is not divisible by 7 and is therefore not a Shmita year.`}
+		/>
 	{:else}
 		<p class="mt-3 mb-0">Please enter a Hebrew year to check.</p>
 	{/if}

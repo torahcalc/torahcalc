@@ -1,7 +1,7 @@
 <script>
 	import { isHebrewLeapYear, isGregorianLeapYear } from '$lib/js/leapyears.js';
 	import { HDate } from '@hebcal/core';
-	import Reason from './Reason.svelte';
+	import Reason from '../Reason.svelte';
 
 	const currentGregorianYear = new Date().getFullYear();
 	const currentHebrewYear = new HDate().getFullYear();

@@ -12,13 +12,14 @@
 		<span class="icon check">
 			<Fa icon={faCheck} />
 		</span>
+		<span class="text-success fw-bold">{reason}</span>
 	{:else}
 		<!-- Red X -->
 		<span class="icon x">
 			<Fa icon={faX} />
 		</span>
+		<span class="text-danger fw-bold">{reason}</span>
 	{/if}
-	<span>{reason}</span>
 </div>
 
 <style>
