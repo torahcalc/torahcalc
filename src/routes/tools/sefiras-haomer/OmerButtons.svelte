@@ -1,9 +1,9 @@
 <script>
-export let goToPreviousDay = () => {};
-export let goToNextDay = () => {};
-export let goToToday = () => {};
-export let goToFirstNight = () => {};
-export let goTo49thNight = () => {};
+	export let goToPreviousDay = () => {};
+	export let goToNextDay = () => {};
+	export let goToToday = () => {};
+	export let goToFirstNight = () => {};
+	export let goTo49thNight = () => {};
 </script>
 
 <div class="text-center d-flex flex-wrap gap-2 justify-content-center align-items-center">

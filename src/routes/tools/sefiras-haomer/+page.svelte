@@ -5,12 +5,11 @@
 
 	const description = 'Calculate the day of the Omer to count and the Sefiros for any day of the Omer in any year.';
 
-
 	/**
 	 * Open the link to add the Sefiras HaOmer calendar to Google Calendar
 	 * @param {MouseEvent} event The click event
 	 */
-	 function openAddToGoogleCalendarLink(event) {
+	function openAddToGoogleCalendarLink(event) {
 		event.preventDefault();
 		window.open('http://bit.ly/omercalendar');
 	}
