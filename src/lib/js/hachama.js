@@ -33,9 +33,13 @@ function julianToGregorian(jd) {
 }
 
 /**
+ * @typedef {{ gregorianDate: { date: string, display: string, year: number, month: number, day: number }, hebrewDate: { year: number, month: number, day: number, monthName: string, displayEn: string, displayHe: string, displayGematriya: string, warning?: string } }} BirkasHachamaResult
+ */
+
+/**
  * Calculate the next birkas hachama date
  * @param {number} year Gregorian year
- * @returns {{ gregorianDate: { date: string, display: string, year: number, month: number, day: number }, hebrewDate: { year: number, month: number, day: number, monthName: string, displayEn: string, displayHe: string, displayGematriya: string, warning?: string } }} The next birkas hachama date
+ * @returns {BirkasHachamaResult} The next birkas hachama date
  */
 export function nextBirkasHachama(year) {
 	let birkasHachamaJulianDate = BIRKAS_HACHAMA_JD_2009;
@@ -72,7 +76,7 @@ export function nextBirkasHachama(year) {
  * Calculate the previous birkas hachama date
  *
  * @param {number} year Gregorian year
- * @returns {{ gregorianDate: { date: string, display: string, year: number, month: number, day: number }, hebrewDate: { year: number, month: number, day: number, monthName: string, displayEn: string, displayHe: string, displayGematriya: string, warning?: string } }} The previous birkas hachama date
+ * @returns {BirkasHachamaResult} The previous birkas hachama date
  */
 export function previousBirkasHachama(year) {
 	const nextBirkasHachamaDate = nextBirkasHachama(year).gregorianDate.date;
