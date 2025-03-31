@@ -18,7 +18,7 @@
 	/** @type {import('$lib/js/hachama').BirkasHachamaResult[]} The Birkas Hachama results from the future */
 	const futureBirkasHachamaList = [];
 
-	for (let i = -LIST_YEARS; i < LIST_YEARS; i+= 28) {
+	for (let i = -LIST_YEARS; i < LIST_YEARS; i += 28) {
 		const yearToCheck = currentYear + i;
 		const result = nextBirkasHachama(yearToCheck);
 		if (result.gregorianDate.year < currentYear) {
