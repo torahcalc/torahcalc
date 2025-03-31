@@ -802,7 +802,7 @@ function gematriaTwoWordMatchQuery(derivation) {
 
 	sections.push({
 		title: 'About',
-		content: `<p class="small m-0">Javascript adaptation by TorahCalc. Original code in Kotlin by <a href="ssternbach@torahdownloads.com">ssternbach@torahdownloads.com</a>.
+		content: `<p class="small m-0">Javascript adaptation by TorahCalc. Original code in Kotlin by <a href="mailto:ssternbach@torahdownloads.com">ssternbach@torahdownloads.com</a>.
 					Check out <a href="https://torahdownloads.com/">TorahDownloads.com</a> to find tens of thousands of shiurim on hundreds of topics, all available for free to stream or download!</p>`,
 	});
 	return sections;
