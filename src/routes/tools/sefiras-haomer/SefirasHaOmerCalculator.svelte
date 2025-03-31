@@ -376,7 +376,7 @@
 			<tbody>
 				{#each Object.values(omerYear) as count}
 					<tr
-						class={results.dayCount?.dayOfOmer === count.dayOfOmer || results.count?.dayOfOmer - 1 === count.dayOfOmer
+						class={results.dayCount?.dayOfOmer === count.dayOfOmer || (results.count?.dayOfOmer ?? 0) - 1 === count.dayOfOmer
 							? 'omer-day'
 							: results.nightCount?.dayOfOmer === count.dayOfOmer || results.count?.dayOfOmer === count.dayOfOmer
 								? 'omer-night'
