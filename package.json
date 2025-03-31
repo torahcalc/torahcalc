@@ -50,7 +50,7 @@
 		"@types/cookie": "^1.0.0",
 		"eslint": "^9.23.0",
 		"eslint-config-prettier": "^9.1.0",
-		"eslint-plugin-svelte": "^3.3.3",
+		"eslint-plugin-svelte": "^3.4.0",
 		"jsdom": "^26.0.0",
 		"prettier": "^3.5.3",
 		"prettier-plugin-svelte": "^3.3.3",
