@@ -351,7 +351,7 @@
 		<!-- No results -->
 		{#if !results.nightCount && !results.dayCount && !results.count}
 			<p>There is no Omer count for the date {formattedGregorianDate}.</p>
-			<p class="mb-0"><b>The count of the omer will start on {nextNissan15GregorianDate}.</b></p>
+			<p class="mb-0"><b>The count of the Omer will start on {nextNissan15GregorianDate}.</b></p>
 		{/if}
 	</div>
 
