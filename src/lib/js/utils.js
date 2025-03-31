@@ -9,12 +9,13 @@ import { gregorianToHebrew } from './dateconverter';
  * @param {number} year - The year to format.
  * @param {number} month - The month to format (1-12).
  * @param {number} day - The day to format (1-31).
+ * @param {string} [format='ddd, MMMM D, YYYY'] - The format string (default is 'ddd, MMMM D, YYYY').
  * @returns {string} The formatted date.
  */
-export const formatDate = (year, month, day) => {
+export const formatDate = (year, month, day, format = 'ddd, MMMM D, YYYY') => {
 	const dateToFormat = new Date(year, month - 1, day);
 	dateToFormat.setFullYear(year > 0 ? year : year + 1); // fix for 2-digit years and years before year 1
-	let formatted = dayjs(dateToFormat).format('ddd, MMMM D, YYYY');
+	let formatted = dayjs(dateToFormat).format(format);
 	if (year === 0) {
 		throw new Error('Gregorian year 0 does not exist.');
 	}

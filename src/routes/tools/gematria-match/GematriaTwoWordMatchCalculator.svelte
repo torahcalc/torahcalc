@@ -7,10 +7,10 @@
 
 	onMount(updateResults);
 
-	/** @type {string} The query to calculate the Gematria of */
+	/** @type {string} The first word to calculate the Gematria of */
 	let word1 = 'תורה';
 
-	/** @type {string} The query to calculate the Gematria of */
+	/** @type {string} The second word to calculate the Gematria of */
 	let word2 = 'משנה';
 
 	/** @type {Array<{ method1: import('$lib/js/gematria').GematriaMethodName, method2: import('$lib/js/gematria').GematriaMethodName, value: number }>} The results of the Gematria calculation */

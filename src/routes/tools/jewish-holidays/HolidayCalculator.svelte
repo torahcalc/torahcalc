@@ -27,10 +27,10 @@
 		updateResults('upcoming');
 	});
 
-	/** @type {number} The query to calculate the Gematria of */
+	/** @type {number} Gregorian year to calculate holidays for */
 	let greogorianYear = new Date().getFullYear();
 
-	/** @type {number} The query to calculate the Gematria of */
+	/** @type {number} Hebrew year to calculate holidays for */
 	let hebrewYear = new HDate().getFullYear();
 
 	/** @type {'diaspora'|'israel'} Whether to show Diaspora holidays */
@@ -65,7 +65,7 @@
 	let nextMajorHolidayBegins = '';
 
 	/**
-	 * Search for words with a matching gematria value
+	 * Search for holidays
 	 * @param {{ mode: 'gregorian'|'hebrew'|'upcoming', year: number, types: import('$lib/js/holidays').HolidayFlags }} options - the options for the calculation
 	 */
 	async function getResults({ mode, year, types }) {
