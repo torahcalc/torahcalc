@@ -79,21 +79,25 @@
 		<input type="number" bind:value={yearToCheck} min="1" max="9999" class="form-control" />
 	</label>
 
-	<div class="reason">
-		{#if isYearToCheckShmita}
-			<!-- Green checkmark -->
-			<span class="icon check">
-				<Fa icon={faCheck} />
-			</span>
-			<span class="text-success"><strong>Yes, {yearToCheck} is divisible by 7 and is therefore a Shmita year.</strong></span>
-		{:else}
-			<!-- Red X -->
-			<span class="icon x">
-				<Fa icon={faX} />
-			</span>
-			<span class="text-danger"><strong>No, {yearToCheck} is not divisible by 7 and is therefore not a Shmita year.</strong></span>
-		{/if}
-	</div>
+	{#if yearToCheck > 0}
+		<div class="reason">
+			{#if isYearToCheckShmita}
+				<!-- Green checkmark -->
+				<span class="icon check">
+					<Fa icon={faCheck} />
+				</span>
+				<span class="text-success"><strong>Yes, {yearToCheck} is divisible by 7 and is therefore a Shmita year.</strong></span>
+			{:else}
+				<!-- Red X -->
+				<span class="icon x">
+					<Fa icon={faX} />
+				</span>
+				<span class="text-danger"><strong>No, {yearToCheck} is not divisible by 7 and is therefore not a Shmita year.</strong></span>
+			{/if}
+		</div>
+	{:else}
+		<p class="mt-3 mb-0">Please enter a Hebrew year to check.</p>
+	{/if}
 </div>
 
 <div class="card flex-card mb-0">
