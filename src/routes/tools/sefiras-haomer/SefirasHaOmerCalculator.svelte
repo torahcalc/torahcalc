@@ -227,17 +227,15 @@
 			</div>
 		</div>
 	</div>
-
-	<hr />
-
-	<OmerButtons {goToPreviousDay} {goToNextDay} {goToToday} {goToFirstNight} {goTo49thNight} />
 </div>
 
 <!-- Results for selected day -->
 <div class="card flex-card mb-0">
-	<!-- Converted from Gregorian Date -->
-	{#if results.dayCount}
-		<div class="text-center">
+	<OmerButtons {goToPreviousDay} {goToNextDay} {goToToday} {goToFirstNight} {goTo49thNight} />
+
+	<div class="text-center my-5">
+		<!-- Converted from Gregorian Date -->
+		{#if results.dayCount}
 			<h4 class="mb-3">Day of {formattedGregorianDate}:</h4>
 			<p>
 				<span>"{results.dayCount.formulaEn}"</span>
@@ -249,10 +247,8 @@
 				<br />
 				<span class="rtl">{results.dayCount.sefiraHe}</span>
 			</p>
-		</div>
-	{/if}
-	{#if results.nightCount}
-		<div class="text-center">
+		{/if}
+		{#if results.nightCount}
 			<h4 class="mb-3">{dayOfWeek} night, count the {addOrdinalSuffix(results.nightCount.dayOfOmer)} day:</h4>
 			<p>
 				<span>"{results.nightCount.formulaEn}"</span>
@@ -264,15 +260,11 @@
 				<br />
 				<span class="rtl">{results.nightCount.sefiraHe}</span>
 			</p>
-		</div>
-	{:else if results.dayCount}
-		<div class="text-center">
+		{:else if results.dayCount}
 			<h4 class="mb-0">Shavuos starts at night.</h4>
-		</div>
-	{/if}
-	<!-- Converted from Hebrew Date -->
-	{#if results.count}
-		<div class="text-center">
+		{/if}
+		<!-- Converted from Hebrew Date -->
+		{#if results.count}
 			<h5 class="mb-3">{formattedHebrewDate}</h5>
 			<h4 class="mb-3">Count the {addOrdinalSuffix(results.count.dayOfOmer)} day on {lastDayOfWeek} night:</h4>
 			<p>
@@ -285,84 +277,85 @@
 				<br />
 				<span class="rtl">{results.count.sefiraHe}</span>
 			</p>
-		</div>
-	{/if}
-	<!-- Show brachos if there is a night count -->
-	{#if results.nightCount || results.count}
-		<details>
-			<summary class="text-center mt-3">Show Brachos</summary>
-			<div lang="he" dir="rtl" class="rtl container">
-				<div class="mb-4">
-					<h3 class="d-inline">לְשֵׁם</h3>
-					<p class="d-inline">
-						יִחוּד קוּדְשָׁא בְרִיךְ הוּא וּשְׁכִינְתֵּיהּ בִּדְחִילוּ וּרְחִימוּ לְיַחֵד שֵׁם י"ה בְּו"ה בְּיִחוּדָא שְׁלִים בְּשֵׁם כָּל יִשְׂרָאֵל, הִנְּנִי מוּכָן וּמְזֻמָּן לְקַיֵּם מִצְוַת
-						עֲשֵׂה שֶׁל סְפִירַת הָעֹמֶר כְּמוֹ שֶׁכָּתוּב בַּתּוֹרָה. וּסְפַרְתֶּם לָכֶם מִמָּחֳרַת הַשַּׁבָּת מִיּוֹם הֲבִיאֲכֶם אֶת עֹמֶר הַתְּנוּפָה שֶׁבַע שַׁבָּתוֹת תְּמִימֹת תִּהְיֶינָה. עַד
-						מִמָּחֳרַת הַשַּׁבָּת הַשְּׁבִיעִת תִּסְפְּרוּ חֲמִשִּׁים יוֹם וְהִקְרַבְתֶּם מִנְחָה חֲדָשָׁה לַייָ. וִיהִי נֹעַם אֲדֹנָי אֱלֹהֵינוּ עָלֵינוּ וּמַעֲשֵׂה יָדֵינוּ כּוֹנְנָה עָלֵינוּ
-						וּמַעֲשֵׂה יָדֵינוּ כּוֹנְנֵהוּ.
-					</p>
-				</div>
+		{/if}
+		<!-- Show brachos if there is a night count -->
+		{#if results.nightCount || results.count}
+			<details>
+				<summary class="text-center mt-3">Show Brachos</summary>
+				<div lang="he" dir="rtl" class="rtl container">
+					<div class="mb-4">
+						<h3 class="d-inline">לְשֵׁם</h3>
+						<p class="d-inline">
+							יִחוּד קוּדְשָׁא בְרִיךְ הוּא וּשְׁכִינְתֵּיהּ בִּדְחִילוּ וּרְחִימוּ לְיַחֵד שֵׁם י"ה בְּו"ה בְּיִחוּדָא שְׁלִים בְּשֵׁם כָּל יִשְׂרָאֵל, הִנְּנִי מוּכָן וּמְזֻמָּן לְקַיֵּם מִצְוַת
+							עֲשֵׂה שֶׁל סְפִירַת הָעֹמֶר כְּמוֹ שֶׁכָּתוּב בַּתּוֹרָה. וּסְפַרְתֶּם לָכֶם מִמָּחֳרַת הַשַּׁבָּת מִיּוֹם הֲבִיאֲכֶם אֶת עֹמֶר הַתְּנוּפָה שֶׁבַע שַׁבָּתוֹת תְּמִימֹת תִּהְיֶינָה. עַד
+							מִמָּחֳרַת הַשַּׁבָּת הַשְּׁבִיעִת תִּסְפְּרוּ חֲמִשִּׁים יוֹם וְהִקְרַבְתֶּם מִנְחָה חֲדָשָׁה לַייָ. וִיהִי נֹעַם אֲדֹנָי אֱלֹהֵינוּ עָלֵינוּ וּמַעֲשֵׂה יָדֵינוּ כּוֹנְנָה עָלֵינוּ
+							וּמַעֲשֵׂה יָדֵינוּ כּוֹנְנֵהוּ.
+						</p>
+					</div>
 
-				<div class="mb-4">
-					<h3 class="d-inline">בָּרוּך</h3>
-					<p class="d-inline">אַתָּה יְיָ אֱלֹהֵֽינוּ מֶֽלֶךְ הָעוֹלָם, אֲשֶׁר קִדְּשָֽׁנוּ בְּמִצְוֺתָיו וְצִוָּֽנוּ עַל סְפִירַת הָעֹֽמֶר.</p>
-					<div class="text-center">
-						<p class="my-3 ltr">For the {addOrdinalSuffix(results.nightCount?.dayOfOmer ?? results.count?.dayOfOmer ?? 0)} night of the Omer:</p>
-						<h4>{results?.nightCount?.formulaHe ?? results?.count?.formulaHe ?? ''}</h4>
+					<div class="mb-4">
+						<h3 class="d-inline">בָּרוּך</h3>
+						<p class="d-inline">אַתָּה יְיָ אֱלֹהֵֽינוּ מֶֽלֶךְ הָעוֹלָם, אֲשֶׁר קִדְּשָֽׁנוּ בְּמִצְוֺתָיו וְצִוָּֽנוּ עַל סְפִירַת הָעֹֽמֶר.</p>
+						<div class="text-center">
+							<p class="my-3 ltr">For the {addOrdinalSuffix(results.nightCount?.dayOfOmer ?? results.count?.dayOfOmer ?? 0)} night of the Omer:</p>
+							<h4>{results?.nightCount?.formulaHe ?? results?.count?.formulaHe ?? ''}</h4>
+						</div>
+					</div>
+
+					<div class="mb-4">
+						<h3 class="d-inline">הָרַחֲמָן</h3>
+						<p class="d-inline">הוּא יַחֲזִיר לָנוּ עֲבוֹדַת בֵּית הַמִּקְדָּשׁ לִמְקוֹמָהּ בִּמְהֵרָה בְּיָמֵינוּ, אָמֵן סֶלָה.</p>
+					</div>
+
+					<div class="mb-4">
+						<h3 class="d-inline">לַמְנַצֵּח</h3>
+						<p class="d-inline">
+							בִּנְגִינֹת מִזְמוֹר שִׁיר. אֱלֹהִים יְחָנֵּנוּ וִיבָרְכֵנוּ יָאֵר פָּנָיו אִתָּנוּ סֶלָה. לָדַעַת בָּאָרֶץ דַּרְכֶּךָ בְּכָל־גּוֹיִם יְשׁוּעָתֶךָ. יוֹדוּךָ עַמִּים אֱלֹהִים יוֹדוּךָ
+							עַמִּים כֻּלָּם. יִשְׂמְחוּ וִירַנְּנוּ לְאֻמִּים כִּי־תִשְׁפֹּט עַמִּים מִישׁוֹר וּלְאֻמִּים בָּאָרֶץ תַּנְחֵם סֶלָה.
+						</p>
+					</div>
+
+					<div class="mb-4">
+						<h3 class="d-inline">אָנָּא</h3>
+						<p class="d-inline">
+							בְּכֹחַ גְדֻּלַּת יְמִינְךָ תַּתִּיר צְרוּרָה. (אב"ג ית"ץ)<br />
+							קַבֵּל רִנַּת עַמְּךָ, שַׂגְּבֵנוּ, טַהֲרֵנוּ, נוֹרָא. (קר"ע שט"ן)<br />
+							נָא גִבּוֹר, דוֹרְשֵׁי יִחוּדְךָ כְּבָבַת שָׁמְרֵם. (נג"ד יכ"ש)<br />
+							בָּרְכֵם, טַהֲרֵם, רַחֲמֵי צִדְקָתְךָ תָּמִיד גָמְלֵם. (בט"ר צת"ג)<br />
+							חֲסִין קָדוֹשׁ, בְּרוֹב טוּבְךָ נַהֵל עֲדָתְךָ. (חק"ב טנ"ע)<br />
+							יָחִיד גֵּאָה, לְעַמְּךְ פְּנֵה, זוֹכְרֵי קְדֻשָּׁתְךָ. (יג"ל פז"ק)<br />
+							שַׁוְעָתֵנוּ קַבֵּל וּשְׁמַע צַעֲקָתֵנוּ, יוֹדֵעַ תַעֲלֻמוֹת. (שק"ו צי"ת)<br />
+							בָּרוּךְ שֵׁם כְּבוד מַלְכוּתו לְעולָם וָעֶד.
+						</p>
+					</div>
+
+					<div class="mb-4">
+						<h3 class="d-inline">רִבּוֹנוֹ</h3>
+						<p class="d-inline">
+							שֶׁל עוֹלָם, אַתָּה צִוִּיתָנוּ עַל יְדֵי משֶׁה עַבְדֶּךָ לִסְפּוֹר סְפִירַת הָעוֹמֶר כְּדֵי לְטַהֲרֵנוּ מִקְלִפּוֹתֵינוּ וּמִטֻמְאוֹתֵינוּ, כְּמוֹ שֶׁכָּתַבְתָּ בְּתוֹרָתֶךָ.
+							וּסְפַרְתֶּם לָכֶם מִמָּחֳרַת הַשַּׁבָּת מִיֹּום הֲבִיאֲכֶם אֶת־עֹמֶר הַתְּנוּפָה שֶׁבַע שַׁבָּתֹות תְּמִימֹת תִּהְיֶינָה. עַד מִמָּחֳרַת הַשַּׁבָּת הַשְּׁבִיעִת תִּסְפְּרוּ חֲמִשִּׁים
+							יֹום.
+						</p>
+						<div class="text-center mb-3">
+							<p class="my-3 ltr">For the {addOrdinalSuffix(results.nightCount?.dayOfOmer ?? results.count?.dayOfOmer ?? 0)} night of the Omer:</p>
+							<h4>{results?.nightCount?.sefiraHe ?? results?.count?.sefiraHe ?? ''}</h4>
+						</div>
+						<p class="d-inline">
+							וְאֶטָּהֵר וְאֶתְקַדֵּשׁ בִּקְדֻשָּׁה שֶׁל מַעְלָה, וְעַל יְדֵי זֶה יֻשְׁפַּע שֶׁפַע רַב בְּכָל הָעוֹלָמוֹת וּלְתַקֵּן אֶת נַפְשׁוֹתֵינוּ וְרוּחוֹתֵינוּ וְנִשְׁמוֹתֵינוּ מִכָּל סִיג
+							וּפְגַם, וּלְטַהֲרֵנוּ וּלְקַדְּשֵׁנוּ בִּקְדֻשָׁתְךָ הָעֶלְיוֹנָה, אָמֵן סֶלָה.
+						</p>
 					</div>
 				</div>
-
-				<div class="mb-4">
-					<h3 class="d-inline">הָרַחֲמָן</h3>
-					<p class="d-inline">הוּא יַחֲזִיר לָנוּ עֲבוֹדַת בֵּית הַמִּקְדָּשׁ לִמְקוֹמָהּ בִּמְהֵרָה בְּיָמֵינוּ, אָמֵן סֶלָה.</p>
-				</div>
-
-				<div class="mb-4">
-					<h3 class="d-inline">לַמְנַצֵּח</h3>
-					<p class="d-inline">
-						בִּנְגִינֹת מִזְמוֹר שִׁיר. אֱלֹהִים יְחָנֵּנוּ וִיבָרְכֵנוּ יָאֵר פָּנָיו אִתָּנוּ סֶלָה. לָדַעַת בָּאָרֶץ דַּרְכֶּךָ בְּכָל־גּוֹיִם יְשׁוּעָתֶךָ. יוֹדוּךָ עַמִּים אֱלֹהִים יוֹדוּךָ
-						עַמִּים כֻּלָּם. יִשְׂמְחוּ וִירַנְּנוּ לְאֻמִּים כִּי־תִשְׁפֹּט עַמִּים מִישׁוֹר וּלְאֻמִּים בָּאָרֶץ תַּנְחֵם סֶלָה.
-					</p>
-				</div>
-
-				<div class="mb-4">
-					<h3 class="d-inline">אָנָּא</h3>
-					<p class="d-inline">
-						בְּכֹחַ גְדֻּלַּת יְמִינְךָ תַּתִּיר צְרוּרָה. (אב"ג ית"ץ)<br />
-						קַבֵּל רִנַּת עַמְּךָ, שַׂגְּבֵנוּ, טַהֲרֵנוּ, נוֹרָא. (קר"ע שט"ן)<br />
-						נָא גִבּוֹר, דוֹרְשֵׁי יִחוּדְךָ כְּבָבַת שָׁמְרֵם. (נג"ד יכ"ש)<br />
-						בָּרְכֵם, טַהֲרֵם, רַחֲמֵי צִדְקָתְךָ תָּמִיד גָמְלֵם. (בט"ר צת"ג)<br />
-						חֲסִין קָדוֹשׁ, בְּרוֹב טוּבְךָ נַהֵל עֲדָתְךָ. (חק"ב טנ"ע)<br />
-						יָחִיד גֵּאָה, לְעַמְּךְ פְּנֵה, זוֹכְרֵי קְדֻשָּׁתְךָ. (יג"ל פז"ק)<br />
-						שַׁוְעָתֵנוּ קַבֵּל וּשְׁמַע צַעֲקָתֵנוּ, יוֹדֵעַ תַעֲלֻמוֹת. (שק"ו צי"ת)<br />
-						בָּרוּךְ שֵׁם כְּבוד מַלְכוּתו לְעולָם וָעֶד.
-					</p>
-				</div>
-
-				<div class="mb-4">
-					<h3 class="d-inline">רִבּוֹנוֹ</h3>
-					<p class="d-inline">
-						שֶׁל עוֹלָם, אַתָּה צִוִּיתָנוּ עַל יְדֵי משֶׁה עַבְדֶּךָ לִסְפּוֹר סְפִירַת הָעוֹמֶר כְּדֵי לְטַהֲרֵנוּ מִקְלִפּוֹתֵינוּ וּמִטֻמְאוֹתֵינוּ, כְּמוֹ שֶׁכָּתַבְתָּ בְּתוֹרָתֶךָ. וּסְפַרְתֶּם
-						לָכֶם מִמָּחֳרַת הַשַּׁבָּת מִיֹּום הֲבִיאֲכֶם אֶת־עֹמֶר הַתְּנוּפָה שֶׁבַע שַׁבָּתֹות תְּמִימֹת תִּהְיֶינָה. עַד מִמָּחֳרַת הַשַּׁבָּת הַשְּׁבִיעִת תִּסְפְּרוּ חֲמִשִּׁים יֹום.
-					</p>
-					<div class="text-center mb-3">
-						<p class="my-3 ltr">For the {addOrdinalSuffix(results.nightCount?.dayOfOmer ?? results.count?.dayOfOmer ?? 0)} night of the Omer:</p>
-						<h4>{results?.nightCount?.sefiraHe ?? results?.count?.sefiraHe ?? ''}</h4>
-					</div>
-					<p class="d-inline">
-						וְאֶטָּהֵר וְאֶתְקַדֵּשׁ בִּקְדֻשָּׁה שֶׁל מַעְלָה, וְעַל יְדֵי זֶה יֻשְׁפַּע שֶׁפַע רַב בְּכָל הָעוֹלָמוֹת וּלְתַקֵּן אֶת נַפְשׁוֹתֵינוּ וְרוּחוֹתֵינוּ וְנִשְׁמוֹתֵינוּ מִכָּל סִיג
-						וּפְגַם, וּלְטַהֲרֵנוּ וּלְקַדְּשֵׁנוּ בִּקְדֻשָׁתְךָ הָעֶלְיוֹנָה, אָמֵן סֶלָה.
-					</p>
-				</div>
-			</div>
-		</details>
-	{/if}
-	<!-- No results -->
-	{#if !results.nightCount && !results.dayCount && !results.count}
-		<div class="text-center">
+			</details>
+		{/if}
+		<!-- No results -->
+		{#if !results.nightCount && !results.dayCount && !results.count}
 			<p>There is no Omer count for the date {formattedGregorianDate}.</p>
 			<p class="mb-0"><b>The count of the omer will start on {nextNissan15GregorianDate}.</b></p>
-		</div>
-	{/if}
+		{/if}
+	</div>
+
+	<OmerButtons {goToPreviousDay} {goToNextDay} {goToToday} {goToFirstNight} {goTo49thNight} />
 </div>
 
 <!-- Table of full year -->
