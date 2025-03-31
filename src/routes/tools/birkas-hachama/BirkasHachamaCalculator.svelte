@@ -18,11 +18,11 @@
 	/** @type {import('$lib/js/hachama').BirkasHachamaResult[]} The Birkas Hachama results from the future */
 	const futureBirkasHachamaList = [];
 
-	for (let i = -LIST_YEARS; i < 0; i+= 28) {
+	for (let i = -LIST_YEARS; i < 0; i += 28) {
 		const yearToCheck = currentYear + i;
 		pastBirkasHachamaList.push(nextBirkasHachama(yearToCheck));
 	}
-	for (let i = 0; i < LIST_YEARS; i+= 28) {
+	for (let i = 0; i < LIST_YEARS; i += 28) {
 		const yearToCheck = currentYear + i;
 		futureBirkasHachamaList.push(nextBirkasHachama(yearToCheck));
 	}
