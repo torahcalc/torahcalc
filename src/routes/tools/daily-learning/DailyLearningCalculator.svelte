@@ -58,7 +58,7 @@
 		<h4 class="mb-3 text-center">Daily Learning for {dayjs(new Date(year, month - 1, day)).format('MMMM D, YYYY')} ({formatHebrewDateEn(new HDate(new Date(year, month - 1, day)))})</h4>
 		<div id="daily-learning-grid">
 			{#each Object.entries(result) as [key, value]}
-				{#if typeof value === 'object'}
+				{#if typeof value === 'object' && value?.name}
 					<div class="card flex-card m-0 bg-light">
 						<h5 class="mb-3">{LEARNING_TYPE_NAMES[key]}</h5>
 						<p><b>{value.name} / {value.hebrewName}</b></p>
