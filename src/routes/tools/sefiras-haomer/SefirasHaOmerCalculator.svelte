@@ -295,7 +295,7 @@
 
 					<div class="mb-4">
 						<h3 class="d-inline">בָּרוּך</h3>
-						<p class="d-inline">אַתָּה יְיָ אֱלֹהֵֽינוּ מֶֽלֶךְ הָעוֹלָם, אֲשֶׁר קִדְּשָֽׁנוּ בְּמִצְוֺתָיו וְצִוָּֽנוּ עַל סְפִירַת הָעֹֽמֶר.</p>
+						<p class="d-inline">אַתָּה יְיָ אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם, אֲשֶׁר קִדְּשָׁנוּ בְּמִצְוֺתָיו וְצִוָּנוּ עַל סְפִירַת הָעֹמֶר.</p>
 						<div class="text-center">
 							<p class="my-3 ltr">For the {addOrdinalSuffix(results.nightCount?.dayOfOmer ?? results.count?.dayOfOmer ?? 0)} night of the Omer:</p>
 							<h4>{results?.nightCount?.formulaHe ?? results?.count?.formulaHe ?? ''}</h4>
