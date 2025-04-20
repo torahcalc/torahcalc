@@ -99,6 +99,15 @@ export function getCurrentHebrewMonth() {
 }
 
 /**
+ * Returns the current Hebrew year
+ * @returns {number}
+ */
+export function getCurrentHebrewYear() {
+	const today = new HDate();
+	return today.getFullYear();
+}
+
+/**
  * Returns true if daylight saving time is in effect for a given date
  * @param {Date} date - The date to check
  * @returns {boolean} True if daylight saving time is in effect for the given date
