@@ -59,7 +59,7 @@
 		<div id="daily-learning-grid">
 			{#each Object.entries(result) as [key, value]}
 				{#if typeof value === 'object' && value?.name}
-					<div class="card flex-card m-0 bg-light">
+					<div class="inner-card card flex-card m-0 bg-light">
 						<h5 class="mb-3">{LEARNING_TYPE_NAMES[key]}</h5>
 						<p><b>{value.name} / {value.hebrewName}</b></p>
 						{#if value.url}
@@ -75,7 +75,16 @@
 <style>
 	#daily-learning-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 		gap: 1rem;
+	}
+
+	/* smaller than 600px, make it 1 column */
+	@media (max-width: 600px) {
+		#daily-learning-grid {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+		}
 	}
 </style>
