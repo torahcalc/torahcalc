@@ -3,7 +3,7 @@
 @{%
 import { displayHebrew } from "$lib/js/gematria.js";
 import { HDate } from '@hebcal/core';
-import { dateToObject, getCurrentHebrewMonth, getNextDayOfWeek, getNextHebrewMonth, getPrevDayOfWeek, getPrevHebrewMonth } from "$lib/js/utils.js";
+import { dateToObject, getCurrentHebrewMonth, getCurrentHebrewYear, getNextDayOfWeek, getNextHebrewMonth, getPrevDayOfWeek, getPrevHebrewMonth } from "$lib/js/utils.js";
 %}
 
 @builtin "number.ne"  # unsigned_int, int, unsigned_decimal, decimal, percentage, jsonfloat
@@ -167,10 +167,12 @@ dailyLearningQuery -> optionalWords[("calculate" | "compute" | "what is" | "what
 # - List Jewish holidays in Hebrew year 5784.
 # - List Jewish holidays in Gregorian year 2023.
 # - List upcoming Jewish holidays.
-jewishHolidayQuery -> jewishHolidayUpcomingPrefix optionalWords[("next" | "upcoming" | "this" | "this coming" | "the next" | "the upcoming")] holiday _ optionalWords[("fall" | "occur" | "land" | "be")] optionalWords[("this year" | "next year")] {% data => ({function: "jewishHolidayQuery", holiday: data[2], upcoming: true }) %}
-                    | jewishHolidayPastPrefix optionalWords[("last" | "previous" | "the last" | "the previous")] holiday _ optionalWords[("fall" | "occur" | "land" | "happen")] optionalWords[("this year" | "last year")] {% data => ({function: "jewishHolidayQuery", holiday: data[2], upcoming: false }) %}
+jewishHolidayQuery -> jewishHolidayUpcomingPrefix optionalWords[("next" | "upcoming" | "this" | "this coming" | "the next" | "the upcoming")] holiday _ optionalWords[("fall" | "occur" | "land" | "be")] optionalWords[("this year")] {% data => ({function: "jewishHolidayQuery", holiday: data[2], upcoming: true }) %}
+                    | jewishHolidayPastPrefix optionalWords[("last" | "previous" | "the last" | "the previous")] holiday _ optionalWords[("fall" | "occur" | "land" | "happen")] optionalWords[("this year")] {% data => ({function: "jewishHolidayQuery", holiday: data[2], upcoming: false }) %}
                     | jewishHolidayWhenPrefix _ optionalWords["the"] holiday _ optionalWords[("fall" | "occur" | "land" | "happen" | "be")] optionalWords[("in" | "for" | "of")] optionalWords["the"] ("gregorian" | "english" | "standard") __ "year" __ gregorianYear {% data => ({function: "jewishHolidayQuery", holiday: data[3], year: { value: data[12], calendar: "gregorian" } }) %}
                     | jewishHolidayWhenPrefix _ optionalWords["the"] holiday _ optionalWords[("fall" | "occur" | "land" | "happen" | "be")] optionalWords[("in" | "for" | "of")] optionalWords["the"] ("hebrew" | "jewish") __ "year" __ hebrewYear {% data => ({function: "jewishHolidayQuery", holiday: data[3], year: { value: data[12], calendar: "hebrew" } }) %}
+                    | jewishHolidayUpcomingPrefix optionalWords[("next" | "upcoming" | "this" | "this coming" | "the next" | "the upcoming")] holiday _ optionalWords[("fall" | "occur" | "land" | "be")] _ "next" __ optionalWords[("year" | "hebrew year")] {% data => ({function: "jewishHolidayQuery", holiday: data[2], year: { value: getCurrentHebrewYear() + 1, calendar: "hebrew" } }) %}
+                    | jewishHolidayPastPrefix optionalWords[("last" | "previous" | "the last" | "the previous")] holiday _ optionalWords[("fall" | "occur" | "land" | "happen")] _ "last" __ optionalWords[("year" | "hebrew year")] {% data => ({function: "jewishHolidayQuery", holiday: data[2], year: { value: getCurrentHebrewYear() - 1, calendar: "hebrew" } }) %}
                     | jewishHolidayWhenPrefix _ optionalWords["the"] holiday _ optionalWords[("fall" | "occur" | "land" | "happen" | "be")] optionalWords[("in" | "for" | "of")] __ calendarAwareYear {% data => ({function: "jewishHolidayQuery", holiday: data[3], year: data[8] }) %}
                     | jewishHolidayWhenPrefix _ optionalWords["the"] holiday _ optionalWords[("fall" | "occur" | "land" | "happen" | "be")] optionalWords[("in" | "for" | "of")] __ calendarAwareYear " / " calendarAwareYear {% data => ({function: "jewishHolidayQuery", holiday: data[3], year: data[8] }) %}
                     | jewishHolidayListPrefix _ optionalWords["the"] ("gregorian" | "english" | "standard") __ "year" __ gregorianYear {% data => ({function: "jewishHolidayQuery", year: { value: data[7], calendar: "gregorian" } }) %}
