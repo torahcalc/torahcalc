@@ -48,7 +48,7 @@
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/svelte": "^5.2.7",
 		"@types/cookie": "^1.0.0",
-		"eslint": "^9.25.0",
+		"eslint": "^9.25.1",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^3.5.1",
 		"jsdom": "^26.1.0",
