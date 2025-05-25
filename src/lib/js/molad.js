@@ -1,4 +1,4 @@
-import { Zmanim } from '@hebcal/core';
+import { GeoLocation, Zmanim } from '@hebcal/core';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { gregorianToHebrew, hebrewMonthMap, hebrewToGregorian } from './dateconverter';
@@ -210,10 +210,15 @@ export function formatMoladHebrewDate(molad, chalakim, is24Hour) {
  * @param {boolean} is24Hour - whether to display in 24 hour format instead of 12 hour format
  */
 export function formatMoladDayOfWeek(molad, chalakim, is24Hour) {
+	// Geolocation
+	const latitude = 31.77759; // Jerusalem latitude
+	const longitude = 35.23564; // Jerusalem longitude
+	const timezoneId = 'Asia/Jerusalem'; // Jerusalem timezone
+	const gloc = new GeoLocation('Jerusalem, Israel', latitude, longitude, 0, timezoneId);
 	// Determine if the molad was after sunset in Jerusalem
-	const zmanim = new Zmanim(new Date(molad.format('YYYY-MM-DD')), 31.77759, 35.23564);
+	const zmanim = new Zmanim(gloc, new Date(molad.format('YYYY-MM-DD')), false);
 	// adjust for timezone - make all times in UTC even though they are really Jerusalem time
-	const sunset = dayjs.utc(Zmanim.formatISOWithTimeZone('Asia/Jerusalem', zmanim.sunset()).replace(/\+.+$/, '')); // remove timezone offset to compare as UTC
+	const sunset = dayjs.utc(Zmanim.formatISOWithTimeZone(timezoneId, zmanim.sunset()).replace(/\+.+$/, '')); // remove timezone offset to compare as UTC
 
 	const timeFormat = is24Hour ? 'HH:00' : 'h:00 a';
 	let formatted = dayjs(molad).format('dddd');

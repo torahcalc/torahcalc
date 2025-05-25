@@ -19,6 +19,23 @@
 	/** @type {any} The result */
 	let result = null;
 
+	/** @type {Object<string, string>} The colors for each learning type */
+	const LEARNING_TYPE_COLORS = {
+		dafYomi: 'rgba(56, 142, 60, 0.08)', // green
+		dafWeekly: 'rgba(121, 85, 72, 0.08)', // brown
+		mishnaYomi: 'rgba(156, 39, 176, 0.08)', // purple
+		dailyPsalms: 'rgba(0, 150, 136, 0.08)', // teal
+		nachYomi: 'rgba(63, 81, 181, 0.08)', // indigo
+		yerushalmiYomiVilna: 'rgba(33, 150, 243, 0.08)', // blue
+		yerushalmiYomiSchottenstein: 'rgba(233, 30, 99, 0.08)', // magenta
+		chofetzChaim: 'rgba(0, 188, 212, 0.08)', // cyan
+		dailyRambam: 'rgba(244, 67, 54, 0.08)', // red
+		dailyRambam3: 'rgba(255, 152, 0, 0.08)', // orange
+		shemiratHaLashon: 'rgba(96, 125, 139, 0.08)', // blue-grey
+		arukhHaShulchanYomi: 'rgba(255, 193, 7, 0.08)', // yellow
+		pirkeiAvot: 'rgba(255, 87, 34, 0.08)', // deep orange
+	};
+
 	/**
 	 * Search for daily learning for a given date
 	 * @param {{ month: number, day: number, year: number }} options - the options for the calculation
@@ -59,7 +76,7 @@
 		<div id="daily-learning-grid">
 			{#each Object.entries(result) as [key, value]}
 				{#if typeof value === 'object' && value?.name}
-					<div class="inner-card card flex-card m-0 bg-light">
+					<div class="inner-card card flex-card m-0" style="background-color: {LEARNING_TYPE_COLORS[key] || '#F8F9FA'};">
 						<h5 class="mb-3">{LEARNING_TYPE_NAMES[key]}</h5>
 						<p><b>{value.name} / {value.hebrewName}</b></p>
 						{#if value.url}

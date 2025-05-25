@@ -1,22 +1,30 @@
 import {
-	chofetzChaim,
+	ArukhHaShulchanYomiEvent,
 	ChofetzChaimEvent,
 	DafPageEvent,
-	dafWeekly,
 	DafWeeklyEvent,
 	DafYomi,
-	dailyPsalms,
-	dailyRambam1,
+	DailyRambam3Event,
 	DailyRambamEvent,
+	MishnaYomiEvent,
+	MishnaYomiIndex,
 	NachYomiEvent,
 	NachYomiIndex,
+	PirkeiAvotSummerEvent,
 	PsalmsEvent,
+	ShemiratHaLashonEvent,
+	YerushalmiYomiEvent,
+	arukhHaShulchanYomi,
+	chofetzChaim,
+	dafWeekly,
+	dailyPsalms,
+	dailyRambam1,
+	dailyRambam3,
+	pirkeiAvot,
 	schottenstein,
 	shemiratHaLashon,
-	ShemiratHaLashonEvent,
 	vilna,
 	yerushalmiYomi,
-	YerushalmiYomiEvent,
 } from '@hebcal/learning';
 import dayjs from 'dayjs';
 import { dateToHDate, tryOrDefault } from './utils';
@@ -27,14 +35,18 @@ import { dateToHDate, tryOrDefault } from './utils';
  */
 export const LEARNING_TYPE_NAMES = {
 	dafYomi: 'Daf Yomi',
+	dafWeekly: 'Daf Weekly',
+	mishnaYomi: 'Mishna Yomi',
+	dailyPsalms: 'Daily Tehilim',
 	nachYomi: 'Nach Yomi',
 	yerushalmiYomiVilna: 'Yerushalmi Yomi (Vilna)',
 	yerushalmiYomiSchottenstein: 'Yerushalmi Yomi (Schottenstein)',
 	chofetzChaim: 'Chofetz Chaim',
-	dailyRamban: 'Daily Rambam',
+	dailyRambam: 'Daily Rambam (1 chapter a day)',
+	dailyRambam3: 'Daily Rambam (3 chapters a day)',
 	shemiratHaLashon: 'Shemirat HaLashon',
-	dailyPsalms: 'Daily Tehilim',
-	dafWeekly: 'Daf Weekly',
+	arukhHaShulchanYomi: 'Arukh HaShulchan Yomi',
+	pirkeiAvot: 'Pirkei Avot',
 };
 
 /**
@@ -47,13 +59,17 @@ export function calculateDailyLearning(date) {
 		date: dayjs(date).format('YYYY-MM-DD'),
 		dafYomi: getDafYomi(date),
 		dafWeekly: getDafWeekly(date),
+		mishnaYomi: getMishnaYomi(date),
 		dailyPsalms: getDailyPsalms(date),
 		nachYomi: getNachYomi(date),
 		yerushalmiYomiVilna: getYerushalmiYomi(date, vilna),
 		yerushalmiYomiSchottenstein: getYerushalmiYomi(date, schottenstein),
 		chofetzChaim: getChofetzChaim(date),
-		dailyRamban: getDailyRambam(date),
+		dailyRambam: getDailyRambam(date),
+		dailyRambam3: getDailyRambam3(date),
 		shemiratHaLashon: getShemiratHaLashon(date),
+		arukhHaShulchanYomi: getArukhHaShulchanYomi(date),
+		pirkeiAvot: getPirkeiAvot(date),
 	};
 }
 
@@ -137,9 +153,26 @@ export function getChofetzChaim(date) {
  */
 export function getDailyRambam(date) {
 	const hDate = dateToHDate(dayjs(date).toDate());
-	const dailyRambam = tryOrDefault(() => dailyRambam1(hDate), null);
-	if (!dailyRambam) return null;
-	const evt = new DailyRambamEvent(hDate, dailyRambam);
+	const dailyRambamResult = tryOrDefault(() => dailyRambam1(hDate), null);
+	if (!dailyRambamResult) return null;
+	const evt = new DailyRambamEvent(hDate, dailyRambamResult);
+	return {
+		name: evt.render(),
+		hebrewName: evt.render('he'),
+		url: evt.url(),
+	};
+}
+
+/**
+ * Get the daily Rambam (3 chapters) for a given date.
+ * @param {string} date - The date to calculate the daily Rambam (3 chapters) for in YYYY-MM-DD format.
+ * @returns {DailyLearning|null} - The daily Rambam (3 chapters) for the given date.
+ */
+export function getDailyRambam3(date) {
+	const hDate = dateToHDate(dayjs(date).toDate());
+	const dailyRambam3Result = tryOrDefault(() => dailyRambam3(hDate), null);
+	if (!dailyRambam3Result) return null;
+	const evt = new DailyRambam3Event(hDate, dailyRambam3Result);
 	return {
 		name: evt.render(),
 		hebrewName: evt.render('he'),
@@ -191,6 +224,59 @@ export function getDafWeekly(date) {
 	const dafWeeklyYomi = tryOrDefault(() => dafWeekly(hDate), null);
 	if (!dafWeeklyYomi) return null;
 	const evt = new DafWeeklyEvent(hDate, dafWeeklyYomi);
+	return {
+		name: evt.render(),
+		hebrewName: evt.render('he'),
+		url: evt.url(),
+	};
+}
+
+/**
+ * Get the Mishna Yomi for a given date.
+ * @param {string} date - The date to calculate the Mishna Yomi for in YYYY-MM-DD format.
+ * @returns {DailyLearning|null} - The Mishna Yomi for the given date.
+ */
+export function getMishnaYomi(date) {
+	const hDate = dateToHDate(dayjs(date).toDate());
+	const mishnaYomi = tryOrDefault(() => new MishnaYomiIndex().lookup(hDate), null);
+	if (!mishnaYomi) return null;
+	const evt = new MishnaYomiEvent(hDate, mishnaYomi);
+	return {
+		name: evt.render(),
+		hebrewName: evt.render('he'),
+		url: evt.url(),
+	};
+}
+
+/**
+ * Get the Pirkei Avot for a given date.
+ * @param {string} date - The date to calculate the Pirkei Avot for in YYYY-MM-DD format.
+ * @returns {DailyLearning|null} - The Pirkei Avot for the given date.
+ */
+export function getPirkeiAvot(date) {
+	const hDate = dateToHDate(dayjs(date).toDate());
+	// TODO: Support Israel Pirkei Avot
+	const inIsrael = false;
+	const pirkeiAvotResult = tryOrDefault(() => pirkeiAvot(hDate, inIsrael), null);
+	if (!pirkeiAvotResult) return null;
+	const evt = new PirkeiAvotSummerEvent(hDate, pirkeiAvotResult);
+	return {
+		name: evt.render(),
+		hebrewName: evt.render('he'),
+		url: evt.url(),
+	};
+}
+
+/**
+ * Get the Arukh HaShulchan Yomi for a given date.
+ * @param {string} date - The date to calculate the Arukh HaShulchan Yomi for in YYYY-MM-DD format.
+ * @returns {DailyLearning|null} - The Arukh HaShulchan Yomi for the given date.
+ */
+export function getArukhHaShulchanYomi(date) {
+	const hDate = dateToHDate(dayjs(date).toDate());
+	const arukhHaShulchanYomiResult = tryOrDefault(() => arukhHaShulchanYomi(hDate), null);
+	if (!arukhHaShulchanYomiResult) return null;
+	const evt = new ArukhHaShulchanYomiEvent(hDate, arukhHaShulchanYomiResult);
 	return {
 		name: evt.render(),
 		hebrewName: evt.render('he'),

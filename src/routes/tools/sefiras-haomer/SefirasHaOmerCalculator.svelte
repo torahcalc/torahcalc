@@ -3,7 +3,7 @@
 	import { calculateOmerDate, calculateOmerHebrew, calculateOmerYear } from '$lib/js/omer';
 	import { formatDate } from '$lib/js/utils';
 	import dayjs from 'dayjs';
-	import { HDate, greg } from '@hebcal/core';
+	import { HDate } from '@hebcal/core';
 	import { onMount } from 'svelte';
 	import OmerButtons from './OmerButtons.svelte';
 
@@ -202,9 +202,18 @@
 			<div class="text-center d-flex flex-column gap-2">
 				<div class="input-group">
 					<select class="form-select w-auto" id="gregorianMonth" bind:value={gregorianMonth} on:change={handleGregorianToHebrew}>
-						{#each greg.monthNames.slice(-12) as month, i (i)}
-							<option value={i + 1}>{month}</option>
-						{/each}
+						<option value={1}>January</option>
+						<option value={2}>February</option>
+						<option value={3}>March</option>
+						<option value={4}>April</option>
+						<option value={5}>May</option>
+						<option value={6}>June</option>
+						<option value={7}>July</option>
+						<option value={8}>August</option>
+						<option value={9}>September</option>
+						<option value={10}>October</option>
+						<option value={11}>November</option>
+						<option value={12}>December</option>
 					</select>
 					<input class="form-control w-auto" type="number" min="1" max="31" id="gregorianDay" bind:value={gregorianDay} on:input={handleGregorianToHebrew} />
 					<input class="form-control w-auto" type="number" min="-3761" max="275760" id="gregorianYear" bind:value={gregorianYear} on:input={handleGregorianToHebrew} />

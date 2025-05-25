@@ -1,6 +1,6 @@
 import { faHavdalahSpicebox, faShabbosCandles } from '$lib/icons/custom-fontawesome-icons';
 import { faClockTwelve, faPlateUtensils, faSparkles, faStar, faStars, faSunrise, faSunset, faUtensilsSlash } from '@danieloi/pro-solid-svg-icons';
-import { HebrewCalendar, Location, TimedEvent, Zmanim } from '@hebcal/core';
+import { HebrewCalendar, Location, TimedEvent, GeoLocation, Zmanim } from '@hebcal/core';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { iconToSvg } from './utils';
@@ -179,7 +179,8 @@ export const ZMANIM_NAMES = {
  * @returns {Promise<ZmanimResult>} - The zmanim, timed events, and shaah zmanis durations for the given date and location
  */
 export async function calculateZmanim({ date = dayjs().format('YYYY-MM-DD'), latitude, longitude, timezone, location, candleLightingMins }) {
-	const zmanim = new Zmanim(dayjs(date).toDate(), latitude, longitude);
+	const gloc = new GeoLocation(location || null, latitude, longitude, 0, timezone);
+	const zmanim = new Zmanim(gloc, dayjs(date).toDate(), false);
 	const alot72 = zmanim.sunriseOffset(-72, false);
 	const tzeit72 = zmanim.sunsetOffset(72, false);
 	const ISRAEL_TIMEZONES = ['Asia/Jerusalem', 'Asia/Tel_Aviv', 'Asia/Hebron', 'Israel'];

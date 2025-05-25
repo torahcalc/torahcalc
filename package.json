@@ -1,6 +1,6 @@
 {
 	"name": "torahcalc",
-	"version": "0.4.0",
+	"version": "1.0.0",
 	"type": "module",
 	"scripts": {
 		"dev": "npm run nearley && vite dev",
@@ -22,8 +22,8 @@
 	"dependencies": {
 		"@danieloi/pro-solid-svg-icons": "6.2.1",
 		"@fortawesome/free-brands-svg-icons": "^6.7.2",
-		"@hebcal/core": "^4.5.1",
-		"@hebcal/learning": "^1.5.1",
+		"@hebcal/core": "^5.9.6",
+		"@hebcal/learning": "^6.3.0",
 		"cross-env": "^7.0.3",
 		"dayjs": "^1.11.13",
 		"dotenv": "^16.5.0",
