@@ -29,7 +29,7 @@ describe('test calculateDailyLearning', () => {
 			hebrewName: 'לאוין 14-15',
 			url: 'https://www.sefaria.org/Chofetz_Chaim%2C_Introduction_to_the_Laws_of_the_Prohibition_of_Lashon_Hara_and_Rechilut%2C_Negative_Commandments.14?lang=bi',
 		});
-		expect(result.dailyRamban).toStrictEqual({
+		expect(result.dailyRambam).toStrictEqual({
 			name: 'Leavened and Unleavened Bread 5',
 			hebrewName: 'הלכות חמץ ומצה פרק ה׳',
 			url: 'https://www.sefaria.org/Mishneh_Torah%2C_Leavened_and_Unleavened_Bread.5?lang=bi',
@@ -56,12 +56,13 @@ describe('test calculateDailyLearning', () => {
 		expect(result.chofetzChaim).toBeNull();
 		expect(result.dafWeekly).toBeNull();
 		expect(result.dafYomi).toBeNull();
+		expect(result.mishnaYomi).toBeNull();
 		expect(result.dailyPsalms).toStrictEqual({
 			hebrewName: 'תְּהִלִּים קי״ג-קי״ח',
 			name: 'Psalms 113-118',
 			url: 'https://www.sefaria.org/Psalms.113-118?lang=bi',
 		});
-		expect(result.dailyRamban).toBeNull();
+		expect(result.dailyRambam).toBeNull();
 		expect(result.nachYomi).toBeNull();
 		expect(result.shemiratHaLashon).toBeNull();
 		expect(result.yerushalmiYomiSchottenstein).toBeNull();

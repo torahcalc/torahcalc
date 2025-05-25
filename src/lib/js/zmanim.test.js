@@ -10,18 +10,18 @@ describe('test calculateZmanim', () => {
 			timezone: 'America/New_York',
 		});
 		expect(response.zmanim.alos16Point1.time).toBe('2023-09-24T05:23:56-04:00');
-		expect(response.zmanim.alos72.time).toBe('2023-09-24T05:33:19-04:00');
+		expect(response.zmanim.alos72.time).toBe('2023-09-24T05:33:20-04:00');
 		expect(response.zmanim.chatzos.time).toBe('2023-09-24T12:47:44-04:00');
 		expect(response.zmanim.minchaGedola.time).toBe('2023-09-24T13:17:56-04:00');
-		expect(response.zmanim.minchaKetana.time).toBe('2023-09-24T16:19:08-04:00');
+		expect(response.zmanim.minchaKetana.time).toBe('2023-09-24T16:19:09-04:00');
 		expect(response.zmanim.misheyakir.time).toBe('2023-09-24T05:48:44-04:00');
 		expect(response.zmanim.misheyakirMachmir.time).toBe('2023-09-24T05:55:41-04:00');
-		expect(response.zmanim.plagHamincha.time).toBe('2023-09-24T17:34:38-04:00');
-		expect(response.zmanim.sofZmanShmaGRA.time).toBe('2023-09-24T09:46:31-04:00');
-		expect(response.zmanim.sofZmanShmaMGA.time).toBe('2023-09-24T09:10:31-04:00');
-		expect(response.zmanim.sofZmanTefillaGRA.time).toBe('2023-09-24T10:46:55-04:00');
-		expect(response.zmanim.sofZmanTefillaMGA.time).toBe('2023-09-24T10:22:55-04:00');
-		expect(response.zmanim.sunrise.time).toBe('2023-09-24T06:45:19-04:00');
+		expect(response.zmanim.plagHamincha.time).toBe('2023-09-24T17:34:39-04:00');
+		expect(response.zmanim.sofZmanShmaGRA.time).toBe('2023-09-24T09:46:32-04:00');
+		expect(response.zmanim.sofZmanShmaMGA.time).toBe('2023-09-24T09:10:32-04:00');
+		expect(response.zmanim.sofZmanTefillaGRA.time).toBe('2023-09-24T10:46:56-04:00');
+		expect(response.zmanim.sofZmanTefillaMGA.time).toBe('2023-09-24T10:22:56-04:00');
+		expect(response.zmanim.sunrise.time).toBe('2023-09-24T06:45:20-04:00');
 		expect(response.zmanim.sunset.time).toBe('2023-09-24T18:50:09-04:00');
 		expect(response.zmanim.tzeis3MediumStars.time).toBe('2023-09-24T19:23:08-04:00');
 		expect(response.zmanim.tzeis3Stars.time).toBe('2023-09-24T19:30:39-04:00');
