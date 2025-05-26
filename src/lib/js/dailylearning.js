@@ -21,6 +21,8 @@ import {
 	dailyRambam1,
 	dailyRambam3,
 	pirkeiAvot,
+	perekYomi,
+	PerekYomiEvent,
 	schottenstein,
 	shemiratHaLashon,
 	vilna,
@@ -37,6 +39,7 @@ export const LEARNING_TYPE_NAMES = {
 	dafYomi: 'Daf Yomi',
 	dafWeekly: 'Daf Weekly',
 	mishnaYomi: 'Mishna Yomi',
+	perekYomi: 'Perek Mishna Yomi',
 	dailyPsalms: 'Daily Tehilim',
 	nachYomi: 'Nach Yomi',
 	yerushalmiYomiVilna: 'Yerushalmi Yomi (Vilna)',
@@ -60,6 +63,7 @@ export function calculateDailyLearning(date) {
 		dafYomi: getDafYomi(date),
 		dafWeekly: getDafWeekly(date),
 		mishnaYomi: getMishnaYomi(date),
+		perekYomi: getPerekYomi(date),
 		dailyPsalms: getDailyPsalms(date),
 		nachYomi: getNachYomi(date),
 		yerushalmiYomiVilna: getYerushalmiYomi(date, vilna),
@@ -241,6 +245,23 @@ export function getMishnaYomi(date) {
 	const mishnaYomi = tryOrDefault(() => new MishnaYomiIndex().lookup(hDate), null);
 	if (!mishnaYomi) return null;
 	const evt = new MishnaYomiEvent(hDate, mishnaYomi);
+	return {
+		name: evt.render(),
+		hebrewName: evt.render('he'),
+		url: evt.url(),
+	};
+}
+
+/**
+ * Get the Perek Mishna Yomi for a given date.
+ * @param {string} date - The date to calculate the Perek Mishna Yomi for in YYYY-MM-DD format.
+ * @returns {DailyLearning|null} - The Perek Mishna Yomi for the given date.
+ */
+export function getPerekYomi(date) {
+	const hDate = dateToHDate(dayjs(date).toDate());
+	const perekYomiResult = tryOrDefault(() => perekYomi(hDate), null);
+	if (!perekYomiResult) return null;
+	const evt = new PerekYomiEvent(hDate, perekYomiResult);
 	return {
 		name: evt.render(),
 		hebrewName: evt.render('he'),
