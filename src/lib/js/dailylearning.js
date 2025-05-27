@@ -49,7 +49,7 @@ export const LEARNING_TYPE_NAMES = {
 	dailyRambam3: 'Daily Rambam (3 chapters a day)',
 	shemiratHaLashon: 'Shemirat HaLashon',
 	arukhHaShulchanYomi: 'Arukh HaShulchan Yomi',
-	pirkeiAvot: 'Pirkei Avot',
+	pirkeiAvot: 'Weekly Pirkei Avot',
 };
 
 /**
@@ -275,7 +275,8 @@ export function getPerekYomi(date) {
  * @returns {DailyLearning|null} - The Pirkei Avot for the given date.
  */
 export function getPirkeiAvot(date) {
-	const hDate = dateToHDate(dayjs(date).toDate());
+	const nextSaturday = dayjs(date).day(6).toDate(); // Get the next Saturday
+	const hDate = dateToHDate(nextSaturday);
 	// TODO: Support Israel Pirkei Avot
 	const inIsrael = false;
 	const pirkeiAvotResult = tryOrDefault(() => pirkeiAvot(hDate, inIsrael), null);
