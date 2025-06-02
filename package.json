@@ -22,7 +22,7 @@
 	"dependencies": {
 		"@danieloi/pro-solid-svg-icons": "6.2.1",
 		"@fortawesome/free-brands-svg-icons": "^6.7.2",
-		"@hebcal/core": "^5.9.6",
+		"@hebcal/core": "^5.9.8",
 		"@hebcal/learning": "^6.3.0",
 		"cross-env": "^7.0.3",
 		"dayjs": "^1.11.13",
@@ -30,7 +30,7 @@
 		"nearley": "^2.20.1",
 		"prettier-plugin-organize-imports": "^4.1.0",
 		"svelte-fa": "^3.0.4",
-		"svelte-toc": "0.5.9",
+		"svelte-toc": "0.6.1",
 		"xss": "^1.0.15"
 	},
 	"devDependencies": {
