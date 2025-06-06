@@ -133,6 +133,8 @@ export const dailyLearningTypes = {
 	'kizur shulchan arukh': ['kitzurShulchanAruchYomi'],
 	'kizur shulchan aruch yomi': ['kitzurShulchanAruchYomi'],
 	'kizur shulchan arukh yomi': ['kitzurShulchanAruchYomi'],
+	'kitzur shulchon oruch': ['kitzurShulchanAruchYomi'],
+	'kitzur shulchon oruch yomi': ['kitzurShulchanAruchYomi'],
 	'sefer hamitzvos': ['dailySeferHamitzvos'],
 	'sefer hamitzvot': ['dailySeferHamitzvos'],
 	'sefer hamitzvoth': ['dailySeferHamitzvos'],
