@@ -49,6 +49,16 @@ describe('test calculateDailyLearning', () => {
 			hebrewName: 'תְּהִלִּים ע״ט-פ״ב',
 			url: 'https://www.sefaria.org/Psalms.79-82?lang=bi',
 		});
+		expect(result.kitzurShulchanAruchYomi).toStrictEqual({
+			name: 'Kitzur Shulchan Aruch 98:8-13',
+			hebrewName: 'קיצור שולחן ערוך צח:ח-יג',
+			url: 'https://www.sefaria.org/Kitzur_Shulchan_Arukh.98.8-13?lang=bi',
+		});
+		expect(result.dailySeferHamitzvos).toStrictEqual({
+			name: 'Day 162: Positive Commandment 66; Negative Commandment 147; Positive Commandment 67; Negative Commandment 102, 103, 138',
+			hebrewName: 'Day 162: Positive Commandment 66; Negative Commandment 147; Positive Commandment 67; Negative Commandment 102, 103, 138',
+			url: 'https://www.chabad.org/dailystudy/seferHamitzvos.asp?tdate=10/1/2023',
+		});
 	});
 
 	it('returns null for daily learning before start', async () => {

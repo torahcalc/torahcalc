@@ -6,6 +6,7 @@ import {
 	DafYomi,
 	DailyRambam3Event,
 	DailyRambamEvent,
+	KitzurShulchanAruchEvent,
 	MishnaYomiEvent,
 	MishnaYomiIndex,
 	NachYomiEvent,
@@ -13,6 +14,7 @@ import {
 	PerekYomiEvent,
 	PirkeiAvotSummerEvent,
 	PsalmsEvent,
+	SeferHaMitzvotEvent,
 	ShemiratHaLashonEvent,
 	YerushalmiYomiEvent,
 	arukhHaShulchanYomi,
@@ -21,9 +23,11 @@ import {
 	dailyPsalms,
 	dailyRambam1,
 	dailyRambam3,
+	kitzurShulchanAruch,
 	perekYomi,
 	pirkeiAvot,
 	schottenstein,
+	seferHaMitzvot,
 	shemiratHaLashon,
 	vilna,
 	yerushalmiYomi,
@@ -47,6 +51,8 @@ export const LEARNING_TYPE_NAMES = {
 	chofetzChaim: 'Chofetz Chaim',
 	dailyRambam: 'Daily Rambam (1 chapter a day)',
 	dailyRambam3: 'Daily Rambam (3 chapters a day)',
+	dailySeferHamitzvos: 'Daily Sefer Hamitzvos',
+	kitzurShulchanAruchYomi: 'Kitzur Shulchan Aruch Yomi',
 	shemiratHaLashon: 'Shemirat HaLashon',
 	arukhHaShulchanYomi: 'Arukh HaShulchan Yomi',
 	pirkeiAvot: 'Weekly Pirkei Avot',
@@ -71,6 +77,8 @@ export function calculateDailyLearning(date) {
 		chofetzChaim: getChofetzChaim(date),
 		dailyRambam: getDailyRambam(date),
 		dailyRambam3: getDailyRambam3(date),
+		dailySeferHamitzvos: getDailySeferHamitzvos(date),
+		kitzurShulchanAruchYomi: getKitzurShulchanAruchYomi(date),
 		shemiratHaLashon: getShemiratHaLashon(date),
 		arukhHaShulchanYomi: getArukhHaShulchanYomi(date),
 		pirkeiAvot: getPirkeiAvot(date),
@@ -299,6 +307,40 @@ export function getArukhHaShulchanYomi(date) {
 	const arukhHaShulchanYomiResult = tryOrDefault(() => arukhHaShulchanYomi(hDate), null);
 	if (!arukhHaShulchanYomiResult) return null;
 	const evt = new ArukhHaShulchanYomiEvent(hDate, arukhHaShulchanYomiResult);
+	return {
+		name: evt.render(),
+		hebrewName: evt.render('he'),
+		url: evt.url(),
+	};
+}
+
+/**
+ * Get the Kitzur Shulchan Aruch Yomi for a given date.
+ * @param {string} date - The date to calculate the Kitzur Shulchan Aruch Yomi for in YYYY-MM-DD format.
+ * @returns {DailyLearning|null} - The Kitzur Shulchan Aruch Yomi for the given date.
+ */
+export function getKitzurShulchanAruchYomi(date) {
+	const hDate = dateToHDate(dayjs(date).toDate());
+	const kitzurShulchanAruchYomiResult = tryOrDefault(() => kitzurShulchanAruch(hDate), null);
+	if (!kitzurShulchanAruchYomiResult) return null;
+	const evt = new KitzurShulchanAruchEvent(hDate, kitzurShulchanAruchYomiResult);
+	return {
+		name: evt.render().replace('Kitzur Shulchan Arukh', 'Kitzur Shulchan Aruch'),
+		hebrewName: evt.render('he').replace('Kitzur Shulchan Arukh', 'קיצור שולחן ערוך'),
+		url: evt.url(),
+	};
+}
+
+/**
+ * Get the Daily Sefer Hamitzvos for a given date.
+ * @param {string} date - The date to calculate the Daily Sefer Hamitzvos for in YYYY-MM-DD format.
+ * @returns {DailyLearning|null} - The Daily Sefer Hamitzvos for the given date.
+ */
+export function getDailySeferHamitzvos(date) {
+	const hDate = dateToHDate(dayjs(date).toDate());
+	const seferHamitzvosResult = tryOrDefault(() => seferHaMitzvot(hDate), null);
+	if (!seferHamitzvosResult) return null;
+	const evt = new SeferHaMitzvotEvent(hDate, seferHamitzvosResult);
 	return {
 		name: evt.render(),
 		hebrewName: evt.render('he'),

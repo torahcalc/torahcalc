@@ -2,7 +2,7 @@
 	import DailyLearningCalculator from './DailyLearningCalculator.svelte';
 
 	const description =
-		'Calculate the Daf Yomi, Mishnah Yomi, Nach Yomi, Yerushalmi Yomi, Chofetz Chaim, Daily Rambam, Shemirat HaLashon, Daily Psalms, Weekly Daf, Arukh HaShulchan, and Pirkei Avot for any date.';
+		'Calculate the Daf Yomi, Mishnah Yomi, Nach Yomi, Yerushalmi Yomi, Chofetz Chaim, Daily Rambam, Shemirat HaLashon, Daily Psalms, Weekly Daf, Arukh HaShulchan, Kitzur Shulchan Aruch, Sefer Hamitzvos, and Pirkei Avot for any date.';
 </script>
 
 <svelte:head>
