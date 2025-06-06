@@ -32,6 +32,8 @@
 		chofetzChaim: 'rgba(0, 188, 212, 0.08)', // cyan
 		dailyRambam: 'rgba(244, 67, 54, 0.08)', // red
 		dailyRambam3: 'rgba(255, 152, 0, 0.08)', // orange
+		dailySeferHamitzvos: 'rgba(203, 12, 63, 0.08)', // deep purple
+		kitzurShulchanAruchYomi: 'rgba(255, 235, 59, 0.08)', // amber
 		shemiratHaLashon: 'rgba(96, 125, 139, 0.08)', // blue-grey
 		arukhHaShulchanYomi: 'rgba(255, 193, 7, 0.08)', // yellow
 		pirkeiAvot: 'rgba(255, 87, 34, 0.08)', // deep orange
@@ -79,7 +81,7 @@
 				{#if typeof value === 'object' && value?.name}
 					<div class="inner-card card flex-card m-0" style="background-color: {LEARNING_TYPE_COLORS[key] || '#F8F9FA'};">
 						<h5 class="mb-3">{LEARNING_TYPE_NAMES[key]}</h5>
-						<p><b>{value.name} / {value.hebrewName}</b></p>
+						<p><b>{value.hebrewName && value.hebrewName !== value.name ? `${value.name} / ${value.hebrewName}` : value.name}</b></p>
 						{#if value.url}
 							<p>Read online at <a href={value.url} target="_blank">{value.url}</a></p>
 						{/if}
