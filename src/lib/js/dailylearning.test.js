@@ -16,12 +16,12 @@ describe('test calculateDailyLearning', () => {
 		});
 		expect(result.yerushalmiYomiVilna).toStrictEqual({
 			name: 'Yerushalmi Maaser Sheni 21',
-			hebrewName: 'יְרוּשַׁלְמִי מעשר שני דף כ״א',
+			hebrewName: 'יְרוּשַׁלְמִי מעשר שני דף כא',
 			url: 'https://www.sefaria.org/Jerusalem_Talmud_Maaser_Sheni.4.1.4-7?lang=bi',
 		});
 		expect(result.yerushalmiYomiSchottenstein).toStrictEqual({
 			name: 'Yerushalmi Kilayim 78',
-			hebrewName: 'יְרוּשַׁלְמִי כלאים דף ע״ח',
+			hebrewName: 'יְרוּשַׁלְמִי כלאים דף עח',
 			url: undefined,
 		});
 		expect(result.chofetzChaim).toStrictEqual({
@@ -41,7 +41,7 @@ describe('test calculateDailyLearning', () => {
 		});
 		expect(result.dafWeekly).toStrictEqual({
 			name: 'Ketubot 56',
-			hebrewName: 'כתובות דף נ״ו',
+			hebrewName: 'כתובות דף נו',
 			url: 'https://www.sefaria.org/Ketubot.56a?lang=bi',
 		});
 		expect(result.dailyPsalms).toStrictEqual({
