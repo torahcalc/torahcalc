@@ -16,12 +16,12 @@ describe('test calculateDailyLearning', () => {
 		});
 		expect(result.yerushalmiYomiVilna).toStrictEqual({
 			name: 'Yerushalmi Maaser Sheni 21',
-			hebrewName: 'יְרוּשַׁלְמִי מעשר שני דף כ״א',
+			hebrewName: 'יְרוּשַׁלְמִי מעשר שני דף כא',
 			url: 'https://www.sefaria.org/Jerusalem_Talmud_Maaser_Sheni.4.1.4-7?lang=bi',
 		});
 		expect(result.yerushalmiYomiSchottenstein).toStrictEqual({
 			name: 'Yerushalmi Kilayim 78',
-			hebrewName: 'יְרוּשַׁלְמִי כלאים דף ע״ח',
+			hebrewName: 'יְרוּשַׁלְמִי כלאים דף עח',
 			url: undefined,
 		});
 		expect(result.chofetzChaim).toStrictEqual({
@@ -31,7 +31,7 @@ describe('test calculateDailyLearning', () => {
 		});
 		expect(result.dailyRambam).toStrictEqual({
 			name: 'Leavened and Unleavened Bread 5',
-			hebrewName: 'הלכות חמץ ומצה פרק ה׳',
+			hebrewName: 'הלכות חמץ ומצה פרק ה',
 			url: 'https://www.sefaria.org/Mishneh_Torah%2C_Leavened_and_Unleavened_Bread.5?lang=bi',
 		});
 		expect(result.shemiratHaLashon).toStrictEqual({
