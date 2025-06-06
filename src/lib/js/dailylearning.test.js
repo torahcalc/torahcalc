@@ -31,7 +31,7 @@ describe('test calculateDailyLearning', () => {
 		});
 		expect(result.dailyRambam).toStrictEqual({
 			name: 'Leavened and Unleavened Bread 5',
-			hebrewName: 'הלכות חמץ ומצה פרק ה׳',
+			hebrewName: 'הלכות חמץ ומצה פרק ה',
 			url: 'https://www.sefaria.org/Mishneh_Torah%2C_Leavened_and_Unleavened_Bread.5?lang=bi',
 		});
 		expect(result.shemiratHaLashon).toStrictEqual({
@@ -41,7 +41,7 @@ describe('test calculateDailyLearning', () => {
 		});
 		expect(result.dafWeekly).toStrictEqual({
 			name: 'Ketubot 56',
-			hebrewName: 'כתובות דף נו',
+			hebrewName: 'כתובות דף נ״ו',
 			url: 'https://www.sefaria.org/Ketubot.56a?lang=bi',
 		});
 		expect(result.dailyPsalms).toStrictEqual({
