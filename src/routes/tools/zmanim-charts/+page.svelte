@@ -8,6 +8,7 @@
 	let hebYear = nextHebrewMonth.year;
 	let location = 'New York, NY';
 	let candlelightingMinutes = 18;
+	let format = 'separate-rows';
 	let includeEvents = true;
 	let includeMonth = false;
 	let headingColor = '#000000';
@@ -60,6 +61,13 @@
 					<input type="checkbox" id="includeMonth" bind:checked={includeMonth} class="form-check-input" />
 					&nbsp;
 					<label for="includeMonth">Include Month on Each Row</label>
+				</div>
+				<div class="form-group mt-3">
+					<label for="format">Layout Format</label>
+					<select id="format" bind:value={format} class="form-control form-select">
+						<option value="separate-rows">Havdalah time on a separate row</option>
+						<option value="same-row">Havdalah on the same row as candle lighting</option>
+					</select>
 				</div>
 				<div class="form-group mt-3">
 					<label for="headingColor">Heading Color</label>
@@ -118,6 +126,7 @@
 					params.append('year', hebYear.toString());
 					params.append('location', location);
 					params.append('candleLightingMinutes', candlelightingMinutes.toString());
+					params.append('format', format);
 					params.append('includeEvents', includeEvents.toString());
 					params.append('includeMonth', includeMonth.toString());
 					params.append('headingColor', headingColor);
