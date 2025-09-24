@@ -37,7 +37,7 @@
 		"@capacitor/android": "^6.2.0",
 		"@capacitor/assets": "^3.0.5",
 		"@capacitor/cli": "^6.2.0",
-		"@capacitor/core": "^6.1.2",
+		"@capacitor/core": "^7.3.0",
 		"@capacitor/ios": "^6.2.0",
 		"@fontsource/fira-mono": "^5.2.6",
 		"@fontsource/roboto": "^5.2.5",
