@@ -2,13 +2,12 @@ import * as env from '$env/static/private';
 import { createErrorResponse, createResponse } from '$lib/js/api/response.js';
 import { geocodeAddress, getTimezone } from '$lib/js/utils';
 import { calculateZmanim } from '$lib/js/zmanim';
-import dayjs from 'dayjs';
 
 /**
  * @type {import('@sveltejs/kit').RequestHandler}
  */
 export async function GET({ url }) {
-	const date = url.searchParams.get('date') || dayjs().format('YYYY-MM-DD');
+	const date = url.searchParams.get('date') || new Date().toISOString().split('T')[0];
 	let latitude = Number(url.searchParams.get('latitude') || NaN);
 	let longitude = Number(url.searchParams.get('longitude') || NaN);
 	let timezone = url.searchParams.get('timezone') || undefined;

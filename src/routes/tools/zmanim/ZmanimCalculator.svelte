@@ -77,13 +77,13 @@
 
 	/**
 	 * Search for zmanim for a given date and location
-	 * @param {{ location: string, date: Date, candleLightingMinutes: number?, zmanimTimezone: string }} options - the options for the calculation
+	 * @param {{ location: string, date: string, candleLightingMinutes: number?, zmanimTimezone: string }} options - the options for the calculation
 	 * @returns {Promise<import('$lib/js/zmanim').ZmanimResult>} The zmanim result
 	 * @throws {Error} If the location is invalid
 	 */
 	async function getResults({ location, date, candleLightingMinutes }) {
 		/** @type {{ date: string, latitude?: string, longitude?: string, location?: string, candleLightingMinutes?: string, timezone: string }} */
-		const params = { date: dayjs(date).format('YYYY-MM-DD'), candleLightingMinutes: (candleLightingMinutes || 0).toString(), timezone: zmanimTimezone };
+		const params = { date, candleLightingMinutes: (candleLightingMinutes || 0).toString(), timezone: zmanimTimezone };
 		const latLongMatch = location.match(/^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/);
 		if (latLongMatch) {
 			params.latitude = latLongMatch[1];
@@ -125,7 +125,7 @@
 	async function updateResults() {
 		try {
 			isLoading = true;
-			const allResults = await getResults({ location, date, candleLightingMinutes, zmanimTimezone });
+			const allResults = await getResults({ location, date: formattedDate, candleLightingMinutes, zmanimTimezone });
 
 			// Save the location to localStorage
 			localStorage.setItem('lastLocation', location);
@@ -239,8 +239,9 @@
 	 * Get today's date and update the date input
 	 */
 	function useToday() {
-		date = new Date();
-		formattedDate = dayjs(date).format('YYYY-MM-DD');
+		const today = new Date();
+		formattedDate = dayjs(today).format('YYYY-MM-DD');
+		date = new Date(formattedDate + 'T00:00:00');
 		updateResults();
 	}
 
@@ -283,8 +284,8 @@
 					bind:value={formattedDate}
 					on:input={(e) => {
 						if (e.target) {
-							date = new Date(e.target.value);
 							formattedDate = e.target.value;
+							date = new Date(e.target.value + 'T00:00:00');
 						}
 					}}
 				/>
