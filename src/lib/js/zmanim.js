@@ -220,7 +220,13 @@ export async function calculateZmanim({ date = dayjs().format('YYYY-MM-DD'), lat
 			// add extra information to the description
 			let description = event.desc;
 			if (event.desc === 'Candle lighting') {
-				description += ` - ${candleLightingMins} minutes before sunset`;
+				// Check if candle lighting is after sunset (e.g. Yom Tov after Shabbat)
+				const isAfterSunset = dayjs(event.eventTime).isAfter(dayjs(zmanim.sunset()));
+				if (isAfterSunset) {
+					description += ' - at nightfall';
+				} else {
+					description += ` - ${candleLightingMins} minutes before sunset`;
+				}
 			} else if (event.desc === 'Havdalah') {
 				description += ' - 3 small stars visible, sun is 8.5° below horizon';
 			}
