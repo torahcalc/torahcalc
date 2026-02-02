@@ -343,17 +343,16 @@
 			<Anchor id="11" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.486.1">OC 486:1</a> states that 2 kezaysim is like 1 beitzah.
 		</li>
 		<li>
-			<Anchor id="12" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.612.1">OC 612:1</a> states that a Koseves HaGasah (large date) is a
-			little less than a beitzah.
+			<Anchor id="12" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.612.1">OC 612:1</a> states that a Koseves HaGasah (large date) is a little
+			less than a beitzah.
 		</li>
 		<li>
-			<Anchor id="13" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.612.4">OC 612:4</a> states that some say a pras is 4 beitzim, while
-			others say it is 3 beitzim.
+			<Anchor id="13" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Orach_Chayim.612.4">OC 612:4</a> states that some say a pras is 4 beitzim, while others
+			say it is 3 beitzim.
 		</li>
 		<li>
 			<Anchor id="14" /><a target="_blank" href="https://www.sefaria.org.il/Exodus.30.13">Exodus 30:13</a>, <a target="_blank" href="https://www.sefaria.org.il/Leviticus.27.25">Leviticus 27:25</a>,
-			<a target="_blank" href="https://www.sefaria.org.il/Numbers.3.47">Numbers 3:47</a>, <a target="_blank" href="https://www.sefaria.org.il/Numbers.18.16">18:16</a> state that the gerah is 1/20 of a
-			shekel.
+			<a target="_blank" href="https://www.sefaria.org.il/Numbers.3.47">Numbers 3:47</a>, <a target="_blank" href="https://www.sefaria.org.il/Numbers.18.16">18:16</a> state that the gerah is 1/20 of a shekel.
 		</li>
 		<li>
 			<Anchor id="15" />Karo, Yosef. Shulchan Aruch. <a target="_blank" href="https://www.sefaria.org/Shulchan_Arukh%2C_Choshen_Mishpat.88">CM 88:1</a> states that the calculation of a perutah is the weight

@@ -26,7 +26,7 @@ describe('test calculateDailyLearning', () => {
 		});
 		expect(result.chofetzChaim).toStrictEqual({
 			name: 'Lavin 14-15',
-			hebrewName: 'לאוין 14-15',
+			hebrewName: 'לאווין 14-15',
 			url: 'https://www.sefaria.org/Chofetz_Chaim%2C_Introduction_to_the_Laws_of_the_Prohibition_of_Lashon_Hara_and_Rechilut%2C_Negative_Commandments.14?lang=bi',
 		});
 		expect(result.dailyRambam).toStrictEqual({

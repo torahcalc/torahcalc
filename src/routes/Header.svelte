@@ -29,6 +29,7 @@
 				{ name: 'Hebrew Zodiac Signs', url: '/tools/hebrew-zodiac-signs' },
 				{ name: 'Birkas Hachama', url: '/tools/birkas-hachama' },
 				{ name: 'Shmita Years', url: '/tools/shmita' },
+				{ name: 'Calendar Overlaps', url: '/tools/calendar-overlaps' },
 			],
 		},
 		{
