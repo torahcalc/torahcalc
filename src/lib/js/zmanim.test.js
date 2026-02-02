@@ -81,4 +81,20 @@ describe('test calculateZmanim', () => {
 		});
 		expect(response.events.candleLighting.time).toBe('2024-09-27T18:23:00-04:00');
 	});
+
+	it('calculates candle lighting at nightfall for Yom Tov after Shabbat', async () => {
+		const response = await calculateZmanim({
+			date: '2025-04-12',
+			latitude: 31.759335,
+			longitude: 35.220787,
+			timezone: 'Asia/Jerusalem',
+		});
+		// Candle lighting should be after sunset (at nightfall)
+		expect(response.events.candleLighting.time).toBe('2025-04-12T19:43:00+03:00');
+		expect(response.events.candleLighting.description).toContain('at nightfall');
+		// Verify it's after sunset
+		const candleLightingTime = new Date(response.events.candleLighting.time);
+		const sunsetTime = new Date(response.zmanim.sunset.time);
+		expect(candleLightingTime.getTime()).toBeGreaterThan(sunsetTime.getTime());
+	});
 });
