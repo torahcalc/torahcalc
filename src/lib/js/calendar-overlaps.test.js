@@ -18,7 +18,13 @@ describe('findCalendarOverlaps', () => {
 
 		// Check that all results have the correct Gregorian date
 		overlaps.forEach((overlap) => {
-			expect(overlap.gregorianDateDisplay).toContain('September 11');
+			if (overlap.eveningOnly) {
+				expect(overlap.gregorianDateDisplay).toContain('September 12');
+				expect(overlap.eveningStartDateDisplay).toContain('September 11');
+			} else {
+				expect(overlap.gregorianDateDisplay).toContain('September 11');
+				expect(overlap.eveningStartDateDisplay).toContain('September 10');
+			}
 		});
 	});
 
@@ -37,7 +43,13 @@ describe('findCalendarOverlaps', () => {
 
 		// Check that all results have the correct Gregorian date
 		overlaps.forEach((overlap) => {
-			expect(overlap.gregorianDateDisplay).toContain('December 25');
+			if (overlap.eveningOnly) {
+				expect(overlap.gregorianDateDisplay).toContain('December 26');
+				expect(overlap.eveningStartDateDisplay).toContain('December 25');
+			} else {
+				expect(overlap.gregorianDateDisplay).toContain('December 25');
+				expect(overlap.eveningStartDateDisplay).toContain('December 24');
+			}
 		});
 	});
 
