@@ -10,8 +10,6 @@ TorahCalc is a comprehensive resource for Torah study (https://www.torahcalc.com
 - Holiday information
 - REST API for programmatic access
 
-This is a complete rewrite of the original site, modernizing it from plain HTML/CSS/JS to a full SvelteKit application.
-
 ## Technology Stack
 
 ### Core Technologies
@@ -26,7 +24,7 @@ This is a complete rewrite of the original site, modernizing it from plain HTML/
 - **nearley**: Grammar parsing for natural language queries
 - **dayjs**: Date manipulation
 - **xss**: XSS sanitization
-- **svelte-fa**: Font Awesome icons
+- **svelte-fa, @fortawesome/free-brands-svg-icons, @danieloi/pro-solid-svg-icons**: Font Awesome icons (pro included)
 - **@capacitor**: Mobile app development (iOS/Android)
 
 ### Deployment
@@ -42,24 +40,26 @@ This is a complete rewrite of the original site, modernizing it from plain HTML/
 │   │   ├── components/         # Reusable Svelte components
 │   │   ├── js/                 # Core logic and calculators
 │   │   │   ├── api/            # API helper functions
-│   │   │   └── words/          # Hebrew text data
+│   │   │   └── words/          # Gematria data for Hebrew words and sentences 
 │   │   ├── grammars/           # Nearley grammar definitions
 │   │   │   ├── main.ne         # Main grammar file
 │   │   │   ├── inputs/         # Grammar input definitions
 │   │   │   ├── scripts/        # Grammar compilation scripts
 │   │   │   └── generated/      # Generated grammar files (gitignored)
 │   │   ├── data/               # Static data files (e.g., exchange rates)
-│   │   ├── images/             # Image assets
-│   │   └── icons/              # Icon definitions
+│   │   ├── images/             # Image assets (logo)
+│   │   └── icons/              # Custom icon definitions
 │   ├── routes/                 # SvelteKit routes
 │   │   ├── +page.svelte        # Homepage
+│   │   ├── Header.svelte       # Header and navigation bar
+│   │   ├── Footer.svelte       # Footer
 │   │   ├── api/                # API endpoints (+server.js files)
-│   │   ├── tools/              # Calculator tools pages
-│   │   ├── info/               # Information pages
-│   │   ├── terms/              # Terms pages
-│   │   └── input/              # Input calculator
+│   │   ├── tools/              # Individual calculator tool UI pages
+│   │   ├── info/               # Information pages (charts and sources)
+│   │   ├── terms/              # Privacy policy and TOS pages
+│   │   └── input/              # WolframAlpha-style English Input calculator
 │   └── app.html                # HTML template
-├── static/                     # Static assets
+├── static/                     # Static assets (e.g. favicon, robots.txt)
 ├── resources/                  # Mobile app resources
 ├── .github/
 │   ├── workflows/              # CI/CD workflows
@@ -70,6 +70,8 @@ This is a complete rewrite of the original site, modernizing it from plain HTML/
 ├── svelte.config.js            # Svelte/SvelteKit configuration
 ├── capacitor.config.ts         # Capacitor mobile config
 ├── jsconfig.json               # JavaScript/TypeScript config
+├── CONTRIBUTING.md             # Information on building and running the project
+├── .env.local                  # Secrets (e.g. Google Maps API Key)
 └── .env                        # Environment variables
 ```
 
@@ -80,8 +82,8 @@ This is a complete rewrite of the original site, modernizing it from plain HTML/
 npm ci
 ```
 
-### Grammar Compilation (IMPORTANT!)
-Before running dev, build, or test, the Nearley grammar MUST be compiled:
+### Grammar Compilation
+Before building or testing, the Nearley grammar must be compiled:
 ```bash
 npm run nearley
 ```
@@ -101,9 +103,8 @@ npm run dev -- --open    # Start dev server and open browser
 
 ### Building
 ```bash
-npm run build    # Build for Vercel (with API routes)
-npm run static   # Build static site only (for mobile apps)
-npm run preview  # Preview production build
+npm run build    # Create a production build with the API and frontend
+npm run static   # Build static frontend only
 ```
 
 ### Testing
@@ -117,43 +118,10 @@ npm run check:watch     # Type check in watch mode
 
 ### Linting & Formatting
 
-**CRITICAL ISSUE - ESLint Configuration Problem**
-
-The project currently has an ESLint configuration issue:
-- The project uses ESLint 9.x (installed version: 9.28.0+)
-- ESLint 9.x requires `eslint.config.js` (flat config) format
-- The project still has `.eslintrc.cjs` (legacy format)
-- Running `npm run lint` fails with error about missing `eslint.config.js`
-
-**Workaround**:
-1. For now, skip ESLint and only run Prettier:
-   ```bash
-   npm run format  # Format code with Prettier (this works)
-   ```
-
-2. To fix the ESLint issue (if needed):
-   - Migrate `.eslintrc.cjs` to `eslint.config.js` using ESLint's flat config format
-   - Update `.eslintignore` patterns to use `ignores` property in `eslint.config.js`
-   - See: https://eslint.org/docs/latest/use/configure/migration-guide
-
 **Lint/Format Commands**:
 ```bash
-npm run lint      # Run prettier check + eslint (CURRENTLY FAILS - see above)
-npm run format    # Auto-format with prettier (WORKS)
-```
-
-**Prettier Configuration**:
-- Uses tabs (not spaces)
-- Single quotes
-- 200 character line width
-- ES5 trailing commas
-- Auto-organizes imports via `prettier-plugin-organize-imports`
-
-### Mobile Development
-```bash
-npm run mobile          # Build static site and sync Capacitor
-npm run android:dev     # Build, sync, and open Android Studio
-npm run ios:dev         # Build, sync, and open Xcode
+npm run lint      # Run prettier check + eslint
+npm run format    # Auto-format with prettier
 ```
 
 ## API Routes
@@ -271,59 +239,46 @@ See `.env.local.example` for template.
 5. Update API route if needed: `src/routes/api/unitconverter/+server.js`
 
 ### Adding a New Calculator Tool
-1. Create route directory: `src/routes/tools/my-tool/`
-2. Add `+page.svelte` for the UI
-3. Add `+page.js` if needed for data loading
-4. Optionally create API endpoint: `src/routes/api/my-tool/+server.js`
-5. Add tests in `src/lib/js/` with `.test.js` suffix
-6. Update navigation/links as needed
+1. Add logic in `src/lib/js/` with a file `{my-tool}.js`
+2. Add tests in `src/lib/js/` with a file `{my-tool}.test.js`
+3. Create route directory: `src/routes/tools/{my-tool}/`
+4. Add `+page.svelte` for the UI
+5. Add `+page.js` if needed for data loading
+6. Create an API endpoint: `src/routes/api/{my-tool}/+server.js`
+7. Update API documentation at `src/routes/api/+page.svelte`
+8. Update navigation as needed in `src/routes/Header.svelte`
+9. Optionally update the grammar to support the new tool in the Input calculator (see below)
 
 ### Modifying Grammar
-1. Edit `src/lib/grammars/main.ne` or input files in `inputs/`
+1. Edit `src/lib/grammars/main.ne` (or input files in `src/lib/grammars/inputs` for large lists of data to support)
 2. Run `npm run nearley` to recompile
 3. Test with `npm run test` or `npm run dev`
 4. The generated files in `generated/` are gitignored and auto-created
+5. If necessary, update `src/lib/js/input.js` and the test file `input.test.js` to support new grammar capabilities
 
 ## Known Issues & Workarounds
 
-### 1. ESLint Configuration (CRITICAL)
-**Issue**: ESLint 9.x requires flat config but project uses legacy .eslintrc.cjs
-**Impact**: `npm run lint` fails
-**Workaround**: Use `npm run format` for code formatting only
-**Fix**: Migrate to `eslint.config.js` format (see Linting section above)
-
-### 2. Test Network Errors
+### 1. Test Network Errors
 **Issue**: Tests show unhandled errors fetching from old.torahcalc.com
 **Impact**: None - tests still pass, these are informational
 **Cause**: Domain is blocked in sandboxed environment
 **Workaround**: Ignore these errors in test output
 
-### 3. Build Warnings - GOOGLE_MAPS_API_KEY
+### 2. Build Warnings - GOOGLE_MAPS_API_KEY
 **Issue**: Build shows warnings about GOOGLE_MAPS_API_KEY not being exported
 **Impact**: None if not using location features
 **Workaround**: Set GOOGLE_MAPS_API_KEY in .env for full functionality
 
-### 4. Build Warnings - Unused CSS
+### 3. Build Warnings - Unused CSS
 **Issue**: Vite shows warnings about unused CSS selectors
 **Impact**: None - cosmetic warnings only
 **Workaround**: Ignore or clean up unused selectors if desired
 
-### 5. npm audit Vulnerabilities
+### 4. npm audit Vulnerabilities
 **Issue**: 15 vulnerabilities reported (4 low, 3 moderate, 8 high)
 **Impact**: Most are in dev dependencies or deprecated packages
 **Workaround**: Review with `npm audit` - many cannot be fixed without major version updates
 **Note**: These are inherited from dependencies, not direct security issues in application code
-
-## Dependencies Notes
-
-### Deprecated Packages
-The following npm warnings about deprecated packages can be safely ignored (they are transitive dependencies):
-- whatwg-encoding, tar@6.x, npmlog, q, inflight, glob@7.x, gauge, are-we-there-yet
-- @types/cookie (cookie package provides its own types)
-- @xmldom/xmldom@0.7.x (used by dependencies)
-- rimraf@3.x
-
-These are mostly dev-time dependencies and don't affect production functionality.
 
 ## Tips for Agents
 
@@ -331,12 +286,10 @@ These are mostly dev-time dependencies and don't affect production functionality
 2. **Use JSDoc comments** for type hints instead of TypeScript
 3. **Test locally** with `npm run dev` before committing
 4. **Check test impact** with `npm run test -- --run` for focused test runs
-5. **Format before commit** with `npm run format` (skip ESLint for now)
+5. **Format before commit** with `npm run format`
 6. **For API changes**, update both the logic file and the corresponding `+server.js` route
 7. **Svelte components** have reactive statements using `$:` - respect this pattern
 8. **Don't commit generated files** in `src/lib/grammars/generated/` - they're auto-created
-9. **When in doubt about Hebrew calculations**, check `@hebcal` documentation
-10. **Mobile changes** require `npm run mobile` to sync with Capacitor
 
 ## Getting Help
 
@@ -344,7 +297,6 @@ These are mostly dev-time dependencies and don't affect production functionality
 - **Hebcal**: https://github.com/hebcal/hebcal - for calendar/Zmanim questions
 - **Nearley**: https://nearley.js.org/ - for grammar questions
 - **SvelteKit**: https://kit.svelte.dev/docs - for routing and API questions
-- **Issue Templates**: Use appropriate template in .github/ISSUE_TEMPLATE/
 
 ## Quick Reference Commands
 
@@ -353,21 +305,16 @@ These are mostly dev-time dependencies and don't affect production functionality
 npm ci
 
 # Development
-npm run dev                 # Start dev server (auto-compiles grammar)
+npm run dev                # Start dev server (auto-compiles grammar)
 npm run nearley            # Just compile grammar
 
 # Testing & Quality
 npm run test               # Run all tests
-npm run format             # Format code (use this instead of lint)
+npm run format             # Format code
 npm run check              # Type check
 
 # Building
 npm run build              # Build for Vercel
 npm run static             # Build static site
 npm run preview            # Preview build
-
-# Mobile
-npm run mobile             # Sync Capacitor
-npm run android:dev        # Open Android Studio
-npm run ios:dev            # Open Xcode
 ```
