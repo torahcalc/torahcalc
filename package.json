@@ -38,7 +38,7 @@
 		"@capacitor/assets": "^3.0.5",
 		"@capacitor/cli": "^6.2.0",
 		"@capacitor/core": "^6.1.2",
-		"@capacitor/ios": "^6.2.0",
+		"@capacitor/ios": "^8.0.2",
 		"@fontsource/fira-mono": "^5.2.6",
 		"@fontsource/roboto": "^5.2.5",
 		"@fontsource/roboto-serif": "^5.2.5",
