@@ -18,7 +18,7 @@ describe('findCalendarOverlaps', () => {
 
 		// Check that all results have the correct Gregorian date
 		overlaps.forEach((overlap) => {
-			expect(overlap.gregorianDate).toContain('September 11');
+			expect(overlap.gregorianDateDisplay).toContain('September 11');
 		});
 	});
 
@@ -37,7 +37,7 @@ describe('findCalendarOverlaps', () => {
 
 		// Check that all results have the correct Gregorian date
 		overlaps.forEach((overlap) => {
-			expect(overlap.gregorianDate).toContain('December 25');
+			expect(overlap.gregorianDateDisplay).toContain('December 25');
 		});
 	});
 

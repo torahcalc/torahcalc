@@ -105,7 +105,7 @@ export const getNextCalendarOverlap = (options) => {
 	today.setHours(0, 0, 0, 0);
 
 	for (const overlap of overlaps) {
-		const overlapDate = new Date(overlap.gregorianYear, Number.parseInt(overlap.gregorianDate.split(' ')[0]) - 1, Number.parseInt(overlap.gregorianDate.split(' ')[1].replace(',', '')));
+		const overlapDate = new Date(overlap.gregorianDate);
 		if (overlapDate >= today) {
 			return overlap;
 		}
