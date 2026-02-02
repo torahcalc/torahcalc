@@ -75,7 +75,7 @@ describe('findCalendarOverlaps', () => {
 			expect(o.eveningStartDate.length).toBeGreaterThan(0);
 			expect(typeof o.eveningOnly).toBe('boolean');
 		});
-		
+
 		// Should have both types of overlaps
 		const hasEveningOnly = overlaps.some((o) => o.eveningOnly);
 		const hasFullDay = overlaps.some((o) => !o.eveningOnly);
