@@ -25,7 +25,7 @@ export const TANACH_STATS = {
 	tanach: { chapters: 929, verses: 23198, words: 305411, letters: 1196718, portions: 54 },
 
 	// Torah section
-	torah: { chapters: 187, verses: 5844, words: 79977, letters: 304801, portions: 54 },
+	'the torah': { chapters: 187, verses: 5844, words: 79977, letters: 304801, portions: 54 },
 
 	// Torah books
 	'sefer bereishis': { chapters: 50, verses: 1533, words: 20612, letters: 78063, portions: 12 },
@@ -153,8 +153,8 @@ export const PARSHA_STATS = {
 	'parshas ki savo': { verses: 122, words: 1747, letters: 6811 },
 	'parshas nitzavim': { verses: 40, words: 657, letters: 2575 },
 	'parshas vayelech': { verses: 30, words: 553, letters: 2123 },
-	'parshas haazinu': { verses: 52, words: 615, letters: 2326 },
-	'parshas vzos haberachah': { verses: 41, words: 512, letters: 1989 },
+	"parshas h'aazinu": { verses: 52, words: 615, letters: 2326 },
+	"parshas v'zos habrachah": { verses: 41, words: 512, letters: 1989 },
 };
 
 /**

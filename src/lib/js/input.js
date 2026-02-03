@@ -480,56 +480,36 @@ async function getValidDerivations(search, results) {
 			}
 			derivation.disambiguation = disambiguation;
 		} else if (derivation.function === 'tanachStatsQuery') {
-			// Format the book/parsha name with appropriate prefix
-			let bookName = derivation.book;
+			// tanachStatsQuery is disambiguated by the stat type and book/parsha name
+			const bookName = derivation.book;
 			const statType = derivation.statType;
-			const bookType = derivation.bookType || 'unknown';
-			const isParshaExplicitly = bookType === 'parsha';
-			const isSeferExplicitly = bookType === 'sefer';
 
-			// Import stats functions
+			// Import stats functions to check availability
 			const { TANACH_STATS, PARSHA_STATS, formatBookName, formatStatType } = await import('./tanach-stats.js');
 
-			// Check if bookName is a canonical parsha or book name (direct lookup, no mapping)
-			const directParshaStats = PARSHA_STATS[bookName];
-			const directBookStats = TANACH_STATS[bookName];
+			// Determine if this is a parsha or sefer based on which stats are available
+			const parshaStatsAvailable = PARSHA_STATS[bookName] !== undefined;
+			const bookStatsAvailable = TANACH_STATS[bookName] !== undefined;
+			const statAvailableForParsha = statType in PARSHA_STATS['parshas bereishis'];
 
-			// Determine if it's a parsha vs book based on what stats are available
-			const parshaStatsAvailable = directParshaStats !== undefined && statType in directParshaStats;
-			const bookStatsAvailable = directBookStats !== undefined && statType in directBookStats;
-
-			// Determine which interpretation this is and store it
 			let interpretationType;
-			let displayName = formatBookName(bookName);
-
-			if (isParshaExplicitly && parshaStatsAvailable) {
-				// Grammar already indicated it's a parsha, or user explicitly said "parshas"
+			if (parshaStatsAvailable) {
 				interpretationType = 'parsha';
-				derivation.disambiguationScore += 1; // Prefer explicit parsha references
-			} else if (isSeferExplicitly && bookStatsAvailable) {
-				// Grammar already indicated it's a sefer, or user explicitly said "sefer"
+			} else if (bookStatsAvailable) {
 				interpretationType = 'sefer';
-				derivation.disambiguationScore += 1; // Prefer explicit sefer references
-			} else if (parshaStatsAvailable && !bookStatsAvailable) {
-				// Only a parsha, not a book
-				interpretationType = 'parsha';
-			} else if (!parshaStatsAvailable && bookStatsAvailable) {
-				// Only a book, not a parsha
-				interpretationType = 'sefer';
-			} else if (parshaStatsAvailable && bookStatsAvailable) {
-				// Add to book disambiguation score if both interpretations are possible
-				derivation.disambiguationScore += 1;
-				// Both interpretations are possible, prefer sefer over parsha
-				interpretationType = 'sefer';
+				if (!statAvailableForParsha) {
+					// Increase disambiguation score for sefer if the stat is not available for parsha
+					derivation.disambiguationScore += 1;
+				}
 			} else {
-				// Neither interpretation is valid, skip this derivation
+				// No stats available for this book/parsha, skip this derivation
 				continue;
 			}
 
-			// Store the interpretation type in the derivation so tanachStatsQuery can use it
+			// Store the interpretation type for tanachStatsQuery to use
 			derivation.interpretationType = interpretationType;
-			// Store the cleaned bookName for tanachStatsQuery to use
-			derivation.book = bookName;
+
+			const displayName = formatBookName(bookName);
 			derivation.disambiguation = `${formatStatType(statType, 2)} in ${displayName}`;
 		}
 		derivations[derivation.disambiguation] = derivation;
