@@ -6,6 +6,7 @@ import { writeFileSync } from 'fs';
 import { dailyLearningTypes } from '../inputs/daily-learning-inputs.js';
 import { gematriaMethods } from '../inputs/gematria-inputs.js';
 import { holidays } from '../inputs/holiday-inputs.js';
+import { parshios, statTypes, tanachBooks } from '../inputs/tanach-book-inputs.js';
 import { units } from '../inputs/unit-inputs.js';
 import { zmanimInputs } from '../inputs/zmanim-inputs.js';
 
@@ -14,6 +15,7 @@ generateZmanimGrammar('./src/lib/grammars/generated/zmanim.ne');
 generateGrammar('gematriaMethod', gematriaMethods, 'gematria-methods.js', './src/lib/grammars/generated/gematria.ne');
 generateGrammar('dailyLearningType', dailyLearningTypes, 'daily-learning-inputs.js', './src/lib/grammars/generated/daily-learning.ne');
 generateGrammar('holiday', holidays, 'holiday-inputs.js', './src/lib/grammars/generated/holidays.ne');
+generateTanachBooksGrammar('./src/lib/grammars/generated/tanach-books.ne');
 
 /**
  * Convert a one-level deep object mapping to a grammar rule and return the result
@@ -27,7 +29,7 @@ function convertMappingToGrammarRule(nonTerminal, mapping) {
 		`\n\n${nonTerminal} -> ` +
 		Object.keys(mapping)
 			.map((input) => {
-				return mapping[input].map((value) => `"${input.replaceAll(/"/g, '\\"')}" {% d => '${value}' %}`).join('\n | ');
+				return mapping[input].map((value) => `"${input.replaceAll('"', '\\"')}" {% d => '${value.replaceAll("'", "\\'")}' %}`).join('\n | ');
 			})
 			.join('\n | ')
 	);
@@ -64,7 +66,7 @@ function generateUnitsGrammar(outputPath) {
 		const unitMapping = units[unitType];
 		grammar += Object.keys(unitMapping)
 			.map((unitInput) => {
-				return unitMapping[unitInput].map((unitId) => `"${unitInput.replaceAll(/"/g, '\\"')}" {% d => ({ type: '${unitType}', unitId: '${unitId}' }) %}`).join('\n | ');
+				return unitMapping[unitInput].map((unitId) => `"${unitInput.replaceAll('"', '\\"')}" {% d => ({ type: '${unitType}', unitId: '${unitId}' }) %}`).join('\n | ');
 			})
 			.join('\n | ');
 	}
@@ -84,6 +86,21 @@ function generateZmanimGrammar(outputPath) {
 
 	grammar += convertMappingToGrammarRule('zman', { ...zmanimInputs.zmanim, ...zmanimInputs.events });
 	grammar += convertMappingToGrammarRule('duration', zmanimInputs.durations);
+
+	writeFileSync(outputPath, grammar);
+}
+
+/**
+ * Generates the tanach books and parshios grammar
+ *
+ * @param {string} outputPath - The path to the output file with .ne extension
+ */
+function generateTanachBooksGrammar(outputPath) {
+	let grammar = '# Grammar of Tanach books, parshios, and stat types\n# Generated automatically from tanach-book-inputs.js in src/lib/grammars/scripts/prepare-input.js';
+
+	grammar += convertMappingToGrammarRule('tanachBook', tanachBooks);
+	grammar += convertMappingToGrammarRule('parsha', parshios);
+	grammar += convertMappingToGrammarRule('statType', statTypes);
 
 	writeFileSync(outputPath, grammar);
 }

@@ -290,6 +290,8 @@ See `.env.local.example` for template.
 3. Test with `npm run test` or `npm run dev`
 4. The generated files in `generated/` are gitignored and auto-created
 5. If necessary, update `src/lib/js/input.js` and the test file `input.test.js` to support new grammar capabilities
+6. If ambiguities arise, consider adding disambiguation logic to `getValidDerivations()` in `input.js`
+7. Update the input examples if needed in `src/routes/input/InputExamples.svelte` and `src/routes/input/examples/`.
 
 ### Adding a New API Endpoint
 
