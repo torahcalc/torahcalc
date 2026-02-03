@@ -1,5 +1,106 @@
 <script>
+	import { getStats } from '$lib/js/tanach-stats.js';
+
 	const description = 'This table lists the number of chapters, verses, words, and letters in each book of the Tanach and the number of parshios in each book of Torah.';
+
+	// Define the structure of all sections and books
+	const sections = [
+		{
+			type: 'overall',
+			name: 'tanach',
+			displayNames: ['Tanach', '', ''],
+			cssClass: 'secondrow',
+		},
+		{
+			type: 'section',
+			name: 'the torah',
+			displayNames: ['Torah', '', 'תּוֹרָה'],
+			cssClass: 'headrow',
+			books: [
+				{ name: 'sefer bereishis', displayNames: ['Bereishis', 'Genesis', 'בְּרֵאשִׁית'] },
+				{ name: 'sefer shemos', displayNames: ['Shemos', 'Exodus', 'שְׁמוֹת'] },
+				{ name: 'sefer vayikra', displayNames: ['Vayikra', 'Leviticus', 'וַיִּקְרָא'] },
+				{ name: 'sefer bamidbar', displayNames: ['Bamidbar', 'Numbers', 'בְּמִדְבַּר'] },
+				{ name: 'sefer devarim', displayNames: ['Devarim', 'Deuteronomy', 'דְּבָרִים'] },
+			],
+		},
+		{
+			type: 'section',
+			name: 'neviim',
+			displayNames: ["Nevi'im", '', 'נְבִיאִים'],
+			cssClass: 'headrow',
+			books: [
+				{ name: 'yehoshua', displayNames: ['Yehoshua', 'Joshua', 'יְהוֹשֻעַ'] },
+				{ name: 'shoftim', displayNames: ['Shoftim', 'Judges', 'שׁוֹפְטִים'] },
+				{ name: 'shmuel i', displayNames: ['Shmuel I', 'Samuel I', 'שְׁמוּאֵל א'] },
+				{ name: 'shmuel ii', displayNames: ['Shmuel II', 'Samuel II', 'שְׁמוּאֵל ב'] },
+				{ name: 'melachim i', displayNames: ['Malachim I', 'Kings I', 'מלכים א'] },
+				{ name: 'melachim ii', displayNames: ['Melachim II', 'Kings II', 'מלכים ב'] },
+				{ name: 'yeshayahu', displayNames: ['Yeshayahu', 'Isaiah', 'יְשַׁעְיָהוּ'] },
+				{ name: 'yirmeyahu', displayNames: ['Yirmeyahu', 'Jeremiah', 'יִרְמְיָהוּ'] },
+				{ name: 'yechezkel', displayNames: ['Yechezkel', 'Ezekiel', 'יְחֶזְקֵיאל'] },
+			],
+		},
+		{
+			type: 'subsection',
+			name: 'trei asar',
+			displayNames: ['Trei Asar', '', 'תְּרֵי עֲשַׂר'],
+			cssClass: 'subheadrow',
+			books: [
+				{ name: 'hoshea', displayNames: ['Hoshea', 'Hosea', 'הוֹשֵׁעַ'] },
+				{ name: 'yoel', displayNames: ['Yoel', 'Joel', 'יוֹאֵל'] },
+				{ name: 'amos', displayNames: ['Amos', 'Amos', 'עָמוֹס'] },
+				{ name: 'ovadyah', displayNames: ['Ovadyah', 'Obadiah', 'עֹבַדְיָה'] },
+				{ name: 'yonah', displayNames: ['Yonah', 'Jonah', 'יוֹנָה'] },
+				{ name: 'michah', displayNames: ['Micah', 'Micah', 'מִיכָה'] },
+				{ name: 'nachum', displayNames: ['Nachum', 'Nahum', 'נַחוּם'] },
+				{ name: 'chavakuk', displayNames: ['Chabakuk', 'Habakuk', 'חֲבַקּוּק'] },
+				{ name: 'tzefanyah', displayNames: ['Tzefanyah', 'Zephaniah', 'צְפַנְיָה'] },
+				{ name: 'chagai', displayNames: ['Chagai', 'Haggai', 'חַגַּי'] },
+				{ name: 'zecharyah', displayNames: ['Zecharyah', 'Zachariah', 'זְכַרְיָה'] },
+				{ name: 'malachi', displayNames: ['Malachi', 'Malachi', 'מַלְאָכִי'] },
+			],
+		},
+		{
+			type: 'section',
+			name: 'kesuvim',
+			displayNames: ['Kesuvim', '', 'כְּתוּבִים'],
+			cssClass: 'headrow',
+			books: [
+				{ name: 'divrei hayamim i', displayNames: ['Divrei Hayamim I', 'Chronicles I', 'דִּבְרֵי הַיָּמִים א'] },
+				{ name: 'divrei hayamim ii', displayNames: ['Divrei Hayamim II', 'Chronicles II', 'דִּבְרֵי הַיָּמִים ב'] },
+				{ name: 'tehillim', displayNames: ['Tehillim', 'Psalms', 'תְהִלִּים'] },
+				{ name: 'iyov', displayNames: ['Iyov', 'Job', 'אִיּוֹב'] },
+				{ name: 'mishlei', displayNames: ['Mishlei', 'Proverbs', 'מִשְלֵי'] },
+				{ name: 'rut', displayNames: ['Rut', 'Ruth', 'רוּת'] },
+				{ name: 'shir hashirim', displayNames: ['Shir Hashirim', 'Song of Songs', 'שִׁיר הַשִׁירִים'] },
+				{ name: 'koheles', displayNames: ['Kohelleth', 'Ecclesiastes', 'קֹהֶלֶת'] },
+				{ name: 'eichah', displayNames: ['Eichah', 'Lamentations', 'אֵיכָה'] },
+				{ name: 'esther', displayNames: ['Esther', 'Esther', 'אֶסְתֵר'] },
+				{ name: 'daniel', displayNames: ['Daniel', 'Daniel', 'דָּנִיֵּאל'] },
+				{ name: 'ezra', displayNames: ['Ezra', 'Ezra', 'עֶזְרָא'] },
+				{ name: 'nechemiah', displayNames: ['Nechemiah', 'Nehemiah', 'נְחֶמְיָה'] },
+			],
+		},
+	];
+
+	/**
+	 * Format number with comma separators
+	 * @param {number} num
+	 * @returns {string}
+	 */
+	function formatNumber(num) {
+		return num.toLocaleString();
+	}
+
+	/**
+	 * Format statistic value with empty cell for undefined
+	 * @param {number | undefined} value
+	 * @returns {string}
+	 */
+	function formatStat(value) {
+		return value !== undefined ? formatNumber(value) : '';
+	}
 </script>
 
 <svelte:head>
@@ -33,436 +134,44 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="secondrow">
-					<td colspan="3">Tanach</td>
-					<td>929</td>
-					<td>23,198</td>
-					<td>305,411</td>
-					<td>1,196,718</td>
-					<td>54</td>
-				</tr>
-				<tr class="headrow">
-					<td colspan="3">Torah - תּוֹרָה</td>
-					<td>187</td>
-					<td>5,844</td>
-					<td>79,977</td>
-					<td>304,801</td>
-					<td>54</td>
-				</tr>
-				<tr>
-					<td>Bereishis</td>
-					<td>Genesis</td>
-					<td>בְּרֵאשִׁית</td>
-					<td>50</td>
-					<td>1,533</td>
-					<td>20,612</td>
-					<td>78,063</td>
-					<td>12</td>
-				</tr>
-				<tr>
-					<td>Shemos</td>
-					<td>Exodus</td>
-					<td>שְׁמוֹת</td>
-					<td>40</td>
-					<td>1,209</td>
-					<td>16,713</td>
-					<td>63,527</td>
-					<td>11</td>
-				</tr>
-				<tr>
-					<td>Vayikra</td>
-					<td>Leviticus</td>
-					<td>וַיִּקְרָא</td>
-					<td>27</td>
-					<td>859</td>
-					<td>11,950</td>
-					<td>44,790</td>
-					<td>10</td>
-				</tr>
-				<tr>
-					<td>Bamidbar</td>
-					<td>Numbers</td>
-					<td>בְּמִדְבַּר</td>
-					<td>36</td>
-					<td>1,288</td>
-					<td>16,408</td>
-					<td>63,529</td>
-					<td>10</td>
-				</tr>
-				<tr>
-					<td>Devarim</td>
-					<td>Deuteronomy</td>
-					<td>דְּבָרִים</td>
-					<td>34</td>
-					<td>955</td>
-					<td>14,294</td>
-					<td>54,892</td>
-					<td>11</td>
-				</tr>
-				<tr class="headrow">
-					<td colspan="3">Nevi'im - נְבִיאִים</td>
-					<td>380</td>
-					<td>9,292</td>
-					<td>141,434</td>
-					<td>553,581</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Yehoshua</td>
-					<td>Joshua</td>
-					<td>יְהוֹשֻעַ</td>
-					<td>24</td>
-					<td>656</td>
-					<td>10,031</td>
-					<td>39,730</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Shoftim</td>
-					<td>Judges</td>
-					<td>שׁוֹפְטִים</td>
-					<td>21</td>
-					<td>618</td>
-					<td>9,885</td>
-					<td>38,952</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Shmuel I</td>
-					<td>Samuel I</td>
-					<td>שְׁמוּאֵל א</td>
-					<td>31</td>
-					<td>811</td>
-					<td>13,261</td>
-					<td>51,357</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Shmuel II</td>
-					<td>Samuel II</td>
-					<td>שְׁמוּאֵל ב</td>
-					<td>24</td>
-					<td>695</td>
-					<td>11,033</td>
-					<td>42,179</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Malachim I</td>
-					<td>Kings I</td>
-					<td>מלכים א</td>
-					<td>22</td>
-					<td>817</td>
-					<td>13,140</td>
-					<td>50,625</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Melachim II</td>
-					<td>Kings II</td>
-					<td>מלכים ב</td>
-					<td>25</td>
-					<td>717</td>
-					<td>12,245</td>
-					<td>47,704</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Yeshayahu</td>
-					<td>Isaiah</td>
-					<td>יְשַׁעְיָהוּ</td>
-					<td>66</td>
-					<td>1,291</td>
-					<td>16,925</td>
-					<td>66,874</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Yirmeyahu</td>
-					<td>Jeremiah</td>
-					<td>יִרְמְיָהוּ</td>
-					<td>52</td>
-					<td>1,364</td>
-					<td>21,831</td>
-					<td>84,899</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Yechezkel</td>
-					<td>Ezekiel</td>
-					<td>יְחֶזְקֵיאל</td>
-					<td>48</td>
-					<td>1,273</td>
-					<td>18,730</td>
-					<td>74,511</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr class="subheadrow">
-					<td colspan="3">Trei Asar - תְּרֵי עֲשַׂר</td>
-					<td>67</td>
-					<td>1,050</td>
-					<td>14,353</td>
-					<td>56,750</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Hoshea</td>
-					<td>Hosea</td>
-					<td>הוֹשֵׁעַ</td>
-					<td>14</td>
-					<td>197</td>
-					<td>2,381</td>
-					<td>9,389</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Yoel</td>
-					<td>Joel</td>
-					<td>יוֹאֵל</td>
-					<td>4</td>
-					<td>73</td>
-					<td>957</td>
-					<td>3,872</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Amos</td>
-					<td>Amos</td>
-					<td>עָמוֹס</td>
-					<td>9</td>
-					<td>146</td>
-					<td>2,042</td>
-					<td>8,034</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Ovadyah</td>
-					<td>Obadiah</td>
-					<td>עֹבַדְיָה</td>
-					<td>1</td>
-					<td>21</td>
-					<td>291</td>
-					<td>1,119</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Yonah</td>
-					<td>Jonah</td>
-					<td>יוֹנָה</td>
-					<td>4</td>
-					<td>48</td>
-					<td>688</td>
-					<td>2,700</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Micah</td>
-					<td>Micah</td>
-					<td>מִיכָה</td>
-					<td>7</td>
-					<td>105</td>
-					<td>1,396</td>
-					<td>5,571</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Nachum</td>
-					<td>Nahum</td>
-					<td>נַחוּם</td>
-					<td>3</td>
-					<td>47</td>
-					<td>558</td>
-					<td>2,255</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Chabakuk</td>
-					<td>Habakuk</td>
-					<td>חֲבַקּוּק</td>
-					<td>3</td>
-					<td>56</td>
-					<td>671</td>
-					<td>2,596</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Tzefanyah</td>
-					<td>Zephaniah</td>
-					<td>צְפַנְיָה</td>
-					<td>3</td>
-					<td>53</td>
-					<td>767</td>
-					<td>2,995</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Chagai</td>
-					<td>Haggai</td>
-					<td>חַגַּי</td>
-					<td>2</td>
-					<td>38</td>
-					<td>600</td>
-					<td>2,336</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Zecharyah</td>
-					<td>Zachariah</td>
-					<td>זְכַרְיָה</td>
-					<td>14</td>
-					<td>211</td>
-					<td>3,126</td>
-					<td>12,433</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Malachi</td>
-					<td>Malachi</td>
-					<td>מַלְאָכִי</td>
-					<td>3</td>
-					<td>55</td>
-					<td>876</td>
-					<td>3,450</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr class="headrow">
-					<td colspan="3">Kesuvim - כְּתוּבִים</td>
-					<td>362</td>
-					<td>8,064</td>
-					<td>84,001</td>
-					<td>338,340</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Divrei Hayamim I</td>
-					<td>Chronicles I</td>
-					<td>דִּבְרֵי הַיָּמִים א</td>
-					<td>29</td>
-					<td>943</td>
-					<td>10,740</td>
-					<td>44,559</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Divrei Hayamim II</td>
-					<td>Chronicles II</td>
-					<td>דִּבְרֵי הַיָּמִים ב</td>
-					<td>36</td>
-					<td>822</td>
-					<td>13,315</td>
-					<td>54,917</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Tehillim</td>
-					<td>Psalms</td>
-					<td>תְהִלִּים</td>
-					<td>150</td>
-					<td>2,527</td>
-					<td>19,583</td>
-					<td>78,822</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Iyov</td>
-					<td>Job</td>
-					<td>אִיּוֹב</td>
-					<td>42</td>
-					<td>1,070</td>
-					<td>8,340</td>
-					<td>31,851</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Mishlei</td>
-					<td>Proverbs</td>
-					<td>מִשְלֵי</td>
-					<td>31</td>
-					<td>915</td>
-					<td>6,915</td>
-					<td>26,500</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Rut</td>
-					<td>Ruth</td>
-					<td>רוּת</td>
-					<td>4</td>
-					<td>85</td>
-					<td>1,294</td>
-					<td>4,949</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Shir Hashirim</td>
-					<td>Song of Songs</td>
-					<td>שִׁיר הַשִׁירִים</td>
-					<td>8</td>
-					<td>117</td>
-					<td>1,250</td>
-					<td>5,141</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Kohelleth</td>
-					<td>Ecclesiastes</td>
-					<td>קֹהֶלֶת</td>
-					<td>12</td>
-					<td>222</td>
-					<td>2,987</td>
-					<td>10,967</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Eichah</td>
-					<td>Lamentations</td>
-					<td>אֵיכָה</td>
-					<td>5</td>
-					<td>154</td>
-					<td>1,542</td>
-					<td>5,974</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Esther</td>
-					<td>Esther</td>
-					<td>אֶסְתֵר</td>
-					<td>10</td>
-					<td>167</td>
-					<td>3,045</td>
-					<td>12,111</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Daniel</td>
-					<td>Daniel</td>
-					<td>דָּנִיֵּאל</td>
-					<td>12</td>
-					<td>357</td>
-					<td>5,923</td>
-					<td>24,277</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Ezra</td>
-					<td>Ezra</td>
-					<td>עֶזְרָא</td>
-					<td>10</td>
-					<td>280</td>
-					<td>3,754</td>
-					<td>15,762</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Nechemiah</td>
-					<td>Nehemiah</td>
-					<td>נְחֶמְיָה</td>
-					<td>13</td>
-					<td>405</td>
-					<td>5,312</td>
-					<td>22,506</td>
-					<td class="empty">&nbsp;</td>
-				</tr>
+				{#each sections as section}
+					{@const sectionStats = getStats(section.name, 'book')}
+					{#if section.type === 'overall'}
+						<tr class={section.cssClass}>
+							<td colspan="3">{section.displayNames[0]}</td>
+							<td>{formatStat(sectionStats.chapters)}</td>
+							<td>{formatNumber(sectionStats.verses)}</td>
+							<td>{formatNumber(sectionStats.words)}</td>
+							<td>{formatNumber(sectionStats.letters)}</td>
+							<td>{formatStat(sectionStats.portions)}</td>
+						</tr>
+					{:else}
+						<tr class={section.cssClass}>
+							<td colspan="3">
+								{section.displayNames[0]}{#if section.displayNames[2]}
+									- {section.displayNames[2]}{/if}
+							</td>
+							<td>{formatStat(sectionStats.chapters)}</td>
+							<td>{formatNumber(sectionStats.verses)}</td>
+							<td>{formatNumber(sectionStats.words)}</td>
+							<td>{formatNumber(sectionStats.letters)}</td>
+							<td class={sectionStats.portions ? '' : 'empty'}>{formatStat(sectionStats.portions) || '\u00A0'}</td>
+						</tr>
+						{#each section.books as book}
+							{@const bookStats = getStats(book.name, 'book')}
+							<tr>
+								<td>{book.displayNames[0]}</td>
+								<td>{book.displayNames[1]}</td>
+								<td>{book.displayNames[2]}</td>
+								<td>{formatStat(bookStats.chapters)}</td>
+								<td>{formatNumber(bookStats.verses)}</td>
+								<td>{formatNumber(bookStats.words)}</td>
+								<td>{formatNumber(bookStats.letters)}</td>
+								<td class={bookStats.portions ? '' : 'empty'}>{formatStat(bookStats.portions) || '\u00A0'}</td>
+							</tr>
+						{/each}
+					{/if}
+				{/each}
 			</tbody>
 		</table>
 	</div>

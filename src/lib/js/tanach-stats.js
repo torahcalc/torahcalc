@@ -145,9 +145,9 @@ export const PARSHA_STATS = {
 
 	// Devarim
 	'parshas devarim': { verses: 105, words: 1548, letters: 5972 },
-	'parshas vaeschanan': { verses: 121, words: 1878, letters: 7343 },
+	"parshas va'eschanan": { verses: 121, words: 1878, letters: 7343 },
 	'parshas eikev': { verses: 111, words: 1747, letters: 6865 },
-	'parshas reeh': { verses: 126, words: 1932, letters: 7442 },
+	"parshas re'eh": { verses: 126, words: 1932, letters: 7442 },
 	'parshas shoftim': { verses: 97, words: 1523, letters: 5590 },
 	'parshas ki seitzei': { verses: 110, words: 1582, letters: 5856 },
 	'parshas ki savo': { verses: 122, words: 1747, letters: 6811 },

@@ -1,5 +1,112 @@
 <script>
+	import { getStats } from '$lib/js/tanach-stats.js';
+
 	const description = 'This table lists the number of verses, words, and letters in each Parsha (Torah Portion) in the Torah.';
+
+	// Define parshios by book with display names
+	const books = [
+		{
+			name: 'sefer bereishis',
+			hebrewName: 'בראשית',
+			displayName: 'Sefer Bereishis',
+			parshios: [
+				{ name: 'parshas bereishis', displayName: 'Bereishis', hebrewName: 'בראשית' },
+				{ name: 'parshas noach', displayName: 'Noach', hebrewName: 'נוח' },
+				{ name: 'parshas lech lecha', displayName: 'Lech Lecha', hebrewName: 'לך-לך' },
+				{ name: 'parshas vayeira', displayName: 'Vayeira', hebrewName: 'ויירא' },
+				{ name: 'parshas chayei sarah', displayName: 'Chayei Sarah', hebrewName: 'חיי שרה' },
+				{ name: 'parshas toldos', displayName: 'Toledos', hebrewName: 'תולדות' },
+				{ name: 'parshas vayetze', displayName: 'Vayetze', hebrewName: 'וייצא' },
+				{ name: 'parshas vayishlach', displayName: 'Vayishlach', hebrewName: 'וישלח' },
+				{ name: 'parshas vayeshev', displayName: 'Vayeshev', hebrewName: 'ויישב' },
+				{ name: 'parshas miketz', displayName: 'Miketz', hebrewName: 'מקץ' },
+				{ name: 'parshas vayigash', displayName: 'Vayigash', hebrewName: 'וייגש' },
+				{ name: 'parshas vayechi', displayName: 'Vayechi', hebrewName: 'ויחי' }
+			]
+		},
+		{
+			name: 'sefer shemos',
+			hebrewName: 'שמות',
+			displayName: 'Sefer Shemos',
+			parshios: [
+				{ name: 'parshas shemos', displayName: 'Shemos', hebrewName: 'שמות' },
+				{ name: 'parshas vaeira', displayName: "Va'eira", hebrewName: 'ואירא' },
+				{ name: 'parshas bo', displayName: 'Bo', hebrewName: 'בוא' },
+				{ name: 'parshas beshalach', displayName: 'Beshalach', hebrewName: 'בשלח' },
+				{ name: 'parshas yisro', displayName: 'Yisro', hebrewName: 'יתרו', versesNote: '*' },
+				{ name: 'parshas mishpatim', displayName: 'Mishpatim', hebrewName: 'משפטים' },
+				{ name: 'parshas terumah', displayName: 'Terumah', hebrewName: 'תרומה' },
+				{ name: 'parshas tetzaveh', displayName: 'Tetzaveh', hebrewName: 'תצווה' },
+				{ name: 'parshas ki sisa', displayName: 'Ki Sisa', hebrewName: 'כי תישא' },
+				{ name: 'parshas vayakhel', displayName: 'Vayakhel', hebrewName: 'ויקהל' },
+				{ name: 'parshas pekudei', displayName: 'Pekudei', hebrewName: 'פקודי' }
+			]
+		},
+		{
+			name: 'sefer vayikra',
+			hebrewName: 'ויקרא',
+			displayName: 'Sefer Vayikra',
+			parshios: [
+				{ name: 'parshas vayikra', displayName: 'Vayikra', hebrewName: 'ויקרא' },
+				{ name: 'parshas tzav', displayName: 'Tzav', hebrewName: 'צו' },
+				{ name: 'parshas shemini', displayName: 'Shemini', hebrewName: 'שמיני' },
+				{ name: 'parshas tazria', displayName: 'Tazria', hebrewName: 'תזריע' },
+				{ name: 'parshas metzora', displayName: 'Metzora', hebrewName: 'מצורע' },
+				{ name: 'parshas acharei mos', displayName: 'Acharei Mos', hebrewName: 'אחרי מות' },
+				{ name: 'parshas kedoshim', displayName: 'Kedoshim', hebrewName: 'קדושים' },
+				{ name: 'parshas emor', displayName: 'Emor', hebrewName: 'אמור' },
+				{ name: 'parshas behar', displayName: 'Behar', hebrewName: 'בהר סיניי' },
+				{ name: 'parshas bechukosai', displayName: 'Bechukosai', hebrewName: 'בחוקותיי' }
+			]
+		},
+		{
+			name: 'sefer bamidbar',
+			hebrewName: 'במדבר',
+			displayName: 'Sefer Bamidbar',
+			parshios: [
+				{ name: 'parshas bamidbar', displayName: 'Bamidbar', hebrewName: 'במדבר' },
+				{ name: 'parshas naso', displayName: 'Naso', hebrewName: 'נשוא' },
+				{ name: "parshas beha'alosecha", displayName: "Beha'alosecha", hebrewName: 'בהעלותך' },
+				{ name: 'parshas shlach', displayName: 'Shlach', hebrewName: 'שלח-לך' },
+				{ name: 'parshas korach', displayName: 'Korach', hebrewName: 'קורח' },
+				{ name: 'parshas chukas', displayName: 'Chukas', hebrewName: 'חוקת' },
+				{ name: 'parshas balak', displayName: 'Balak', hebrewName: 'בלק' },
+				{ name: 'parshas pinchas', displayName: 'Pinchas', hebrewName: 'פינחס' },
+				{ name: 'parshas matos', displayName: 'Matos', hebrewName: 'מטות' },
+				{ name: 'parshas masei', displayName: 'Masei', hebrewName: 'מסעי' }
+			]
+		},
+		{
+			name: 'sefer devarim',
+			hebrewName: 'דברים',
+			displayName: 'Sefer Devarim',
+			parshios: [
+				{ name: 'parshas devarim', displayName: 'Devarim', hebrewName: 'דברים' },
+				{ name: "parshas va'eschanan", displayName: "Va'eschanan", hebrewName: 'ואתחנן', versesNote: '*' },
+				{ name: 'parshas eikev', displayName: 'Eikev', hebrewName: 'עקב' },
+				{ name: "parshas re'eh", displayName: "Re'eh", hebrewName: 'ראה' },
+				{ name: 'parshas shoftim', displayName: 'Shoftim', hebrewName: 'שופטים' },
+				{ name: 'parshas ki seitzei', displayName: 'Ki Seitzei', hebrewName: 'כי-תצא' },
+				{ name: 'parshas ki savo', displayName: 'Ki Savo', hebrewName: 'כי-תבוא' },
+				{ name: 'parshas nitzavim', displayName: 'Nitzavim', hebrewName: 'ניצבים' },
+				{ name: 'parshas vayelech', displayName: 'Vayelech', hebrewName: 'וילך' },
+				{ name: "parshas h'aazinu", displayName: "Ha'azinu", hebrewName: 'האזינו' },
+				{ name: "parshas v'zos habrachah", displayName: "V'zos HaBrachah", hebrewName: 'וזאת הברכה' }
+			]
+		}
+	];
+
+	// Get Torah stats
+	const torahStats = getStats('the torah', 'book');
+
+	/**
+	 * Format number with comma separators
+	 * @param {number} num
+	 * @returns {string}
+	 */
+	function formatNumber(num) {
+		return num.toLocaleString();
+	}
 </script>
 
 <svelte:head>
@@ -33,418 +140,29 @@
 			<tbody>
 				<tr class="secondrow">
 					<td colspan="2">Torah - תּוֹרָה</td>
-					<td>5,844</td>
-					<td>79,977</td>
-					<td>304,801</td>
+					<td>{formatNumber(torahStats.verses)}</td>
+					<td>{formatNumber(torahStats.words)}</td>
+					<td>{formatNumber(torahStats.letters)}</td>
 				</tr>
-				<tr class="headrow">
-					<td colspan="2">Sefer Bereishis - בראשית</td>
-					<td>1,533</td>
-					<td>20,612</td>
-					<td>78,063</td>
-				</tr>
-				<tr>
-					<td>Bereishis</td>
-					<td>בראשית</td>
-					<td>146</td>
-					<td>1931</td>
-					<td>7234</td>
-				</tr>
-				<tr>
-					<td>Noach</td>
-					<td>נוח</td>
-					<td>153</td>
-					<td>1861</td>
-					<td>6907</td>
-				</tr>
-				<tr>
-					<td>Lech-Lecha</td>
-					<td>לך-לך</td>
-					<td>126</td>
-					<td>1686</td>
-					<td>6336</td>
-				</tr>
-				<tr>
-					<td>Vayeira</td>
-					<td>ויירא</td>
-					<td>147</td>
-					<td>2085</td>
-					<td>7862</td>
-				</tr>
-				<tr>
-					<td>Chayei Sarah</td>
-					<td>חיי שרה</td>
-					<td>105</td>
-					<td>1402</td>
-					<td>5314</td>
-				</tr>
-				<tr>
-					<td>Toledos</td>
-					<td>תולדות</td>
-					<td>106</td>
-					<td>1432</td>
-					<td>5426</td>
-				</tr>
-				<tr>
-					<td>Vayetze</td>
-					<td>וייצא</td>
-					<td>148</td>
-					<td>2021</td>
-					<td>7512</td>
-				</tr>
-				<tr>
-					<td>Vayishlach</td>
-					<td>וישלח</td>
-					<td>153</td>
-					<td>1976</td>
-					<td>7458</td>
-				</tr>
-				<tr>
-					<td>Vayeshev</td>
-					<td>ויישב</td>
-					<td>112</td>
-					<td>1558</td>
-					<td>5972</td>
-				</tr>
-				<tr>
-					<td>Miketz</td>
-					<td>מקץ</td>
-					<td>146</td>
-					<td>2022</td>
-					<td>7914</td>
-				</tr>
-				<tr>
-					<td>Vayigash</td>
-					<td>וייגש</td>
-					<td>106</td>
-					<td>1480</td>
-					<td>5680</td>
-				</tr>
-				<tr>
-					<td>Vayechi</td>
-					<td>ויחי</td>
-					<td>85</td>
-					<td>1158</td>
-					<td>4448</td>
-				</tr>
-				<tr class="headrow">
-					<td colspan="2">Sefer Shemos - שמות</td>
-					<td>1,209</td>
-					<td>16,713</td>
-					<td>63,527</td>
-				</tr>
-				<tr>
-					<td>Shemos</td>
-					<td>שמות</td>
-					<td>124</td>
-					<td>1763</td>
-					<td>6762</td>
-				</tr>
-				<tr>
-					<td>Va'eira</td>
-					<td>ואירא</td>
-					<td>121</td>
-					<td>1748</td>
-					<td>6701</td>
-				</tr>
-				<tr>
-					<td>Bo</td>
-					<td>בוא</td>
-					<td>106</td>
-					<td>1655</td>
-					<td>6149</td>
-				</tr>
-				<tr>
-					<td>Beshalach</td>
-					<td>בשלח</td>
-					<td>116</td>
-					<td>1681</td>
-					<td>6423</td>
-				</tr>
-				<tr>
-					<td>Yisro</td>
-					<td>יתרו</td>
-					<td>74*</td>
-					<td>1105</td>
-					<td>4022</td>
-				</tr>
-				<tr>
-					<td>Mishpatim</td>
-					<td>משפטים</td>
-					<td>118</td>
-					<td>1462</td>
-					<td>5313</td>
-				</tr>
-				<tr>
-					<td>Terumah</td>
-					<td>תרומה</td>
-					<td>96</td>
-					<td>1145</td>
-					<td>4691</td>
-				</tr>
-				<tr>
-					<td>Tetzaveh</td>
-					<td>תצווה</td>
-					<td>101</td>
-					<td>1412</td>
-					<td>5429</td>
-				</tr>
-				<tr>
-					<td>Ki Sisa</td>
-					<td>כי תישא</td>
-					<td>139</td>
-					<td>2002</td>
-					<td>7424</td>
-				</tr>
-				<tr>
-					<td>Vayakhel</td>
-					<td>ויקהל</td>
-					<td>122</td>
-					<td>1558</td>
-					<td>6181</td>
-				</tr>
-				<tr>
-					<td>Pekudei</td>
-					<td>פקודי</td>
-					<td>92</td>
-					<td>1182</td>
-					<td>4432</td>
-				</tr>
-				<tr class="headrow">
-					<td colspan="2">Sefer Vayikra - ויקרא</td>
-					<td>859</td>
-					<td>11,950</td>
-					<td>44,790</td>
-				</tr>
-				<tr>
-					<td>Vayikra</td>
-					<td>ויקרא</td>
-					<td>111</td>
-					<td>1673</td>
-					<td>6222</td>
-				</tr>
-				<tr>
-					<td>Tzav</td>
-					<td>צו</td>
-					<td>97</td>
-					<td>1353</td>
-					<td>5096</td>
-				</tr>
-				<tr>
-					<td>Shemini</td>
-					<td>שמיני</td>
-					<td>91</td>
-					<td>1238</td>
-					<td>4670</td>
-				</tr>
-				<tr>
-					<td>Tazria</td>
-					<td>תזריע</td>
-					<td>67</td>
-					<td>1010</td>
-					<td>3667</td>
-				</tr>
-				<tr>
-					<td>Metzora</td>
-					<td>מצורע</td>
-					<td>90</td>
-					<td>1274</td>
-					<td>4697</td>
-				</tr>
-				<tr>
-					<td>Acharei Mos</td>
-					<td>אחרי מות</td>
-					<td>80</td>
-					<td>1170</td>
-					<td>4294</td>
-				</tr>
-				<tr>
-					<td>Kedoshim</td>
-					<td>קדושים</td>
-					<td>64</td>
-					<td>868</td>
-					<td>3229</td>
-				</tr>
-				<tr>
-					<td>Emor</td>
-					<td>אמור</td>
-					<td>124</td>
-					<td>1614</td>
-					<td>6106</td>
-				</tr>
-				<tr>
-					<td>Behar</td>
-					<td>בהר סיניי</td>
-					<td>57</td>
-					<td>737</td>
-					<td>2817</td>
-				</tr>
-				<tr>
-					<td>Bechukosai</td>
-					<td>בחוקותיי</td>
-					<td>78</td>
-					<td>1013</td>
-					<td>3992</td>
-				</tr>
-				<tr class="headrow">
-					<td colspan="2">Sefer Bamidbar - במדבר</td>
-					<td>1,288</td>
-					<td>16,408</td>
-					<td>63,529</td>
-				</tr>
-				<tr>
-					<td>Bamidbar</td>
-					<td>במדבר</td>
-					<td>159</td>
-					<td>1823</td>
-					<td>7392</td>
-				</tr>
-				<tr>
-					<td>Naso</td>
-					<td>נשוא</td>
-					<td>176</td>
-					<td>2264</td>
-					<td>8632</td>
-				</tr>
-				<tr>
-					<td>Behaalosecha</td>
-					<td>בהעלותך</td>
-					<td>136</td>
-					<td>1840</td>
-					<td>7056</td>
-				</tr>
-				<tr>
-					<td>Shlach</td>
-					<td>שלח-לך</td>
-					<td>119</td>
-					<td>1540</td>
-					<td>5820</td>
-				</tr>
-				<tr>
-					<td>Korach</td>
-					<td>קורח</td>
-					<td>95</td>
-					<td>1409</td>
-					<td>5325</td>
-				</tr>
-				<tr>
-					<td>Chukas</td>
-					<td>חוקת</td>
-					<td>87</td>
-					<td>1245</td>
-					<td>4670</td>
-				</tr>
-				<tr>
-					<td>Balak</td>
-					<td>בלק</td>
-					<td>104</td>
-					<td>1455</td>
-					<td>5356</td>
-				</tr>
-				<tr>
-					<td>Pinchas</td>
-					<td>פינחס</td>
-					<td>168</td>
-					<td>1887</td>
-					<td>7853</td>
-				</tr>
-				<tr>
-					<td>Matos</td>
-					<td>מטות</td>
-					<td>112</td>
-					<td>1484</td>
-					<td>5652</td>
-				</tr>
-				<tr>
-					<td>Masei</td>
-					<td>מסעי</td>
-					<td>132</td>
-					<td>1461</td>
-					<td>5773</td>
-				</tr>
-				<tr class="headrow">
-					<td colspan="2">Sefer Devarim - דברים</td>
-					<td>955</td>
-					<td>14,294</td>
-					<td>54,892</td>
-				</tr>
-				<tr>
-					<td>Devarim</td>
-					<td>דברים</td>
-					<td>105</td>
-					<td>1548</td>
-					<td>5972</td>
-				</tr>
-				<tr>
-					<td>Va'eschanan</td>
-					<td>ואתחנן</td>
-					<td>121*</td>
-					<td>1878</td>
-					<td>7343</td>
-				</tr>
-				<tr>
-					<td>Eikev</td>
-					<td>עקב</td>
-					<td>111</td>
-					<td>1747</td>
-					<td>6865</td>
-				</tr>
-				<tr>
-					<td>Re'eh</td>
-					<td>ראה</td>
-					<td>126</td>
-					<td>1932</td>
-					<td>7442</td>
-				</tr>
-				<tr>
-					<td>Shoftim</td>
-					<td>שופטים</td>
-					<td>97</td>
-					<td>1523</td>
-					<td>5590</td>
-				</tr>
-				<tr>
-					<td>Ki Seitzei</td>
-					<td>כי-תצא</td>
-					<td>110</td>
-					<td>1582</td>
-					<td>5856</td>
-				</tr>
-				<tr>
-					<td>Ki Savo</td>
-					<td>כי-תבוא</td>
-					<td>122</td>
-					<td>1747</td>
-					<td>6811</td>
-				</tr>
-				<tr>
-					<td>Nitzavim</td>
-					<td>ניצבים</td>
-					<td>40</td>
-					<td>657</td>
-					<td>2575</td>
-				</tr>
-				<tr>
-					<td>Vayelech</td>
-					<td>וילך</td>
-					<td>30</td>
-					<td>553</td>
-					<td>2123</td>
-				</tr>
-				<tr>
-					<td>Haazinu</td>
-					<td>האזינו</td>
-					<td>52</td>
-					<td>615</td>
-					<td>2326</td>
-				</tr>
-				<tr>
-					<td>V'zos HaBerachah</td>
-					<td>וזאת הברכה</td>
-					<td>41</td>
-					<td>512</td>
-					<td>1989</td>
-				</tr>
+				{#each books as book}
+					{@const bookStats = getStats(book.name, 'book')}
+					<tr class="headrow">
+						<td colspan="2">{book.displayName} - {book.hebrewName}</td>
+						<td>{formatNumber(bookStats.verses)}</td>
+						<td>{formatNumber(bookStats.words)}</td>
+						<td>{formatNumber(bookStats.letters)}</td>
+					</tr>
+					{#each book.parshios as parsha}
+						{@const parshaStats = getStats(parsha.name, 'parsha')}
+						<tr>
+							<td>{parsha.displayName}</td>
+							<td>{parsha.hebrewName}</td>
+							<td>{parshaStats.verses}{parsha.versesNote || ''}</td>
+							<td>{parshaStats.words}</td>
+							<td>{parshaStats.letters}</td>
+						</tr>
+					{/each}
+				{/each}
 			</tbody>
 		</table>
 	</div>

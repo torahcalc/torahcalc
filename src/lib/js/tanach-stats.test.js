@@ -183,6 +183,6 @@ describe('Book and Parsha Coverage', () => {
 		expect(isValidBook('parshas bamidbar')).toBe(true);
 		expect(isValidBook('parshas naso')).toBe(true);
 		expect(isValidBook('parshas devarim')).toBe(true);
-		expect(isValidBook('parshas vaeschanan')).toBe(true);
+		expect(isValidBook("parshas va'eschanan")).toBe(true);
 	});
 });
