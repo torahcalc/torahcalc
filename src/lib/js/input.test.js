@@ -641,9 +641,9 @@ describe('test tanach stats', () => {
 		const sections = await calculateQuery('How many chapters are in the Torah?');
 		const offset = sections[0].title === '' ? 1 : 0;
 		expect(sections[offset].title).toBe('Input Interpretation');
-		expect(sections[offset].content).toBe('How many chapters are in Torah?');
+		expect(sections[offset].content).toBe('How many chapters are in The Torah?');
 		expect(sections[offset + 1].title).toBe('Result');
-		expect(sections[offset + 1].content).toBe(`Torah has ${formatNumberHTML(187)} chapters.`);
+		expect(sections[offset + 1].content).toBe(`The Torah has ${formatNumberHTML(187)} chapters.`);
 	});
 
 	it('How many verses are in Bereishis?', async () => {
@@ -678,9 +678,9 @@ describe('test tanach stats', () => {
 		const sections = await calculateQuery('How many portions are in the Torah?');
 		const offset = sections[0].title === '' ? 1 : 0;
 		expect(sections[offset].title).toBe('Input Interpretation');
-		expect(sections[offset].content).toBe('How many portions are in Torah?');
+		expect(sections[offset].content).toBe('How many portions are in The Torah?');
 		expect(sections[offset + 1].title).toBe('Result');
-		expect(sections[offset + 1].content).toBe(`Torah has ${formatNumberHTML(54)} portions.`);
+		expect(sections[offset + 1].content).toBe(`The Torah has ${formatNumberHTML(54)} portions.`);
 	});
 
 	it('How many verses are in Parshas Bereshis?', async () => {

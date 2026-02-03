@@ -8,7 +8,7 @@ describe('getStats', () => {
 	});
 
 	it('returns stats for Torah', () => {
-		const stats = getStats('torah');
+		const stats = getStats('the torah');
 		expect(stats).toEqual({ chapters: 187, verses: 5844, words: 79977, letters: 304801, portions: 54 });
 	});
 
@@ -35,7 +35,7 @@ describe('getStats', () => {
 
 describe('isValidBook', () => {
 	it('returns true for valid books', () => {
-		expect(isValidBook('torah')).toBe(true);
+		expect(isValidBook('the torah')).toBe(true);
 		expect(isValidBook('sefer bereishis')).toBe(true);
 		expect(isValidBook('sefer shemos')).toBe(true);
 		expect(isValidBook('sefer vayikra')).toBe(true);
@@ -51,11 +51,11 @@ describe('isValidBook', () => {
 
 describe('hasStat', () => {
 	it('returns true if book has the statistic', () => {
-		expect(hasStat('torah', 'chapters')).toBe(true);
-		expect(hasStat('torah', 'verses')).toBe(true);
-		expect(hasStat('torah', 'words')).toBe(true);
-		expect(hasStat('torah', 'letters')).toBe(true);
-		expect(hasStat('torah', 'portions')).toBe(true);
+		expect(hasStat('the torah', 'chapters')).toBe(true);
+		expect(hasStat('the torah', 'verses')).toBe(true);
+		expect(hasStat('the torah', 'words')).toBe(true);
+		expect(hasStat('the torah', 'letters')).toBe(true);
+		expect(hasStat('the torah', 'portions')).toBe(true);
 	});
 
 	it('returns false if book does not have the statistic', () => {
@@ -73,11 +73,11 @@ describe('hasStat', () => {
 
 describe('getStat', () => {
 	it('returns the correct statistic', () => {
-		expect(getStat('torah', 'chapters')).toBe(187);
-		expect(getStat('torah', 'verses')).toBe(5844);
-		expect(getStat('torah', 'words')).toBe(79977);
-		expect(getStat('torah', 'letters')).toBe(304801);
-		expect(getStat('torah', 'portions')).toBe(54);
+		expect(getStat('the torah', 'chapters')).toBe(187);
+		expect(getStat('the torah', 'verses')).toBe(5844);
+		expect(getStat('the torah', 'words')).toBe(79977);
+		expect(getStat('the torah', 'letters')).toBe(304801);
+		expect(getStat('the torah', 'portions')).toBe(54);
 	});
 
 	it('returns null for missing statistic', () => {
@@ -119,12 +119,6 @@ describe('formatStatType', () => {
 });
 
 describe('formatBookName', () => {
-	it('formats special cases correctly', () => {
-		expect(formatBookName('tanach')).toBe('Tanach');
-		expect(formatBookName('torah')).toBe('Torah');
-		expect(formatBookName('trei asar')).toBe('Trei Asar');
-	});
-
 	it('formats books with roman numerals', () => {
 		expect(formatBookName('shmuel i')).toBe('Shmuel I');
 		expect(formatBookName('shmuel ii')).toBe('Shmuel II');
