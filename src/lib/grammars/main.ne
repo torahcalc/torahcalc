@@ -13,6 +13,7 @@ import { dateToObject, getCurrentHebrewMonth, getCurrentHebrewYear, getNextDayOf
 @include "./generated/zmanim.ne"  # zman, duration
 @include "./generated/daily-learning.ne"  # dailyLearningType
 @include "./generated/holidays.ne"  # holiday
+@include "./generated/tanach-books.ne"  # tanachBook, parsha, statType
 
 # Macro for matching a query with optional trailing spaces and punctuation at the end
 query[QUERY] -> _ $QUERY _ {% data => data[1] %}
@@ -39,6 +40,7 @@ main -> query[unitConversionQuery] {% data => data[0][0] %}
       | query[birkasHachamaQuery] {% data => data[0][0] %}
       | query[shmitaQuery] {% data => data[0][0] %}
       | query[shmitaCheckQuery] {% data => data[0][0] %}
+      | query[tanachStatsQuery] {% data => data[0][0] %}
 
 # Unit Conversions
 # - Convert 10 amos to meters
@@ -224,6 +226,21 @@ shmitaTerm -> shmitaWord {% data => null %}
             | shmitaWord __ "year" {% data => null %}
 
 shmitaWord -> ("shmita" | "shemita" | "shmitta" | "shemitta" | "shmitah" | "shemitah" | "shmittah" | "shemittah" | "שמיטה" | "sabbatical year" | "sabbatical") {% data => null %}
+
+# Tanach Stats
+# - How many chapters are in the Torah?
+# - How many verses are in Bereishis?
+# - How many words in Psalms?
+# - How many letters are in Genesis?
+# - How many portions are in the Torah?
+# - How many verses are in Parshas Bereshis?
+# - How many words in the parsha Noach?
+tanachStatsQuery -> optionalWords[("how many" | "how much")] statType __ optionalWords[("are" | "is" | "are there")] optionalWords[("in" | "in the")] (("parshas" | "parsha" | "portion") __) parsha {% data => ({function: "tanachStatsQuery", statType: data[1], book: data[6], bookType: 'parsha'}) %}
+                  | optionalWords[("how many" | "how much")] statType __ optionalWords[("are" | "is" | "are there")] optionalWords[("in" | "in the")] (("book of" | "sefer" | "book") __) tanachBook {% data => ({function: "tanachStatsQuery", statType: data[1], book: data[6], bookType: 'sefer'}) %}
+                  | optionalWords[("how many" | "how much")] statType __ optionalWords[("are" | "is" | "are there")] optionalWords[("in" | "in the")] optionalWords["the"] (tanachBook | parsha) {% data => ({function: "tanachStatsQuery", statType: data[1], book: data[6][0], bookType: 'unknown'}) %}
+                  | optionalWords[("calculate" | "compute" | "what is" | "what are" | "what's")] optionalWords["the"] optionalWords["number of"] statType __ optionalWords[("in" | "in the")] (("parshas" | "parsha" | "portion") __) parsha {% data => ({function: "tanachStatsQuery", statType: data[3], book: data[7], bookType: 'parsha'}) %}
+                  | optionalWords[("calculate" | "compute" | "what is" | "what are" | "what's")] optionalWords["the"] optionalWords["number of"] statType __ optionalWords[("in" | "in the")] (("book of" | "sefer" | "book") __) tanachBook {% data => ({function: "tanachStatsQuery", statType: data[3], book: data[7], bookType: 'sefer'}) %}
+                  | optionalWords[("calculate" | "compute" | "what is" | "what are" | "what's")] optionalWords["the"] optionalWords["number of"] statType __ optionalWords[("in" | "in the")] optionalWords["the"] (tanachBook | parsha) {% data => ({function: "tanachStatsQuery", statType: data[3], book: data[7][0], bookType: 'unknown'}) %}
 
 # Date parsing
 date -> gregorianDate {% data => data[0] %}

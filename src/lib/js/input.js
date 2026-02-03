@@ -14,6 +14,7 @@ import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears';
 import { calculateMolad } from './molad';
 import { calculateOmerDate, calculateOmerHebrew } from './omer';
 import { isShmitaYear, nextShmita, previousShmita } from './shmita';
+import { formatBookName, formatStatType, getStat, hasStat } from './tanach-stats';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
 import {
 	dataToHtmlTable,
@@ -129,6 +130,7 @@ export async function calculateQuery(search, options = {}) {
 		birkasHachamaQuery: () => birkasHachamaQuery(derivation),
 		shmitaQuery: () => shmitaQuery(derivation),
 		shmitaCheckQuery: () => shmitaCheckQuery(derivation),
+		tanachStatsQuery: () => tanachStatsQuery(derivation),
 	};
 
 	/** @type {Array<{ title: string, content: string }>} */
@@ -477,6 +479,58 @@ async function getValidDerivations(search, results) {
 				}
 			}
 			derivation.disambiguation = disambiguation;
+		} else if (derivation.function === 'tanachStatsQuery') {
+			// Format the book/parsha name with appropriate prefix
+			let bookName = derivation.book;
+			const statType = derivation.statType;
+			const bookType = derivation.bookType || 'unknown';
+			const isParshaExplicitly = bookType === 'parsha';
+			const isSeferExplicitly = bookType === 'sefer';
+
+			// Import stats functions
+			const { TANACH_STATS, PARSHA_STATS, formatBookName, formatStatType } = await import('./tanach-stats.js');
+
+			// Check if bookName is a canonical parsha or book name (direct lookup, no mapping)
+			const directParshaStats = PARSHA_STATS[bookName];
+			const directBookStats = TANACH_STATS[bookName];
+
+			// Determine if it's a parsha vs book based on what stats are available
+			const parshaStatsAvailable = directParshaStats !== undefined && statType in directParshaStats;
+			const bookStatsAvailable = directBookStats !== undefined && statType in directBookStats;
+
+			// Determine which interpretation this is and store it
+			let interpretationType;
+			let displayName = formatBookName(bookName);
+
+			if (isParshaExplicitly && parshaStatsAvailable) {
+				// Grammar already indicated it's a parsha, or user explicitly said "parshas"
+				interpretationType = 'parsha';
+				derivation.disambiguationScore += 1; // Prefer explicit parsha references
+			} else if (isSeferExplicitly && bookStatsAvailable) {
+				// Grammar already indicated it's a sefer, or user explicitly said "sefer"
+				interpretationType = 'sefer';
+				derivation.disambiguationScore += 1; // Prefer explicit sefer references
+			} else if (parshaStatsAvailable && !bookStatsAvailable) {
+				// Only a parsha, not a book
+				interpretationType = 'parsha';
+			} else if (!parshaStatsAvailable && bookStatsAvailable) {
+				// Only a book, not a parsha
+				interpretationType = 'sefer';
+			} else if (parshaStatsAvailable && bookStatsAvailable) {
+				// Add to book disambiguation score if both interpretations are possible
+				derivation.disambiguationScore += 1;
+				// Both interpretations are possible, prefer sefer over parsha
+				interpretationType = 'sefer';
+			} else {
+				// Neither interpretation is valid, skip this derivation
+				continue;
+			}
+
+			// Store the interpretation type in the derivation so tanachStatsQuery can use it
+			derivation.interpretationType = interpretationType;
+			// Store the cleaned bookName for tanachStatsQuery to use
+			derivation.book = bookName;
+			derivation.disambiguation = `${formatStatType(statType, 2)} in ${displayName}`;
 		}
 		derivations[derivation.disambiguation] = derivation;
 	}
@@ -1452,6 +1506,65 @@ function shmitaCheckQuery(derivation) {
 
 	sections.push({ title: INPUT_INTERPRETATION, content: `Is ${derivation.year} a Shmita year on the Hebrew calendar?` });
 	sections.push({ title: RESULT, content: `${result ? 'Yes' : 'No'}, Hebrew year ${formatNumberHTML(derivation.year, -1)} is ${result ? '' : 'not '}a Shmita year` });
+
+	return sections;
+}
+
+/**
+ * Generate sections for a Tanach Stats query
+ *
+ * @param {{ function?: string, statType: string, book: string, interpretationType?: string }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function tanachStatsQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+
+	const bookName = derivation.book;
+	const statType = derivation.statType;
+	const interpretationType = derivation.interpretationType || 'book'; // Default to book if not specified
+
+	// Determine the display name based on interpretation type
+	let displayName = formatBookName(bookName);
+
+	// Determine which stats to use based on interpretation type
+	const bookType = interpretationType === 'parsha' ? 'parsha' : 'book';
+
+	// Check if the book has this statistic
+	if (!hasStat(bookName, statType, bookType)) {
+		sections.push({
+			title: INPUT_INTERPRETATION,
+			content: `How many ${formatStatType(statType, 2)} are in ${displayName}?`,
+		});
+		sections.push({
+			title: RESULT,
+			content: `${displayName} does not have ${formatStatType(statType, 2)} statistics available.`,
+		});
+		return sections;
+	}
+
+	const statValue = getStat(bookName, statType, bookType);
+
+	if (statValue === null) {
+		sections.push({
+			title: INPUT_INTERPRETATION,
+			content: `How many ${formatStatType(statType, 2)} are in ${displayName}?`,
+		});
+		sections.push({
+			title: RESULT,
+			content: `Unable to find ${formatStatType(statType, 2)} statistics for ${displayName}.`,
+		});
+		return sections;
+	}
+
+	sections.push({
+		title: INPUT_INTERPRETATION,
+		content: `How many ${formatStatType(statType, 2)} are in ${displayName}?`,
+	});
+	sections.push({
+		title: RESULT,
+		content: `${displayName} has ${formatNumberHTML(statValue)} ${formatStatType(statType, statValue)}.`,
+	});
 
 	return sections;
 }

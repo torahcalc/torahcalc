@@ -635,3 +635,111 @@ describe('test birkas hachama', () => {
 		expect(sections[1].content).toContain('Nissan');
 	});
 });
+
+describe('test tanach stats', () => {
+	it('How many chapters are in the Torah?', async () => {
+		const sections = await calculateQuery('How many chapters are in the Torah?');
+		const offset = sections[0].title === '' ? 1 : 0;
+		expect(sections[offset].title).toBe('Input Interpretation');
+		expect(sections[offset].content).toBe('How many chapters are in Torah?');
+		expect(sections[offset + 1].title).toBe('Result');
+		expect(sections[offset + 1].content).toBe(`Torah has ${formatNumberHTML(187)} chapters.`);
+	});
+
+	it('How many verses are in Bereishis?', async () => {
+		const sections = await calculateQuery('How many verses are in Bereishis?');
+		// "Bereishis" is ambiguous (book and parsha), so disambiguation section appears first
+		const offset = sections[0].title === '' ? 1 : 0;
+		expect(sections[offset].title).toBe('Input Interpretation');
+		expect(sections[offset].content).toBe('How many verses are in Sefer Bereishis?');
+		expect(sections[offset + 1].title).toBe('Result');
+		expect(sections[offset + 1].content).toBe(`Sefer Bereishis has ${formatNumberHTML(1533)} verses.`);
+	});
+
+	it('How many words in Psalms?', async () => {
+		const sections = await calculateQuery('How many words in Psalms?');
+		const offset = sections[0].title === '' ? 1 : 0;
+		expect(sections[offset].title).toBe('Input Interpretation');
+		expect(sections[offset].content).toBe('How many words are in Tehillim?');
+		expect(sections[offset + 1].title).toBe('Result');
+		expect(sections[offset + 1].content).toBe(`Tehillim has ${formatNumberHTML(19583)} words.`);
+	});
+
+	it('How many letters are in Genesis?', async () => {
+		const sections = await calculateQuery('How many letters are in Genesis?');
+		const offset = sections[0].title === '' ? 1 : 0;
+		expect(sections[offset].title).toBe('Input Interpretation');
+		expect(sections[offset].content).toBe('How many letters are in Sefer Bereishis?');
+		expect(sections[offset + 1].title).toBe('Result');
+		expect(sections[offset + 1].content).toBe(`Sefer Bereishis has ${formatNumberHTML(78063)} letters.`);
+	});
+
+	it('How many portions are in the Torah?', async () => {
+		const sections = await calculateQuery('How many portions are in the Torah?');
+		const offset = sections[0].title === '' ? 1 : 0;
+		expect(sections[offset].title).toBe('Input Interpretation');
+		expect(sections[offset].content).toBe('How many portions are in Torah?');
+		expect(sections[offset + 1].title).toBe('Result');
+		expect(sections[offset + 1].content).toBe(`Torah has ${formatNumberHTML(54)} portions.`);
+	});
+
+	it('How many verses are in Parshas Bereshis?', async () => {
+		const sections = await calculateQuery('How many verses are in Parshas Bereshis?');
+		// "Bereshis" is ambiguous (book and parsha), so disambiguation section appears first
+		const offset = sections[0].title === '' ? 1 : 0;
+		expect(sections[offset].title).toBe('Input Interpretation');
+		expect(sections[offset].content).toBe('How many verses are in Parshas Bereishis?');
+		expect(sections[offset + 1].title).toBe('Result');
+		expect(sections[offset + 1].content).toBe(`Parshas Bereishis has ${formatNumberHTML(146)} verses.`);
+	});
+
+	it('Bereishis ambiguous query shows meaningful disambiguation', async () => {
+		const sections = await calculateQuery('How many verses in Bereishis?');
+		// Should have disambiguation section as first section (empty title)
+		expect(sections[0].title).toBe('');
+		// Should show both "Sefer Bereishis" (current) and "Parshas Bereishis" (alternative)
+		const disambigContent = sections[0].content;
+		expect(disambigContent).toContain('Sefer Bereishis');
+		expect(disambigContent).toContain('Parshas Bereishis');
+		expect(disambigContent).toMatch(/Interpreting as.*Sefer Bereishis/);
+		expect(disambigContent).toMatch(/Interpret instead as.*Parshas Bereishis/);
+	});
+
+	it('How many words in the parsha Noach?', async () => {
+		const sections = await calculateQuery('How many words in the parsha Noach?');
+		const offset = sections[0].title === '' ? 1 : 0;
+		expect(sections[offset].title).toBe('Input Interpretation');
+		expect(sections[offset].content).toBe('How many words are in Parshas Noach?');
+		expect(sections[offset + 1].title).toBe('Result');
+		expect(sections[offset + 1].content).toBe(`Parshas Noach has ${formatNumberHTML(1861)} words.`);
+	});
+
+	it('How many letters in Vayikra?', async () => {
+		const sections = await calculateQuery('How many letters in Vayikra?');
+		const offset = sections[0].title === '' ? 1 : 0;
+		expect(sections[offset].title).toBe('Input Interpretation');
+		expect(sections[offset].content).toBe('How many letters are in Sefer Vayikra?');
+		expect(sections[offset + 1].title).toBe('Result');
+		expect(sections[offset + 1].content).toContain('Sefer Vayikra has');
+		expect(sections[offset + 1].content).toContain('letters.');
+	});
+
+	it('Parsha does not have chapters statistic', async () => {
+		const sections = await calculateQuery('How many chapters in parsha Noach?');
+		// Unambiguous parsha name
+		const offset = sections[0].title === '' ? 1 : 0;
+		expect(sections[offset].title).toBe('Input Interpretation');
+		expect(sections[offset].content).toBe('How many chapters are in Parshas Noach?');
+		expect(sections[offset + 1].title).toBe('Result');
+		expect(sections[offset + 1].content).toBe('Parshas Noach does not have chapters statistics available.');
+	});
+
+	it('How many verses are in the entire Tanach?', async () => {
+		const sections = await calculateQuery('How many verses are in the Tanach?');
+		const offset = sections[0].title === '' ? 1 : 0;
+		expect(sections[offset].title).toBe('Input Interpretation');
+		expect(sections[offset].content).toBe('How many verses are in Tanach?');
+		expect(sections[offset + 1].title).toBe('Result');
+		expect(sections[offset + 1].content).toBe(`Tanach has ${formatNumberHTML(23198)} verses.`);
+	});
+});

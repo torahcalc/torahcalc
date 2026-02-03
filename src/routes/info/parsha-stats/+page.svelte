@@ -44,7 +44,7 @@
 					<td>78,063</td>
 				</tr>
 				<tr>
-					<td>Bereshis</td>
+					<td>Bereishis</td>
 					<td>בראשית</td>
 					<td>146</td>
 					<td>1931</td>
