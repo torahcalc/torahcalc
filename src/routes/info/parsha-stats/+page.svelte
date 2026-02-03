@@ -21,8 +21,8 @@
 				{ name: 'parshas vayeshev', displayName: 'Vayeshev', hebrewName: 'ויישב' },
 				{ name: 'parshas miketz', displayName: 'Miketz', hebrewName: 'מקץ' },
 				{ name: 'parshas vayigash', displayName: 'Vayigash', hebrewName: 'וייגש' },
-				{ name: 'parshas vayechi', displayName: 'Vayechi', hebrewName: 'ויחי' }
-			]
+				{ name: 'parshas vayechi', displayName: 'Vayechi', hebrewName: 'ויחי' },
+			],
 		},
 		{
 			name: 'sefer shemos',
@@ -39,8 +39,8 @@
 				{ name: 'parshas tetzaveh', displayName: 'Tetzaveh', hebrewName: 'תצווה' },
 				{ name: 'parshas ki sisa', displayName: 'Ki Sisa', hebrewName: 'כי תישא' },
 				{ name: 'parshas vayakhel', displayName: 'Vayakhel', hebrewName: 'ויקהל' },
-				{ name: 'parshas pekudei', displayName: 'Pekudei', hebrewName: 'פקודי' }
-			]
+				{ name: 'parshas pekudei', displayName: 'Pekudei', hebrewName: 'פקודי' },
+			],
 		},
 		{
 			name: 'sefer vayikra',
@@ -56,8 +56,8 @@
 				{ name: 'parshas kedoshim', displayName: 'Kedoshim', hebrewName: 'קדושים' },
 				{ name: 'parshas emor', displayName: 'Emor', hebrewName: 'אמור' },
 				{ name: 'parshas behar', displayName: 'Behar', hebrewName: 'בהר סיניי' },
-				{ name: 'parshas bechukosai', displayName: 'Bechukosai', hebrewName: 'בחוקותיי' }
-			]
+				{ name: 'parshas bechukosai', displayName: 'Bechukosai', hebrewName: 'בחוקותיי' },
+			],
 		},
 		{
 			name: 'sefer bamidbar',
@@ -73,8 +73,8 @@
 				{ name: 'parshas balak', displayName: 'Balak', hebrewName: 'בלק' },
 				{ name: 'parshas pinchas', displayName: 'Pinchas', hebrewName: 'פינחס' },
 				{ name: 'parshas matos', displayName: 'Matos', hebrewName: 'מטות' },
-				{ name: 'parshas masei', displayName: 'Masei', hebrewName: 'מסעי' }
-			]
+				{ name: 'parshas masei', displayName: 'Masei', hebrewName: 'מסעי' },
+			],
 		},
 		{
 			name: 'sefer devarim',
@@ -91,9 +91,9 @@
 				{ name: 'parshas nitzavim', displayName: 'Nitzavim', hebrewName: 'ניצבים' },
 				{ name: 'parshas vayelech', displayName: 'Vayelech', hebrewName: 'וילך' },
 				{ name: "parshas h'aazinu", displayName: "Ha'azinu", hebrewName: 'האזינו' },
-				{ name: "parshas v'zos habrachah", displayName: "V'zos HaBrachah", hebrewName: 'וזאת הברכה' }
-			]
-		}
+				{ name: "parshas v'zos habrachah", displayName: "V'zos HaBrachah", hebrewName: 'וזאת הברכה' },
+			],
+		},
 	];
 
 	// Get Torah stats
