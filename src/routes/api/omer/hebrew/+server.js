@@ -12,11 +12,11 @@ export async function GET({ url }) {
 	const day = Number(url.searchParams.get('day') ?? hDateToday.getDate());
 
 	try {
-		if (isNaN(year)) {
+		if (Number.isNaN(year)) {
 			throw new Error('Invalid Hebrew year');
-		} else if (isNaN(month) || month < 1 || month > 13) {
+		} else if (Number.isNaN(month) || month < 1 || month > 13) {
 			throw new Error('Invalid Hebrew month');
-		} else if (isNaN(day) || day < 1 || day > 30) {
+		} else if (Number.isNaN(day) || day < 1 || day > 30) {
 			throw new Error('Invalid Hebrew day');
 		}
 		return createResponse(calculateOmerHebrew(year, month, day));

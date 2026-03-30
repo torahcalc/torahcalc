@@ -8,7 +8,7 @@ import { HDate } from '@hebcal/core';
 export async function GET({ url }) {
 	const year = Number(url.searchParams.get('year') || new HDate().getFullYear());
 
-	if (isNaN(year)) {
+	if (Number.isNaN(year)) {
 		return createErrorResponse('Invalid year.');
 	}
 

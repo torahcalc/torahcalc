@@ -61,7 +61,7 @@ export async function GET({ url }) {
 		if (!FONT_REGEX.test(bodyFont)) throw new Error('Invalid body font parameter');
 
 		let formattedAddress = location;
-		if ((isNaN(latitude) || isNaN(longitude)) && location !== '') {
+		if ((Number.isNaN(latitude) || Number.isNaN(longitude)) && location !== '') {
 			const geocoded = await geocodeAddress(location, env.GOOGLE_MAPS_API_KEY);
 			latitude = Math.round(geocoded.lat * 100000) / 100000;
 			longitude = Math.round(geocoded.lng * 100000) / 100000;
@@ -69,12 +69,12 @@ export async function GET({ url }) {
 		} else if (location === '') {
 			location = `${latitude}, ${longitude}`;
 		}
-		if (isNaN(latitude)) throw new Error("Missing or invalid 'latitude' parameter");
-		if (isNaN(longitude)) throw new Error("Missing or invalid 'longitude' parameter");
+		if (Number.isNaN(latitude)) throw new Error("Missing or invalid 'latitude' parameter");
+		if (Number.isNaN(longitude)) throw new Error("Missing or invalid 'longitude' parameter");
 		if (!timezone) {
 			timezone = await getTimezone(latitude, longitude, env.GOOGLE_MAPS_API_KEY, env.GEONAMES_USERNAME);
 		}
-		if (isNaN(year)) throw new Error("Missing or invalid 'year' parameter");
+		if (Number.isNaN(year)) throw new Error("Missing or invalid 'year' parameter");
 		// start the day before Rosh Hashanah and before next year's Rosh Hashanah
 		const startDate = new HDate(1, 7, year).greg();
 		startDate.setDate(startDate.getDate() - 1);

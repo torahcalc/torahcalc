@@ -14,7 +14,7 @@ export async function GET({ url }) {
 	const miluiInput = {};
 	for (const [key, value] of url.searchParams.entries()) {
 		if (Object.keys(LETTER_KEYS).includes(key)) {
-			if (value && !isNaN(Number(value))) {
+			if (value && !Number.isNaN(Number(value))) {
 				miluiInput[key] = Number(value);
 			}
 		}

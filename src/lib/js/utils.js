@@ -19,7 +19,7 @@ export const formatDate = (year, month, day, format = 'ddd, MMMM D, YYYY') => {
 	if (year === 0) {
 		throw new Error('Gregorian year 0 does not exist.');
 	}
-	if (isNaN(Math.abs(year))) {
+	if (Number.isNaN(Math.abs(year))) {
 		throw new Error('Invalid Gregorian date.');
 	}
 	// pad year with zeros to 4 digits and replace year with the actual year
@@ -187,7 +187,7 @@ export function formatNumber(number, precision = 4, makeNonZero = true, comma = 
  * @returns {string} The formatted number.
  */
 export function formatNumberHTML(text, precision = 4, makeNonZero = true) {
-	if (!isNaN(Number(text)) && precision >= 0) {
+	if (!Number.isNaN(Number(text)) && precision >= 0) {
 		text = formatNumber(Number(text), precision, makeNonZero);
 	}
 	return `<span class="number">${sanitize(text.toString())}</span>`;

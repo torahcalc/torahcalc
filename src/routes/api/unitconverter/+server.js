@@ -16,7 +16,7 @@ export async function GET({ url }) {
 		if (type === null) throw new Error("Missing 'type' parameter");
 		if (unitFromId === null) throw new Error("Missing 'from' parameter");
 		if (unitToId === null) throw new Error("Missing 'to' parameter");
-		if (isNaN(amount)) throw new Error("Invalid 'amount' parameter");
+		if (Number.isNaN(amount)) throw new Error("Invalid 'amount' parameter");
 		return createResponse(await convertUnits({ type, unitFromId, unitToId, amount, opinionId, unitOpinionIds }));
 	} catch (error) {
 		return createErrorResponse(error);

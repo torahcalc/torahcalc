@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 export async function GET({ url }) {
 	const year = Number(url.searchParams.get('year') || dayjs().year());
 
-	if (isNaN(year) || year === 0) {
+	if (Number.isNaN(year) || year === 0) {
 		throw new Error('Invalid Gregorian year');
 	}
 
