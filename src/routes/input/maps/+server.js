@@ -45,7 +45,7 @@ async function getMapboxImage(location) {
 			lng = coordMatch[2];
 		} else {
 			// Geocode the address
-			const geocoded = await geocodeAddress(location, env.GOOGLE_MAPS_API_KEY);
+			const geocoded = await geocodeAddress(location, env.GOOGLE_MAPS_API_KEY, env.MAPBOX_ACCESS_TOKEN);
 			lat = geocoded.lat;
 			lng = geocoded.lng;
 		}
