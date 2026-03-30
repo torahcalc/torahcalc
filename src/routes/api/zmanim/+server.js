@@ -24,7 +24,7 @@ export async function GET({ url }) {
 		if (isNaN(latitude)) throw new Error("Missing or invalid 'latitude' parameter");
 		if (isNaN(longitude)) throw new Error("Missing or invalid 'longitude' parameter");
 		if (!timezone) {
-			timezone = await getTimezone(latitude, longitude, env.GOOGLE_MAPS_API_KEY);
+			timezone = await getTimezone(latitude, longitude, env.GOOGLE_MAPS_API_KEY, env.GEONAMES_USERNAME);
 		}
 		return createResponse(await calculateZmanim({ date, latitude, longitude, timezone, location, candleLightingMins }));
 	} catch (error) {
