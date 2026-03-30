@@ -242,16 +242,16 @@ const CACHED_ADDRESS_LOCATIONS = {
  * Geocode a location using the Google Maps Geocoding API
  *
  * @param {string} address - The address to geocode.
- * @param {string} apiKey - The Google Maps API key.
+ * @param {string | undefined} googleApiKey - The Google Maps API key.
  * @returns {Promise<{ lat: number, lng: number, formattedAddress: string }|null>} The geocoded location or null if it cannot be geocoded.
  */
-export async function _geocodeAddressGoogle(address, apiKey) {
-	if (!apiKey) {
+export async function _geocodeAddressGoogle(address, googleApiKey) {
+	if (!googleApiKey) {
 		return null;
 	}
 
 	try {
-		const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`);
+		const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${googleApiKey}`);
 		const json = await response.json();
 		if (json.status === 'OK') {
 			const result = json.results[0];
@@ -339,23 +339,71 @@ export async function _geocodeAddressNominatim(address) {
 }
 
 /**
- * Geocode a location using the Google Maps Geocoding API, with Nominatim as a fallback.
+ * Geocode a location using Mapbox Geocoding API v6
  *
  * @param {string} address - The address to geocode.
- * @param {string} apiKey - The Google Maps API key.
+ * @param {string | undefined} accessToken - The Mapbox access token.
+ * @returns {Promise<{ lat: number, lng: number, formattedAddress: string }|null>} The geocoded location or null if it cannot be geocoded.
+ */
+export async function _geocodeAddressMapBox(address, accessToken) {
+	if (!accessToken) {
+		return null;
+	}
+
+	try {
+		const response = await fetch(`https://api.mapbox.com/search/geocode/v6/forward?q=${encodeURIComponent(address)}&access_token=${accessToken}`);
+		const json = await response.json();
+
+		if (json.features && json.features.length > 0) {
+			const feature = json.features[0];
+			const [lng, lat] = feature.geometry.coordinates; // GeoJSON uses [lng, lat]
+
+			// Build formatted address from name and place_formatted
+			const formattedAddress =
+				feature.properties.full_address ||
+				(feature.properties.name && feature.properties.place_formatted
+					? `${feature.properties.name}, ${feature.properties.place_formatted}`
+					: feature.properties.name || feature.properties.place_formatted || address);
+
+			return {
+				lat,
+				lng,
+				formattedAddress,
+			};
+		}
+		// eslint-disable-next-line no-unused-vars
+	} catch (error) {
+		// Fall through to null
+	}
+	return null;
+}
+
+/**
+ * Geocode a location using the Google Maps Geocoding API, with Mapbox and Nominatim as fallbacks.
+ *
+ * @param {string} address - The address to geocode.
+ * @param {string | undefined} [googleApiKey] - The Google Maps API key.
+ * @param {string | undefined} [mapboxToken] - The Mapbox access token (optional).
  * @returns {Promise<{ lat: number, lng: number, formattedAddress: string }>} The geocoded location.
  * @throws {Error} If the address is not found.
  */
-export async function geocodeAddress(address, apiKey) {
+export async function geocodeAddress(address, googleApiKey, mapboxToken) {
 	if (address in CACHED_ADDRESS_LOCATIONS) {
 		return CACHED_ADDRESS_LOCATIONS[address];
 	}
 
 	// Try Google Maps first
-	const googleResult = await _geocodeAddressGoogle(address, apiKey);
+	const googleResult = await _geocodeAddressGoogle(address, googleApiKey);
 	if (googleResult) {
 		CACHED_ADDRESS_LOCATIONS[address] = googleResult;
 		return googleResult;
+	}
+
+	// Try Mapbox as second option
+	const mapboxResult = await _geocodeAddressMapBox(address, mapboxToken);
+	if (mapboxResult) {
+		CACHED_ADDRESS_LOCATIONS[address] = mapboxResult;
+		return mapboxResult;
 	}
 
 	// Fallback to Nominatim
@@ -382,11 +430,11 @@ const CACHED_TIMEZONE_NAMES = {
  *
  * @param {number} latitude - The latitude of the location.
  * @param {number} longitude - The longitude of the location.
- * @param {string} apiKey - The Google Maps API key.
+ * @param {string | undefined} googleApiKey - The Google Maps API key.
  * @returns {Promise<string|null>} The timezone name or null if it cannot be determined.
  */
-export async function _getTimezoneGoogle(latitude, longitude, apiKey) {
-	if (!apiKey) {
+export async function _getTimezoneGoogle(latitude, longitude, googleApiKey) {
+	if (!googleApiKey) {
 		return null;
 	}
 
@@ -397,7 +445,7 @@ export async function _getTimezoneGoogle(latitude, longitude, apiKey) {
 
 	// Try Google Maps
 	try {
-		const response = await fetch(`https://maps.googleapis.com/maps/api/timezone/json?location=${location}&timestamp=1458000000&key=${apiKey}`);
+		const response = await fetch(`https://maps.googleapis.com/maps/api/timezone/json?location=${location}&timestamp=1458000000&key=${googleApiKey}`);
 		const json = await response.json();
 		if (json.status === 'OK' && json.timeZoneId) {
 			CACHED_TIMEZONE_NAMES[location] = json.timeZoneId;
@@ -415,7 +463,7 @@ export async function _getTimezoneGoogle(latitude, longitude, apiKey) {
  *
  * @param {number} latitude - The latitude of the location.
  * @param {number} longitude - The longitude of the location.
- * @param {string} username - The Geonames username.
+ * @param {string | undefined} username - The Geonames username.
  * @return {Promise<string|null>} The timezone name or null if it cannot be determined.
  */
 export async function _getTimezoneGeonames(latitude, longitude, username) {
@@ -446,24 +494,24 @@ export async function _getTimezoneGeonames(latitude, longitude, username) {
  *
  * @param {number} latitude - The latitude of the location
  * @param {number} longitude - The longitude of the location
- * @param {string} [apiKey] - The Google Maps API key
- * @param {string} [geonamesUsername] - The Geonames username (optional, used as fallback)
+ * @param {string | undefined} [googleApiKey] - The Google Maps API key
+ * @param {string | undefined} [geonamesUsername] - The Geonames username (optional, used as fallback)
  * @returns {Promise<string>} - The timezone name
  */
-export async function getTimezone(latitude, longitude, apiKey, geonamesUsername) {
+export async function getTimezone(latitude, longitude, googleApiKey, geonamesUsername) {
 	const location = `${latitude},${longitude}`;
 	if (location in CACHED_TIMEZONE_NAMES) {
 		return CACHED_TIMEZONE_NAMES[location];
 	}
 
 	// Try Google Maps first
-	const googleTimezone = await _getTimezoneGoogle(latitude, longitude, apiKey || '');
+	const googleTimezone = await _getTimezoneGoogle(latitude, longitude, googleApiKey);
 	if (googleTimezone) {
 		return googleTimezone;
 	}
 
 	// Fallback to Geonames if username is provided
-	const geonamesTimezone = await _getTimezoneGeonames(latitude, longitude, geonamesUsername || '');
+	const geonamesTimezone = await _getTimezoneGeonames(latitude, longitude, geonamesUsername);
 	if (geonamesTimezone) {
 		return geonamesTimezone;
 	}
