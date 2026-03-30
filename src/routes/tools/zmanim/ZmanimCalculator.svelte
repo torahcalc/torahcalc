@@ -255,7 +255,8 @@
 </script>
 
 <div class="alert alert-warning mb-3" role="alert">
-	<strong>Known Issue:</strong> We are currently experiencing issues with third-party providers that are preventing the Zmanim page from working properly. We are actively working on resolving this issue. Thank you for your patience.
+	<strong>Known Issue:</strong> We are currently experiencing issues with third-party providers that are preventing the Zmanim page from working properly. We are actively working on resolving this issue.
+	Thank you for your patience.
 </div>
 
 <div class="card flex-card mb-0">
