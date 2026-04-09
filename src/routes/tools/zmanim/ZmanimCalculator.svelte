@@ -6,7 +6,7 @@
 	import utc from 'dayjs/plugin/utc';
 	import { dataToHtmlTable } from '$lib/js/utils';
 	import Fa from 'svelte-fa/src/fa.svelte';
-	import { faCalendarDay, faLocationCrosshairs } from '@danieloi/pro-solid-svg-icons';
+	import { faCalendarDay, faLocationCrosshairs, faChevronLeft, faChevronRight } from '@danieloi/pro-solid-svg-icons';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	dayjs.extend(timezone);
@@ -252,6 +252,26 @@
 	function setTimeFormat(format) {
 		timeFormat = format;
 	}
+
+	/**
+	 * Go to the previous day
+	 */
+	function goToPreviousDay() {
+		const previousDay = dayjs(date).subtract(1, 'day');
+		formattedDate = previousDay.format('YYYY-MM-DD');
+		date = new Date(formattedDate + 'T00:00:00');
+		updateResults();
+	}
+
+	/**
+	 * Go to the next day
+	 */
+	function goToNextDay() {
+		const nextDay = dayjs(date).add(1, 'day');
+		formattedDate = nextDay.format('YYYY-MM-DD');
+		date = new Date(formattedDate + 'T00:00:00');
+		updateResults();
+	}
 </script>
 
 <div class="card flex-card mb-0">
@@ -375,8 +395,22 @@
 
 {#if zmanimResult.mapUrl}
 	<div class="card flex-card mb-0">
-		<h5 class="mb-0">Zmanim for {zmanimResult.location} on {dayjs(zmanimResult.date).format('dddd, MMMM D, YYYY')}</h5>
-		<img src={zmanimResult.mapUrl} class="my-3" style="height: auto; width: 400px; max-width: 100%;" alt="Map showing the location for Zmanim calculation" />
+		<h4 class="text-center">Calculated Zmanim for</h4>
+		<h5 class="text-center"><Fa icon={faLocationCrosshairs} size="1x" /> {zmanimResult.location}</h5>
+		<p class="text-center m-0">
+			<img src={zmanimResult.mapUrl} class="mt-3" style="height: auto; width: 400px; max-width: 100%;" alt="Map showing the location for Zmanim calculation" />
+		</p>
+		<div class="d-flex align-items-center justify-content-between gap-3 my-3 flex-wrap">
+			<button class="btn btn-outline-primary btn-sm d-flex align-items-center gap-2" on:click={goToPreviousDay} title="Previous day" disabled={isLoading}>
+				<Fa icon={faChevronLeft} size="1x" />
+				<span>Previous Day</span>
+			</button>
+			<h5 class="mb-0 text-center"><Fa icon={faCalendarDay} size="1x" /> {dayjs(zmanimResult.date).format('dddd, MMMM D, YYYY')}</h5>
+			<button class="btn btn-outline-primary btn-sm d-flex align-items-center gap-2" on:click={goToNextDay} title="Next day" disabled={isLoading}>
+				<span>Next Day</span>
+				<Fa icon={faChevronRight} size="1x" />
+			</button>
+		</div>
 		{@html zmanimResult.tablesHTML}
 	</div>
 
