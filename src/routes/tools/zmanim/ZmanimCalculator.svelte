@@ -403,11 +403,18 @@
 		<div class="d-flex align-items-center justify-content-between gap-3 my-3 flex-wrap">
 			<button class="btn btn-outline-primary btn-sm d-flex align-items-center gap-2" on:click={goToPreviousDay} title="Previous day" disabled={isLoading}>
 				<Fa icon={faChevronLeft} size="1x" />
-				<span>Previous Day</span>
+				<span class="change-date-label">Previous</span>
 			</button>
-			<h5 class="mb-0 text-center"><Fa icon={faCalendarDay} size="1x" /> {dayjs(zmanimResult.date).format('dddd, MMMM D, YYYY')}</h5>
+			<h5 class="mb-0 text-center">
+				<span class="small">
+					<Fa icon={faCalendarDay} size="1x" />
+					{dayjs(zmanimResult.date).format('dddd')}
+				</span>
+				<br />
+				<span>{dayjs(zmanimResult.date).format('MMMM D, YYYY')}</span>
+			</h5>
 			<button class="btn btn-outline-primary btn-sm d-flex align-items-center gap-2" on:click={goToNextDay} title="Next day" disabled={isLoading}>
-				<span>Next Day</span>
+				<span class="change-date-label">Next</span>
 				<Fa icon={faChevronRight} size="1x" />
 			</button>
 		</div>
@@ -434,6 +441,10 @@
 		.input-and-button-row {
 			flex-direction: column;
 			align-items: flex-start !important;
+		}
+
+		.change-date-label {
+			display: none;
 		}
 	}
 
