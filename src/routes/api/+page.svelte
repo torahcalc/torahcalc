@@ -745,6 +745,30 @@
 		examples={[`/api/zmanimchart?latitude=40.7127753&longitude=-74.0059728`, `/api/zmanimchart?year=${getNextHebrewMonth().year}&location=Jerusalem&timezone=Asia/Jerusalem&candleLightingMinutes=40`]}
 	/>
 
+	<h3>Parsha</h3>
+
+	<Endpoint
+		method="GET"
+		endpoint="/api/parsha"
+		description="Calculate the weekly Torah portion (parsha) for the week of a given date. If the date is not a Saturday and has no parsha, the parsha of the following Saturday is used."
+		parameters={[
+			{
+				name: 'date',
+				type: 'String',
+				required: false,
+				description: 'The date to calculate the parsha for in YYYY-MM-DD format (defaults to current date)',
+				example: dayjs().format('YYYY-MM-DD'),
+			},
+			{
+				name: 'il',
+				type: 'Boolean',
+				required: false,
+				description: 'Whether to use the Israel schedule instead of the Diaspora schedule (defaults to false).',
+				example: 'false',
+			},
+		]}
+	/>
+
 	<h3>Zodiac</h3>
 
 	<Endpoint

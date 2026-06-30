@@ -14,6 +14,7 @@
 	import ZodiacExamples from './examples/ZodiacExamples.svelte';
 	import ShmitaExamples from './examples/ShmitaExamples.svelte';
 	import TanachStatsExamples from './examples/TanachStatsExamples.svelte';
+	import ParshaExamples from './examples/ParshaExamples.svelte';
 
 	/** @type {(query: string) => any} The function to call when the button is clicked */
 	export let clickFunction;
@@ -38,6 +39,7 @@
 		<div class="col-md-6"><BirkasHachamaExamples {clickFunction} /></div>
 		<div class="col-md-6"><ShmitaExamples {clickFunction} /></div>
 		<div class="col-md-6"><TanachStatsExamples {clickFunction} /></div>
+		<div class="col-md-6"><ParshaExamples {clickFunction} /></div>
 	</div>
 </div>
 

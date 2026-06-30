@@ -22,6 +22,7 @@
 				{ name: 'Leap Years', url: '/tools/leap-years' },
 				{ name: 'Jewish Holidays', url: '/tools/jewish-holidays' },
 				{ name: 'Daily Learning / Daf Yomi', url: '/tools/daily-learning' },
+				{ name: 'Weekly Torah Portion (Parsha)', url: '/tools/parsha' },
 				{ name: 'Molad', url: '/tools/molad' },
 				{ name: 'Sefiras HaOmer', url: '/tools/sefiras-haomer' },
 				{ name: 'Zmanim', url: '/tools/zmanim' },

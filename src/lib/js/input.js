@@ -13,6 +13,7 @@ import { HOLIDAY_DETAILS, getHolidays } from './holidays';
 import { isGregorianLeapYear, isHebrewLeapYear } from './leapyears';
 import { calculateMolad } from './molad';
 import { calculateOmerDate, calculateOmerHebrew } from './omer';
+import { calculateParsha } from './parsha';
 import { isShmitaYear, nextShmita, previousShmita } from './shmita';
 import { formatBookName, formatStatType, getStat, hasStat } from './tanach-stats';
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
@@ -131,6 +132,7 @@ export async function calculateQuery(search, options = {}) {
 		shmitaQuery: () => shmitaQuery(derivation),
 		shmitaCheckQuery: () => shmitaCheckQuery(derivation),
 		tanachStatsQuery: () => tanachStatsQuery(derivation),
+		parshaQuery: () => parshaQuery(derivation),
 	};
 
 	/** @type {Array<{ title: string, content: string }>} */
@@ -198,6 +200,28 @@ function formatParseResultDate(date) {
 		return formatHebrewDateEn(new HDate(date.hebrewDate.day, date.hebrewDate.month, date.hebrewDate.year));
 	}
 	throw new Error('Invalid date');
+}
+
+/**
+ * Convert a parse-result date object to a Gregorian date string in YYYY-MM-DD format.
+ * Defaults to today when no date is provided.
+ * @param {{ gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } }} [date] - The parse-result date
+ * @returns {string} The Gregorian date in YYYY-MM-DD format
+ */
+function parseResultDateToYMD(date) {
+	if (date?.gregorianDate) {
+		const gregorianDate = date.gregorianDate;
+		const dateObject = new Date(gregorianDate.year ?? new Date().getFullYear(), (gregorianDate.month ?? 1) - 1, gregorianDate.day ?? 1);
+		if (gregorianDate.afterSunset) {
+			dateObject.setDate(dateObject.getDate() + 1);
+		}
+		return dayjs(dateObject).format('YYYY-MM-DD');
+	} else if (date?.hebrewDate) {
+		const hebrewDate = date.hebrewDate;
+		const gregorian = hebrewToGregorian({ year: hebrewDate.year ?? new HDate().getFullYear(), month: hebrewDate.month ?? 1, day: hebrewDate.day ?? 1 });
+		return dayjs(gregorian.date).format('YYYY-MM-DD');
+	}
+	return dayjs().format('YYYY-MM-DD');
 }
 
 /**
@@ -511,6 +535,32 @@ async function getValidDerivations(search, results) {
 
 			const displayName = formatBookName(bookName);
 			derivation.disambiguation = `${formatStatType(statType, 2)} in ${displayName}`;
+		} else if (derivation.function === 'parshaQuery') {
+			const ymd = parseResultDateToYMD(derivation.date);
+			if (derivation.location === 'israel' || derivation.location === 'diaspora') {
+				// location is explicitly specified - show only that schedule
+				const il = derivation.location === 'israel';
+				const result = calculateParsha(ymd, il);
+				derivation.il = il;
+				derivation.disambiguation = `Torah portion for the week of ${result.formattedDate} in ${il ? 'Israel' : 'the Diaspora'}`;
+				derivation.disambiguationScore += 1;
+			} else {
+				// no location specified - compare Israel and Diaspora
+				const diaspora = calculateParsha(ymd, false);
+				const israel = calculateParsha(ymd, true);
+				if (diaspora.parsha === israel.parsha) {
+					// same parsha in both - no need to disambiguate by location
+					derivation.il = false;
+					derivation.disambiguation = `Torah portion for the week of ${diaspora.formattedDate}`;
+				} else {
+					// different parshas - offer both "In the Diaspora" and "In Israel" as options
+					const diasporaDerivation = { ...derivation, il: false, disambiguation: `Torah portion for the week of ${diaspora.formattedDate} in the Diaspora`, disambiguationScore: derivation.disambiguationScore + 1 };
+					const israelDerivation = { ...derivation, il: true, disambiguation: `Torah portion for the week of ${israel.formattedDate} in Israel`, disambiguationScore: derivation.disambiguationScore };
+					derivations[diasporaDerivation.disambiguation] = diasporaDerivation;
+					derivations[israelDerivation.disambiguation] = israelDerivation;
+					continue;
+				}
+			}
 		}
 		derivations[derivation.disambiguation] = derivation;
 	}
@@ -1545,6 +1595,37 @@ function tanachStatsQuery(derivation) {
 		title: RESULT,
 		content: `${displayName} has ${formatNumberHTML(statValue)} ${formatStatType(statType, statValue)}.`,
 	});
+
+	return sections;
+}
+
+/**
+ * Generate sections for a Parsha (weekly Torah portion) query
+ *
+ * @param {{ function?: string, date?: { gregorianDate?: { year?: number, month?: number, day?: number, afterSunset?: boolean }, hebrewDate?: { year?: number, month?: number, day?: number } }, location?: "israel" | "diaspora", il?: boolean }} derivation
+ * @returns {{ title: string, content: string }[]} The response.
+ */
+function parshaQuery(derivation) {
+	/** @type {{ title: string, content: string }[]} */
+	const sections = [];
+
+	const ymd = parseResultDateToYMD(derivation.date);
+	const il = derivation.il === true;
+	const result = calculateParsha(ymd, il);
+	const other = calculateParsha(ymd, !il);
+
+	// only mention the location when it was explicitly requested or when Israel and the Diaspora differ
+	const locationMatters = derivation.location !== undefined || result.parsha !== other.parsha;
+	const locationText = locationMatters ? (il ? ' in Israel' : ' in the Diaspora') : '';
+
+	// a holiday reading (e.g. when Shavuot falls on Shabbat) is not a regular parsha
+	const readingLabel = result.isHoliday ? 'Torah reading' : 'Torah portion (parsha)';
+
+	sections.push({ title: INPUT_INTERPRETATION, content: `Calculate the ${readingLabel} for the week of ${result.formattedDate}${locationText}` });
+
+	let content = `The ${result.isHoliday ? 'Torah reading' : 'Torah portion'} for the week of ${result.formattedDate}${locationText} is <b>${result.parsha} / ${result.hebrewParsha}</b>`;
+	content += `<br/><br/>It is read on Shabbos, ${result.formattedDate} (${result.hebrewDate})`;
+	sections.push({ title: RESULT, content });
 
 	return sections;
 }
