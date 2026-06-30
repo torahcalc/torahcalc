@@ -554,7 +554,12 @@ async function getValidDerivations(search, results) {
 					derivation.disambiguation = `Torah portion for the week of ${diaspora.formattedDate}`;
 				} else {
 					// different parshas - offer both "In the Diaspora" and "In Israel" as options
-					const diasporaDerivation = { ...derivation, il: false, disambiguation: `Torah portion for the week of ${diaspora.formattedDate} in the Diaspora`, disambiguationScore: derivation.disambiguationScore + 1 };
+					const diasporaDerivation = {
+						...derivation,
+						il: false,
+						disambiguation: `Torah portion for the week of ${diaspora.formattedDate} in the Diaspora`,
+						disambiguationScore: derivation.disambiguationScore + 1,
+					};
 					const israelDerivation = { ...derivation, il: true, disambiguation: `Torah portion for the week of ${israel.formattedDate} in Israel`, disambiguationScore: derivation.disambiguationScore };
 					derivations[diasporaDerivation.disambiguation] = diasporaDerivation;
 					derivations[israelDerivation.disambiguation] = israelDerivation;

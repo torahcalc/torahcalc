@@ -835,4 +835,3 @@ describe('test parsha', () => {
 		expect(sections[2].content).toContain('שָׁבוּעוֹת');
 	});
 });
-
