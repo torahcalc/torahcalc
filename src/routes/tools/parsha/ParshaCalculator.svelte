@@ -30,8 +30,16 @@
 	 * @throws {Error} If the date is invalid
 	 */
 	function getResults({ month, day, year, il }) {
-		const date = new Date(year, month - 1, day);
-		return calculateParsha(dayjs(date).format('YYYY-MM-DD'), il);
+ 		const y = year;
+ 		const m = month - 1;
+ 		const d = day;
+ 		const dateObj = new Date(0);
+ 		dateObj.setFullYear(y, m, d);
+ 		dateObj.setHours(0, 0, 0, 0);
+ 		if (dateObj.getFullYear() !== y || dateObj.getMonth() !== m || dateObj.getDate() !== d) {
+ 			throw new Error('Invalid date.');
+ 		}
+ 		return calculateParsha(dayjs(dateObj).format('YYYY-MM-DD'), il);
 	}
 
 	/**

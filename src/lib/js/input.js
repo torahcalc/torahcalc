@@ -211,7 +211,15 @@ function formatParseResultDate(date) {
 function parseResultDateToYMD(date) {
 	if (date?.gregorianDate) {
 		const gregorianDate = date.gregorianDate;
-		const dateObject = new Date(gregorianDate.year ?? new Date().getFullYear(), (gregorianDate.month ?? 1) - 1, gregorianDate.day ?? 1);
+		const y = gregorianDate.year ?? new Date().getFullYear();
+		const m = (gregorianDate.month ?? 1) - 1;
+		const d = gregorianDate.day ?? 1;
+		const dateObject = new Date(0);
+		dateObject.setFullYear(y, m, d);
+		dateObject.setHours(0, 0, 0, 0);
+		if (dateObject.getFullYear() !== y || dateObject.getMonth() !== m || dateObject.getDate() !== d) {
+			throw new Error('Invalid date.');
+		}
 		if (gregorianDate.afterSunset) {
 			dateObject.setDate(dateObject.getDate() + 1);
 		}
@@ -560,7 +568,12 @@ async function getValidDerivations(search, results) {
 						disambiguation: `Torah portion for the week of ${diaspora.formattedDate} in the Diaspora`,
 						disambiguationScore: derivation.disambiguationScore + 1,
 					};
-					const israelDerivation = { ...derivation, il: true, disambiguation: `Torah portion for the week of ${israel.formattedDate} in Israel`, disambiguationScore: derivation.disambiguationScore };
+					const israelDerivation = {
+						...derivation,
+						il: true,
+						disambiguation: `Torah portion for the week of ${israel.formattedDate} in Israel`,
+						disambiguationScore: derivation.disambiguationScore + 1,
+					};
 					derivations[diasporaDerivation.disambiguation] = diasporaDerivation;
 					derivations[israelDerivation.disambiguation] = israelDerivation;
 					continue;

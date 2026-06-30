@@ -29,10 +29,20 @@ import { formatDate } from './utils';
  * @returns {ParshaResult} The parsha for the given date.
  */
 export function calculateParsha(date, il = false) {
-	const inputDate = dayjs(date);
-	if (!inputDate.isValid()) {
+	const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+	if (!match) {
 		throw new Error('Invalid date.');
 	}
+	const y = Number(match[1]);
+	const m = Number(match[2]);
+	const d = Number(match[3]);
+	const dateObj = new Date(0);
+	dateObj.setFullYear(y, m - 1, d);
+	dateObj.setHours(0, 0, 0, 0);
+	if (dateObj.getFullYear() !== y || dateObj.getMonth() !== m - 1 || dateObj.getDate() !== d) {
+		throw new Error('Invalid date.');
+	}
+	const inputDate = dayjs(dateObj);
 	const shabbat = new HDate(inputDate.toDate()).onOrAfter(6);
 	const sedra = new Sedra(shabbat.getFullYear(), il);
 	const result = sedra.lookup(shabbat);

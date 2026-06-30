@@ -8,8 +8,7 @@ import dayjs from 'dayjs';
 export async function GET({ url }) {
 	const date = url.searchParams.get('date') || dayjs().format('YYYY-MM-DD');
 	const ilParam = (url.searchParams.get('il') || '').toLowerCase();
-	const location = (url.searchParams.get('location') || '').toLowerCase();
-	const il = ilParam === 'true' || ilParam === '1' || location === 'israel' || location === 'il';
+	const il = ilParam === 'true' || ilParam === '1';
 
 	try {
 		return createResponse(calculateParsha(date, il));
