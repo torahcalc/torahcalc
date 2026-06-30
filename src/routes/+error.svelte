@@ -23,6 +23,7 @@
 		'/leapyears': '/tools/leap-years',
 		'/molad': '/tools/molad',
 		'/omer': '/tools/sefiras-haomer',
+		'/parsha': '/tools/parsha',
 		'/pesach': '/info/pesach',
 		'/privacy': '/terms/privacy',
 		'/privacy/terms-and-conditions.html': '/terms/tos',

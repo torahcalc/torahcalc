@@ -41,6 +41,7 @@ main -> query[unitConversionQuery] {% data => data[0][0] %}
       | query[shmitaQuery] {% data => data[0][0] %}
       | query[shmitaCheckQuery] {% data => data[0][0] %}
       | query[tanachStatsQuery] {% data => data[0][0] %}
+      | query[parshaQuery] {% data => data[0][0] %}
 
 # Unit Conversions
 # - Convert 10 amos to meters
@@ -241,6 +242,37 @@ tanachStatsQuery -> optionalWords[("how many" | "how much")] statType __ optiona
                   | optionalWords[("calculate" | "compute" | "what is" | "what are" | "what's")] optionalWords["the"] optionalWords["number of"] statType __ optionalWords[("in" | "in the")] (("parshas" | "parsha" | "portion") __) parsha {% data => ({function: "tanachStatsQuery", statType: data[3], book: data[7], bookType: 'parsha'}) %}
                   | optionalWords[("calculate" | "compute" | "what is" | "what are" | "what's")] optionalWords["the"] optionalWords["number of"] statType __ optionalWords[("in" | "in the")] (("book of" | "sefer" | "book") __) tanachBook {% data => ({function: "tanachStatsQuery", statType: data[3], book: data[7], bookType: 'sefer'}) %}
                   | optionalWords[("calculate" | "compute" | "what is" | "what are" | "what's")] optionalWords["the"] optionalWords["number of"] statType __ optionalWords[("in" | "in the")] optionalWords["the"] (tanachBook | parsha) {% data => ({function: "tanachStatsQuery", statType: data[3], book: data[7][0], bookType: 'unknown'}) %}
+
+# Parsha (weekly Torah portion)
+# - What parsha is it this week?
+# - What parsha is it this week in Israel?
+# - What parsha will it be next week?
+# - What was the parsha on June 6, 2026?
+# - What will the parsha be on 8 Sivan, 5787?
+# - What sedra was it last week in diaspora?
+parshaQuery -> parshaQuestion parshaWord __ parshaConnector parshaBody {% data => ({function: "parshaQuery", ...data[4]}) %}
+
+parshaQuestion -> optionalWords[("what" | "which" | "what is" | "what's" | "whats" | "what was" | "what will" | "calculate" | "compute" | "tell me" | "show" | "show me" | "get" | "find" | "look up" | "lookup")] optionalWords["the"] {% data => null %}
+
+parshaWord -> ("parsha" | "parshah" | "parasha" | "parashah" | "parshas hashavua" | "parshat hashavua" | "parashat hashavua" | "sedra" | "sedrah" | "sidra" | "sidrah" | "torah portion" | "weekly torah portion" | "weekly parsha" | "weekly portion" | "weekly reading" | "torah reading" | "פרשה" | "פרשת השבוע" | "סדרה") {% data => null %}
+
+parshaConnector -> optionalWords[("is it" | "was it" | "will it be" | "will be" | "is" | "was" | "be" | "it" | "reading" | "read")] {% data => null %}
+
+parshaBody -> _ {% data => ({}) %}
+            | _ parshaWhen {% data => ({date: data[1]}) %}
+            | _ parshaWhen __ parshaLocation {% data => ({date: data[1], location: data[3]}) %}
+            | _ parshaLocation {% data => ({location: data[1]}) %}
+            | _ parshaLocation __ parshaWhen {% data => ({date: data[3], location: data[1]}) %}
+
+parshaWhen -> parshaWeek {% data => data[0] %}
+            | optionalWords[("for" | "on" | "of")] date {% data => data[1] %}
+
+parshaWeek -> ("this week" | "the current week" | "current week" | "this week's" | "this shabbos" | "this shabbat" | "this coming shabbos" | "this coming shabbat") {% data => ({gregorianDate: dateToObject(new Date())}) %}
+            | ("next week" | "the coming week" | "coming week" | "next week's" | "next shabbos" | "next shabbat") {% data => ({gregorianDate: dateToObject(new Date(new Date().setDate(new Date().getDate() + 7)))}) %}
+            | ("last week" | "the previous week" | "previous week" | "last week's" | "last shabbos" | "last shabbat") {% data => ({gregorianDate: dateToObject(new Date(new Date().setDate(new Date().getDate() - 7)))}) %}
+
+parshaLocation -> ("israel" | "eretz yisrael" | "eretz yisroel" | "in israel" | "for israel" | "israeli" | "ישראל") {% data => "israel" %}
+                | ("diaspora" | "the diaspora" | "in the diaspora" | "in diaspora" | "for the diaspora" | "chutz la'aretz" | "chutz laaretz" | "outside israel" | "outside of israel" | "outside eretz yisrael" | "galus" | "galut" | "חוץ לארץ") {% data => "diaspora" %}
 
 # Date parsing
 date -> gregorianDate {% data => data[0] %}

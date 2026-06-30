@@ -743,3 +743,95 @@ describe('test tanach stats', () => {
 		expect(sections[offset + 1].content).toBe(`Tanach has ${formatNumberHTML(23198)} verses.`);
 	});
 });
+
+describe('test parsha', () => {
+	it('What parsha is it this week?', async () => {
+		const sections = await calculateQuery('What parsha is it this week?');
+		const offset = sections[0].title === '' ? 1 : 0;
+		expect(sections[offset].title).toBe('Input Interpretation');
+		expect(sections[offset].content).toContain('Calculate the Torah portion (parsha) for the week of');
+		expect(sections[offset + 1].title).toBe('Result');
+		expect(sections[offset + 1].content).toContain(' / ');
+	});
+
+	it('What was the parsha on June 6, 2026? (Israel and Diaspora differ)', async () => {
+		const sections = await calculateQuery('What was the parsha on June 6, 2026?');
+		// Israel and the Diaspora read different parshas this week, so a disambiguation section is shown
+		expect(sections[0].title).toBe('');
+		expect(sections[0].content).toContain('Torah portion for the week of Sat, June 6, 2026 in the Diaspora');
+		expect(sections[0].content).toContain('Torah portion for the week of Sat, June 6, 2026 in Israel');
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toBe('Calculate the Torah portion (parsha) for the week of Sat, June 6, 2026 in the Diaspora');
+		expect(sections[2].title).toBe('Result');
+		expect(sections[2].content).toContain("Beha'alotcha");
+		expect(sections[2].content).toContain('בְּהַעֲלֹתְךָ');
+	});
+
+	it('What parsha is it on June 6, 2026 in Israel?', async () => {
+		const sections = await calculateQuery('What parsha is it on June 6, 2026 in Israel?');
+		// location is explicit, so no disambiguation section
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Calculate the Torah portion (parsha) for the week of Sat, June 6, 2026 in Israel');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain("Sh'lach");
+	});
+
+	it('What parsha is it on July 11, 2026? (Israel and Diaspora match)', async () => {
+		const sections = await calculateQuery('What parsha is it on July 11, 2026?');
+		// Israel and the Diaspora match, so no disambiguation and no location text
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Calculate the Torah portion (parsha) for the week of Sat, July 11, 2026');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('Matot-Masei');
+		expect(sections[1].content).toContain('מַטּוֹת־מַסְעֵי');
+	});
+
+	it('What is the parsha for a non-Saturday date uses the following Shabbat', async () => {
+		// Thursday, June 4, 2026 -> Shabbat June 6, 2026
+		const sections = await calculateQuery('What parsha is it on June 4, 2026 in Israel?');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Calculate the Torah portion (parsha) for the week of Sat, June 6, 2026 in Israel');
+		expect(sections[1].content).toContain("Sh'lach");
+	});
+
+	it('What will the parsha be on 8 Sivan, 5787?', async () => {
+		const sections = await calculateQuery('What will the parsha be on 8 Sivan, 5787?');
+		const offset = sections[0].title === '' ? 1 : 0;
+		expect(sections[offset].title).toBe('Input Interpretation');
+		expect(sections[offset].content).toContain('Calculate the Torah portion (parsha) for the week of');
+		expect(sections[offset + 1].title).toBe('Result');
+		expect(sections[offset + 1].content).toContain(' / ');
+	});
+
+	it('What sedra was it last week in diaspora?', async () => {
+		const sections = await calculateQuery('What sedra was it last week in diaspora?');
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toContain('in the Diaspora');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain(' / ');
+	});
+
+	it('What was the parsha on May 23, 2026 in diaspora? (holiday falls on Shabbat)', async () => {
+		const sections = await calculateQuery('What was the parsha on May 23, 2026 in diaspora?');
+		// Shavuot fell on Shabbat in the Diaspora, so the holiday reading is shown
+		expect(sections[0].title).toBe('Input Interpretation');
+		expect(sections[0].content).toBe('Calculate the Torah reading for the week of Sat, May 23, 2026 in the Diaspora');
+		expect(sections[1].title).toBe('Result');
+		expect(sections[1].content).toContain('Shavuot');
+		expect(sections[1].content).toContain('שָׁבוּעוֹת');
+		expect(sections[1].content).toContain('It is read on Shabbos, Sat, May 23, 2026');
+	});
+
+	it('What was the parsha on May 23, 2026? (Israel and Diaspora differ - holiday vs parsha)', async () => {
+		const sections = await calculateQuery('What was the parsha on May 23, 2026?');
+		// Diaspora reads Shavuot (holiday), Israel reads Nasso - a disambiguation section is shown
+		expect(sections[0].title).toBe('');
+		expect(sections[0].content).toContain('Sat, May 23, 2026 in the Diaspora');
+		expect(sections[0].content).toContain('Sat, May 23, 2026 in Israel');
+		expect(sections[1].title).toBe('Input Interpretation');
+		expect(sections[1].content).toBe('Calculate the Torah reading for the week of Sat, May 23, 2026 in the Diaspora');
+		expect(sections[2].title).toBe('Result');
+		expect(sections[2].content).toContain('Shavuot');
+		expect(sections[2].content).toContain('שָׁבוּעוֹת');
+	});
+});
