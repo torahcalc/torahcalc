@@ -245,7 +245,7 @@ const CACHED_ADDRESS_LOCATIONS = {
  * @param {string | undefined} googleApiKey - The Google Maps API key.
  * @returns {Promise<{ lat: number, lng: number, formattedAddress: string }|null>} The geocoded location or null if it cannot be geocoded.
  */
-export async function _geocodeAddressGoogle(address, googleApiKey) {
+async function _geocodeAddressGoogle(address, googleApiKey) {
 	if (!googleApiKey) {
 		return null;
 	}
