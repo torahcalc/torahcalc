@@ -237,18 +237,16 @@ export function getHolidays({ gregorianYear = undefined, hebrewYear = undefined,
 				}
 				if (holidayType == 'shabbosMevorchim' || hID == 'leil_selichos' || holidayType == 'specialShabbos') {
 					// shabbos mevorchim, leil selichos, special shabbatot
-					if (
-						!(
-							(hID == 'shabbos_shekalim' ||
-								hID == 'shabbos_parah' ||
-								hID == 'shabbos_hachodesh' ||
-								hID == 'shabbos_shira' ||
-								hID == 'shabbos_shuva' ||
-								hID == 'shabbos_chazon' ||
-								hID == 'shabbos_nachamu') &&
-							gSDate.getDay() == 6
-						)
-					) {
+					if (!(
+						(hID == 'shabbos_shekalim' ||
+							hID == 'shabbos_parah' ||
+							hID == 'shabbos_hachodesh' ||
+							hID == 'shabbos_shira' ||
+							hID == 'shabbos_shuva' ||
+							hID == 'shabbos_chazon' ||
+							hID == 'shabbos_nachamu') &&
+						gSDate.getDay() == 6
+					)) {
 						// if date is shabbos and can be same date, don't subtract
 						const oldGSDate = gSDate;
 						gSDate = getLastSaturday(gSDate);
