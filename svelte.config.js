@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+import adapterCloudflare from '@sveltejs/adapter-cloudflare';
 import adapterStatic from '@sveltejs/adapter-static';
 import adapterVercel from '@sveltejs/adapter-vercel';
 
@@ -15,7 +16,9 @@ const config = {
 						precompress: false,
 						strict: false,
 					})
-				: adapterVercel(),
+				: process.env.PUBLIC_ADAPTER === 'cloudflare'
+					? adapterCloudflare()
+					: adapterVercel(),
 	},
 };
 
