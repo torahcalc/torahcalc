@@ -9,7 +9,7 @@
 		"static:dev": "cross-env PUBLIC_ADAPTER='static' npm run dev",
 		"cloudflare": "cross-env PUBLIC_ADAPTER='cloudflare' npm run build",
 		"deploy": "npm run build && vercel --prod",
-		"deploy:cloudflare": "npm run cloudflare && wrangler deploy",
+		"deploy:cloudflare": "npm run cloudflare && npx wrangler deploy",
 		"preview": "npm run nearley && vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
@@ -61,6 +61,7 @@
 		"svelte": "^4.2.8",
 		"svelte-check": "^4.1.7",
 		"vite": "^4.5.14",
-		"vitest": "^0.34.6"
+		"vitest": "^0.34.6",
+		"wrangler": "^4.86.0"
 	}
 }
