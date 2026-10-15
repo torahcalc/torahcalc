@@ -7,7 +7,9 @@
 		"build": "npm run nearley && vite build",
 		"static": "cross-env PUBLIC_ADAPTER='static' npm run build",
 		"static:dev": "cross-env PUBLIC_ADAPTER='static' npm run dev",
+		"cloudflare": "cross-env PUBLIC_ADAPTER='cloudflare' npm run build",
 		"deploy": "npm run build && vercel --prod",
+		"deploy:cloudflare": "npm run cloudflare && npx wrangler deploy",
 		"preview": "npm run nearley && vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
@@ -42,6 +44,7 @@
 		"@fontsource/fira-mono": "^5.2.6",
 		"@fontsource/roboto": "^5.2.5",
 		"@fontsource/roboto-serif": "^5.2.5",
+		"@sveltejs/adapter-cloudflare": "^2.3.4",
 		"@sveltejs/adapter-static": "^2.0.3",
 		"@sveltejs/adapter-vercel": "^3.1.0",
 		"@sveltejs/kit": "^1.28.0",
@@ -52,11 +55,13 @@
 		"eslint-config-prettier": "^9.1.2",
 		"eslint-plugin-svelte": "^3.9.1",
 		"jsdom": "^26.1.0",
+		"picomatch": "^4.0.7",
 		"prettier": "^3.5.3",
 		"prettier-plugin-svelte": "^3.4.1",
 		"svelte": "^4.2.8",
 		"svelte-check": "^4.1.7",
 		"vite": "^4.5.14",
-		"vitest": "^0.34.6"
+		"vitest": "^0.34.6",
+		"wrangler": "^4.86.0"
 	}
 }

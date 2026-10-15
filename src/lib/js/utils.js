@@ -274,7 +274,7 @@ async function _geocodeAddressGoogle(address, googleApiKey) {
  * @param {string} address - The address to geocode.
  * @returns {Promise<{ lat: number, lng: number, formattedAddress: string }|null>} The geocoded location or null if it cannot be geocoded.
  */
-export async function _geocodeAddressNominatim(address) {
+async function _geocodeAddressNominatim(address) {
 	const maxRetries = 3;
 	try {
 		for (let retry = 0; retry < maxRetries; retry++) {
@@ -345,7 +345,7 @@ export async function _geocodeAddressNominatim(address) {
  * @param {string | undefined} accessToken - The Mapbox access token.
  * @returns {Promise<{ lat: number, lng: number, formattedAddress: string }|null>} The geocoded location or null if it cannot be geocoded.
  */
-export async function _geocodeAddressMapBox(address, accessToken) {
+async function _geocodeAddressMapBox(address, accessToken) {
 	if (!accessToken) {
 		return null;
 	}
