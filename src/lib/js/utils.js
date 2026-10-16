@@ -239,36 +239,6 @@ const CACHED_ADDRESS_LOCATIONS = {
 };
 
 /**
- * Geocode a location using the Google Maps Geocoding API
- *
- * @param {string} address - The address to geocode.
- * @param {string | undefined} googleApiKey - The Google Maps API key.
- * @returns {Promise<{ lat: number, lng: number, formattedAddress: string }|null>} The geocoded location or null if it cannot be geocoded.
- */
-async function _geocodeAddressGoogle(address, googleApiKey) {
-	if (!googleApiKey) {
-		return null;
-	}
-
-	try {
-		const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${googleApiKey}`);
-		const json = await response.json();
-		if (json.status === 'OK') {
-			const result = json.results[0];
-			return {
-				lat: result.geometry.location.lat,
-				lng: result.geometry.location.lng,
-				formattedAddress: result.formatted_address,
-			};
-		}
-		// eslint-disable-next-line no-unused-vars
-	} catch (error) {
-		// Fall through to null
-	}
-	return null;
-}
-
-/**
  * Geocode a location using the Geonames Nominatim API
  *
  * @param {string} address - The address to geocode.
@@ -379,34 +349,24 @@ async function _geocodeAddressMapBox(address, accessToken) {
 }
 
 /**
- * Geocode a location using the Google Maps Geocoding API, with Mapbox and Nominatim as fallbacks.
+ * Geocode a location using Mapbox, with Nominatim as a fallback.
  *
  * @param {string} address - The address to geocode.
- * @param {string | undefined} [googleApiKey] - The Google Maps API key.
  * @param {string | undefined} [mapboxToken] - The Mapbox access token (optional).
  * @returns {Promise<{ lat: number, lng: number, formattedAddress: string }>} The geocoded location.
  * @throws {Error} If the address is not found.
  */
-export async function geocodeAddress(address, googleApiKey, mapboxToken) {
+export async function geocodeAddress(address, mapboxToken) {
 	if (address in CACHED_ADDRESS_LOCATIONS) {
 		return CACHED_ADDRESS_LOCATIONS[address];
 	}
 
-	// Try Google Maps first
-	const googleResult = await _geocodeAddressGoogle(address, googleApiKey);
-	if (googleResult) {
-		CACHED_ADDRESS_LOCATIONS[address] = googleResult;
-		return googleResult;
-	}
-
-	// Try Mapbox as second option
 	const mapboxResult = await _geocodeAddressMapBox(address, mapboxToken);
 	if (mapboxResult) {
 		CACHED_ADDRESS_LOCATIONS[address] = mapboxResult;
 		return mapboxResult;
 	}
 
-	// Fallback to Nominatim
 	const nominatimResult = await _geocodeAddressNominatim(address);
 	if (nominatimResult) {
 		CACHED_ADDRESS_LOCATIONS[address] = nominatimResult;

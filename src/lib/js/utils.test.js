@@ -1,6 +1,68 @@
 import { HDate } from '@hebcal/core';
-import { describe, expect, it } from 'vitest';
-import { formatDate, formatNumber, formatNumberHTML, getNextHebrewMonth, getPrevHebrewMonth } from './utils';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { formatDate, formatNumber, formatNumberHTML, geocodeAddress, getNextHebrewMonth, getPrevHebrewMonth } from './utils';
+
+describe('geocodeAddress', () => {
+	afterEach(() => {
+		vi.unstubAllGlobals();
+	});
+
+	it('uses Mapbox first and caches its result without requesting Google', async () => {
+		const fetch = vi.fn(async () => new Response(JSON.stringify({ features: [{ geometry: { coordinates: [-73.5, 45.5] }, properties: { full_address: 'Mapbox result' } }] })));
+		vi.stubGlobal('fetch', fetch);
+		const address = 'Mapbox test address';
+		const expected = { lat: 45.5, lng: -73.5, formattedAddress: 'Mapbox result' };
+
+		expect(await geocodeAddress(address, 'mapbox-test-token')).toEqual(expected);
+		expect(await geocodeAddress(address, 'mapbox-test-token')).toEqual(expected);
+		expect(fetch).toHaveBeenCalledTimes(1);
+		expect(fetch).toHaveBeenCalledWith(`https://api.mapbox.com/search/geocode/v6/forward?q=${encodeURIComponent(address)}&access_token=mapbox-test-token`);
+	});
+
+	it('falls back to Nominatim when Mapbox returns a client error', async () => {
+		const fetch = vi
+			.fn()
+			.mockResolvedValueOnce(new Response(JSON.stringify({ message: 'Forbidden' }), { status: 403 }))
+			.mockResolvedValueOnce(new Response(JSON.stringify({ features: [{ geometry: { coordinates: [2.3, 48.9] }, properties: { display_name: 'Nominatim fallback' } }] })));
+		vi.stubGlobal('fetch', fetch);
+		const address = 'Nominatim fallback test address';
+
+		expect(await geocodeAddress(address, 'mapbox-test-token')).toEqual({ lat: 48.9, lng: 2.3, formattedAddress: 'Nominatim fallback' });
+		expect(fetch).toHaveBeenCalledTimes(2);
+		expect(fetch).toHaveBeenNthCalledWith(2, `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=geojson`, {
+			headers: { 'User-Agent': 'TorahCalc (https://torahcalc.com)' },
+		});
+	});
+
+	it('uses Nominatim directly when no Mapbox token is supplied', async () => {
+		const fetch = vi.fn(async () => new Response(JSON.stringify({ features: [{ geometry: { coordinates: [13.4, 52.5] }, properties: { display_name: 'Nominatim result' } }] })));
+		vi.stubGlobal('fetch', fetch);
+		const address = 'No token test address';
+
+		expect(await geocodeAddress(address)).toEqual({ lat: 52.5, lng: 13.4, formattedAddress: 'Nominatim result' });
+		expect(fetch).toHaveBeenCalledTimes(1);
+		expect(fetch).toHaveBeenCalledWith(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=geojson`, {
+			headers: { 'User-Agent': 'TorahCalc (https://torahcalc.com)' },
+		});
+	});
+
+	it('serves known cached locations without contacting any provider', async () => {
+		const fetch = vi.fn();
+		vi.stubGlobal('fetch', fetch);
+
+		expect(await geocodeAddress('denver', 'mapbox-test-token')).toEqual({ lat: 39.7392358, lng: -104.990251, formattedAddress: 'Denver, CO, USA' });
+		expect(fetch).not.toHaveBeenCalled();
+	});
+
+	it('throws when the remaining providers find no results', async () => {
+		vi.stubGlobal(
+			'fetch',
+			vi.fn(async () => new Response(JSON.stringify({ features: [] })))
+		);
+
+		await expect(geocodeAddress('Unavailable test address', 'mapbox-test-token')).rejects.toThrow('Could not geocode address: No results found');
+	});
+});
 
 describe('test format Gregorian date', () => {
 	it('formats 2023-09-12', () => {
