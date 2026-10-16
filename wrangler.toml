@@ -11,7 +11,7 @@ directory = ".svelte-kit/cloudflare"
 enabled = true
 head_sampling_rate = 1
 
-[observability.issue_detection]
+[observability.issues]
 enabled = true
 
 [observability.logs]
@@ -29,7 +29,7 @@ persist = true
 enabled = true
 head_sampling_rate = 1
 
-[previews.observability.issue_detection]
+[previews.observability.issues]
 enabled = true
 
 [previews.observability.logs]
