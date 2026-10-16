@@ -1,5 +1,5 @@
 <script>
-	import { getStats } from '$lib/js/tanach-stats.js';
+	import { getStats } from '#lib/js/tanach-stats.js';
 
 	const description = 'This table lists the number of chapters, verses, words, and letters in each book of the Tanach and the number of parshios in each book of Torah.';
 

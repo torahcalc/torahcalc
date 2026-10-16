@@ -1,8 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
-	import { LETTER_SPELLING_VALUES, METHOD_NAMES, calculateGematria } from '$lib/js/gematria';
-	import { formatNumberHTML } from '$lib/js/utils';
-	import HebrewKeyboard from '$lib/components/HebrewKeyboard.svelte';
+	import { LETTER_SPELLING_VALUES, METHOD_NAMES, calculateGematria } from '#lib/js/gematria.js';
+	import { formatNumberHTML } from '#lib/js/utils.js';
+	import HebrewKeyboard from '#lib/components/HebrewKeyboard.svelte';
 
 	onMount(updateResults);
 

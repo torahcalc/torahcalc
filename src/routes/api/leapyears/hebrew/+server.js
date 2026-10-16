@@ -1,5 +1,5 @@
-import { createErrorResponse, createResponse } from '$lib/js/api/response.js';
-import { isHebrewLeapYear } from '$lib/js/leapyears.js';
+import { createErrorResponse, createResponse } from '#lib/js/api/response.js';
+import { isHebrewLeapYear } from '#lib/js/leapyears.js';
 import { HDate } from '@hebcal/core';
 
 /**

@@ -1,7 +1,7 @@
 <script>
 	import { faSunPlantWilt } from '@danieloi/pro-solid-svg-icons';
 	import InputExampleCategory from '../InputExampleCategory.svelte';
-	import { previousShmita, nextShmita } from '$lib/js/shmita';
+	import { previousShmita, nextShmita } from '#lib/js/shmita.js';
 	import { HDate } from '@hebcal/core';
 
 	/** @type {(query: string) => any} The function to call when the button is clicked */

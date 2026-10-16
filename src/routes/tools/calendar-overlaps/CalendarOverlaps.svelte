@@ -1,6 +1,6 @@
 <script>
-	import { findCalendarOverlaps } from '$lib/js/calendar-overlaps';
-	import { hebrewMonths } from '$lib/js/dateconverter';
+	import { findCalendarOverlaps } from '#lib/js/calendar-overlaps.js';
+	import { hebrewMonths } from '#lib/js/dateconverter.js';
 	import { HDate } from '@hebcal/core';
 
 	const todayDate = new Date();
@@ -14,7 +14,7 @@
 	let startYear = currentYear - 100;
 	let endYear = currentYear + 100;
 
-	/** @type {Array<import('$lib/js/calendar-overlaps').Overlap>} */
+	/** @type {Array<import('#lib/js/calendar-overlaps.js').Overlap>} */
 	let overlaps = [];
 	let errorMessage = '';
 	let disableAdarII = !new HDate(hebrewDay, hebrewMonth, 5784).isLeapYear();
@@ -56,7 +56,7 @@
 
 	/**
 	 * Filters overlaps to only those in the past
-	 * @param {import('$lib/js/calendar-overlaps').Overlap} overlap
+	 * @param {import('#lib/js/calendar-overlaps.js').Overlap} overlap
 	 * @returns {boolean} True if the overlap is in the past, false otherwise
 	 */
 	function isPastOverlap(overlap) {

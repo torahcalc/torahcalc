@@ -1,9 +1,9 @@
 <script>
 	import { onMount } from 'svelte';
 	import { HDate } from '@hebcal/core';
-	import { getHolidays } from '$lib/js/holidays';
-	import { dataToHtmlTable } from '$lib/js/utils';
-	import { formatHebrewDateEn } from '$lib/js/dateconverter';
+	import { getHolidays } from '#lib/js/holidays.js';
+	import { dataToHtmlTable } from '#lib/js/utils.js';
+	import { formatHebrewDateEn } from '#lib/js/dateconverter.js';
 
 	onMount(() => {
 		// get the next major holiday
@@ -66,7 +66,7 @@
 
 	/**
 	 * Search for holidays
-	 * @param {{ mode: 'gregorian'|'hebrew'|'upcoming', year: number, types: import('$lib/js/holidays').HolidayFlags }} options - the options for the calculation
+	 * @param {{ mode: 'gregorian'|'hebrew'|'upcoming', year: number, types: import('#lib/js/holidays.js').HolidayFlags }} options - the options for the calculation
 	 */
 	async function getResults({ mode, year, types }) {
 		let gregorianYear;

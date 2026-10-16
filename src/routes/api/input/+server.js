@@ -1,5 +1,5 @@
-import { createErrorResponse, createResponse } from '$lib/js/api/response.js';
-import { calculateQuery } from '$lib/js/input';
+import { createErrorResponse, createResponse } from '#lib/js/api/response.js';
+import { calculateQuery } from '#lib/js/input.js';
 
 /**
  * @type {import('@sveltejs/kit').RequestHandler}

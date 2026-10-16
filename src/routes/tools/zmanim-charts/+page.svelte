@@ -1,5 +1,5 @@
 <script>
-	import { getNextHebrewMonth } from '$lib/js/utils';
+	import { getNextHebrewMonth } from '#lib/js/utils.js';
 
 	const description = 'Create a candle-lighting and Havdalah Zmanim chart for any location and year.';
 

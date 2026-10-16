@@ -1,8 +1,8 @@
 <script>
-	import { LETTER_SPELLING_VALUES } from '$lib/js/gematria.js';
-	import { calculateOmerHebrew, calculateOmerYear } from '$lib/js/omer';
-	import { getConverters, getUnits, getOpinions, getUnitOpinions } from '$lib/js/unitconverter.js';
-	import { getNextHebrewMonth } from '$lib/js/utils';
+	import { LETTER_SPELLING_VALUES } from '#lib/js/gematria.js';
+	import { calculateOmerHebrew, calculateOmerYear } from '#lib/js/omer.js';
+	import { getConverters, getUnits, getOpinions, getUnitOpinions } from '#lib/js/unitconverter.js';
+	import { getNextHebrewMonth } from '#lib/js/utils.js';
 	import { HDate } from '@hebcal/core';
 	import dayjs from 'dayjs';
 	import Endpoint from './Endpoint.svelte';

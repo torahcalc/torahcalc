@@ -1,5 +1,5 @@
-import { PUBLIC_ADAPTER, PUBLIC_BASE_URL } from '$env/static/public';
-import grammar from '$lib/grammars/generated/main.js';
+import grammar from '#lib/grammars/generated/main.js';
+import { PUBLIC_ADAPTER, PUBLIC_BASE_URL } from '$app/env/public';
 import { HDate } from '@hebcal/core';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -16,7 +16,9 @@ import { calculateOmerDate, calculateOmerHebrew } from './omer';
 import { calculateParsha } from './parsha';
 import { isShmitaYear, nextShmita, previousShmita } from './shmita';
 import { formatBookName, formatStatType, getStat, hasStat } from './tanach-stats';
+
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
+
 import {
 	dataToHtmlTable,
 	formatDate,
@@ -395,9 +397,8 @@ async function getValidDerivations(search, results) {
 						derivation.disambiguationScore += 1;
 					}
 				}
-			}
-			// converting gregorian to hebrew
-			else if (derivation.date?.gregorianDate !== undefined) {
+			} else // converting gregorian to hebrew
+			if (derivation.date?.gregorianDate !== undefined) {
 				let gregorianYear = derivation.date.gregorianDate.year ?? new Date().getFullYear();
 				if (derivation.year?.calendar === 'hebrew') {
 					// convert the hebrew year to gregorian
@@ -421,9 +422,8 @@ async function getValidDerivations(search, results) {
 				if (gregorianDate.format === 'MDY' || gregorianDate.format === 'MD') {
 					derivation.disambiguationScore += 1;
 				}
-			}
-			// converting hebrew to gregorian
-			else if (derivation.date?.hebrewDate !== undefined) {
+			} else // converting hebrew to gregorian
+			if (derivation.date?.hebrewDate !== undefined) {
 				let hebrewYear = derivation.date.hebrewDate.year ?? new HDate().getFullYear();
 				if (derivation.year?.calendar === 'hebrew') {
 					hebrewYear = derivation.year.value;
@@ -720,11 +720,14 @@ export async function unitConversionQuery(derivation) {
 			opinionTable += STRINGENCY_NOTE;
 		}
 		sections.push({ title: OPINION_DETAILS, content: opinionTable });
+	} else // otherwise, show the single result
+	{
+		sections.push({
+			title: RESULT,
+			content: formatUnitResult(conversionResult, unitTo),
+		});
 	}
-	// otherwise, show the single result
-	else {
-		sections.push({ title: RESULT, content: formatUnitResult(conversionResult, unitTo) });
-	}
+
 	const updatedDate = unitTo.updated ?? unitFrom.updated;
 	sections.push({ title: SOURCES, content: formatUnitSources(updatedDate) });
 	return sections;
@@ -764,6 +767,7 @@ async function conversionChartQuery(derivation) {
 		const data = [];
 		for (const [opinionId, opinionResults] of Object.entries(conversionResults)) {
 			const opinion = (await getDefaultOpinion(unitType)) ? await getOpinion(unitType, opinionId) : await getUnitOpinion(unitType, opinionId);
+
 			let results = '<ul>';
 			for (const [unitId, result] of Object.entries(opinionResults)) {
 				const unitTo = await getUnit(unitType, unitId);
@@ -1111,9 +1115,8 @@ function hebrewCalendarQuery(derivation) {
 				title: RESULT,
 				content: `Gregorian year ${formatNumberHTML(gregorianDate.year, -1)} starts in the Hebrew year ${formatNumberHTML(startHebrewYear, -1)} and ends in ${formatNumberHTML(endHebrewYear, -1)}`,
 			});
-		}
-		//  convert the gregorian date to a Hebrew date
-		else {
+		} else //  convert the gregorian date to a Hebrew date
+		{
 			gregorianDate.year = gregorianDate.year ?? new Date().getFullYear();
 			gregorianDate.month = gregorianDate.month ?? 1;
 			gregorianDate.day = gregorianDate.day ?? 1;
@@ -1126,9 +1129,8 @@ function hebrewCalendarQuery(derivation) {
 			sections.push({ title: INPUT_INTERPRETATION, content: `Convert ${formatDateObject(dateObject)} ${afterSunsetText}to Hebrew calendar` });
 			sections.push({ title: RESULT, content: `${hebrewDate.displayEn} / ${hebrewDate.displayGematriya}` });
 		}
-	}
-	// convert the Hebrew date to a gregorian date
-	else if (derivation.date?.hebrewDate) {
+	} else // convert the Hebrew date to a gregorian date
+	if (derivation.date?.hebrewDate) {
 		const hebrewDate = derivation.date.hebrewDate;
 		// if there is only a year, show the year in Hebrew
 		if (hebrewDate.year && !hebrewDate.month && !hebrewDate.day) {
@@ -1139,9 +1141,8 @@ function hebrewCalendarQuery(derivation) {
 				title: RESULT,
 				content: `Hebrew year ${formatNumberHTML(hebrewDate.year, -1)} starts in the Gregorian year ${formatNumberHTML(startGregorianYear, -1)} and ends in ${formatNumberHTML(endGregorianYear, -1)}`,
 			});
-		}
-		//  convert the Hebrew date to a gregorian date
-		else {
+		} else //  convert the Hebrew date to a gregorian date
+		{
 			hebrewDate.year = hebrewDate.year ?? new HDate().getFullYear();
 			hebrewDate.month = hebrewDate.month ?? 1;
 			hebrewDate.day = hebrewDate.day ?? 1;
@@ -1149,9 +1150,8 @@ function hebrewCalendarQuery(derivation) {
 			sections.push({ title: INPUT_INTERPRETATION, content: `Convert ${formatHebrewDateEn(new HDate(hebrewDate.day, hebrewDate.month, hebrewDate.year))} to Gregorian calendar` });
 			sections.push({ title: RESULT, content: `${formatDateObject(dateObject)}` });
 		}
-	}
-	// unknown query
-	else {
+	} else // unknown query
+	{
 		throw new InputError('TorahCalc could not understand your input, please word it differently or try one of the examples below.', JSON.stringify(derivation, null, 2));
 	}
 
@@ -1208,9 +1208,8 @@ function moladQuery(derivation, search, outputFormat) {
 				content: `<ul><li>Shabbos Mevarchim ${molad.monthName} is on <strong>${molad.shabbosMevarchim.shabbosMevarchim}</strong></li><li>Rosh Chodesh ${molad.monthName} is on <strong>${molad.shabbosMevarchim.roshChodesh}</strong> (${molad.shabbosMevarchim.roshChodeshDayOfWeekDisplayEn} / ${molad.shabbosMevarchim.roshChodeshDayOfWeekDisplayHe})</li></ul>`,
 			});
 		}
-	}
-	// only the year is specified
-	else {
+	} else // only the year is specified
+	{
 		const monthsInYear = isHebrewLeapYear(derivation.year).isLeapYear ? 13 : 12;
 		const data = Array.from({ length: monthsInYear }, (_, i) => {
 			const molad = calculateMolad(derivation.year, ((i + 6) % monthsInYear) + 1);
@@ -1276,9 +1275,8 @@ function sefirasHaOmerQuery(derivation) {
 		} else {
 			sections.push({ title: RESULT, content: 'There is no omer count for this date' });
 		}
-	}
-	// calculate the omer from a Hebrew date
-	else if (derivation.date?.hebrewDate) {
+	} else // calculate the omer from a Hebrew date
+	if (derivation.date?.hebrewDate) {
 		/**
 		 * Format Hebrew day count
 		 * @param {{ count: import('./omer').Omer | null }} omer - The omer to format
@@ -1552,8 +1550,15 @@ function shmitaCheckQuery(derivation) {
 
 	const result = isShmitaYear(derivation.year);
 
-	sections.push({ title: INPUT_INTERPRETATION, content: `Is ${derivation.year} a Shmita year on the Hebrew calendar?` });
-	sections.push({ title: RESULT, content: `${result ? 'Yes' : 'No'}, Hebrew year ${formatNumberHTML(derivation.year, -1)} is ${result ? '' : 'not '}a Shmita year` });
+	sections.push({
+		title: INPUT_INTERPRETATION,
+		content: `Is ${derivation.year} a Shmita year on the Hebrew calendar?`,
+	});
+
+	sections.push({
+		title: RESULT,
+		content: `${result ? 'Yes' : 'No'}, Hebrew year ${formatNumberHTML(derivation.year, -1)} is ${result ? '' : 'not '}a Shmita year`,
+	});
 
 	return sections;
 }

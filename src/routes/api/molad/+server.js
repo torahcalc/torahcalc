@@ -1,5 +1,5 @@
-import { createErrorResponse, createResponse } from '$lib/js/api/response.js';
-import { calculateMolad } from '$lib/js/molad';
+import { createErrorResponse, createResponse } from '#lib/js/api/response.js';
+import { calculateMolad } from '#lib/js/molad.js';
 import { HDate } from '@hebcal/core';
 
 /**

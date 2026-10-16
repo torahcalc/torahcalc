@@ -1,5 +1,5 @@
-import { createErrorResponse, createResponse } from '$lib/js/api/response.js';
-import { nextShmita } from '$lib/js/shmita.js';
+import { createErrorResponse, createResponse } from '#lib/js/api/response.js';
+import { nextShmita } from '#lib/js/shmita.js';
 import { HDate } from '@hebcal/core';
 
 /**

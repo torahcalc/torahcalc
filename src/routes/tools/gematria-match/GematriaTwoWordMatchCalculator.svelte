@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
-	import { getListOfGematriasInCommon } from '$lib/js/gematria';
-	import HebrewKeyboard from '$lib/components/HebrewKeyboard.svelte';
+	import { getListOfGematriasInCommon } from '#lib/js/gematria.js';
+	import HebrewKeyboard from '#lib/components/HebrewKeyboard.svelte';
 	import Fa from 'svelte-fa';
 	import { faExternalLink } from '@danieloi/pro-solid-svg-icons';
 
@@ -13,7 +13,7 @@
 	/** @type {string} The second word to calculate the Gematria of */
 	let word2 = 'משנה';
 
-	/** @type {Array<{ method1: import('$lib/js/gematria').GematriaMethodName, method2: import('$lib/js/gematria').GematriaMethodName, value: number }>} The results of the Gematria calculation */
+	/** @type {Array<{ method1: import('#lib/js/gematria.js').GematriaMethodName, method2: import('#lib/js/gematria.js').GematriaMethodName, value: number }>} The results of the Gematria calculation */
 	let results = [];
 
 	/**

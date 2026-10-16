@@ -1,4 +1,4 @@
-import { faHavdalahSpicebox, faShabbosCandles } from '$lib/icons/custom-fontawesome-icons';
+import { faHavdalahSpicebox, faShabbosCandles } from '#lib/icons/custom-fontawesome-icons.js';
 import { faClockTwelve, faPlateUtensils, faSparkles, faStar, faStars, faSunrise, faSunset, faUtensilsSlash } from '@danieloi/pro-solid-svg-icons';
 import { GeoLocation, HebrewCalendar, Location, TimedEvent, Zmanim } from '@hebcal/core';
 import dayjs from 'dayjs';

@@ -1,5 +1,5 @@
 <script>
-	import { isShmitaYear, nextShmita } from '$lib/js/shmita';
+	import { isShmitaYear, nextShmita } from '#lib/js/shmita.js';
 	import { faCheck, faX } from '@danieloi/pro-solid-svg-icons';
 	import { HDate } from '@hebcal/core';
 	import Fa from 'svelte-fa';

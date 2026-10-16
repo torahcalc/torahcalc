@@ -1,6 +1,6 @@
 <script>
-	import { convertUnitsMulti, getConverters } from '$lib/js/unitconverter.js';
-	import { formatNumber, properCase } from '$lib/js/utils';
+	import { convertUnitsMulti, getConverters } from '#lib/js/unitconverter.js';
+	import { formatNumber, properCase } from '#lib/js/utils.js';
 
 	/**
 	 * Handle a unit input being changed

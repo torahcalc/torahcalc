@@ -1,5 +1,5 @@
 <script>
-	import { getConverters } from '$lib/js/unitconverter';
+	import { getConverters } from '#lib/js/unitconverter.js';
 	import Fa from 'svelte-fa';
 	import UnitConverter from './UnitConverter.svelte';
 	import { faExternalLink } from '@danieloi/pro-solid-svg-icons';

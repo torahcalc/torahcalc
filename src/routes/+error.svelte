@@ -1,6 +1,6 @@
 <script>
-	import { page } from '$app/stores';
-	import logo from '$lib/images/torahcalc.svg';
+	import { page } from '$app/state';
+	import logo from '#lib/images/torahcalc.svg';
 	import Fa from 'svelte-fa';
 	import { faHomeAlt } from '@danieloi/pro-solid-svg-icons';
 	import { redirect } from '@sveltejs/kit';
@@ -33,29 +33,25 @@
 		'/zmanim': '/tools/zmanim',
 		'/zodiac': '/tools/hebrew-zodiac-signs',
 		'/zodiac/embed': 'https://old.torahcalc.com/zodiac/embed/',
-	}[$page.url.pathname.replace(/\/(index\.html)?$/, '')];
-	if ($page.status === 404 && redirectPath) {
-		throw redirect(301, redirectPath);
+	}[page.url.pathname.replace(/\/(index\.html)?$/, '')];
+	if (page.status === 404 && redirectPath) {
+		throw redirect(301, redirectPath, { external: redirectPath.startsWith('https://') });
 	}
 </script>
 
-<svelte:head>
-	<title>TorahCalc | {$page.status} {$page.error?.message}</title>
-</svelte:head>
+<svelte:head><title>TorahCalc | {page.status} {page.error?.message}</title></svelte:head>
 
 <section>
 	<h1 class="heading d-flex align-items-center justify-content-center gap-4">
 		<img src={logo} alt="TorahCalc" class="logo" />
 		<div class="center">
-			<div>Error {$page.status}</div>
-			<div class="subtext">{$page.error?.message}</div>
+			<div>Error {page.status}</div>
+			<div class="subtext">{page.error?.message}</div>
 		</div>
 	</h1>
 
-	{#if $page.status == 404}
-		<div class="center">
-			<a href="/" class="btn btn-primary"><Fa icon={faHomeAlt} />&ensp;Return Home</a>
-		</div>
+	{#if page.status == 404}
+		<div class="center"><a href="/" class="btn btn-primary"><Fa icon={faHomeAlt} />Return Home</a></div>
 	{/if}
 </section>
 

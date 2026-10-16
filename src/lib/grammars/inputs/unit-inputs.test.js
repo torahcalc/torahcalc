@@ -1,5 +1,5 @@
-import { units } from '$lib/grammars/inputs/unit-inputs';
-import { getUnit } from '$lib/js/unitconverter';
+import { units } from '#lib/grammars/inputs/unit-inputs.js';
+import { getUnit } from '#lib/js/unitconverter.js';
 import { describe, expect, it } from 'vitest';
 
 describe('test units are valid', () => {
