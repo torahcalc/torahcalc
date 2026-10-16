@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { getListOfGematriasInCommon } from '$lib/js/gematria';
 	import HebrewKeyboard from '$lib/components/HebrewKeyboard.svelte';
-	import Fa from 'svelte-fa/src/fa.svelte';
+	import Fa from 'svelte-fa';
 	import { faExternalLink } from '@danieloi/pro-solid-svg-icons';
 
 	onMount(updateResults);

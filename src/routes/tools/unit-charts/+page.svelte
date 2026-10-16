@@ -1,6 +1,6 @@
 <script>
 	import { getConverters } from '$lib/js/unitconverter';
-	import Fa from 'svelte-fa/src/fa.svelte';
+	import Fa from 'svelte-fa';
 	import MultiUnitConverter from './MultiUnitConverter.svelte';
 	import { faExternalLink } from '@danieloi/pro-solid-svg-icons';
 

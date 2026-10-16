@@ -2,6 +2,8 @@
 node_modules
 /build
 /.svelte-kit
+/.wrangler
+/src/lib/grammars/generated/
 /package
 *.local
 !.env.example

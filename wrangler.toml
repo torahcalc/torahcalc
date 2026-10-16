@@ -1,11 +1,18 @@
 name = "torahcalc"
-main = "worker.js"
-compatibility_date = "2025-01-01"
+main = ".svelte-kit/cloudflare/_worker.js"
+compatibility_date = "2026-10-13"
 compatibility_flags = ["nodejs_compat"]
 
 [assets]
 binding = "ASSETS"
 directory = ".svelte-kit/cloudflare"
+
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[observability.issues]
+enabled = true
 
 [observability.logs]
 enabled = true
@@ -14,6 +21,24 @@ invocation_logs = true
 persist = true
 
 [observability.traces]
+enabled = false
+head_sampling_rate = 1
+persist = true
+
+[previews.observability]
+enabled = true
+head_sampling_rate = 1
+
+[previews.observability.issues]
+enabled = true
+
+[previews.observability.logs]
+enabled = true
+head_sampling_rate = 1
+invocation_logs = true
+persist = true
+
+[previews.observability.traces]
 enabled = false
 head_sampling_rate = 1
 persist = true

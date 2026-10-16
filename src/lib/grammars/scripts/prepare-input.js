@@ -2,13 +2,15 @@
  * Script that runs before the grammar is compiled
  */
 
-import { writeFileSync } from 'fs';
+import { mkdirSync, writeFileSync } from 'fs';
 import { dailyLearningTypes } from '../inputs/daily-learning-inputs.js';
 import { gematriaMethods } from '../inputs/gematria-inputs.js';
 import { holidays } from '../inputs/holiday-inputs.js';
 import { parshios, statTypes, tanachBooks } from '../inputs/tanach-book-inputs.js';
 import { units } from '../inputs/unit-inputs.js';
 import { zmanimInputs } from '../inputs/zmanim-inputs.js';
+
+mkdirSync('./src/lib/grammars/generated', { recursive: true });
 
 generateUnitsGrammar('./src/lib/grammars/generated/units.ne');
 generateZmanimGrammar('./src/lib/grammars/generated/zmanim.ne');

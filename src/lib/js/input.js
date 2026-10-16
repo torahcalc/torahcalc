@@ -1,5 +1,5 @@
 import { PUBLIC_ADAPTER, PUBLIC_BASE_URL } from '$env/static/public';
-import grammar from '$lib/grammars/generated/main.cjs';
+import grammar from '$lib/grammars/generated/main.js';
 import { HDate } from '@hebcal/core';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';

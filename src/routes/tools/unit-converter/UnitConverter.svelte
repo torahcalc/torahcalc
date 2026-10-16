@@ -2,7 +2,7 @@
 	import { OPINION_DETAILS, unitConversionQuery } from '$lib/js/input';
 	import { convertUnits, getConverters } from '$lib/js/unitconverter.js';
 	import { faExchange } from '@danieloi/pro-solid-svg-icons';
-	import Fa from 'svelte-fa/src/fa.svelte';
+	import Fa from 'svelte-fa';
 
 	let unitType = 'length';
 	let leftValue = '1';

@@ -5,7 +5,7 @@
 	import timezone from 'dayjs/plugin/timezone';
 	import utc from 'dayjs/plugin/utc';
 	import { dataToHtmlTable } from '$lib/js/utils';
-	import Fa from 'svelte-fa/src/fa.svelte';
+	import Fa from 'svelte-fa';
 	import { faCalendarDay, faLocationCrosshairs, faChevronLeft, faChevronRight } from '@danieloi/pro-solid-svg-icons';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';

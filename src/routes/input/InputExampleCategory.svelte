@@ -1,5 +1,5 @@
 <script>
-	import Fa from 'svelte-fa/src/fa.svelte';
+	import Fa from 'svelte-fa';
 
 	/** @type {(query: string) => any} The function to call when the button is clicked */
 	export let clickFunction = (query) => null;

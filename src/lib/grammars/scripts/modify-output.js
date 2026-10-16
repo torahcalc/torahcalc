@@ -4,7 +4,7 @@
 
 import { readFileSync, writeFileSync } from 'fs';
 
-const path = './src/lib/grammars/generated/main.cjs';
+const path = './src/lib/grammars/generated/main.js';
 
 changeExports(path);
 addLintDisable(path);
