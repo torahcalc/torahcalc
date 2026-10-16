@@ -115,6 +115,7 @@ describe('API cache hook', () => {
 			{ headers: { authorization: 'Bearer test' } },
 			{ headers: { cookie: 'session=test' } },
 			{ headers: { range: 'bytes=0-10' } },
+			{ headers: { 'cache-control': 'no-cache' } },
 			{ headers: { 'cache-control': 'no-store' } },
 		])
 	)('does not cache requests that are not public GETs: %j', async (init) => {
