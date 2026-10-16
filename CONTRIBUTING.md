@@ -124,6 +124,7 @@ npm run ios:dev
    - `createErrorResponse(error)` - Error response
 4. Add tests for the endpoint logic
 5. Update API documentation if applicable
+6. Add the new endpoint to `src/lib/js/api/cache.js` (see existing entries for reference)
 
 ### Creating a New Svelte Component
 
@@ -135,6 +136,21 @@ npm run ios:dev
    - `<style>` - Scoped CSS
 3. Use JSDoc comments for prop types
 4. Add component to relevant pages
+
+## API Caching
+
+The server hook sets expiry headers on successful, public API GET responses. The Cloudflare adapter already uses Workers' Cache API to store these responses and serve identical URLs without running the endpoint again. The hook does not enable caching for errors, authenticated requests, requests with cookies, or private responses.
+
+- Calendar endpoints with missing or partial dates expire at the next server midnight (UTC on Cloudflare). Zmanim uses UTC midnight to match its UTC date default.
+- Fully specified calendar inputs and non-calendar calculations are cached for seven days.
+- Coin-value conversions and charts are cached for up to one hour because exchange rates change.
+- Free-text `/api/input` queries are cached for up to 60 seconds because they can include relative dates, locations, and current times.
+
+The policy lives in `src/lib/js/api/cache.js`. Register new endpoints there; the hook leaves unregistered routes unchanged. Responses include `Cache-Control` and `Expires`; inspect `CF-Cache-Status: HIT` to confirm a Cloudflare cache hit. Other adapters receive the same browser/CDN cache headers, but server-side storage depends on their caching support.
+
+Cloudflare cache entries are local to each data center and can be evicted before expiry. Requests still invoke the Worker on cache hits, but skip endpoint calculations. Purge the Cloudflare cache when deploying calculation changes that must invalidate existing results before their normal expiry. Browser caches may retain results until their advertised expiry. The current adapter checks its cache before invoking the hook, so request-level bypass rules in the hook apply only when the request reaches SvelteKit.
+
+Run the focused checks with `npm run test -- --run src/lib/js/api/cache.test.js`.
 
 ## Code Style Guidelines
 
