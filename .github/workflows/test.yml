@@ -16,7 +16,6 @@ on:
       - '**.js'
       - '**.json'
       - 'wrangler.toml'
-      - 'wrangler.build.toml'
       - '.node-version'
       - '.github/workflows/test.yml'
 
