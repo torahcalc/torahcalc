@@ -1,9 +1,12 @@
 ## Developing
 
-Install dependencies:
+Use Node.js 24 LTS (24.22.0, pinned in `.node-version`) and npm 11 or 12. The
+same Node version is used by CI; `engine-strict` rejects unsupported runtimes.
+
+Install the locked dependency set:
 
 ```bash
-npm install
+npm ci
 ```
 
 Start the server:

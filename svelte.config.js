@@ -17,7 +17,7 @@ const config = {
 						strict: false,
 					})
 				: process.env.PUBLIC_ADAPTER === 'cloudflare'
-					? adapterCloudflare()
+					? adapterCloudflare({ config: 'wrangler.build.toml' })
 					: adapterVercel(),
 	},
 };

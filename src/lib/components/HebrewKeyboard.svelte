@@ -1,6 +1,6 @@
 <script>
 	import { faKeyboard } from '@danieloi/pro-solid-svg-icons';
-	import Fa from 'svelte-fa/src/fa.svelte';
+	import Fa from 'svelte-fa';
 
 	/**
 	 * Function to add a character to the query input

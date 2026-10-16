@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import logo from '$lib/images/torahcalc.svg';
-	import Fa from 'svelte-fa/src/fa.svelte';
+	import Fa from 'svelte-fa';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import { faExternalLinkAlt } from '@danieloi/pro-solid-svg-icons';
 	import { PUBLIC_ADAPTER } from '$env/static/public';
