@@ -15,6 +15,7 @@ on:
       - '**.svelte'
       - '**.js'
       - '**.json'
+      - 'wrangler.toml'
       - '.github/workflows/test.yml'
 
 jobs:
@@ -30,3 +31,6 @@ jobs:
 
       - name: Run tests
         run: npm run test
+
+      - name: Test Cloudflare cache boundary
+        run: npm run test:cloudflare-cache

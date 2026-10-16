@@ -109,12 +109,17 @@ describe('API cache hook', () => {
 		expect((await run()).headers.get('Cache-Control')).toBe('public, max-age=604798');
 	});
 
-	it.each(/** @type {RequestInit[]} */ ([{ method: 'POST' }, { headers: { authorization: 'Bearer test' } }, { headers: { cookie: 'session=test' } }, { headers: { 'cache-control': 'no-store' } }]))(
-		'does not cache requests that are not public GETs: %j',
-		async (init) => {
-			expect((await run(fixedDate, init)).headers.get('Cache-Control')).toBe('no-store');
-		}
-	);
+	it.each(
+		/** @type {RequestInit[]} */ ([
+			{ method: 'POST' },
+			{ headers: { authorization: 'Bearer test' } },
+			{ headers: { cookie: 'session=test' } },
+			{ headers: { range: 'bytes=0-10' } },
+			{ headers: { 'cache-control': 'no-store' } },
+		])
+	)('does not cache requests that are not public GETs: %j', async (init) => {
+		expect((await run(fixedDate, init)).headers.get('Cache-Control')).toBe('no-store');
+	});
 
 	it('does not store errors or private responses', async () => {
 		resolve.mockResolvedValueOnce(new Response('error', { status: 400 }));

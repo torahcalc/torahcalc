@@ -148,9 +148,11 @@ The server hook sets expiry headers on successful, public API GET responses. The
 
 The policy lives in `src/lib/js/api/cache.js`. Register new endpoints there; the hook leaves unregistered routes unchanged. Responses include `Cache-Control` and `Expires`; inspect `CF-Cache-Status: HIT` to confirm a Cloudflare cache hit. Other adapters receive the same browser/CDN cache headers, but server-side storage depends on their caching support.
 
-Cloudflare cache entries are local to each data center and can be evicted before expiry. Requests still invoke the Worker on cache hits, but skip endpoint calculations. Purge the Cloudflare cache when deploying calculation changes that must invalidate existing results before their normal expiry. Browser caches may retain results until their advertised expiry. The current adapter checks its cache before invoking the hook, so request-level bypass rules in the hook apply only when the request reaches SvelteKit.
+Cloudflare cache entries are local to each data center and can be evicted before expiry. Requests still invoke the Worker on cache hits, but skip endpoint calculations. Purge the Cloudflare cache when deploying calculation changes that must invalidate existing results before their normal expiry. Browser caches may retain results until their advertised expiry.
 
-Run the focused checks with `npm run test -- --run src/lib/js/api/cache.test.js`.
+Wrangler uses `worker.js` as its entrypoint, wrapping the generated adapter Worker. The wrapper checks the shared predicate in `src/lib/js/api/cache-request.js` before the adapter can look up cached responses. Non-GET requests and requests containing `Authorization`, `Cookie`, `Range`, or `Cache-Control: no-store` receive `no-cache, no-store` request directives: `no-cache` skips the adapter lookup and `no-store` makes the API hook prevent storage. Do not point Wrangler directly at the generated Worker, because its cache lookup runs before the hook.
+
+Run the focused checks with `npm run test -- --run src/lib/js/api/cache.test.js`. Run `npm run test:cloudflare-cache` to build and test the actual Worker against a primed cache for each restricted request header. CI runs both checks.
 
 ## Code Style Guidelines
 

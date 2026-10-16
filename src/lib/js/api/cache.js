@@ -1,4 +1,5 @@
 import { building } from '$app/environment';
+import { shouldBypassCache } from './cache-request.js';
 
 const LONG_TTL = 7 * 24 * 60 * 60; // 7 days for long-lived cache
 const SHORT_TTL = 60 * 60; // 1 hour for short-lived cache (e.g., coin conversions)
@@ -88,11 +89,7 @@ export async function handleApiCache({ event, resolve }) {
 	const maxAge = Math.floor((expiresAt - Date.now()) / 1000);
 	if (
 		maxAge <= 0 ||
-		request.method !== 'GET' ||
-		request.headers.has('authorization') ||
-		request.headers.has('cookie') ||
-		request.headers.has('range') ||
-		/\bno-store\b/i.test(request.headers.get('cache-control') || '') ||
+		shouldBypassCache(request) ||
 		resolved.status !== 200 ||
 		resolved.headers.has('set-cookie') ||
 		resolved.headers.has('vary') ||
