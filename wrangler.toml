@@ -7,6 +7,13 @@ compatibility_flags = ["nodejs_compat"]
 binding = "ASSETS"
 directory = ".svelte-kit/cloudflare"
 
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[observability.issue_detection]
+enabled = true
+
 [observability.logs]
 enabled = true
 head_sampling_rate = 1
@@ -18,5 +25,20 @@ enabled = false
 head_sampling_rate = 1
 persist = true
 
-[observability.issue_detection]
+[previews.observability]
 enabled = true
+head_sampling_rate = 1
+
+[previews.observability.issue_detection]
+enabled = true
+
+[previews.observability.logs]
+enabled = true
+head_sampling_rate = 1
+invocation_logs = true
+persist = true
+
+[previews.observability.traces]
+enabled = false
+head_sampling_rate = 1
+persist = true
