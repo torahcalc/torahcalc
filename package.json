@@ -11,6 +11,7 @@
 		"deploy": "npm run build && vercel --prod",
 		"deploy:cloudflare": "npm run cloudflare && npx wrangler deploy",
 		"preview": "npm run nearley && vite preview",
+		"preview:cloudflare": "npm run cloudflare && npx wrangler preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"test": "npm run nearley && vitest",
