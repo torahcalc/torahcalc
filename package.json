@@ -15,6 +15,7 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"test": "npm run nearley && vitest",
+		"test:cloudflare-cache": "npm run cloudflare && node --test tests/cloudflare-cache.test.js",
 		"lint": "prettier --check src/**/*.{svelte,js,css,html} *.{js,ts,json,md} && eslint src/**/*.{svelte,js}",
 		"format": "prettier --write src/**/*.{svelte,js,css,html} *.{js,ts,json,md}",
 		"nearley": "node src/lib/grammars/scripts/prepare-input.js && nearleyc src/lib/grammars/main.ne -o src/lib/grammars/generated/main.cjs && node src/lib/grammars/scripts/modify-output.js",
