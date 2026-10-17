@@ -1,13 +1,15 @@
 <script>
-	import { PUBLIC_ADAPTER, PUBLIC_BASE_URL } from '$env/static/public';
+	import { PUBLIC_ADAPTER, PUBLIC_BASE_URL } from '$app/env/public';
 	import { onMount } from 'svelte';
 	import dayjs from 'dayjs';
 	import timezone from 'dayjs/plugin/timezone';
 	import utc from 'dayjs/plugin/utc';
-	import { dataToHtmlTable } from '$lib/js/utils';
+	import { dataToHtmlTable } from '#lib/js/utils.js';
 	import Fa from 'svelte-fa';
+
 	import { faCalendarDay, faLocationCrosshairs, faChevronLeft, faChevronRight } from '@danieloi/pro-solid-svg-icons';
-	import { page } from '$app/stores';
+
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	dayjs.extend(timezone);
 	dayjs.extend(utc);
@@ -51,10 +53,8 @@
 		let queryDate = '';
 		/** @type {string|null} The location to calculate zmanim for */
 		let queryLocation = '';
-		page.subscribe(($page) => {
-			queryDate = $page.url.searchParams.get('date');
-			queryLocation = $page.url.searchParams.get('location');
-		});
+		queryDate = page.url.searchParams.get('date');
+		queryLocation = page.url.searchParams.get('location');
 		if (queryDate) {
 			date = new Date(queryDate);
 			formattedDate = queryDate;
@@ -78,7 +78,7 @@
 	/**
 	 * Search for zmanim for a given date and location
 	 * @param {{ location: string, date: string, candleLightingMinutes: number?, zmanimTimezone: string }} options - the options for the calculation
-	 * @returns {Promise<import('$lib/js/zmanim').ZmanimResult>} The zmanim result
+	 * @returns {Promise<import('#lib/js/zmanim.js').ZmanimResult>} The zmanim result
 	 * @throws {Error} If the location is invalid
 	 */
 	async function getResults({ location, date, candleLightingMinutes }) {
@@ -133,7 +133,7 @@
 			// Update the URL query parameter without reloading the page
 			const url = new URL(window.location.href);
 			url.searchParams.set('location', location);
-			goto(url.pathname + url.search, { replaceState: true });
+			goto(url.pathname + url.search, { replace: true });
 
 			let mapUrl = `/input/maps?location=${allResults.latitude},${allResults.longitude}`;
 			if (PUBLIC_ADAPTER === 'static') {
@@ -153,7 +153,7 @@
 
 			/**
 			 * Format a zman name and description in a table row
-			 * @param {import('$lib/js/zmanim').Zman} zman - The zman to format
+			 * @param {import('#lib/js/zmanim.js').Zman} zman - The zman to format
 			 * @returns {string} The formatted time
 			 */
 			const formatZmanCell = (zman) => {
@@ -202,7 +202,7 @@
 				tablesHTML: zmanimTables.join(''),
 				timezone: allResults.timezone,
 				location: allResults.location || location,
-				date: date,
+				date,
 			};
 		} catch (error) {
 			alert(error?.toString());

@@ -1,5 +1,5 @@
-import { createErrorResponse, createResponse } from '$lib/js/api/response.js';
-import { calculateGematria, searchGematria } from '$lib/js/gematria.js';
+import { createErrorResponse, createResponse } from '#lib/js/api/response.js';
+import { calculateGematria, searchGematria } from '#lib/js/gematria.js';
 
 /**
  * @type {import('@sveltejs/kit').RequestHandler}

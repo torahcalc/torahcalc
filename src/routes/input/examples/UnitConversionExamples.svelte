@@ -1,5 +1,5 @@
 <script>
-	import { getConverters, getUnit, getUnits } from '$lib/js/unitconverter';
+	import { getConverters, getUnit, getUnits } from '#lib/js/unitconverter.js';
 	import { faScaleBalanced } from '@danieloi/pro-solid-svg-icons';
 	import AvailableOptionsList from '../AvailableOptionsList.svelte';
 	import InputExampleCategory from '../InputExampleCategory.svelte';

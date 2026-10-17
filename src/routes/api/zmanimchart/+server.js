@@ -1,9 +1,9 @@
-import * as env from '$env/static/private';
-import logo from '$lib/images/torahcalc.svg';
-import { createHtmlErrorResponse, createHtmlResponse } from '$lib/js/api/response.js';
-import { calculateEvents } from '$lib/js/events';
-import { escapeHtml, geocodeAddress, getTimezone } from '$lib/js/utils';
-import { ZMANIM_NAMES } from '$lib/js/zmanim';
+import logo from '#lib/images/torahcalc.svg';
+import { createHtmlErrorResponse, createHtmlResponse } from '#lib/js/api/response.js';
+import { calculateEvents } from '#lib/js/events.js';
+import { escapeHtml, geocodeAddress, getTimezone } from '#lib/js/utils.js';
+import { ZMANIM_NAMES } from '#lib/js/zmanim.js';
+import * as env from '$app/env/private';
 import { HDate } from '@hebcal/core';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';

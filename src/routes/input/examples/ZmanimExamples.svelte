@@ -2,7 +2,7 @@
 	import { faSunrise } from '@danieloi/pro-solid-svg-icons';
 	import AvailableOptionsList from '../AvailableOptionsList.svelte';
 	import InputExampleCategory from '../InputExampleCategory.svelte';
-	import { ZMANIM_NAMES } from '$lib/js/zmanim';
+	import { ZMANIM_NAMES } from '#lib/js/zmanim.js';
 
 	/** @type {(query: string) => any} The function to call when the button is clicked */
 	export let clickFunction;

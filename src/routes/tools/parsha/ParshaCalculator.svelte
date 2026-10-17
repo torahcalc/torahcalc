@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { calculateParsha } from '$lib/js/parsha';
+	import { calculateParsha } from '#lib/js/parsha.js';
 	import dayjs from 'dayjs';
 
 	onMount(updateResults);
@@ -17,7 +17,7 @@
 	/** @type {boolean} Whether to use the Israel reading schedule */
 	let il = false;
 
-	/** @type {import('$lib/js/parsha').ParshaResult|null} The parsha result */
+	/** @type {import('#lib/js/parsha.js').ParshaResult|null} The parsha result */
 	let parshaResult = null;
 
 	/** @type {string|null} Error message */
@@ -26,7 +26,7 @@
 	/**
 	 * Calculate the parsha for a given date
 	 * @param {{ month: number, day: number, year: number, il: boolean }} options - the options for the calculation
-	 * @returns {import('$lib/js/parsha').ParshaResult} The parsha result
+	 * @returns {import('#lib/js/parsha.js').ParshaResult} The parsha result
 	 * @throws {Error} If the date is invalid
 	 */
 	function getResults({ month, day, year, il }) {

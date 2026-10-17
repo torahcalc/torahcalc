@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { calculateZodiac } from '$lib/js/zodiac';
+	import { calculateZodiac } from '#lib/js/zodiac.js';
 	import dayjs from 'dayjs';
 
 	onMount(updateResults);
@@ -17,13 +17,13 @@
 	/** @type {boolean} After sunset */
 	let afterSunset = false;
 
-	/** @type {import('$lib/js/zodiac').ZodiacResult|null} The zodiac result */
+	/** @type {import('#lib/js/zodiac.js').ZodiacResult|null} The zodiac result */
 	let zodiacResult = null;
 
 	/**
 	 * Search for zmanim for a given date and location
 	 * @param {{ month: number, day: number, year: number, afterSunset: boolean }} options - the options for the calculation
-	 * @returns {Promise<import('$lib/js/zodiac').ZodiacResult>} The zodiac result
+	 * @returns {Promise<import('#lib/js/zodiac.js').ZodiacResult>} The zodiac result
 	 * @throws {Error} If the location is invalid
 	 */
 	async function getResults({ month, day, year, afterSunset }) {

@@ -1,9 +1,9 @@
 # Nearley grammar for inputting natural language queries
 
 @{%
-import { displayHebrew } from "$lib/js/gematria.js";
+import { displayHebrew } from "#lib/js/gematria.js";
 import { HDate } from '@hebcal/core';
-import { dateToObject, getCurrentHebrewMonth, getCurrentHebrewYear, getNextDayOfWeek, getNextHebrewMonth, getPrevDayOfWeek, getPrevHebrewMonth } from "$lib/js/utils.js";
+import { dateToObject, getCurrentHebrewMonth, getCurrentHebrewYear, getNextDayOfWeek, getNextHebrewMonth, getPrevDayOfWeek, getPrevHebrewMonth } from "#lib/js/utils.js";
 %}
 
 @builtin "number.ne"  # unsigned_int, int, unsigned_decimal, decimal, percentage, jsonfloat

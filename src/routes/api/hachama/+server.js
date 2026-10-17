@@ -1,5 +1,5 @@
-import { createErrorResponse, createResponse } from '$lib/js/api/response.js';
-import { nextBirkasHachama } from '$lib/js/hachama.js';
+import { createErrorResponse, createResponse } from '#lib/js/api/response.js';
+import { nextBirkasHachama } from '#lib/js/hachama.js';
 
 /**
  * @type {import('@sveltejs/kit').RequestHandler}

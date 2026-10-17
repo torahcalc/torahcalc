@@ -102,7 +102,7 @@ npm run ios:dev
 
 1. Create `+server.js` file in `src/routes/api/{tool}/`
 2. Export `GET` or `POST` request handlers using the logic from `src/lib/js/{tool}.js`
-3. Use helper functions from `$lib/js/api/response.js`:
+3. Use helper functions from `#lib/js/api/response.js`:
    - `createResponse(data)` - Success response
    - `createErrorResponse(error)` - Error response
 4. Update API documentation if applicable at `src/routes/api/+page.svelte`
@@ -122,7 +122,7 @@ npm run ios:dev
 
 1. Create `+server.js` file in `src/routes/api/your-endpoint/`
 2. Export `GET` or `POST` request handlers
-3. Use helper functions from `$lib/js/api/response.js`:
+3. Use helper functions from `#lib/js/api/response.js`:
    - `createResponse(data)` - Success response
    - `createErrorResponse(error)` - Error response
 4. Add tests for the endpoint logic
@@ -142,7 +142,7 @@ npm run ios:dev
 
 ## API Caching
 
-The server hook sets expiry headers on successful, public API GET responses. The Cloudflare adapter already uses Workers' Cache API to store these responses and serve identical URLs without running the endpoint again. The hook does not enable caching for errors, authenticated requests, requests with cookies, or private responses.
+The server hook sets expiry headers on successful, public API GET responses. The project Worker uses Workers' Cache API to store eligible responses and serve identical URLs without running the endpoint again. The hook does not enable caching for errors, authenticated requests, requests with cookies, or private responses.
 
 - Calendar endpoints with missing or partial dates expire at the next server midnight (UTC on Cloudflare). Zmanim uses UTC midnight to match its UTC date default.
 - Fully specified calendar inputs and non-calendar calculations are cached for seven days.
@@ -153,7 +153,7 @@ The policy lives in `src/lib/js/api/cache.js`. Register new endpoints there; the
 
 Cloudflare cache entries are local to each data center and can be evicted before expiry. Requests still invoke the Worker on cache hits, but skip endpoint calculations. Purge the Cloudflare cache when deploying calculation changes that must invalidate existing results before their normal expiry. Browser caches may retain results until their advertised expiry.
 
-Wrangler uses `worker.js` as its entrypoint, wrapping the generated adapter Worker. The wrapper checks the shared predicate in `src/lib/js/api/cache-request.js` before the adapter can look up cached responses. Non-GET requests and requests containing `Authorization`, `Cookie`, `Range`, or `Cache-Control: no-cache` or `no-store` receive `no-cache, no-store` request directives: `no-cache` skips the adapter lookup and `no-store` makes the API hook prevent storage. Do not point Wrangler directly at the generated Worker, because its cache lookup runs before the hook.
+Wrangler uses `worker.js` as its entrypoint, wrapping the generated adapter Worker. The wrapper checks the shared predicate in `src/lib/js/api/cache-request.js` before looking up cached responses. Non-GET requests and requests containing `Authorization`, `Cookie`, `Range`, or `Cache-Control: no-cache` or `no-store` bypass cache lookup; the request directives also prevent the API hook from storing restricted responses. Do not point Wrangler directly at the generated Worker, because that skips the wrapper's cache policy.
 
 Run the focused checks with `npm run test -- --run src/lib/js/api/cache.test.js`. Run `npm run test:cloudflare-cache` to build and test the actual Worker against a primed cache for each restricted request header. CI runs both checks.
 

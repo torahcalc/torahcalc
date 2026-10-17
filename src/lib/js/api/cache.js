@@ -1,4 +1,4 @@
-import { building } from '$app/environment';
+import { building } from '$app/env';
 import { shouldBypassCache } from './cache-request.js';
 
 const LONG_TTL = 7 * 24 * 60 * 60; // 7 days for long-lived cache
@@ -78,7 +78,7 @@ export function getApiCacheTtl(url, now = new Date()) {
 	return policy.dateParameters?.some((parameter) => !url.searchParams.get(parameter)?.trim()) ? dailyTtl : LONG_TTL;
 }
 
-/** @type {import('@sveltejs/kit').Handle} */
+/** @type {import('@sveltejs/kit/hooks').Handle} */
 export async function handleApiCache({ event, resolve }) {
 	if (building) return resolve(event);
 	const ttl = getApiCacheTtl(event.url);
@@ -87,6 +87,7 @@ export async function handleApiCache({ event, resolve }) {
 	const request = event.request;
 	const resolved = await resolve(event);
 	const maxAge = Math.floor((expiresAt - Date.now()) / 1000);
+
 	if (
 		maxAge <= 0 ||
 		shouldBypassCache(request) ||

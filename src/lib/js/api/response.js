@@ -1,5 +1,3 @@
-import { json } from '@sveltejs/kit';
-
 /**
  * Format a response as JSON.
  * @param {object} data - The data to return in the response.
@@ -7,7 +5,7 @@ import { json } from '@sveltejs/kit';
  * @returns {Response}
  */
 export function createResponse(data, status = 200) {
-	return json(
+	return Response.json(
 		{
 			success: status >= 200 && status < 300,
 			data,

@@ -1,8 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
-	import { calculateDailyLearning, LEARNING_TYPE_NAMES } from '$lib/js/dailylearning';
+	import { calculateDailyLearning, LEARNING_TYPE_NAMES } from '#lib/js/dailylearning.js';
 	import dayjs from 'dayjs';
-	import { formatHebrewDateEn } from '$lib/js/dateconverter';
+	import { formatHebrewDateEn } from '#lib/js/dateconverter.js';
 	import { HDate } from '@hebcal/core';
 
 	onMount(updateResults);
@@ -42,7 +42,7 @@
 	/**
 	 * Search for daily learning for a given date
 	 * @param {{ month: number, day: number, year: number }} options - the options for the calculation
-	 * @returns {Promise<{ [key: string]: string|import('$lib/js/dailylearning').DailyLearning|null }>} The zodiac result
+	 * @returns {Promise<{ [key: string]: string|import('#lib/js/dailylearning.js').DailyLearning|null }>} The zodiac result
 	 */
 	async function getResults({ month, day, year }) {
 		const date = new Date(year, month - 1, day);

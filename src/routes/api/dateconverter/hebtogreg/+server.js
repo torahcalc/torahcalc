@@ -1,6 +1,6 @@
-import { isTrue } from '$lib/js/api/helper';
-import { createErrorResponse, createResponse } from '$lib/js/api/response.js';
-import { hebrewToGregorian } from '$lib/js/dateconverter';
+import { isTrue } from '#lib/js/api/helper.js';
+import { createErrorResponse, createResponse } from '#lib/js/api/response.js';
+import { hebrewToGregorian } from '#lib/js/dateconverter.js';
 import { HDate } from '@hebcal/core';
 
 /**

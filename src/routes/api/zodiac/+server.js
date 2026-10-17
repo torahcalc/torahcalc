@@ -1,5 +1,5 @@
-import { createErrorResponse, createResponse } from '$lib/js/api/response.js';
-import { calculateZodiac } from '$lib/js/zodiac';
+import { createErrorResponse, createResponse } from '#lib/js/api/response.js';
+import { calculateZodiac } from '#lib/js/zodiac.js';
 import dayjs from 'dayjs';
 
 /**

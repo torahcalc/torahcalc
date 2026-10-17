@@ -2,7 +2,7 @@
 	import { faCalculator } from '@danieloi/pro-solid-svg-icons';
 	import AvailableOptionsList from '../AvailableOptionsList.svelte';
 	import InputExampleCategory from '../InputExampleCategory.svelte';
-	import { METHOD_NAMES } from '$lib/js/gematria';
+	import { METHOD_NAMES } from '#lib/js/gematria.js';
 
 	/** @type {(query: string) => any} The function to call when the button is clicked */
 	export let clickFunction;

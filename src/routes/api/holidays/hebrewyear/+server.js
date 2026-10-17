@@ -1,5 +1,5 @@
-import { createErrorResponse, createResponse } from '$lib/js/api/response.js';
-import { getHolidays } from '$lib/js/holidays';
+import { createErrorResponse, createResponse } from '#lib/js/api/response.js';
+import { getHolidays } from '#lib/js/holidays.js';
 import { HDate } from '@hebcal/core';
 import { readTypes } from '../utils';
 

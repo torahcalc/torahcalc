@@ -1,5 +1,5 @@
 <script>
-	import { isHebrewLeapYear, isGregorianLeapYear } from '$lib/js/leapyears.js';
+	import { isHebrewLeapYear, isGregorianLeapYear } from '#lib/js/leapyears.js';
 	import { HDate } from '@hebcal/core';
 	import Reason from '../Reason.svelte';
 
