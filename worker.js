@@ -21,8 +21,7 @@ export default {
 
 		const response = await app.fetch(request, env, context);
 		const cacheControl = response.headers.get('Cache-Control') || '';
-		const vary = response.headers.get('Vary') || '';
-		if (response.status < 400 && cacheControl && !response.headers.has('Set-Cookie') && !vary.includes('*') && !/(private|no-cache|no-store)/i.test(cacheControl)) {
+		if (response.status === 200 && cacheControl && !response.headers.has('Set-Cookie') && !response.headers.has('Vary') && !/(private|no-cache|no-store)/i.test(cacheControl)) {
 			context.waitUntil(caches.default.put(request, response.clone()));
 		}
 		return response;
