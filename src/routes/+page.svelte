@@ -1,5 +1,5 @@
 <script>
-	import logo from '$lib/images/torahcalc.svg';
+	import logo from '#lib/images/torahcalc.svg';
 	import InputCalculatorShortcut from './InputCalculatorShortcut.svelte';
 </script>
 

@@ -1,10 +1,10 @@
 <script>
-	import { page } from '$app/stores';
-	import logo from '$lib/images/torahcalc.svg';
+	import { page } from '$app/state';
+	import logo from '#lib/images/torahcalc.svg';
 	import Fa from 'svelte-fa';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import { faExternalLinkAlt } from '@danieloi/pro-solid-svg-icons';
-	import { PUBLIC_ADAPTER } from '$env/static/public';
+	import { PUBLIC_ADAPTER } from '$app/env/public';
 
 	const pages = [
 		{ name: 'Home', url: '/' },
@@ -52,7 +52,7 @@
 	}
 
 	// current page
-	$: current = $page.url.pathname;
+	const current = $derived(page.url.pathname);
 
 	/**
 	 * Hide all dropdown menus in the navbar
@@ -88,9 +88,11 @@
 				<img src={logo} alt="TorahCalc" class="logo" />
 				<span>TorahCalc</span>
 			</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon" />
-			</button>
+
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation"
+				><span class="navbar-toggler-icon"></span></button
+			>
+
 			<div class="collapse navbar-collapse" id="navbarMain">
 				<ul class="navbar-nav me-auto mb-2 mb-md-0">
 					{#each pages as page (page)}
@@ -106,7 +108,7 @@
 								<ul class="dropdown-menu">
 									{#each page.children as subpage (subpage)}
 										{#if subpage.name == 'dropdown-divider'}
-											<li class="dropdown-divider" />
+											<li class="dropdown-divider"></li>
 										{:else}
 											<li><a class="dropdown-item {current == subpage.url ? 'active' : ''}" aria-current={current == subpage.url && 'page'} href={subpage.url}>{subpage.name}</a></li>
 										{/if}

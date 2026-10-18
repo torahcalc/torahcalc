@@ -1,5 +1,5 @@
-import { createErrorResponse, createResponse } from '$lib/js/api/response.js';
-import { calculateOmerYear } from '$lib/js/omer';
+import { createErrorResponse, createResponse } from '#lib/js/api/response.js';
+import { calculateOmerYear } from '#lib/js/omer.js';
 import dayjs from 'dayjs';
 
 /**

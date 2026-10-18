@@ -20,7 +20,7 @@
 		"check": "npm run nearley && svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "npm run nearley && svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"test": "npm run nearley && vitest",
-		"test:cloudflare-cache": "npm run cloudflare && node --test tests/cloudflare-cache.test.js",
+		"test:cloudflare-cache": "cross-env PUBLIC_BASE_URL=http://localhost GOOGLE_MAPS_API_KEY=test-google-maps-key GEONAMES_USERNAME=test-geonames-user MAPBOX_ACCESS_TOKEN=test-mapbox-token npm run cloudflare && node --test tests/cloudflare-cache.test.js",
 		"lint": "prettier --check src/**/*.{svelte,js,css,html} *.{js,ts,json,md} && eslint src/**/*.{svelte,js}",
 		"format": "prettier --write src/**/*.{svelte,js,css,html} *.{js,ts,json,md}",
 		"nearley": "node src/lib/grammars/scripts/prepare-input.js && nearleyc src/lib/grammars/main.ne -o src/lib/grammars/generated/main.js && node src/lib/grammars/scripts/modify-output.js",
@@ -56,10 +56,10 @@
 		"@fontsource/fira-mono": "^5.2.6",
 		"@fontsource/roboto": "^5.2.5",
 		"@fontsource/roboto-serif": "^5.2.5",
-		"@sveltejs/adapter-cloudflare": "^7.2.9",
-		"@sveltejs/adapter-static": "^3.0.10",
-		"@sveltejs/adapter-vercel": "^6.3.4",
-		"@sveltejs/kit": "^2.70.3",
+		"@sveltejs/adapter-cloudflare": "^8.0.1",
+		"@sveltejs/adapter-static": "^4.0.0",
+		"@sveltejs/adapter-vercel": "^7.0.0",
+		"@sveltejs/kit": "^3.0.1",
 		"@sveltejs/vite-plugin-svelte": "^7.3.1",
 		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/svelte": "^5.2.8",
@@ -78,5 +78,9 @@
 		"vite": "^8.3.4",
 		"vitest": "^5.0.5",
 		"wrangler": "4.151.1"
+	},
+	"imports": {
+		"#lib": "./src/lib/index.js",
+		"#lib/*": "./src/lib/*"
 	}
 }

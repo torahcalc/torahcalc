@@ -1,5 +1,5 @@
-import { createErrorResponse, createResponse } from '$lib/js/api/response.js';
-import { convertUnits } from '$lib/js/unitconverter.js';
+import { createErrorResponse, createResponse } from '#lib/js/api/response.js';
+import { convertUnits } from '#lib/js/unitconverter.js';
 
 /**
  * @type {import('@sveltejs/kit').RequestHandler}

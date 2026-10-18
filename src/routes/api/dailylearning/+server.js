@@ -1,5 +1,5 @@
-import { createErrorResponse, createResponse } from '$lib/js/api/response.js';
-import { calculateDailyLearning } from '$lib/js/dailylearning';
+import { createErrorResponse, createResponse } from '#lib/js/api/response.js';
+import { calculateDailyLearning } from '#lib/js/dailylearning.js';
 import dayjs from 'dayjs';
 
 /**

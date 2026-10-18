@@ -1,7 +1,7 @@
 <script>
-	import { gregorianToHebrew, hebrewToGregorian, hebrewMonths, formatHebrewDateEn } from '$lib/js/dateconverter';
-	import { calculateOmerDate, calculateOmerHebrew, calculateOmerYear } from '$lib/js/omer';
-	import { formatDate } from '$lib/js/utils';
+	import { gregorianToHebrew, hebrewToGregorian, hebrewMonths, formatHebrewDateEn } from '#lib/js/dateconverter.js';
+	import { calculateOmerDate, calculateOmerHebrew, calculateOmerYear } from '#lib/js/omer.js';
+	import { formatDate } from '#lib/js/utils.js';
 	import dayjs from 'dayjs';
 	import { HDate } from '@hebcal/core';
 	import { onMount } from 'svelte';
@@ -24,10 +24,10 @@
 	/** @type {{ class?: string, html?: string }} The warning object if any */
 	let warning = {};
 
-	/** @type {{ dayCount?: import('$lib/js/omer').Omer|null, nightCount?: import('$lib/js/omer').Omer|null, count?: import('$lib/js/omer').Omer|null }} The results of the sefiras haomer calculation */
+	/** @type {{ dayCount?: import('#lib/js/omer.js').Omer|null, nightCount?: import('#lib/js/omer.js').Omer|null, count?: import('#lib/js/omer.js').Omer|null }} The results of the sefiras haomer calculation */
 	let results = {};
 
-	/** @type {Record<string, import('$lib/js/omer').Omer>} Year of sefiras haomer */
+	/** @type {Record<string, import('#lib/js/omer.js').Omer>} Year of sefiras haomer */
 	let omerYear = {};
 
 	function handleGregorianToHebrew() {

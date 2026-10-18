@@ -1,5 +1,5 @@
-import { createErrorResponse, createResponse } from '$lib/js/api/response.js';
-import { calculateParsha } from '$lib/js/parsha';
+import { createErrorResponse, createResponse } from '#lib/js/api/response.js';
+import { calculateParsha } from '#lib/js/parsha.js';
 import dayjs from 'dayjs';
 
 /**

@@ -1,5 +1,5 @@
 <script>
-	import { nextBirkasHachama } from '$lib/js/hachama';
+	import { nextBirkasHachama } from '#lib/js/hachama.js';
 
 	/** @type {number} The current year */
 	const currentYear = new Date().getFullYear();
@@ -7,15 +7,15 @@
 	/** @type {number} The year to search for the next Birkas Hachama after */
 	let year = new Date().getFullYear();
 
-	/** @type {import('$lib/js/hachama').BirkasHachamaResult} The next Birkas Hachama result */
+	/** @type {import('#lib/js/hachama.js').BirkasHachamaResult} The next Birkas Hachama result */
 	$: birkasHachama = nextBirkasHachama(year);
 
 	const LIST_YEARS = 200;
 
-	/** @type {import('$lib/js/hachama').BirkasHachamaResult[]} The Birkas Hachama results from the past */
+	/** @type {import('#lib/js/hachama.js').BirkasHachamaResult[]} The Birkas Hachama results from the past */
 	const pastBirkasHachamaList = [];
 
-	/** @type {import('$lib/js/hachama').BirkasHachamaResult[]} The Birkas Hachama results from the future */
+	/** @type {import('#lib/js/hachama.js').BirkasHachamaResult[]} The Birkas Hachama results from the future */
 	const futureBirkasHachamaList = [];
 
 	for (let i = -LIST_YEARS; i < LIST_YEARS; i += 28) {

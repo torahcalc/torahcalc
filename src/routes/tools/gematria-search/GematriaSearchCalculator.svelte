@@ -1,8 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
-	import { METHOD_NAMES, WORD_LIST_NAMES, calculateGematria, searchGematria } from '$lib/js/gematria';
-	import HebrewKeyboard from '$lib/components/HebrewKeyboard.svelte';
-	import GoogleTranslate from '$lib/components/GoogleTranslate.svelte';
+	import { METHOD_NAMES, WORD_LIST_NAMES, calculateGematria, searchGematria } from '#lib/js/gematria.js';
+	import HebrewKeyboard from '#lib/components/HebrewKeyboard.svelte';
+	import GoogleTranslate from '#lib/components/GoogleTranslate.svelte';
 
 	onMount(updateResults);
 

@@ -1,9 +1,9 @@
 <script>
-	import { convertUnits, getConverters, getOpinions } from '$lib/js/unitconverter';
+	import { convertUnits, getConverters, getOpinions } from '#lib/js/unitconverter.js';
 	import Fa from 'svelte-fa';
 	import { faExternalLink } from '@danieloi/pro-solid-svg-icons';
-	import Ref from '$lib/components/Ref.svelte';
-	import Anchor from '$lib/components/Anchor.svelte';
+	import Ref from '#lib/components/Ref.svelte';
+	import Anchor from '#lib/components/Anchor.svelte';
 
 	async function getPerutahValue() {
 		const converters = await getConverters();

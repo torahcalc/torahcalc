@@ -1,7 +1,12 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { formatHtmlBold } from './holidays';
 import { calculateQuery } from './input';
 import { formatNumberHTML } from './utils';
+
+vi.mock('$app/env/public', () => ({
+	PUBLIC_ADAPTER: 'vercel',
+	PUBLIC_BASE_URL: '',
+}));
 
 describe('test unit conversions', () => {
 	it('convert 3.5 amah to meter', async () => {

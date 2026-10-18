@@ -7,6 +7,11 @@ test('Cloudflare cache bypasses restricted requests before adapter lookup', { ti
 		config: 'wrangler.toml',
 		local: true,
 		persist: false,
+		vars: {
+			GOOGLE_MAPS_API_KEY: 'test-google-maps-key',
+			GEONAMES_USERNAME: 'test-geonames-user',
+			MAPBOX_ACCESS_TOKEN: 'test-mapbox-token',
+		},
 		experimental: { disableExperimentalWarning: true },
 	});
 	context.after(() => worker.stop());

@@ -1,19 +1,20 @@
 <script>
-	import { page } from '$app/stores';
-	import { calculateQuery } from '$lib/js/input';
-	import HebrewKeyboard from '$lib/components/HebrewKeyboard.svelte';
+	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
+	import { calculateQuery } from '#lib/js/input.js';
+	import HebrewKeyboard from '#lib/components/HebrewKeyboard.svelte';
 
 	/** @type {string} The current query in the input box (not yet submitted) */
-	export let queryInput = $page.url.searchParams.get('q') ?? '';
+	let queryInput = $state(page.url.searchParams.get('q') ?? '');
 
 	/** @type {string|undefined} The disambiguation to use for the result */
-	$: disambiguation = $page.url.searchParams.get('disambiguation') ?? undefined;
+	const disambiguation = $derived(page.url.searchParams.get('disambiguation') ?? undefined);
 
 	/** @type {string|undefined} The format specification to use for the result */
-	$: outputFormat = $page.url.searchParams.get('format') ?? undefined;
+	const outputFormat = $derived(page.url.searchParams.get('format') ?? undefined);
 
 	/** @type {string} The current query to calculate */
-	let query = queryInput;
+	let query = $state(page.url.searchParams.get('q') ?? '');
 
 	/**
 	 * Set the query to calculate and update the URL
@@ -23,9 +24,9 @@
 		queryInput = newQuery;
 		query = queryInput;
 		// update the URL
-		const url = $page.url;
+		const url = new URL(page.url.href);
 		url.searchParams.set('q', query);
-		window.history.pushState({}, '', url);
+		await goto(url, { shallow: true });
 		// scroll to the top of the page
 		window.scrollTo(0, 0);
 	}

@@ -1,5 +1,5 @@
-import { PUBLIC_ADAPTER, PUBLIC_BASE_URL } from '$env/static/public';
-import grammar from '$lib/grammars/generated/main.js';
+import grammar from '#lib/grammars/generated/main.js';
+import { PUBLIC_ADAPTER, PUBLIC_BASE_URL } from '$app/env/public';
 import { HDate } from '@hebcal/core';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -16,7 +16,9 @@ import { calculateOmerDate, calculateOmerHebrew } from './omer';
 import { calculateParsha } from './parsha';
 import { isShmitaYear, nextShmita, previousShmita } from './shmita';
 import { formatBookName, formatStatType, getStat, hasStat } from './tanach-stats';
+
 import { convertUnits, convertUnitsMultiAll, getConverters, getDefaultOpinion, getOpinion, getOpinions, getUnit, getUnitOpinion } from './unitconverter';
+
 import {
 	dataToHtmlTable,
 	formatDate,
@@ -723,8 +725,12 @@ export async function unitConversionQuery(derivation) {
 	}
 	// otherwise, show the single result
 	else {
-		sections.push({ title: RESULT, content: formatUnitResult(conversionResult, unitTo) });
+		sections.push({
+			title: RESULT,
+			content: formatUnitResult(conversionResult, unitTo),
+		});
 	}
+
 	const updatedDate = unitTo.updated ?? unitFrom.updated;
 	sections.push({ title: SOURCES, content: formatUnitSources(updatedDate) });
 	return sections;
@@ -764,6 +770,7 @@ async function conversionChartQuery(derivation) {
 		const data = [];
 		for (const [opinionId, opinionResults] of Object.entries(conversionResults)) {
 			const opinion = (await getDefaultOpinion(unitType)) ? await getOpinion(unitType, opinionId) : await getUnitOpinion(unitType, opinionId);
+
 			let results = '<ul>';
 			for (const [unitId, result] of Object.entries(opinionResults)) {
 				const unitTo = await getUnit(unitType, unitId);
@@ -1140,7 +1147,7 @@ function hebrewCalendarQuery(derivation) {
 				content: `Hebrew year ${formatNumberHTML(hebrewDate.year, -1)} starts in the Gregorian year ${formatNumberHTML(startGregorianYear, -1)} and ends in ${formatNumberHTML(endGregorianYear, -1)}`,
 			});
 		}
-		//  convert the Hebrew date to a gregorian date
+		// convert the Hebrew date to a gregorian date
 		else {
 			hebrewDate.year = hebrewDate.year ?? new HDate().getFullYear();
 			hebrewDate.month = hebrewDate.month ?? 1;
@@ -1552,8 +1559,15 @@ function shmitaCheckQuery(derivation) {
 
 	const result = isShmitaYear(derivation.year);
 
-	sections.push({ title: INPUT_INTERPRETATION, content: `Is ${derivation.year} a Shmita year on the Hebrew calendar?` });
-	sections.push({ title: RESULT, content: `${result ? 'Yes' : 'No'}, Hebrew year ${formatNumberHTML(derivation.year, -1)} is ${result ? '' : 'not '}a Shmita year` });
+	sections.push({
+		title: INPUT_INTERPRETATION,
+		content: `Is ${derivation.year} a Shmita year on the Hebrew calendar?`,
+	});
+
+	sections.push({
+		title: RESULT,
+		content: `${result ? 'Yes' : 'No'}, Hebrew year ${formatNumberHTML(derivation.year, -1)} is ${result ? '' : 'not '}a Shmita year`,
+	});
 
 	return sections;
 }

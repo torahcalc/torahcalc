@@ -1,8 +1,8 @@
 <script>
 	import Fa from 'svelte-fa';
 	import { faExternalLink } from '@danieloi/pro-solid-svg-icons';
-	import Ref from '$lib/components/Ref.svelte';
-	import Anchor from '$lib/components/Anchor.svelte';
+	import Ref from '#lib/components/Ref.svelte';
+	import Anchor from '#lib/components/Anchor.svelte';
 
 	// Import image URLs
 	import horseradishImg from './images/horseradish.png';

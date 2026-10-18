@@ -1,5 +1,5 @@
 <script>
-	import { getStats } from '$lib/js/tanach-stats.js';
+	import { getStats } from '#lib/js/tanach-stats.js';
 
 	const description = 'This table lists the number of verses, words, and letters in each Parsha (Torah Portion) in the Torah.';
 

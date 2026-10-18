@@ -2,7 +2,7 @@
 	import { faBookOpenCover } from '@danieloi/pro-solid-svg-icons';
 	import AvailableOptionsList from '../AvailableOptionsList.svelte';
 	import InputExampleCategory from '../InputExampleCategory.svelte';
-	import { LEARNING_TYPE_NAMES } from '$lib/js/dailylearning';
+	import { LEARNING_TYPE_NAMES } from '#lib/js/dailylearning.js';
 
 	/** @type {(query: string) => any} The function to call when the button is clicked */
 	export let clickFunction;

@@ -1,4 +1,4 @@
-import { isTrue } from '$lib/js/api/helper';
+import { isTrue } from '#lib/js/api/helper.js';
 
 /**
  * Read the calendar types from the URL.

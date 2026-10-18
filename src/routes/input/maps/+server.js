@@ -1,6 +1,6 @@
-import * as env from '$env/static/private';
-import { createErrorResponse } from '$lib/js/api/response.js';
-import { geocodeAddress } from '$lib/js/utils.js';
+import { createErrorResponse } from '#lib/js/api/response.js';
+import { geocodeAddress } from '#lib/js/utils.js';
+import * as env from '$app/env/private';
 
 /**
  * @param {string} location

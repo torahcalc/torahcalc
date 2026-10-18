@@ -1,7 +1,7 @@
-import * as env from '$env/static/private';
-import { createErrorResponse, createResponse } from '$lib/js/api/response.js';
-import { geocodeAddress, getTimezone } from '$lib/js/utils';
-import { calculateZmanim } from '$lib/js/zmanim';
+import { createErrorResponse, createResponse } from '#lib/js/api/response.js';
+import { geocodeAddress, getTimezone } from '#lib/js/utils.js';
+import { calculateZmanim } from '#lib/js/zmanim.js';
+import * as env from '$app/env/private';
 
 /**
  * @type {import('@sveltejs/kit').RequestHandler}

@@ -1,7 +1,7 @@
 <script>
-	import { hebrewMonths } from '$lib/js/dateconverter';
-	import { calculateMolad } from '$lib/js/molad';
-	import { getCurrentHebrewMonth, getNextHebrewMonth, getPrevHebrewMonth } from '$lib/js/utils';
+	import { hebrewMonths } from '#lib/js/dateconverter.js';
+	import { calculateMolad } from '#lib/js/molad.js';
+	import { getCurrentHebrewMonth, getNextHebrewMonth, getPrevHebrewMonth } from '#lib/js/utils.js';
 	import { HDate } from '@hebcal/core';
 	import { onMount } from 'svelte';
 
