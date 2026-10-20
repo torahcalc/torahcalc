@@ -30,7 +30,7 @@
 	},
 	"dependencies": {
 		"@danieloi/pro-solid-svg-icons": "6.2.1",
-		"@fortawesome/fontawesome-common-types": "^6.7.2",
+		"@fortawesome/fontawesome-common-types": "^7.3.1",
 		"@fortawesome/free-brands-svg-icons": "^6.7.2",
 		"@hebcal/core": "^6.14.4",
 		"@hebcal/learning": "^6.12.2",
