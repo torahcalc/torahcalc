@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { LETTER_SPELLING_VALUES, METHOD_NAMES, calculateGematria } from '#lib/js/gematria.js';
-	import { formatNumberHTML } from '#lib/js/utils.js';
+	import { formatNumberHTML, sanitize } from '#lib/js/utils.js';
 	import HebrewKeyboard from '#lib/components/HebrewKeyboard.svelte';
 
 	onMount(updateResults);
@@ -130,7 +130,7 @@
 					<div class="card flex-card m-1 p-3" style="min-width: 286px;">
 						<b>{result.name}</b>
 						<p>{result.hebrewName}</p>
-						<p class="h5">{@html formatNumberHTML(result.value)}</p>
+						<p class="h5">{@html sanitize(formatNumberHTML(result.value))}</p>
 						<a href={result.url} target="_blank" rel="noopener noreferrer">Learn More</a>
 					</div>
 				</div>
