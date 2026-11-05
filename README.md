@@ -2,15 +2,15 @@
 
 New website and API for TorahCalc
 
-[TorahCalc](https://www.torahcalc.com) is a resource for Torah study started in 2015, sometimes referred to as "the Jewish Wolfram Alpha". It provides a variety of tools for biblical and Talmudic unit conversions, Gematria calculations, Hebrew calendar and Zmanim information, and more.
+[TorahCalc](https://torahcalc.com) is a resource for Torah study started in 2015, sometimes referred to as "the Jewish Wolfram Alpha". It provides a variety of tools for biblical and Talmudic unit conversions, Gematria calculations, Hebrew calendar and Zmanim information, and more.
 
-This project is a complete rewrite of the original site, which was built with plain HTML, CSS, and JavaScript. The [new site](https://www.torahcalc.com) is built with [Svelte](https://svelte.dev/) and [SvelteKit](https://kit.svelte.dev/), uses [Nearley](https://nearley.js.org/) for parsing queries, and also includes a [REST API](https://www.torahcalc.com/api) for programmatic access to the site's features.
+This project is a complete rewrite of the original site, which was built with plain HTML, CSS, and JavaScript. The [new site](https://torahcalc.com) is built with [Svelte](https://svelte.dev/) and [SvelteKit](https://kit.svelte.dev/), uses [Nearley](https://nearley.js.org/) for parsing queries, and also includes a [REST API](https://torahcalc.com/api) for programmatic access to the site's features.
 
 ## Website
 
-### View the website at https://www.torahcalc.com
+### View the website at https://torahcalc.com
 
-Old website: https://www.old.torahcalc.com
+Old website: https://old.torahcalc.com
 
 ## Contributing
 
