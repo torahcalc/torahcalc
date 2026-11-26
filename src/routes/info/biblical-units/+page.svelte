@@ -380,24 +380,27 @@
 			<a
 				target="_blank"
 				href="https://www.amazon.com/gp/product/0394576659/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0394576659&linkCode=as2&tag=jelawrence-20&linkId=92849671c76d53d6b9b24392a5113c4f"
-				>Buy on Amazon</a
-			><img src="//ir-na.amazon-adsystem.com/e/ir?t=jelawrence-20&l=am2&o=1&a=0394576659" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
+			>
+				Buy on Amazon
+			</a><img src="//ir-na.amazon-adsystem.com/e/ir?t=jelawrence-20&l=am2&o=1&a=0394576659" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
 		</li>
 		<li>
 			<Anchor id="20" />Frank, Yitzḥak. "Appendix II" The Practical Talmud Dictionary. Ariel, 1991-1994. pp. 297-301.<br />
 			<a
 				target="_blank"
 				href="https://www.amazon.com/gp/product/1592644511/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1592644511&linkCode=as2&tag=jelawrence-20&linkId=8550e305385748e21980ee2c4d3037fd"
-				>Buy on Amazon</a
-			><img src="//ir-na.amazon-adsystem.com/e/ir?t=jelawrence-20&l=am2&o=1&a=1592644511" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
+			>
+				Buy on Amazon
+			</a><img src="//ir-na.amazon-adsystem.com/e/ir?t=jelawrence-20&l=am2&o=1&a=1592644511" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
 		</li>
 		<li>
 			<Anchor id="21" />Bergman, Rabbi Meir Zvi. "Chapter Twelve: Weights, Measures and Currency." The Gateway to Talmud. Mesorah Publications, 1985. pp. 117-119.<br />
 			<a
 				target="_blank"
 				href="https://www.amazon.com/Gateway-Talmud-ArtScroll-mesorah-Bergman/dp/0899062083?&_encoding=UTF8&tag=jelawrence-20&linkCode=ur2&linkId=c3d1a193ee786cb7403314bc00e8a017&camp=1789&creative=9325"
-				>Buy on Amazon</a
-			><img src="//ir-na.amazon-adsystem.com/e/ir?t=jelawrence-20&l=am2&o=1&a=0899062083" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
+			>
+				Buy on Amazon
+			</a><img src="//ir-na.amazon-adsystem.com/e/ir?t=jelawrence-20&l=am2&o=1&a=0899062083" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
 		</li>
 	</ul>
 	<br />

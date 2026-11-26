@@ -89,9 +89,9 @@
 				<span>TorahCalc</span>
 			</a>
 
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation"
-				><span class="navbar-toggler-icon"></span></button
-			>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 
 			<div class="collapse navbar-collapse" id="navbarMain">
 				<ul class="navbar-nav me-auto mb-2 mb-md-0">

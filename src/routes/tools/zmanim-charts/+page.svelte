@@ -144,8 +144,10 @@
 
 					const url = `/api/zmanimchart?${params.toString()}`;
 					window.open(url, '_blank');
-				}}>Create Zmanim Chart</button
+				}}
 			>
+				Create Zmanim Chart
+			</button>
 		</div>
 	</div>
 </section>
